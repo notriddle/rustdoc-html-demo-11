@@ -195,20 +195,29 @@ category.</p>
 <tr><td><code>clippy::all</code></td><td>all lints that are on by default (correctness, suspicious, style, complexity, perf)</td><td><strong>warn/deny</strong></td></tr>
 <tr><td><code>clippy::correctness</code></td><td>code that is outright wrong or useless</td><td><strong>deny</strong></td></tr>
 <tr><td><code>clippy::suspicious</code></td><td>code that is most likely wrong or useless</td><td><strong>warn</strong></td></tr>
+<tr><td><code>clippy::style</code></td><td>code that should be written in a more idiomatic way</td><td><strong>warn</strong></td></tr>
 <tr><td><code>clippy::complexity</code></td><td>code that does something simple but in a complex way</td><td><strong>warn</strong></td></tr>
 <tr><td><code>clippy::perf</code></td><td>code that can be written to run faster</td><td><strong>warn</strong></td></tr>
-<tr><td><code>clippy::style</code></td><td>code that should be written in a more idiomatic way</td><td><strong>warn</strong></td></tr>
-<tr><td><code>clippy::pedantic</code></td><td>lints which are rather strict or might have false positives</td><td>allow</td></tr>
+<tr><td><code>clippy::pedantic</code></td><td>lints which are rather strict or have occasional false positives</td><td>allow</td></tr>
+<tr><td><code>clippy::restriction</code></td><td>lints which prevent the use of language and library features<sup class="footnote-reference"><a href="#restrict">1</a></sup></td><td>allow</td></tr>
 <tr><td><code>clippy::nursery</code></td><td>new lints that are still under development</td><td>allow</td></tr>
 <tr><td><code>clippy::cargo</code></td><td>lints for the cargo manifest</td><td>allow</td></tr>
 </tbody></table>
 </div>
-<p>More to come, please <a href="https://github.com/rust-lang/rust-clippy/issues">file an
-issue</a> if you have ideas!</p>
-<p>The <a href="https://rust-lang.github.io/rust-clippy/master/index.html">lint list</a> also
-contains "restriction lints", which are for things which are usually not
-considered "bad", but may be useful to turn on in specific cases. These should
-be used very selectively, if at all.</p>
+<p>More to come, please <a href="https://github.com/rust-lang/rust-clippy/issues">file an issue</a> if you have ideas!</p>
+<p>The <code>restriction</code> category should, <em>emphatically</em>, not be enabled as a whole. The contained
+lints may lint against perfectly reasonable code, may not have an alternative suggestion,
+and may contradict any other lints (including other categories). Lints should be considered
+on a case-by-case basis before enabling.</p>
+<div class="footnote-definition" id="restrict"><sup class="footnote-definition-label">1</sup>
+<p>Some use cases for <code>restriction</code> lints include:</p>
+<ul>
+<li>Strict coding styles (e.g. <a href="https://rust-lang.github.io/rust-clippy/master/index.html#else_if_without_else"><code>clippy::else_if_without_else</code></a>).</li>
+<li>Additional restrictions on CI (e.g. <a href="https://rust-lang.github.io/rust-clippy/master/index.html#todo"><code>clippy::todo</code></a>).</li>
+<li>Preventing panicking in certain functions (e.g. <a href="https://rust-lang.github.io/rust-clippy/master/index.html#unwrap_used"><code>clippy::unwrap_used</code></a>).</li>
+<li>Running a lint only on a subset of code (e.g. <code>#[forbid(clippy::float_arithmetic)]</code> on a module).</li>
+</ul>
+</div>
 
                     </main>
 

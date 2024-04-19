@@ -193,20 +193,29 @@ category.</p>
 <tr><td><code>clippy::all</code></td><td>all lints that are on by default (correctness, suspicious, style, complexity, perf)</td><td><strong>warn/deny</strong></td></tr>
 <tr><td><code>clippy::correctness</code></td><td>code that is outright wrong or useless</td><td><strong>deny</strong></td></tr>
 <tr><td><code>clippy::suspicious</code></td><td>code that is most likely wrong or useless</td><td><strong>warn</strong></td></tr>
+<tr><td><code>clippy::style</code></td><td>code that should be written in a more idiomatic way</td><td><strong>warn</strong></td></tr>
 <tr><td><code>clippy::complexity</code></td><td>code that does something simple but in a complex way</td><td><strong>warn</strong></td></tr>
 <tr><td><code>clippy::perf</code></td><td>code that can be written to run faster</td><td><strong>warn</strong></td></tr>
-<tr><td><code>clippy::style</code></td><td>code that should be written in a more idiomatic way</td><td><strong>warn</strong></td></tr>
-<tr><td><code>clippy::pedantic</code></td><td>lints which are rather strict or might have false positives</td><td>allow</td></tr>
+<tr><td><code>clippy::pedantic</code></td><td>lints which are rather strict or have occasional false positives</td><td>allow</td></tr>
+<tr><td><code>clippy::restriction</code></td><td>lints which prevent the use of language and library features<sup class="footnote-reference"><a href="#restrict">1</a></sup></td><td>allow</td></tr>
 <tr><td><code>clippy::nursery</code></td><td>new lints that are still under development</td><td>allow</td></tr>
 <tr><td><code>clippy::cargo</code></td><td>lints for the cargo manifest</td><td>allow</td></tr>
 </tbody></table>
 </div>
-<p>More to come, please <a href="https://github.com/rust-lang/rust-clippy/issues">file an
-issue</a> if you have ideas!</p>
-<p>The <a href="https://rust-lang.github.io/rust-clippy/master/index.html">lint list</a> also
-contains "restriction lints", which are for things which are usually not
-considered "bad", but may be useful to turn on in specific cases. These should
-be used very selectively, if at all.</p>
+<p>More to come, please <a href="https://github.com/rust-lang/rust-clippy/issues">file an issue</a> if you have ideas!</p>
+<p>The <code>restriction</code> category should, <em>emphatically</em>, not be enabled as a whole. The contained
+lints may lint against perfectly reasonable code, may not have an alternative suggestion,
+and may contradict any other lints (including other categories). Lints should be considered
+on a case-by-case basis before enabling.</p>
+<div class="footnote-definition" id="restrict"><sup class="footnote-definition-label">1</sup>
+<p>Some use cases for <code>restriction</code> lints include:</p>
+<ul>
+<li>Strict coding styles (e.g. <a href="https://rust-lang.github.io/rust-clippy/master/index.html#else_if_without_else"><code>clippy::else_if_without_else</code></a>).</li>
+<li>Additional restrictions on CI (e.g. <a href="https://rust-lang.github.io/rust-clippy/master/index.html#todo"><code>clippy::todo</code></a>).</li>
+<li>Preventing panicking in certain functions (e.g. <a href="https://rust-lang.github.io/rust-clippy/master/index.html#unwrap_used"><code>clippy::unwrap_used</code></a>).</li>
+<li>Running a lint only on a subset of code (e.g. <code>#[forbid(clippy::float_arithmetic)]</code> on a module).</li>
+</ul>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
 <p>If you're using <code>rustup</code> to install and manage your Rust toolchains, Clippy is
 usually <strong>already installed</strong>. In that case you can skip this chapter and go to
@@ -568,6 +577,27 @@ configuration of Clippy. By default, any configuration will replace the default 
 <ul>
 <li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#min_ident_chars"><code>min_ident_chars</code></a></li>
 </ul>
+<h2 id="allowed-prefixes"><a class="header" href="#allowed-prefixes"><code>allowed-prefixes</code></a></h2>
+<p>List of prefixes to allow when determining whether an item's name ends with the module's name.
+If the rest of an item's name is an allowed prefix (e.g. item <code>ToFoo</code> or <code>to_foo</code> in module <code>foo</code>),
+then don't emit a warning.</p>
+<h4 id="example"><a class="header" href="#example">Example</a></h4>
+<pre><code class="language-toml">allowed-prefixes = [ "to", "from" ]
+</code></pre>
+<h4 id="noteworthy"><a class="header" href="#noteworthy">Noteworthy</a></h4>
+<ul>
+<li>By default, the following prefixes are allowed: <code>to</code>, <code>as</code>, <code>into</code>, <code>from</code>, <code>try_into</code> and <code>try_from</code></li>
+<li>PascalCase variant is included automatically for each snake_case variant (e.g. if <code>try_into</code> is included,
+<code>TryInto</code> will also be included)</li>
+<li>Use <code>".."</code> as part of the list to indicate that the configured values should be appended to the
+default configuration of Clippy. By default, any configuration will replace the default value</li>
+</ul>
+<p><strong>Default Value:</strong> <code>["to", "as", "into", "from", "try_into", "try_from"]</code></p>
+<hr />
+<p><strong>Affected lints:</strong></p>
+<ul>
+<li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#module_name_repetitions"><code>module_name_repetitions</code></a></li>
+</ul>
 <h2 id="allowed-scripts"><a class="header" href="#allowed-scripts"><code>allowed-scripts</code></a></h2>
 <p>The list of unicode scripts allowed to be used in the scope.</p>
 <p><strong>Default Value:</strong> <code>["Latin"]</code></p>
@@ -578,10 +608,10 @@ configuration of Clippy. By default, any configuration will replace the default 
 </ul>
 <h2 id="allowed-wildcard-imports"><a class="header" href="#allowed-wildcard-imports"><code>allowed-wildcard-imports</code></a></h2>
 <p>List of path segments allowed to have wildcard imports.</p>
-<h4 id="example"><a class="header" href="#example">Example</a></h4>
+<h4 id="example-1"><a class="header" href="#example-1">Example</a></h4>
 <pre><code class="language-toml">allowed-wildcard-imports = [ "utils", "common" ]
 </code></pre>
-<h4 id="noteworthy"><a class="header" href="#noteworthy">Noteworthy</a></h4>
+<h4 id="noteworthy-1"><a class="header" href="#noteworthy-1">Noteworthy</a></h4>
 <ol>
 <li>This configuration has no effects if used with <code>warn_on_all_wildcard_imports = true</code>.</li>
 <li>Paths with any segment that containing the word 'prelude'
@@ -596,10 +626,10 @@ are already allowed by default.</li>
 <h2 id="arithmetic-side-effects-allowed"><a class="header" href="#arithmetic-side-effects-allowed"><code>arithmetic-side-effects-allowed</code></a></h2>
 <p>Suppress checking of the passed type names in all types of operations.</p>
 <p>If a specific operation is desired, consider using <code>arithmetic_side_effects_allowed_binary</code> or <code>arithmetic_side_effects_allowed_unary</code> instead.</p>
-<h4 id="example-1"><a class="header" href="#example-1">Example</a></h4>
+<h4 id="example-2"><a class="header" href="#example-2">Example</a></h4>
 <pre><code class="language-toml">arithmetic-side-effects-allowed = ["SomeType", "AnotherType"]
 </code></pre>
-<h4 id="noteworthy-1"><a class="header" href="#noteworthy-1">Noteworthy</a></h4>
+<h4 id="noteworthy-2"><a class="header" href="#noteworthy-2">Noteworthy</a></h4>
 <p>A type, say <code>SomeType</code>, listed in this configuration has the same behavior of
 <code>["SomeType" , "*"], ["*", "SomeType"]</code> in <code>arithmetic_side_effects_allowed_binary</code>.</p>
 <p><strong>Default Value:</strong> <code>[]</code></p>
@@ -615,7 +645,7 @@ multiplication.</p>
 of the involved counterpart. For example, <code>["SomeType", "*"]</code> or <code>["*", "AnotherType"]</code>.</p>
 <p>Pairs are asymmetric, which means that <code>["SomeType", "AnotherType"]</code> is not the same as
 <code>["AnotherType", "SomeType"]</code>.</p>
-<h4 id="example-2"><a class="header" href="#example-2">Example</a></h4>
+<h4 id="example-3"><a class="header" href="#example-3">Example</a></h4>
 <pre><code class="language-toml">arithmetic-side-effects-allowed-binary = [["SomeType" , "f32"], ["AnotherType", "*"]]
 </code></pre>
 <p><strong>Default Value:</strong> <code>[]</code></p>
@@ -626,7 +656,7 @@ of the involved counterpart. For example, <code>["SomeType", "*"]</code> or <cod
 </ul>
 <h2 id="arithmetic-side-effects-allowed-unary"><a class="header" href="#arithmetic-side-effects-allowed-unary"><code>arithmetic-side-effects-allowed-unary</code></a></h2>
 <p>Suppress checking of the passed type names in unary operations like "negation" (<code>-</code>).</p>
-<h4 id="example-3"><a class="header" href="#example-3">Example</a></h4>
+<h4 id="example-4"><a class="header" href="#example-4">Example</a></h4>
 <pre><code class="language-toml">arithmetic-side-effects-allowed-unary = ["SomeType", "AnotherType"]
 </code></pre>
 <p><strong>Default Value:</strong> <code>[]</code></p>
@@ -759,7 +789,7 @@ default configuration of Clippy. By default, any configuration will replace the 
 </ul>
 <h2 id="enforce-iter-loop-reborrow"><a class="header" href="#enforce-iter-loop-reborrow"><code>enforce-iter-loop-reborrow</code></a></h2>
 <p>Whether to recommend using implicit into iter for reborrowed values.</p>
-<h4 id="example-4"><a class="header" href="#example-4">Example</a></h4>
+<h4 id="example-5"><a class="header" href="#example-5">Example</a></h4>
 <pre><code class="language-no_run">let mut vec = vec![1, 2, 3];
 let rmvec = &amp;mut vec;
 for _ in rmvec.iter() {}
@@ -1497,7 +1527,6 @@ because that's clearly a non-descriptive name.</p>
 </li>
 <li><a href="development/adding_lints.html#rustfix-tests">Rustfix tests</a></li>
 <li><a href="development/adding_lints.html#testing-manually">Testing manually</a></li>
-<li><a href="development/adding_lints.html#running-directly">Running directly</a></li>
 <li><a href="development/adding_lints.html#lint-declaration">Lint declaration</a></li>
 <li><a href="development/adding_lints.html#lint-registration">Lint registration</a></li>
 <li><a href="development/adding_lints.html#lint-passes">Lint passes</a></li>
@@ -1623,18 +1652,18 @@ the tests.</p>
 <h2 id="testing-manually"><a class="header" href="#testing-manually">Testing manually</a></h2>
 <p>Manually testing against an example file can be useful if you have added some
 <code>println!</code>s and the test suite output becomes unreadable. To try Clippy with
-your local modifications, run</p>
-<pre><code>cargo dev lint input.rs
+your local modifications, run the following from the Clippy directory:</p>
+<pre><code class="language-bash">cargo dev lint input.rs
 </code></pre>
-<p>from the working copy root. With tests in place, let's have a look at
-implementing our lint now.</p>
-<h2 id="running-directly"><a class="header" href="#running-directly">Running directly</a></h2>
-<p>While it's easier to just use <code>cargo dev lint</code>, it might be desirable to get
-<code>target/release/cargo-clippy</code> and <code>target/release/clippy-driver</code> to work as well in some cases.
-By default, they don't work because clippy dynamically links rustc. To help them find rustc,
-add the path printed by<code>rustc --print target-libdir</code> (ran inside this workspace so that the rustc version matches)
-to your library search path.
-On linux, this can be done by setting the <code>LD_LIBRARY_PATH</code> environment variable to that path.</p>
+<p>To run Clippy on an existing project rather than a single file you can use</p>
+<pre><code class="language-bash">cargo dev lint /path/to/project
+</code></pre>
+<p>Or set up a rustup toolchain that points to the local Clippy binaries</p>
+<pre><code class="language-bash">cargo dev setup toolchain
+
+# Then in `/path/to/project` you can run
+cargo +clippy clippy
+</code></pre>
 <h2 id="lint-declaration"><a class="header" href="#lint-declaration">Lint declaration</a></h2>
 <p>Let's start by opening the new file created in the <code>clippy_lints</code> crate at
 <code>clippy_lints/src/foo_functions.rs</code>. That's the crate where all the lint code
@@ -2595,7 +2624,7 @@ supervision, that's why we have <a href="https://doc.rust-lang.org/beta/nightly-
 are always right (<code>Applicability::MachineApplicable</code>), but we use
 <code>Applicability::MaybeIncorrect</code> and others when talking about a suggestion that
 may be incorrect.</p>
-<h3 id="example-5"><a class="header" href="#example-5">Example</a></h3>
+<h3 id="example-6"><a class="header" href="#example-6">Example</a></h3>
 <p>The same lint <code>LINT_NAME</code> but that emits a suggestion would look something like this:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {

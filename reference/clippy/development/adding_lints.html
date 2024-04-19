@@ -209,7 +209,6 @@ because that's clearly a non-descriptive name.</p>
 </li>
 <li><a href="#rustfix-tests">Rustfix tests</a></li>
 <li><a href="#testing-manually">Testing manually</a></li>
-<li><a href="#running-directly">Running directly</a></li>
 <li><a href="#lint-declaration">Lint declaration</a></li>
 <li><a href="#lint-registration">Lint registration</a></li>
 <li><a href="#lint-passes">Lint passes</a></li>
@@ -335,18 +334,18 @@ the tests.</p>
 <h2 id="testing-manually"><a class="header" href="#testing-manually">Testing manually</a></h2>
 <p>Manually testing against an example file can be useful if you have added some
 <code>println!</code>s and the test suite output becomes unreadable. To try Clippy with
-your local modifications, run</p>
-<pre><code>cargo dev lint input.rs
+your local modifications, run the following from the Clippy directory:</p>
+<pre><code class="language-bash">cargo dev lint input.rs
 </code></pre>
-<p>from the working copy root. With tests in place, let's have a look at
-implementing our lint now.</p>
-<h2 id="running-directly"><a class="header" href="#running-directly">Running directly</a></h2>
-<p>While it's easier to just use <code>cargo dev lint</code>, it might be desirable to get
-<code>target/release/cargo-clippy</code> and <code>target/release/clippy-driver</code> to work as well in some cases.
-By default, they don't work because clippy dynamically links rustc. To help them find rustc,
-add the path printed by<code>rustc --print target-libdir</code> (ran inside this workspace so that the rustc version matches)
-to your library search path.
-On linux, this can be done by setting the <code>LD_LIBRARY_PATH</code> environment variable to that path.</p>
+<p>To run Clippy on an existing project rather than a single file you can use</p>
+<pre><code class="language-bash">cargo dev lint /path/to/project
+</code></pre>
+<p>Or set up a rustup toolchain that points to the local Clippy binaries</p>
+<pre><code class="language-bash">cargo dev setup toolchain
+
+# Then in `/path/to/project` you can run
+cargo +clippy clippy
+</code></pre>
 <h2 id="lint-declaration"><a class="header" href="#lint-declaration">Lint declaration</a></h2>
 <p>Let's start by opening the new file created in the <code>clippy_lints</code> crate at
 <code>clippy_lints/src/foo_functions.rs</code>. That's the crate where all the lint code

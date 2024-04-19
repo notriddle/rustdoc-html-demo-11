@@ -313,6 +313,27 @@ configuration of Clippy. By default, any configuration will replace the default 
 <ul>
 <li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#min_ident_chars"><code>min_ident_chars</code></a></li>
 </ul>
+<h2 id="allowed-prefixes"><a class="header" href="#allowed-prefixes"><code>allowed-prefixes</code></a></h2>
+<p>List of prefixes to allow when determining whether an item's name ends with the module's name.
+If the rest of an item's name is an allowed prefix (e.g. item <code>ToFoo</code> or <code>to_foo</code> in module <code>foo</code>),
+then don't emit a warning.</p>
+<h4 id="example"><a class="header" href="#example">Example</a></h4>
+<pre><code class="language-toml">allowed-prefixes = [ "to", "from" ]
+</code></pre>
+<h4 id="noteworthy"><a class="header" href="#noteworthy">Noteworthy</a></h4>
+<ul>
+<li>By default, the following prefixes are allowed: <code>to</code>, <code>as</code>, <code>into</code>, <code>from</code>, <code>try_into</code> and <code>try_from</code></li>
+<li>PascalCase variant is included automatically for each snake_case variant (e.g. if <code>try_into</code> is included,
+<code>TryInto</code> will also be included)</li>
+<li>Use <code>".."</code> as part of the list to indicate that the configured values should be appended to the
+default configuration of Clippy. By default, any configuration will replace the default value</li>
+</ul>
+<p><strong>Default Value:</strong> <code>["to", "as", "into", "from", "try_into", "try_from"]</code></p>
+<hr />
+<p><strong>Affected lints:</strong></p>
+<ul>
+<li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#module_name_repetitions"><code>module_name_repetitions</code></a></li>
+</ul>
 <h2 id="allowed-scripts"><a class="header" href="#allowed-scripts"><code>allowed-scripts</code></a></h2>
 <p>The list of unicode scripts allowed to be used in the scope.</p>
 <p><strong>Default Value:</strong> <code>["Latin"]</code></p>
@@ -323,10 +344,10 @@ configuration of Clippy. By default, any configuration will replace the default 
 </ul>
 <h2 id="allowed-wildcard-imports"><a class="header" href="#allowed-wildcard-imports"><code>allowed-wildcard-imports</code></a></h2>
 <p>List of path segments allowed to have wildcard imports.</p>
-<h4 id="example"><a class="header" href="#example">Example</a></h4>
+<h4 id="example-1"><a class="header" href="#example-1">Example</a></h4>
 <pre><code class="language-toml">allowed-wildcard-imports = [ "utils", "common" ]
 </code></pre>
-<h4 id="noteworthy"><a class="header" href="#noteworthy">Noteworthy</a></h4>
+<h4 id="noteworthy-1"><a class="header" href="#noteworthy-1">Noteworthy</a></h4>
 <ol>
 <li>This configuration has no effects if used with <code>warn_on_all_wildcard_imports = true</code>.</li>
 <li>Paths with any segment that containing the word 'prelude'
@@ -341,10 +362,10 @@ are already allowed by default.</li>
 <h2 id="arithmetic-side-effects-allowed"><a class="header" href="#arithmetic-side-effects-allowed"><code>arithmetic-side-effects-allowed</code></a></h2>
 <p>Suppress checking of the passed type names in all types of operations.</p>
 <p>If a specific operation is desired, consider using <code>arithmetic_side_effects_allowed_binary</code> or <code>arithmetic_side_effects_allowed_unary</code> instead.</p>
-<h4 id="example-1"><a class="header" href="#example-1">Example</a></h4>
+<h4 id="example-2"><a class="header" href="#example-2">Example</a></h4>
 <pre><code class="language-toml">arithmetic-side-effects-allowed = ["SomeType", "AnotherType"]
 </code></pre>
-<h4 id="noteworthy-1"><a class="header" href="#noteworthy-1">Noteworthy</a></h4>
+<h4 id="noteworthy-2"><a class="header" href="#noteworthy-2">Noteworthy</a></h4>
 <p>A type, say <code>SomeType</code>, listed in this configuration has the same behavior of
 <code>["SomeType" , "*"], ["*", "SomeType"]</code> in <code>arithmetic_side_effects_allowed_binary</code>.</p>
 <p><strong>Default Value:</strong> <code>[]</code></p>
@@ -360,7 +381,7 @@ multiplication.</p>
 of the involved counterpart. For example, <code>["SomeType", "*"]</code> or <code>["*", "AnotherType"]</code>.</p>
 <p>Pairs are asymmetric, which means that <code>["SomeType", "AnotherType"]</code> is not the same as
 <code>["AnotherType", "SomeType"]</code>.</p>
-<h4 id="example-2"><a class="header" href="#example-2">Example</a></h4>
+<h4 id="example-3"><a class="header" href="#example-3">Example</a></h4>
 <pre><code class="language-toml">arithmetic-side-effects-allowed-binary = [["SomeType" , "f32"], ["AnotherType", "*"]]
 </code></pre>
 <p><strong>Default Value:</strong> <code>[]</code></p>
@@ -371,7 +392,7 @@ of the involved counterpart. For example, <code>["SomeType", "*"]</code> or <cod
 </ul>
 <h2 id="arithmetic-side-effects-allowed-unary"><a class="header" href="#arithmetic-side-effects-allowed-unary"><code>arithmetic-side-effects-allowed-unary</code></a></h2>
 <p>Suppress checking of the passed type names in unary operations like "negation" (<code>-</code>).</p>
-<h4 id="example-3"><a class="header" href="#example-3">Example</a></h4>
+<h4 id="example-4"><a class="header" href="#example-4">Example</a></h4>
 <pre><code class="language-toml">arithmetic-side-effects-allowed-unary = ["SomeType", "AnotherType"]
 </code></pre>
 <p><strong>Default Value:</strong> <code>[]</code></p>
@@ -504,7 +525,7 @@ default configuration of Clippy. By default, any configuration will replace the 
 </ul>
 <h2 id="enforce-iter-loop-reborrow"><a class="header" href="#enforce-iter-loop-reborrow"><code>enforce-iter-loop-reborrow</code></a></h2>
 <p>Whether to recommend using implicit into iter for reborrowed values.</p>
-<h4 id="example-4"><a class="header" href="#example-4">Example</a></h4>
+<h4 id="example-5"><a class="header" href="#example-5">Example</a></h4>
 <pre><code class="language-no_run">let mut vec = vec![1, 2, 3];
 let rmvec = &amp;mut vec;
 for _ in rmvec.iter() {}
