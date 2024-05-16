@@ -3009,9 +3009,8 @@ function initSearch(rawSearchIndex) {
     async function addTab(array, query, display) {
         const extraClass = display ? " active" : "";
 
-        let output;
+        let output = document.createElement("ul");
         if (array.length > 0) {
-            output = document.createElement("ul");
             output.className = "search-results " + extraClass;
 
             const lis = Promise.all(array.map(async item => {
