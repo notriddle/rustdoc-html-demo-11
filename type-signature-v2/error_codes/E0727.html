@@ -180,10 +180,10 @@
                         <h1 id="error-code-e0727"><a class="header" href="#error-code-e0727">Error code E0727</a></h1>
 <p>A <code>yield</code> clause was used in an <code>async</code> context.</p>
 <p>Erroneous code example:</p>
-<pre><pre class="playground"><code class="language-rust compile_fail E0727 edition2018">#![feature(coroutines)]
+<pre><pre class="playground"><code class="language-rust compile_fail E0727 edition2018">#![feature(coroutines, stmt_expr_attributes)]
 
 fn main() {
-    let coroutine = || {
+    let coroutine = #[coroutine] || {
         async {
             yield;
         }
@@ -192,10 +192,10 @@ fn main() {
 <p>Here, the <code>yield</code> keyword is used in an <code>async</code> block,
 which is not yet supported.</p>
 <p>To fix this error, you have to move <code>yield</code> out of the <code>async</code> block:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">#![feature(coroutines)]
+<pre><pre class="playground"><code class="language-rust edition2018">#![feature(coroutines, stmt_expr_attributes)]
 
 fn main() {
-    let coroutine = || {
+    let coroutine = #[coroutine] || {
         yield;
     };
 }</code></pre></pre>

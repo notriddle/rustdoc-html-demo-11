@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/fd.rs`."><title>fd.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.79.0.js"></script><script defer src="../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../std/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/fd.rs`."><title>fd.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.81.0.js"></script><script defer src="../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -573,6 +573,35 @@
 <a href="#573" id="573">573</a>
 <a href="#574" id="574">574</a>
 <a href="#575" id="575">575</a>
+<a href="#576" id="576">576</a>
+<a href="#577" id="577">577</a>
+<a href="#578" id="578">578</a>
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
+<a href="#594" id="594">594</a>
+<a href="#595" id="595">595</a>
+<a href="#596" id="596">596</a>
+<a href="#597" id="597">597</a>
+<a href="#598" id="598">598</a>
+<a href="#599" id="599">599</a>
+<a href="#600" id="600">600</a>
+<a href="#601" id="601">601</a>
+<a href="#602" id="602">602</a>
+<a href="#603" id="603">603</a>
+<a href="#604" id="604">604</a>
 </pre></div><pre class="rust"><code><span class="attr">#![unstable(reason = <span class="string">"not public"</span>, issue = <span class="string">"none"</span>, feature = <span class="string">"fd"</span>)]
 
 #[cfg(test)]
@@ -608,25 +637,22 @@
 // with the man page quoting that if the count of bytes to read is
 // greater than `SSIZE_MAX` the result is "unspecified".
 //
-// On macOS, however, apparently the 64-bit libc is either buggy or
+// On Apple targets however, apparently the 64-bit libc is either buggy or
 // intentionally showing odd behavior by rejecting any read with a size
 // larger than or equal to INT_MAX. To handle both of these the read
 // size is capped on both platforms.
-</span><span class="attr">#[cfg(target_os = <span class="string">"macos"</span>)]
-</span><span class="kw">const </span>READ_LIMIT: usize = libc::c_int::MAX <span class="kw">as </span>usize - <span class="number">1</span>;
-<span class="attr">#[cfg(not(target_os = <span class="string">"macos"</span>))]
-</span><span class="kw">const </span>READ_LIMIT: usize = libc::ssize_t::MAX <span class="kw">as </span>usize;
+</span><span class="kw">const </span>READ_LIMIT: usize = <span class="kw">if </span><span class="macro">cfg!</span>(target_vendor = <span class="string">"apple"</span>) {
+    libc::c_int::MAX <span class="kw">as </span>usize - <span class="number">1
+</span>} <span class="kw">else </span>{
+    libc::ssize_t::MAX <span class="kw">as </span>usize
+};
 
 <span class="attr">#[cfg(any(
     target_os = <span class="string">"dragonfly"</span>,
     target_os = <span class="string">"freebsd"</span>,
-    target_os = <span class="string">"ios"</span>,
-    target_os = <span class="string">"tvos"</span>,
-    target_os = <span class="string">"macos"</span>,
     target_os = <span class="string">"netbsd"</span>,
     target_os = <span class="string">"openbsd"</span>,
-    target_os = <span class="string">"watchos"</span>,
-    target_os = <span class="string">"visionos"</span>,
+    target_vendor = <span class="string">"apple"</span>,
 ))]
 </span><span class="kw">const fn </span>max_iov() -&gt; usize {
     libc::IOV_MAX <span class="kw">as </span>usize
@@ -647,17 +673,13 @@
     target_os = <span class="string">"dragonfly"</span>,
     target_os = <span class="string">"emscripten"</span>,
     target_os = <span class="string">"freebsd"</span>,
-    target_os = <span class="string">"ios"</span>,
-    target_os = <span class="string">"tvos"</span>,
     target_os = <span class="string">"linux"</span>,
-    target_os = <span class="string">"macos"</span>,
     target_os = <span class="string">"netbsd"</span>,
     target_os = <span class="string">"nto"</span>,
     target_os = <span class="string">"openbsd"</span>,
     target_os = <span class="string">"horizon"</span>,
     target_os = <span class="string">"vita"</span>,
-    target_os = <span class="string">"watchos"</span>,
-    target_os = <span class="string">"visionos"</span>,
+    target_vendor = <span class="string">"apple"</span>,
 )))]
 </span><span class="kw">const fn </span>max_iov() -&gt; usize {
     <span class="number">16 </span><span class="comment">// The minimum value required by POSIX.
@@ -776,13 +798,10 @@
         target_os = <span class="string">"fuchsia"</span>,
         target_os = <span class="string">"hurd"</span>,
         target_os = <span class="string">"illumos"</span>,
-        target_os = <span class="string">"ios"</span>,
-        target_os = <span class="string">"tvos"</span>,
         target_os = <span class="string">"linux"</span>,
-        target_os = <span class="string">"macos"</span>,
         target_os = <span class="string">"netbsd"</span>,
         target_os = <span class="string">"openbsd"</span>,
-        target_os = <span class="string">"watchos"</span>,
+        target_vendor = <span class="string">"apple"</span>,
     )))]
     </span><span class="kw">pub fn </span>read_vectored_at(<span class="kw-2">&amp;</span><span class="self">self</span>, bufs: <span class="kw-2">&amp;mut </span>[IoSliceMut&lt;<span class="lifetime">'_</span>&gt;], offset: u64) -&gt; io::Result&lt;usize&gt; {
         io::default_read_vectored(|b| <span class="self">self</span>.read_at(b, offset), bufs)
@@ -816,19 +835,40 @@
         <span class="prelude-val">Ok</span>(ret <span class="kw">as </span>usize)
     }
 
-    <span class="comment">// We support old MacOS and iOS versions that do not have `preadv`. There is
-    // no `syscall` possible in these platform.
-    </span><span class="attr">#[cfg(any(
-        all(target_os = <span class="string">"android"</span>, target_pointer_width = <span class="string">"32"</span>),
-        target_os = <span class="string">"ios"</span>, <span class="comment">// ios 14.0
-        </span>target_os = <span class="string">"tvos"</span>, <span class="comment">// tvos 14.0
-        </span>target_os = <span class="string">"macos"</span>, <span class="comment">// macos 11.0
-        </span>target_os = <span class="string">"watchos"</span>, <span class="comment">// watchos 7.0
-    </span>))]
+    <span class="attr">#[cfg(all(target_os = <span class="string">"android"</span>, target_pointer_width = <span class="string">"32"</span>))]
     </span><span class="kw">pub fn </span>read_vectored_at(<span class="kw-2">&amp;</span><span class="self">self</span>, bufs: <span class="kw-2">&amp;mut </span>[IoSliceMut&lt;<span class="lifetime">'_</span>&gt;], offset: u64) -&gt; io::Result&lt;usize&gt; {
         <span class="macro">super::weak::weak!</span>(<span class="kw">fn </span>preadv64(libc::c_int, <span class="kw-2">*const </span>libc::iovec, libc::c_int, off64_t) -&gt; isize);
 
         <span class="kw">match </span>preadv64.get() {
+            <span class="prelude-val">Some</span>(preadv) =&gt; {
+                <span class="kw">let </span>ret = cvt(<span class="kw">unsafe </span>{
+                    preadv(
+                        <span class="self">self</span>.as_raw_fd(),
+                        bufs.as_mut_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>libc::iovec <span class="kw">as </span><span class="kw-2">*const </span>libc::iovec,
+                        cmp::min(bufs.len(), max_iov()) <span class="kw">as </span>libc::c_int,
+                        offset <span class="kw">as _</span>,
+                    )
+                })<span class="question-mark">?</span>;
+                <span class="prelude-val">Ok</span>(ret <span class="kw">as </span>usize)
+            }
+            <span class="prelude-val">None </span>=&gt; io::default_read_vectored(|b| <span class="self">self</span>.read_at(b, offset), bufs),
+        }
+    }
+
+    <span class="comment">// We support old MacOS, iOS, watchOS, tvOS and visionOS. `preadv` was added in the following
+    // Apple OS versions:
+    // ios 14.0
+    // tvos 14.0
+    // macos 11.0
+    // watchos 7.0
+    //
+    // These versions may be newer than the minimum supported versions of OS's we support so we must
+    // use "weak" linking.
+    </span><span class="attr">#[cfg(target_vendor = <span class="string">"apple"</span>)]
+    </span><span class="kw">pub fn </span>read_vectored_at(<span class="kw-2">&amp;</span><span class="self">self</span>, bufs: <span class="kw-2">&amp;mut </span>[IoSliceMut&lt;<span class="lifetime">'_</span>&gt;], offset: u64) -&gt; io::Result&lt;usize&gt; {
+        <span class="macro">super::weak::weak!</span>(<span class="kw">fn </span>preadv(libc::c_int, <span class="kw-2">*const </span>libc::iovec, libc::c_int, off64_t) -&gt; isize);
+
+        <span class="kw">match </span>preadv.get() {
             <span class="prelude-val">Some</span>(preadv) =&gt; {
                 <span class="kw">let </span>ret = cvt(<span class="kw">unsafe </span>{
                     preadv(
@@ -935,13 +975,10 @@
         target_os = <span class="string">"fuchsia"</span>,
         target_os = <span class="string">"hurd"</span>,
         target_os = <span class="string">"illumos"</span>,
-        target_os = <span class="string">"ios"</span>,
-        target_os = <span class="string">"tvos"</span>,
         target_os = <span class="string">"linux"</span>,
-        target_os = <span class="string">"macos"</span>,
         target_os = <span class="string">"netbsd"</span>,
         target_os = <span class="string">"openbsd"</span>,
-        target_os = <span class="string">"watchos"</span>,
+        target_vendor = <span class="string">"apple"</span>,
     )))]
     </span><span class="kw">pub fn </span>write_vectored_at(<span class="kw-2">&amp;</span><span class="self">self</span>, bufs: <span class="kw-2">&amp;</span>[IoSlice&lt;<span class="lifetime">'_</span>&gt;], offset: u64) -&gt; io::Result&lt;usize&gt; {
         io::default_write_vectored(|b| <span class="self">self</span>.write_at(b, offset), bufs)
@@ -975,19 +1012,40 @@
         <span class="prelude-val">Ok</span>(ret <span class="kw">as </span>usize)
     }
 
-    <span class="comment">// We support old MacOS and iOS versions that do not have `pwritev`. There is
-    // no `syscall` possible in these platform.
-    </span><span class="attr">#[cfg(any(
-        all(target_os = <span class="string">"android"</span>, target_pointer_width = <span class="string">"32"</span>),
-        target_os = <span class="string">"ios"</span>, <span class="comment">// ios 14.0
-        </span>target_os = <span class="string">"tvos"</span>, <span class="comment">// tvos 14.0
-        </span>target_os = <span class="string">"macos"</span>, <span class="comment">// macos 11.0
-        </span>target_os = <span class="string">"watchos"</span>, <span class="comment">// watchos 7.0
-    </span>))]
+    <span class="attr">#[cfg(all(target_os = <span class="string">"android"</span>, target_pointer_width = <span class="string">"32"</span>))]
     </span><span class="kw">pub fn </span>write_vectored_at(<span class="kw-2">&amp;</span><span class="self">self</span>, bufs: <span class="kw-2">&amp;</span>[IoSlice&lt;<span class="lifetime">'_</span>&gt;], offset: u64) -&gt; io::Result&lt;usize&gt; {
         <span class="macro">super::weak::weak!</span>(<span class="kw">fn </span>pwritev64(libc::c_int, <span class="kw-2">*const </span>libc::iovec, libc::c_int, off64_t) -&gt; isize);
 
         <span class="kw">match </span>pwritev64.get() {
+            <span class="prelude-val">Some</span>(pwritev) =&gt; {
+                <span class="kw">let </span>ret = cvt(<span class="kw">unsafe </span>{
+                    pwritev(
+                        <span class="self">self</span>.as_raw_fd(),
+                        bufs.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>libc::iovec,
+                        cmp::min(bufs.len(), max_iov()) <span class="kw">as </span>libc::c_int,
+                        offset <span class="kw">as _</span>,
+                    )
+                })<span class="question-mark">?</span>;
+                <span class="prelude-val">Ok</span>(ret <span class="kw">as </span>usize)
+            }
+            <span class="prelude-val">None </span>=&gt; io::default_write_vectored(|b| <span class="self">self</span>.write_at(b, offset), bufs),
+        }
+    }
+
+    <span class="comment">// We support old MacOS, iOS, watchOS, tvOS and visionOS. `pwritev` was added in the following
+    // Apple OS versions:
+    // ios 14.0
+    // tvos 14.0
+    // macos 11.0
+    // watchos 7.0
+    //
+    // These versions may be newer than the minimum supported versions of OS's we support so we must
+    // use "weak" linking.
+    </span><span class="attr">#[cfg(target_vendor = <span class="string">"apple"</span>)]
+    </span><span class="kw">pub fn </span>write_vectored_at(<span class="kw-2">&amp;</span><span class="self">self</span>, bufs: <span class="kw-2">&amp;</span>[IoSlice&lt;<span class="lifetime">'_</span>&gt;], offset: u64) -&gt; io::Result&lt;usize&gt; {
+        <span class="macro">super::weak::weak!</span>(<span class="kw">fn </span>pwritev(libc::c_int, <span class="kw-2">*const </span>libc::iovec, libc::c_int, off64_t) -&gt; isize);
+
+        <span class="kw">match </span>pwritev.get() {
             <span class="prelude-val">Some</span>(pwritev) =&gt; {
                 <span class="kw">let </span>ret = cvt(<span class="kw">unsafe </span>{
                     pwritev(

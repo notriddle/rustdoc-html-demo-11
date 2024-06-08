@@ -180,7 +180,7 @@
                         <h1 id="error-code-e0627"><a class="header" href="#error-code-e0627">Error code E0627</a></h1>
 <p>A yield expression was used outside of the coroutine literal.</p>
 <p>Erroneous code example:</p>
-<pre><pre class="playground"><code class="language-rust compile_fail E0627">#![feature(coroutines, coroutine_trait)]
+<pre><pre class="playground"><code class="language-rust compile_fail E0627">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 
 fn fake_coroutine() -&gt; &amp;'static str {
     yield 1;
@@ -192,10 +192,10 @@ fn main() {
 }</code></pre></pre>
 <p>The error occurs because keyword <code>yield</code> can only be used inside the coroutine
 literal. This can be fixed by constructing the coroutine correctly.</p>
-<pre><pre class="playground"><code class="language-rust">#![feature(coroutines, coroutine_trait)]
+<pre><pre class="playground"><code class="language-rust">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 
 fn main() {
-    let mut coroutine = || {
+    let mut coroutine = #[coroutine] || {
         yield 1;
         return "foo"
     };

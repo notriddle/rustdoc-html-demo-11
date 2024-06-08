@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -210,7 +212,7 @@ further. Place the <code>another_function</code> example in <em>src/main.rs</em>
 should see the following output:</p>
 <pre><code class="language-console">$ cargo run
    Compiling functions v0.1.0 (file:///projects/functions)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.28s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.28s
      Running `target/debug/functions`
 Hello, world!
 Another function.
@@ -238,7 +240,7 @@ fn another_function(x: i32) {
 <p>Try running this program; you should get the following output:</p>
 <pre><code class="language-console">$ cargo run
    Compiling functions v0.1.0 (file:///projects/functions)
-    Finished dev [unoptimized + debuginfo] target(s) in 1.21s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.21s
      Running `target/debug/functions`
 The value of x is: 5
 </code></pre>
@@ -269,7 +271,7 @@ both the <code>value</code> and the <code>unit_label</code>.</p>
 project’s <em>src/main.rs</em> file with the preceding example and run it using <code>cargo run</code>:</p>
 <pre><code class="language-console">$ cargo run
    Compiling functions v0.1.0 (file:///projects/functions)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.31s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.31s
      Running `target/debug/functions`
 The measurement is: 5h
 </code></pre>
@@ -388,7 +390,7 @@ Rust. Note that the function’s return type is specified too, as <code>-&gt; i3
 running this code; the output should look like this:</p>
 <pre><code class="language-console">$ cargo run
    Compiling functions v0.1.0 (file:///projects/functions)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.30s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.30s
      Running `target/debug/functions`
 The value of x is: 5
 </code></pre>

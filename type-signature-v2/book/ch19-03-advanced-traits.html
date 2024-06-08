@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -500,7 +502,7 @@ disambiguate.</p>
 <p>Running this code prints the following:</p>
 <pre><code class="language-console">$ cargo run
    Compiling traits-example v0.1.0 (file:///projects/traits-example)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.46s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.46s
      Running `target/debug/traits-example`
 This is your captain speaking.
 Up!
@@ -511,7 +513,7 @@ both implement one <em>trait</em>, Rust could figure out which implementation of
 trait to use based on the type of <code>self</code>.</p>
 <p>However, associated functions that are not methods don’t have a <code>self</code>
 parameter. When there are multiple types or traits that define non-method
-functions with the same function name, Rust doesn't always know which type you
+functions with the same function name, Rust doesn’t always know which type you
 mean unless you use <em>fully qualified syntax</em>. For example, in Listing 19-19 we
 create a trait for an animal shelter that wants to name all baby dogs <em>Spot</em>.
 We make an <code>Animal</code> trait with an associated non-method function <code>baby_name</code>.
@@ -551,7 +553,7 @@ trait on <code>Dog</code> in the <code>baby_name</code> function associated with
 function defined on <code>Dog</code> directly. This code prints the following:</p>
 <pre><code class="language-console">$ cargo run
    Compiling traits-example v0.1.0 (file:///projects/traits-example)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.54s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.54s
      Running `target/debug/traits-example`
 A baby dog is called a Spot
 </code></pre>
@@ -597,7 +599,7 @@ error[E0790]: cannot call associated function on trait without specifying the co
    |     ------------------------- `Animal::baby_name` defined here
 ...
 20 |     println!("A baby dog is called a {}", Animal::baby_name());
-   |                                           ^^^^^^^^^^^^^^^^^ cannot call associated function of trait
+   |                                           ^^^^^^^^^^^^^^^^^^^ cannot call associated function of trait
    |
 help: use the fully-qualified path to the only available implementation
    |
@@ -642,7 +644,7 @@ implemented on <code>Dog</code> by saying that we want to treat the <code>Dog</c
 <code>Animal</code> for this function call. This code will now print what we want:</p>
 <pre><code class="language-console">$ cargo run
    Compiling traits-example v0.1.0 (file:///projects/traits-example)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.48s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.48s
      Running `target/debug/traits-example`
 A baby dog is called a puppy
 </code></pre>
@@ -662,7 +664,7 @@ implement the second trait. You would do this so that your trait definition can
 make use of the associated items of the second trait. The trait your trait
 definition is relying on is called a <em>supertrait</em> of your trait.</p>
 <p>For example, let’s say we want to make an <code>OutlinePrint</code> trait with an
-<code>outline_print</code> method that will print a given value formatted so that it's
+<code>outline_print</code> method that will print a given value formatted so that it’s
 framed in asterisks. That is, given a <code>Point</code> struct that implements the
 standard library trait <code>Display</code> to result in <code>(x, y)</code>, when we call
 <code>outline_print</code> on a <code>Point</code> instance that has <code>1</code> for <code>x</code> and <code>3</code> for <code>y</code>, it
@@ -689,7 +691,7 @@ trait OutlinePrint: fmt::Display {
         let len = output.len();
         println!("{}", "*".repeat(len + 4));
         println!("*{}*", " ".repeat(len + 2));
-        println!("* {} *", output);
+        println!("* {output} *");
         println!("*{}*", " ".repeat(len + 2));
         println!("{}", "*".repeat(len + 4));
     }
@@ -715,7 +717,7 @@ doesn’t implement <code>Display</code>, such as the <code>Point</code> struct:
 </span><span class="boring">        let len = output.len();
 </span><span class="boring">        println!("{}", "*".repeat(len + 4));
 </span><span class="boring">        println!("*{}*", " ".repeat(len + 2));
-</span><span class="boring">        println!("* {} *", output);
+</span><span class="boring">        println!("* {output} *");
 </span><span class="boring">        println!("*{}*", " ".repeat(len + 2));
 </span><span class="boring">        println!("{}", "*".repeat(len + 4));
 </span><span class="boring">    }
@@ -749,8 +751,24 @@ note: required by a bound in `OutlinePrint`
 3  | trait OutlinePrint: fmt::Display {
    |                     ^^^^^^^^^^^^ required by this bound in `OutlinePrint`
 
+error[E0277]: `Point` doesn't implement `std::fmt::Display`
+  --&gt; src/main.rs:24:7
+   |
+24 |     p.outline_print();
+   |       ^^^^^^^^^^^^^ `Point` cannot be formatted with the default formatter
+   |
+   = help: the trait `std::fmt::Display` is not implemented for `Point`
+   = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `OutlinePrint::outline_print`
+  --&gt; src/main.rs:3:21
+   |
+3  | trait OutlinePrint: fmt::Display {
+   |                     ^^^^^^^^^^^^ required by this bound in `OutlinePrint::outline_print`
+4  |     fn outline_print(&amp;self) {
+   |        ------------- required by a bound in this associated function
+
 For more information about this error, try `rustc --explain E0277`.
-error: could not compile `traits-example` (bin "traits-example") due to 1 previous error
+error: could not compile `traits-example` (bin "traits-example") due to 2 previous errors
 </code></pre>
 <p>To fix this, we implement <code>Display</code> on <code>Point</code> and satisfy the constraint that
 <code>OutlinePrint</code> requires, like so:</p>
@@ -761,7 +779,7 @@ error: could not compile `traits-example` (bin "traits-example") due to 1 previo
 </span><span class="boring">        let len = output.len();
 </span><span class="boring">        println!("{}", "*".repeat(len + 4));
 </span><span class="boring">        println!("*{}*", " ".repeat(len + 2));
-</span><span class="boring">        println!("* {} *", output);
+</span><span class="boring">        println!("* {output} *");
 </span><span class="boring">        println!("*{}*", " ".repeat(len + 2));
 </span><span class="boring">        println!("{}", "*".repeat(len + 4));
 </span><span class="boring">    }
@@ -821,13 +839,13 @@ impl fmt::Display for Wrapper {
 
 fn main() {
     let w = Wrapper(vec![String::from("hello"), String::from("world")]);
-    println!("w = {}", w);
+    println!("w = {w}");
 }</code></pre></pre>
 <p><span class="caption">Listing 19-23: Creating a <code>Wrapper</code> type around
 <code>Vec&lt;String&gt;</code> to implement <code>Display</code></span></p>
 <p>The implementation of <code>Display</code> uses <code>self.0</code> to access the inner <code>Vec&lt;T&gt;</code>,
 because <code>Wrapper</code> is a tuple struct and <code>Vec&lt;T&gt;</code> is the item at index 0 in the
-tuple. Then we can use the functionality of the <code>Display</code> type on <code>Wrapper</code>.</p>
+tuple. Then we can use the functionality of the <code>Display</code> trait on <code>Wrapper</code>.</p>
 <p>The downside of using this technique is that <code>Wrapper</code> is a new type, so it
 doesn’t have the methods of the value it’s holding. We would have to implement
 all the methods of <code>Vec&lt;T&gt;</code> directly on <code>Wrapper</code> such that the methods

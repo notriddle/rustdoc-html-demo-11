@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -239,7 +241,7 @@ mod tests {
 }</code></pre>
 <p><span class="caption">Listing 11-1: The test module and function generated
 automatically by <code>cargo new</code></span></p>
-<p>For now, let’s ignore the top two lines and focus on the function. Note the
+<p>For now, let’s focus solely on the <code>it_works()</code> function. Note the
 <code>#[test]</code> annotation: this attribute indicates this is a test function, so the
 test runner knows to treat this function as a test. We might also have non-test
 functions in the <code>tests</code> module to help set up common scenarios or perform
@@ -252,7 +254,7 @@ passes.</p>
 11-2.</p>
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
-    Finished test [unoptimized + debuginfo] target(s) in 0.57s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.57s
      Running unittests src/lib.rs (target/debug/deps/adder-92948b65e88960b4)
 
 running 1 test
@@ -294,18 +296,25 @@ ignore the <code>Doc-tests</code> output.</p>
 <p>Let’s start to customize the test to our own needs. First change the name of
 the <code>it_works</code> function to a different name, such as <code>exploration</code>, like so:</p>
 <p><span class="filename">Filename: src/lib.rs</span></p>
-<pre><code class="language-rust noplayground">#[cfg(test)]
+<pre><code class="language-rust noplayground">pub fn add(left: usize, right: usize) -&gt; usize {
+    left + right
+}
+
+#[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
     fn exploration() {
-        assert_eq!(2 + 2, 4);
+        let result = add(2, 2);
+        assert_eq!(result, 4);
     }
 }</code></pre>
 <p>Then run <code>cargo test</code> again. The output now shows <code>exploration</code> instead of
 <code>it_works</code>:</p>
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
-    Finished test [unoptimized + debuginfo] target(s) in 0.59s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.59s
      Running unittests src/lib.rs (target/debug/deps/adder-92948b65e88960b4)
 
 running 1 test
@@ -327,13 +336,20 @@ marked as failed. In Chapter 9, we talked about how the simplest way to panic
 is to call the <code>panic!</code> macro. Enter the new test as a function named
 <code>another</code>, so your <em>src/lib.rs</em> file looks like Listing 11-3.</p>
 <p><span class="filename">Filename: src/lib.rs</span></p>
-<pre><code class="language-rust panics noplayground">#[cfg(test)]
+<pre><code class="language-rust panics noplayground">pub fn add(left: usize, right: usize) -&gt; usize {
+    left + right
+}
+
+#[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
     fn exploration() {
-        assert_eq!(2 + 2, 4);
+        let result = add(2, 2);
+        assert_eq!(result, 4);
     }
-
+    
     #[test]
     fn another() {
         panic!("Make this test fail");
@@ -345,7 +361,7 @@ we call the <code>panic!</code> macro</span></p>
 11-4, which shows that our <code>exploration</code> test passed and <code>another</code> failed.</p>
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
-    Finished test [unoptimized + debuginfo] target(s) in 0.72s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.72s
      Running unittests src/lib.rs (target/debug/deps/adder-92948b65e88960b4)
 
 running 2 tests
@@ -355,7 +371,7 @@ test tests::exploration ... ok
 failures:
 
 ---- tests::another stdout ----
-thread 'tests::another' panicked at src/lib.rs:10:9:
+thread 'tests::another' panicked at src/lib.rs:17:9:
 Make this test fail
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 
@@ -459,7 +475,7 @@ passed it the result of calling <code>larger.can_hold(&amp;smaller)</code>. This
 supposed to return <code>true</code>, so our test should pass. Let’s find out!</p>
 <pre><code class="language-console">$ cargo test
    Compiling rectangle v0.1.0 (file:///projects/rectangle)
-    Finished test [unoptimized + debuginfo] target(s) in 0.66s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.66s
      Running unittests src/lib.rs (target/debug/deps/rectangle-6584c4561e48942e)
 
 running 1 test
@@ -527,7 +543,7 @@ we need to negate that result before we pass it to the <code>assert!</code> macr
 result, our test will pass if <code>can_hold</code> returns <code>false</code>:</p>
 <pre><code class="language-console">$ cargo test
    Compiling rectangle v0.1.0 (file:///projects/rectangle)
-    Finished test [unoptimized + debuginfo] target(s) in 0.66s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.66s
      Running unittests src/lib.rs (target/debug/deps/rectangle-6584c4561e48942e)
 
 running 2 tests
@@ -595,7 +611,7 @@ impl Rectangle {
 <p>Running the tests now produces the following:</p>
 <pre><code class="language-console">$ cargo test
    Compiling rectangle v0.1.0 (file:///projects/rectangle)
-    Finished test [unoptimized + debuginfo] target(s) in 0.66s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.66s
      Running unittests src/lib.rs (target/debug/deps/rectangle-6584c4561e48942e)
 
 running 2 tests
@@ -652,7 +668,7 @@ mod tests {
 <p>Let’s check that it passes!</p>
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
-    Finished test [unoptimized + debuginfo] target(s) in 0.58s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.58s
      Running unittests src/lib.rs (target/debug/deps/adder-92948b65e88960b4)
 
 running 1 test
@@ -687,7 +703,7 @@ fails. Change the implementation of the <code>add_two</code> function to instead
 <p>Run the tests again:</p>
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
-    Finished test [unoptimized + debuginfo] target(s) in 0.61s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.61s
      Running unittests src/lib.rs (target/debug/deps/adder-92948b65e88960b4)
 
 running 1 test
@@ -757,7 +773,7 @@ the problem is with the code.</p>
 want to test that the name we pass into the function appears in the output:</p>
 <p><span class="filename">Filename: src/lib.rs</span></p>
 <pre><code class="language-rust noplayground">pub fn greeting(name: &amp;str) -&gt; String {
-    format!("Hello {}!", name)
+    format!("Hello {name}!")
 }
 
 #[cfg(test)]
@@ -795,7 +811,7 @@ input parameter.</p>
 <p>Running this test produces the following:</p>
 <pre><code class="language-console">$ cargo test
    Compiling greeter v0.1.0 (file:///projects/greeter)
-    Finished test [unoptimized + debuginfo] target(s) in 0.91s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.91s
      Running unittests src/lib.rs (target/debug/deps/greeter-170b942eb5bf5e3a)
 
 running 1 test
@@ -842,7 +858,7 @@ string with a placeholder filled in with the actual value we got from the
 <p>Now when we run the test, we’ll get a more informative error message:</p>
 <pre><code class="language-console">$ cargo test
    Compiling greeter v0.1.0 (file:///projects/greeter)
-    Finished test [unoptimized + debuginfo] target(s) in 0.93s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.93s
      Running unittests src/lib.rs (target/debug/deps/greeter-170b942eb5bf5e3a)
 
 running 1 test
@@ -909,7 +925,7 @@ before the test function it applies to. Let’s look at the result when this tes
 passes:</p>
 <pre><code class="language-console">$ cargo test
    Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
-    Finished test [unoptimized + debuginfo] target(s) in 0.58s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.58s
      Running unittests src/lib.rs (target/debug/deps/guessing_game-57d70c3acb738f4d)
 
 running 1 test
@@ -954,7 +970,7 @@ impl Guess {
 <p>When we run the test in Listing 11-8, it will fail:</p>
 <pre><code class="language-console">$ cargo test
    Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
-    Finished test [unoptimized + debuginfo] target(s) in 0.62s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.62s
      Running unittests src/lib.rs (target/debug/deps/guessing_game-57d70c3acb738f4d)
 
 running 1 test
@@ -1061,7 +1077,7 @@ fails, let’s again introduce a bug into our code by swapping the bodies of the
 <p>This time when we run the <code>should_panic</code> test, it will fail:</p>
 <pre><code class="language-console">$ cargo test
    Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
-    Finished test [unoptimized + debuginfo] target(s) in 0.66s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.66s
      Running unittests src/lib.rs (target/debug/deps/guessing_game-57d70c3acb738f4d)
 
 running 1 test
@@ -1070,7 +1086,7 @@ test tests::greater_than_100 - should panic ... FAILED
 failures:
 
 ---- tests::greater_than_100 stdout ----
-thread 'tests::greater_than_100' panicked at src/lib.rs:13:13:
+thread 'tests::greater_than_100' panicked at src/lib.rs:12:13:
 Guess value must be greater than or equal to 1, got 200.
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 note: panic did not contain expected string
@@ -1085,9 +1101,8 @@ test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; 
 error: test failed, to rerun pass `--lib`
 </code></pre>
 <p>The failure message indicates that this test did indeed panic as we expected,
-but the panic message did not include the expected string <code>'Guess value must be less than or equal to 100'</code>. The panic message that we did get in this case was
-<code>Guess value must be greater than or equal to 1, got 200.</code> Now we can start
-figuring out where our bug is!</p>
+but the panic message did not include the expected string <code>less than or equal to 100</code>. The panic message that we did get in this case was <code>Guess value must be greater than or equal to 1, got 200.</code> Now we can start figuring out where
+our bug is!</p>
 <h3 id="using-resultt-e-in-tests"><a class="header" href="#using-resultt-e-in-tests">Using <code>Result&lt;T, E&gt;</code> in Tests</a></h3>
 <p>Our tests so far all panic when they fail. We can also write tests that use
 <code>Result&lt;T, E&gt;</code>! Here’s the test from Listing 11-1, rewritten to use <code>Result&lt;T, E&gt;</code> and return an <code>Err</code> instead of panicking:</p>

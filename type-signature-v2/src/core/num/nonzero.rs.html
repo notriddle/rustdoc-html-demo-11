@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/num/nonzero.rs`."><title>nonzero.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.79.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/num/nonzero.rs`."><title>nonzero.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1696,6 +1696,8 @@
 <a href="#1696" id="1696">1696</a>
 <a href="#1697" id="1697">1697</a>
 <a href="#1698" id="1698">1698</a>
+<a href="#1699" id="1699">1699</a>
+<a href="#1700" id="1700">1700</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Definitions of integer that is known not to equal zero.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::cmp::Ordering;
@@ -1803,12 +1805,11 @@
 /// For example, `Option&lt;NonZero&lt;u32&gt;&gt;` is the same size as `u32`:
 ///
 /// ```
-/// #![feature(generic_nonzero)]
-/// use core::mem::size_of;
+/// use core::{mem::size_of, num::NonZero};
 ///
-/// assert_eq!(size_of::&lt;Option&lt;core::num::NonZero&lt;u32&gt;&gt;&gt;(), size_of::&lt;u32&gt;());
+/// assert_eq!(size_of::&lt;Option&lt;NonZero&lt;u32&gt;&gt;&gt;(), size_of::&lt;u32&gt;());
 /// ```
-</span><span class="attr">#[unstable(feature = <span class="string">"generic_nonzero"</span>, issue = <span class="string">"120257"</span>)]
+</span><span class="attr">#[stable(feature = <span class="string">"generic_nonzero"</span>, since = <span class="string">"1.79.0"</span>)]
 #[repr(transparent)]
 #[rustc_nonnull_optimization_guaranteed]
 #[rustc_diagnostic_item = <span class="string">"NonZero"</span>]
@@ -2152,8 +2153,7 @@
         <span class="attr">#[<span class="macro-nonterminal">$stability</span>:meta]
         </span><span class="self">Self </span>= <span class="macro-nonterminal">$Ty</span>:ident,
         Primitive = <span class="macro-nonterminal">$signedness</span>:ident <span class="macro-nonterminal">$Int</span>:ident,
-        $(UnsignedNonZero = <span class="macro-nonterminal">$UnsignedNonZero</span>:ident,)<span class="question-mark">?
-        </span>UnsignedPrimitive = <span class="macro-nonterminal">$UnsignedPrimitive</span>:ty,
+        UnsignedPrimitive = <span class="macro-nonterminal">$Uint</span>:ty,
 
         <span class="comment">// Used in doc comments.
         </span>leading_zeros_test = <span class="macro-nonterminal">$leading_zeros_test</span>:expr,
@@ -2191,7 +2191,7 @@
         </span><span class="attr">#[<span class="macro-nonterminal">$stability</span>]
         </span><span class="kw">pub type </span><span class="macro-nonterminal">$Ty </span>= NonZero&lt;<span class="macro-nonterminal">$Int</span>&gt;;
 
-        <span class="kw">impl </span><span class="macro-nonterminal">$Ty </span>{
+        <span class="kw">impl </span>NonZero&lt;<span class="macro-nonterminal">$Int</span>&gt; {
             <span class="doccomment">/// The size of this non-zero integer type in bits.
             ///
             </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"This value is equal to [`"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::BITS`]."</span>)]
@@ -2199,9 +2199,9 @@
             /// # Examples
             ///
             /// ```
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-            </span><span class="doccomment">///
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::BITS, "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::BITS);"</span>)]
+            /// # use std::num::NonZero;
+            /// #
+            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::BITS, "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::BITS);"</span>)]
             </span><span class="doccomment">/// ```
             </span><span class="attr">#[stable(feature = <span class="string">"nonzero_bits"</span>, since = <span class="string">"1.67.0"</span>)]
             </span><span class="kw">pub const </span>BITS: u32 = &lt;<span class="macro-nonterminal">$Int</span>&gt;::BITS;
@@ -2215,7 +2215,9 @@
             /// Basic usage:
             ///
             /// ```
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let n = std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>, <span class="macro-nonterminal">$leading_zeros_test</span>, <span class="string">").unwrap();"</span>)]
+            /// # use std::num::NonZero;
+            /// #
+            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let n = NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::new("</span>, <span class="macro-nonterminal">$leading_zeros_test</span>, <span class="string">").unwrap();"</span>)]
             </span><span class="doccomment">///
             /// assert_eq!(n.leading_zeros(), 0);
             /// ```
@@ -2226,7 +2228,9 @@
             #[inline]
             </span><span class="kw">pub const fn </span>leading_zeros(<span class="self">self</span>) -&gt; u32 {
                 <span class="comment">// SAFETY: since `self` cannot be zero, it is safe to call `ctlz_nonzero`.
-                </span><span class="kw">unsafe </span>{ intrinsics::ctlz_nonzero(<span class="self">self</span>.get() <span class="kw">as </span><span class="macro-nonterminal">$UnsignedPrimitive</span>) <span class="kw">as </span>u32 }
+                </span><span class="kw">unsafe </span>{
+                    intrinsics::ctlz_nonzero(<span class="self">self</span>.get() <span class="kw">as </span><span class="macro-nonterminal">$Uint</span>)
+                }
             }
 
             <span class="doccomment">/// Returns the number of trailing zeros in the binary representation
@@ -2239,7 +2243,9 @@
             /// Basic usage:
             ///
             /// ```
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let n = std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(0b0101000).unwrap();"</span>)]
+            /// # use std::num::NonZero;
+            /// #
+            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let n = NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::new(0b0101000).unwrap();"</span>)]
             </span><span class="doccomment">///
             /// assert_eq!(n.trailing_zeros(), 3);
             /// ```
@@ -2250,7 +2256,9 @@
             #[inline]
             </span><span class="kw">pub const fn </span>trailing_zeros(<span class="self">self</span>) -&gt; u32 {
                 <span class="comment">// SAFETY: since `self` cannot be zero, it is safe to call `cttz_nonzero`.
-                </span><span class="kw">unsafe </span>{ intrinsics::cttz_nonzero(<span class="self">self</span>.get() <span class="kw">as </span><span class="macro-nonterminal">$UnsignedPrimitive</span>) <span class="kw">as </span>u32 }
+                </span><span class="kw">unsafe </span>{
+                    intrinsics::cttz_nonzero(<span class="self">self</span>.get() <span class="kw">as </span><span class="macro-nonterminal">$Uint</span>)
+                }
             }
 
             <span class="doccomment">/// Returns the number of ones in the binary representation of `self`.
@@ -2260,11 +2268,12 @@
             /// Basic usage:
             ///
             /// ```
-            /// #![feature(generic_nonzero, non_zero_count_ones)]
+            /// #![feature(non_zero_count_ones)]
+            ///
+            /// # use std::num::NonZero;
+            /// #
             /// # fn main() { test().unwrap(); }
             /// # fn test() -&gt; Option&lt;()&gt; {
-            /// # use std::num::*;
-            /// #
             </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let a = NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::new(0b100_0000)?;"</span>)]
             #[doc = <span class="macro">concat!</span>(<span class="string">"let b = NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::new(0b100_0011)?;"</span>)]
             </span><span class="doccomment">///
@@ -2291,8 +2300,7 @@
             <span class="macro">nonzero_integer_signedness_dependent_methods!</span> {
                 <span class="self">Self </span>= <span class="macro-nonterminal">$Ty</span>,
                 Primitive = <span class="macro-nonterminal">$signedness $Int</span>,
-                $(UnsignedNonZero = <span class="macro-nonterminal">$UnsignedNonZero</span>,)<span class="question-mark">?
-                </span>UnsignedPrimitive = <span class="macro-nonterminal">$UnsignedPrimitive</span>,
+                UnsignedPrimitive = <span class="macro-nonterminal">$Uint</span>,
             }
 
             <span class="doccomment">/// Multiplies two non-zero integers together.
@@ -2302,13 +2310,13 @@
             /// # Examples
             ///
             /// ```
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-            </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+            /// # use std::num::NonZero;
+            /// #
+            /// # fn main() { test().unwrap(); }
             /// # fn test() -&gt; Option&lt;()&gt; {
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let two = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(2)?;"</span>)]
-            #[doc = <span class="macro">concat!</span>(<span class="string">"let four = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(4)?;"</span>)]
-            #[doc = <span class="macro">concat!</span>(<span class="string">"let max = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                            <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
+            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let two = NonZero::new(2"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+            #[doc = <span class="macro">concat!</span>(<span class="string">"let four = NonZero::new(4"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+            #[doc = <span class="macro">concat!</span>(<span class="string">"let max = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
             </span><span class="doccomment">///
             /// assert_eq!(Some(four), two.checked_mul(two));
             /// assert_eq!(None, max.checked_mul(two));
@@ -2336,18 +2344,18 @@
             }
 
             <span class="doccomment">/// Multiplies two non-zero integers together.
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"Return [`"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::MAX`] on overflow."</span>)]
+            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"Return [`NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::MAX`] on overflow."</span>)]
             </span><span class="doccomment">///
             /// # Examples
             ///
             /// ```
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-            </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+            /// # use std::num::NonZero;
+            /// #
+            /// # fn main() { test().unwrap(); }
             /// # fn test() -&gt; Option&lt;()&gt; {
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let two = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(2)?;"</span>)]
-            #[doc = <span class="macro">concat!</span>(<span class="string">"let four = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(4)?;"</span>)]
-            #[doc = <span class="macro">concat!</span>(<span class="string">"let max = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                            <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
+            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let two = NonZero::new(2"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+            #[doc = <span class="macro">concat!</span>(<span class="string">"let four = NonZero::new(4"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+            #[doc = <span class="macro">concat!</span>(<span class="string">"let max = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
             </span><span class="doccomment">///
             /// assert_eq!(four, two.saturating_mul(two));
             /// assert_eq!(max, four.saturating_mul(max));
@@ -2392,11 +2400,12 @@
             /// ```
             /// #![feature(nonzero_ops)]
             ///
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-            </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+            /// # use std::num::NonZero;
+            /// #
+            /// # fn main() { test().unwrap(); }
             /// # fn test() -&gt; Option&lt;()&gt; {
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let two = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(2)?;"</span>)]
-            #[doc = <span class="macro">concat!</span>(<span class="string">"let four = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(4)?;"</span>)]
+            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let two = NonZero::new(2"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+            #[doc = <span class="macro">concat!</span>(<span class="string">"let four = NonZero::new(4"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
             </span><span class="doccomment">///
             /// assert_eq!(four, unsafe { two.unchecked_mul(two) });
             /// # Some(())
@@ -2418,13 +2427,13 @@
             /// # Examples
             ///
             /// ```
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-            </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+            /// # use std::num::NonZero;
+            /// #
+            /// # fn main() { test().unwrap(); }
             /// # fn test() -&gt; Option&lt;()&gt; {
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let three = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(3)?;"</span>)]
-            #[doc = <span class="macro">concat!</span>(<span class="string">"let twenty_seven = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(27)?;"</span>)]
-            #[doc = <span class="macro">concat!</span>(<span class="string">"let half_max = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                            <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX / 2)?;"</span>)]
+            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let three = NonZero::new(3"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+            #[doc = <span class="macro">concat!</span>(<span class="string">"let twenty_seven = NonZero::new(27"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+            #[doc = <span class="macro">concat!</span>(<span class="string">"let half_max = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX / 2)?;"</span>)]
             </span><span class="doccomment">///
             /// assert_eq!(Some(twenty_seven), three.checked_pow(3));
             /// assert_eq!(None, half_max.checked_pow(3));
@@ -2455,24 +2464,24 @@
             </span><span class="attr">#[doc = <span class="macro">sign_dependent_expr!</span>{
                 <span class="macro-nonterminal">$signedness </span><span class="question-mark">?
                 </span><span class="kw">if </span>signed {
-                    <span class="macro">concat!</span>(<span class="string">"Return [`"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::MIN`] "</span>,
-                                <span class="string">"or [`"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::MAX`] on overflow."</span>)
+                    <span class="macro">concat!</span>(<span class="string">"Return [`NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::MIN`] "</span>,
+                                <span class="string">"or [`NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::MAX`] on overflow."</span>)
                 }
                 <span class="kw">if </span>unsigned {
-                    <span class="macro">concat!</span>(<span class="string">"Return [`"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::MAX`] on overflow."</span>)
+                    <span class="macro">concat!</span>(<span class="string">"Return [`NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::MAX`] on overflow."</span>)
                 }
             }]
             </span><span class="doccomment">///
             /// # Examples
             ///
             /// ```
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-            </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+            /// # use std::num::NonZero;
+            /// #
+            /// # fn main() { test().unwrap(); }
             /// # fn test() -&gt; Option&lt;()&gt; {
-            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let three = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(3)?;"</span>)]
-            #[doc = <span class="macro">concat!</span>(<span class="string">"let twenty_seven = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(27)?;"</span>)]
-            #[doc = <span class="macro">concat!</span>(<span class="string">"let max = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                            <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
+            </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let three = NonZero::new(3"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+            #[doc = <span class="macro">concat!</span>(<span class="string">"let twenty_seven = NonZero::new(27"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+            #[doc = <span class="macro">concat!</span>(<span class="string">"let max = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
             </span><span class="doccomment">///
             /// assert_eq!(twenty_seven, three.saturating_pow(3));
             /// assert_eq!(max, max.saturating_pow(3));
@@ -2498,7 +2507,7 @@
         }
 
         <span class="attr">#[stable(feature = <span class="string">"nonzero_parse"</span>, since = <span class="string">"1.35.0"</span>)]
-        </span><span class="kw">impl </span>FromStr <span class="kw">for </span><span class="macro-nonterminal">$Ty </span>{
+        </span><span class="kw">impl </span>FromStr <span class="kw">for </span>NonZero&lt;<span class="macro-nonterminal">$Int</span>&gt; {
             <span class="kw">type </span><span class="prelude-val">Err </span>= ParseIntError;
             <span class="kw">fn </span>from_str(src: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Err&gt; {
                 <span class="self">Self</span>::new(&lt;<span class="macro-nonterminal">$Int</span>&gt;::from_str_radix(src, <span class="number">10</span>)<span class="question-mark">?</span>)
@@ -2536,56 +2545,55 @@
     <span class="comment">// Impls for unsigned nonzero types only.
     </span>(<span class="macro-nonterminal">$Ty</span>:ident unsigned <span class="macro-nonterminal">$Int</span>:ty) =&gt; {
         <span class="attr">#[stable(feature = <span class="string">"nonzero_div"</span>, since = <span class="string">"1.51.0"</span>)]
-        </span><span class="kw">impl </span>Div&lt;<span class="macro-nonterminal">$Ty</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$Int </span>{
+        </span><span class="kw">impl </span>Div&lt;NonZero&lt;<span class="macro-nonterminal">$Int</span>&gt;&gt; <span class="kw">for </span><span class="macro-nonterminal">$Int </span>{
             <span class="kw">type </span>Output = <span class="macro-nonterminal">$Int</span>;
 
-            <span class="doccomment">/// This operation rounds towards zero,
-            /// truncating any fractional part of the exact result, and cannot panic.
+            <span class="doccomment">/// This operation rounds towards zero, truncating any fractional
+            /// part of the exact result, and cannot panic.
             </span><span class="attr">#[inline]
-            </span><span class="kw">fn </span>div(<span class="self">self</span>, other: <span class="macro-nonterminal">$Ty</span>) -&gt; <span class="macro-nonterminal">$Int </span>{
-                <span class="comment">// SAFETY: div by zero is checked because `other` is a nonzero,
+            </span><span class="kw">fn </span>div(<span class="self">self</span>, other: NonZero&lt;<span class="macro-nonterminal">$Int</span>&gt;) -&gt; <span class="macro-nonterminal">$Int </span>{
+                <span class="comment">// SAFETY: Division by zero is checked because `other` is non-zero,
                 // and MIN/-1 is checked because `self` is an unsigned int.
                 </span><span class="kw">unsafe </span>{ intrinsics::unchecked_div(<span class="self">self</span>, other.get()) }
             }
         }
 
-        <span class="attr">#[stable(feature = <span class="string">"nonzero_div_assign"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
-        </span><span class="kw">impl </span>DivAssign&lt;<span class="macro-nonterminal">$Ty</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$Int </span>{
-            <span class="doccomment">/// This operation rounds towards zero,
-            /// truncating any fractional part of the exact result, and cannot panic.
+        <span class="attr">#[stable(feature = <span class="string">"nonzero_div_assign"</span>, since = <span class="string">"1.79.0"</span>)]
+        </span><span class="kw">impl </span>DivAssign&lt;NonZero&lt;<span class="macro-nonterminal">$Int</span>&gt;&gt; <span class="kw">for </span><span class="macro-nonterminal">$Int </span>{
+            <span class="doccomment">/// This operation rounds towards zero, truncating any fractional
+            /// part of the exact result, and cannot panic.
             </span><span class="attr">#[inline]
-            </span><span class="kw">fn </span>div_assign(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="macro-nonterminal">$Ty</span>) {
+            </span><span class="kw">fn </span>div_assign(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: NonZero&lt;<span class="macro-nonterminal">$Int</span>&gt;) {
                 <span class="kw-2">*</span><span class="self">self </span>= <span class="kw-2">*</span><span class="self">self </span>/ other;
             }
         }
 
         <span class="attr">#[stable(feature = <span class="string">"nonzero_div"</span>, since = <span class="string">"1.51.0"</span>)]
-        </span><span class="kw">impl </span>Rem&lt;<span class="macro-nonterminal">$Ty</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$Int </span>{
+        </span><span class="kw">impl </span>Rem&lt;NonZero&lt;<span class="macro-nonterminal">$Int</span>&gt;&gt; <span class="kw">for </span><span class="macro-nonterminal">$Int </span>{
             <span class="kw">type </span>Output = <span class="macro-nonterminal">$Int</span>;
 
             <span class="doccomment">/// This operation satisfies `n % d == n - (n / d) * d`, and cannot panic.
             </span><span class="attr">#[inline]
-            </span><span class="kw">fn </span>rem(<span class="self">self</span>, other: <span class="macro-nonterminal">$Ty</span>) -&gt; <span class="macro-nonterminal">$Int </span>{
-                <span class="comment">// SAFETY: rem by zero is checked because `other` is a nonzero,
+            </span><span class="kw">fn </span>rem(<span class="self">self</span>, other: NonZero&lt;<span class="macro-nonterminal">$Int</span>&gt;) -&gt; <span class="macro-nonterminal">$Int </span>{
+                <span class="comment">// SAFETY: Remainder by zero is checked because `other` is non-zero,
                 // and MIN/-1 is checked because `self` is an unsigned int.
                 </span><span class="kw">unsafe </span>{ intrinsics::unchecked_rem(<span class="self">self</span>, other.get()) }
             }
         }
 
-        <span class="attr">#[stable(feature = <span class="string">"nonzero_div_assign"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
-        </span><span class="kw">impl </span>RemAssign&lt;<span class="macro-nonterminal">$Ty</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">$Int </span>{
+        <span class="attr">#[stable(feature = <span class="string">"nonzero_div_assign"</span>, since = <span class="string">"1.79.0"</span>)]
+        </span><span class="kw">impl </span>RemAssign&lt;NonZero&lt;<span class="macro-nonterminal">$Int</span>&gt;&gt; <span class="kw">for </span><span class="macro-nonterminal">$Int </span>{
             <span class="doccomment">/// This operation satisfies `n % d == n - (n / d) * d`, and cannot panic.
             </span><span class="attr">#[inline]
-            </span><span class="kw">fn </span>rem_assign(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: <span class="macro-nonterminal">$Ty</span>) {
+            </span><span class="kw">fn </span>rem_assign(<span class="kw-2">&amp;mut </span><span class="self">self</span>, other: NonZero&lt;<span class="macro-nonterminal">$Int</span>&gt;) {
                 <span class="kw-2">*</span><span class="self">self </span>= <span class="kw-2">*</span><span class="self">self </span>% other;
             }
         }
     };
-
     <span class="comment">// Impls for signed nonzero types only.
     </span>(<span class="macro-nonterminal">$Ty</span>:ident signed <span class="macro-nonterminal">$Int</span>:ty) =&gt; {
         <span class="attr">#[stable(feature = <span class="string">"signed_nonzero_neg"</span>, since = <span class="string">"1.71.0"</span>)]
-        </span><span class="kw">impl </span>Neg <span class="kw">for </span><span class="macro-nonterminal">$Ty </span>{
+        </span><span class="kw">impl </span>Neg <span class="kw">for </span>NonZero&lt;<span class="macro-nonterminal">$Int</span>&gt; {
             <span class="kw">type </span>Output = <span class="self">Self</span>;
 
             <span class="attr">#[inline]
@@ -2595,7 +2603,7 @@
             }
         }
 
-        <span class="macro">forward_ref_unop!</span> { <span class="kw">impl </span>Neg, neg <span class="kw">for </span><span class="macro-nonterminal">$Ty</span>,
+        <span class="macro">forward_ref_unop!</span> { <span class="kw">impl </span>Neg, neg <span class="kw">for </span>NonZero&lt;<span class="macro-nonterminal">$Int</span>&gt;,
         <span class="attr">#[stable(feature = <span class="string">"signed_nonzero_neg"</span>, since = <span class="string">"1.71.0"</span>)] </span>}
     };
 }
@@ -2614,8 +2622,9 @@
         /// # Examples
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::MIN.get(), 1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">");"</span>)]
+        /// # use std::num::NonZero;
+        /// #
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::MIN.get(), 1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">");"</span>)]
         </span><span class="doccomment">/// ```
         </span><span class="attr">#[stable(feature = <span class="string">"nonzero_min_max"</span>, since = <span class="string">"1.70.0"</span>)]
         </span><span class="kw">pub const </span>MIN: <span class="self">Self </span>= <span class="self">Self</span>::new(<span class="number">1</span>).unwrap();
@@ -2627,8 +2636,9 @@
         /// # Examples
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::MAX.get(), "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX);"</span>)]
+        /// # use std::num::NonZero;
+        /// #
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::MAX.get(), "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX);"</span>)]
         </span><span class="doccomment">/// ```
         </span><span class="attr">#[stable(feature = <span class="string">"nonzero_min_max"</span>, since = <span class="string">"1.70.0"</span>)]
         </span><span class="kw">pub const </span>MAX: <span class="self">Self </span>= <span class="self">Self</span>::new(&lt;<span class="macro-nonterminal">$Int</span>&gt;::MAX).unwrap();
@@ -2641,13 +2651,13 @@
         /// # Examples
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let one = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let two = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(2)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let max = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let one = NonZero::new(1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let two = NonZero::new(2"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let max = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(Some(two), one.checked_add(1));
         /// assert_eq!(None, max.checked_add(1));
@@ -2675,18 +2685,18 @@
         }
 
         <span class="doccomment">/// Adds an unsigned integer to a non-zero value.
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"Return [`"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::MAX`] on overflow."</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"Return [`NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::MAX`] on overflow."</span>)]
         </span><span class="doccomment">///
         /// # Examples
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let one = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let two = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(2)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let max = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let one = NonZero::new(1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let two = NonZero::new(2"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let max = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(two, one.saturating_add(1));
         /// assert_eq!(max, max.saturating_add(1));
@@ -2721,11 +2731,12 @@
         /// ```
         /// #![feature(nonzero_ops)]
         ///
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let one = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let two = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(2)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let one = NonZero::new(1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let two = NonZero::new(2"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(two, unsafe { one.unchecked_add(1) });
         /// # Some(())
@@ -2748,14 +2759,14 @@
         /// # Examples
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let two = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(2)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let three = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(3)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let four = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(4)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let max = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let two = NonZero::new(2"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let three = NonZero::new(3"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let four = NonZero::new(4"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let max = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(Some(two), two.checked_next_power_of_two() );
         /// assert_eq!(Some(four), three.checked_next_power_of_two() );
@@ -2788,10 +2799,11 @@
         /// # Examples
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(7).unwrap().ilog2(), 2);"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(8).unwrap().ilog2(), 3);"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(9).unwrap().ilog2(), 3);"</span>)]
+        /// # use std::num::NonZero;
+        /// #
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(NonZero::new(7"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">").unwrap().ilog2(), 2);"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(NonZero::new(8"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">").unwrap().ilog2(), 3);"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(NonZero::new(9"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">").unwrap().ilog2(), 3);"</span>)]
         </span><span class="doccomment">/// ```
         </span><span class="attr">#[stable(feature = <span class="string">"int_log"</span>, since = <span class="string">"1.67.0"</span>)]
         #[rustc_const_stable(feature = <span class="string">"int_log"</span>, since = <span class="string">"1.67.0"</span>)]
@@ -2812,10 +2824,11 @@
         /// # Examples
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(99).unwrap().ilog10(), 1);"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(100).unwrap().ilog10(), 2);"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(101).unwrap().ilog10(), 2);"</span>)]
+        /// # use std::num::NonZero;
+        /// #
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(NonZero::new(99"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">").unwrap().ilog10(), 1);"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(NonZero::new(100"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">").unwrap().ilog10(), 2);"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(NonZero::new(101"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">").unwrap().ilog10(), 2);"</span>)]
         </span><span class="doccomment">/// ```
         </span><span class="attr">#[stable(feature = <span class="string">"int_log"</span>, since = <span class="string">"1.67.0"</span>)]
         #[rustc_const_stable(feature = <span class="string">"int_log"</span>, since = <span class="string">"1.67.0"</span>)]
@@ -2836,13 +2849,14 @@
         ///
         /// ```
         /// #![feature(num_midpoint)]
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">///
+        ///
+        /// # use std::num::NonZero;
+        /// #
         /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let one = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let two = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(2)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let four = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(4)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let one = NonZero::new(1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let two = NonZero::new(2"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let four = NonZero::new(4"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(one.midpoint(four), two);
         /// assert_eq!(four.midpoint(one), two);
@@ -2873,9 +2887,9 @@
         /// Basic usage:
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let eight = std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(8).unwrap();"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let eight = std::num::NonZero::new(8"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">").unwrap();"</span>)]
         </span><span class="doccomment">/// assert!(eight.is_power_of_two());
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let ten = std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(10).unwrap();"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let ten = std::num::NonZero::new(10"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">").unwrap();"</span>)]
         </span><span class="doccomment">/// assert!(!ten.is_power_of_two());
         /// ```
         </span><span class="attr">#[must_use]
@@ -2896,7 +2910,6 @@
     </span>(
         <span class="self">Self </span>= <span class="macro-nonterminal">$Ty</span>:ident,
         Primitive = signed <span class="macro-nonterminal">$Int</span>:ident,
-        UnsignedNonZero = <span class="macro-nonterminal">$Uty</span>:ident,
         UnsignedPrimitive = <span class="macro-nonterminal">$Uint</span>:ty,
     ) =&gt; {
         <span class="doccomment">/// The smallest value that can be represented by this non-zero
@@ -2910,8 +2923,9 @@
         /// # Examples
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::MIN.get(), "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN);"</span>)]
+        /// # use std::num::NonZero;
+        /// #
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::MIN.get(), "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN);"</span>)]
         </span><span class="doccomment">/// ```
         </span><span class="attr">#[stable(feature = <span class="string">"nonzero_min_max"</span>, since = <span class="string">"1.70.0"</span>)]
         </span><span class="kw">pub const </span>MIN: <span class="self">Self </span>= <span class="self">Self</span>::new(&lt;<span class="macro-nonterminal">$Int</span>&gt;::MIN).unwrap();
@@ -2927,8 +2941,9 @@
         /// # Examples
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::MAX.get(), "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX);"</span>)]
+        /// # use std::num::NonZero;
+        /// #
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::MAX.get(), "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX);"</span>)]
         </span><span class="doccomment">/// ```
         </span><span class="attr">#[stable(feature = <span class="string">"nonzero_min_max"</span>, since = <span class="string">"1.70.0"</span>)]
         </span><span class="kw">pub const </span>MAX: <span class="self">Self </span>= <span class="self">Self</span>::new(&lt;<span class="macro-nonterminal">$Int</span>&gt;::MAX).unwrap();
@@ -2940,11 +2955,12 @@
         /// # Example
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(-1)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos = NonZero::new(1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg = NonZero::new(-1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(pos, pos.abs());
         /// assert_eq!(pos, neg.abs());
@@ -2963,19 +2979,19 @@
 
         <span class="doccomment">/// Checked absolute value.
         /// Checks for overflow and returns [`None`] if
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"`self == "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::MIN`."</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"`self == NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::MIN`."</span>)]
         </span><span class="doccomment">/// The result cannot be zero.
         ///
         /// # Example
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(-1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos = NonZero::new(1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg = NonZero::new(-1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(Some(pos), neg.checked_abs());
         /// assert_eq!(None, min.checked_abs());
@@ -3003,13 +3019,13 @@
         /// # Example
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(-1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos = NonZero::new(1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg = NonZero::new(-1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!((pos, false), pos.overflowing_abs());
         /// assert_eq!((pos, false), neg.overflowing_abs());
@@ -3037,17 +3053,15 @@
         /// # Example
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(-1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let min_plus = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN + 1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let max = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos = NonZero::new(1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg = NonZero::new(-1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let min_plus = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN + 1)?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let max = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(pos, pos.saturating_abs());
         /// assert_eq!(pos, neg.saturating_abs());
@@ -3072,15 +3086,14 @@
         /// # Example
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(-1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"# let max = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos = NonZero::new(1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg = NonZero::new(-1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"# let max = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(pos, pos.wrapping_abs());
         /// assert_eq!(pos, neg.wrapping_abs());
@@ -3105,18 +3118,15 @@
         /// # Example
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Uty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">///
+        /// # use std::num::NonZero;
+        /// #
         /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let u_pos = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Uty</span>), <span class="string">"::new(1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let i_pos = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let i_neg = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(-1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let i_min = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let u_max = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Uty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Uint</span>), <span class="string">"::MAX / 2 + 1)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let u_pos = NonZero::new(1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Uint</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let i_pos = NonZero::new(1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let i_neg = NonZero::new(-1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let i_min = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let u_max = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Uint</span>), <span class="string">"::MAX / 2 + 1)?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(u_pos, i_pos.unsigned_abs());
         /// assert_eq!(u_pos, i_neg.unsigned_abs());
@@ -3129,9 +3139,9 @@
         #[must_use = <span class="string">"this returns the result of the operation, \
                       without modifying the original"</span>]
         #[inline]
-        </span><span class="kw">pub const fn </span>unsigned_abs(<span class="self">self</span>) -&gt; <span class="macro-nonterminal">$Uty </span>{
+        </span><span class="kw">pub const fn </span>unsigned_abs(<span class="self">self</span>) -&gt; NonZero&lt;<span class="macro-nonterminal">$Uint</span>&gt; {
             <span class="comment">// SAFETY: absolute value of nonzero cannot yield zero values.
-            </span><span class="kw">unsafe </span>{ <span class="macro-nonterminal">$Uty::new_unchecked</span>(<span class="self">self</span>.get().unsigned_abs()) }
+            </span><span class="kw">unsafe </span>{ NonZero::new_unchecked(<span class="self">self</span>.get().unsigned_abs()) }
         }
 
         <span class="doccomment">/// Returns `true` if `self` is positive and `false` if the
@@ -3140,11 +3150,12 @@
         /// # Example
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos_five = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(5)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg_five = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(-5)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos_five = NonZero::new(5"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg_five = NonZero::new(-5"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
         </span><span class="doccomment">///
         /// assert!(pos_five.is_positive());
         /// assert!(!neg_five.is_positive());
@@ -3165,11 +3176,12 @@
         /// # Example
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos_five = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(5)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg_five = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(-5)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos_five = NonZero::new(5"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg_five = NonZero::new(-5"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
         </span><span class="doccomment">///
         /// assert!(neg_five.is_negative());
         /// assert!(!pos_five.is_negative());
@@ -3185,18 +3197,18 @@
         }
 
         <span class="doccomment">/// Checked negation. Computes `-self`,
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"returning `None` if `self == "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::MIN`."</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"returning `None` if `self == NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::MIN`."</span>)]
         </span><span class="doccomment">///
         /// # Example
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos_five = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(5)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg_five = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(-5)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos_five = NonZero::new(5"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg_five = NonZero::new(-5"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(pos_five.checked_neg(), Some(neg_five));
         /// assert_eq!(min.checked_neg(), None);
@@ -3222,13 +3234,13 @@
         /// # Example
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos_five = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(5)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg_five = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(-5)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos_five = NonZero::new(5"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg_five = NonZero::new(-5"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(pos_five.overflowing_neg(), (neg_five, false));
         /// assert_eq!(min.overflowing_neg(), (min, true));
@@ -3245,24 +3257,22 @@
         }
 
         <span class="doccomment">/// Saturating negation. Computes `-self`,
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"returning [`"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::MAX`]"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"if `self == "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::MIN`"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"returning [`NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::MAX`]"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"if `self == NonZero::&lt;"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"&gt;::MIN`"</span>)]
         </span><span class="doccomment">/// instead of overflowing.
         ///
         /// # Example
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos_five = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(5)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg_five = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(-5)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let min_plus_one = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN + 1)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let max = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos_five = NonZero::new(5"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg_five = NonZero::new(-5"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let min_plus_one = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN + 1)?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let max = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MAX)?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(pos_five.saturating_neg(), neg_five);
         /// assert_eq!(min.saturating_neg(), max);
@@ -3289,13 +3299,13 @@
         /// # Example
         ///
         /// ```
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"# use std::num::"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">";"</span>)]
-        </span><span class="doccomment">/// # fn main() { test().unwrap(); }
+        /// # use std::num::NonZero;
+        /// #
+        /// # fn main() { test().unwrap(); }
         /// # fn test() -&gt; Option&lt;()&gt; {
-        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos_five = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(5)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg_five = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new(-5)?;"</span>)]
-        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Ty</span>), <span class="string">"::new("</span>,
-                        <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let pos_five = NonZero::new(5"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let neg_five = NonZero::new(-5"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">")?;"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"let min = NonZero::new("</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$Int</span>), <span class="string">"::MIN)?;"</span>)]
         </span><span class="doccomment">///
         /// assert_eq!(pos_five.wrapping_neg(), neg_five);
         /// assert_eq!(min.wrapping_neg(), min);
@@ -3356,42 +3366,36 @@
 <span class="macro">nonzero_integer!</span> {
     <span class="self">Self </span>= NonZeroI8,
     Primitive = signed i8,
-    UnsignedNonZero = NonZeroU8,
     UnsignedPrimitive = u8,
 }
 
 <span class="macro">nonzero_integer!</span> {
     <span class="self">Self </span>= NonZeroI16,
     Primitive = signed i16,
-    UnsignedNonZero = NonZeroU16,
     UnsignedPrimitive = u16,
 }
 
 <span class="macro">nonzero_integer!</span> {
     <span class="self">Self </span>= NonZeroI32,
     Primitive = signed i32,
-    UnsignedNonZero = NonZeroU32,
     UnsignedPrimitive = u32,
 }
 
 <span class="macro">nonzero_integer!</span> {
     <span class="self">Self </span>= NonZeroI64,
     Primitive = signed i64,
-    UnsignedNonZero = NonZeroU64,
     UnsignedPrimitive = u64,
 }
 
 <span class="macro">nonzero_integer!</span> {
     <span class="self">Self </span>= NonZeroI128,
     Primitive = signed i128,
-    UnsignedNonZero = NonZeroU128,
     UnsignedPrimitive = u128,
 }
 
 <span class="macro">nonzero_integer!</span> {
     <span class="self">Self </span>= NonZeroIsize,
     Primitive = signed isize,
-    UnsignedNonZero = NonZeroUsize,
     UnsignedPrimitive = usize,
 }
 </code></pre></div></section></main></body></html>

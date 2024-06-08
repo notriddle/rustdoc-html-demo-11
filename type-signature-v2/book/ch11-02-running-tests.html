@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -227,7 +229,7 @@ printed to standard output with the rest of the failure message.</p>
 parameter and returns 10, as well as a test that passes and a test that fails.</p>
 <p><span class="filename">Filename: src/lib.rs</span></p>
 <pre><code class="language-rust panics noplayground">fn prints_and_returns_10(a: i32) -&gt; i32 {
-    println!("I got the value {}", a);
+    println!("I got the value {a}");
     10
 }
 
@@ -252,7 +254,7 @@ mod tests {
 <p>When we run these tests with <code>cargo test</code>, we’ll see the following output:</p>
 <pre><code class="language-console">$ cargo test
    Compiling silly-function v0.1.0 (file:///projects/silly-function)
-    Finished test [unoptimized + debuginfo] target(s) in 0.58s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.58s
      Running unittests src/lib.rs (target/debug/deps/silly_function-160869f38cff9166)
 
 running 2 tests
@@ -289,7 +291,7 @@ to also show the output of successful tests with <code>--show-output</code>.</p>
 see the following output:</p>
 <pre><code class="language-console">$ cargo test -- --show-output
    Compiling silly-function v0.1.0 (file:///projects/silly-function)
-    Finished test [unoptimized + debuginfo] target(s) in 0.60s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.60s
      Running unittests src/lib.rs (target/debug/deps/silly_function-160869f38cff9166)
 
 running 2 tests
@@ -360,7 +362,7 @@ names</span></p>
 tests will run in parallel:</p>
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
-    Finished test [unoptimized + debuginfo] target(s) in 0.62s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.62s
      Running unittests src/lib.rs (target/debug/deps/adder-92948b65e88960b4)
 
 running 3 tests
@@ -381,7 +383,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 <p>We can pass the name of any test function to <code>cargo test</code> to run only that test:</p>
 <pre><code class="language-console">$ cargo test one_hundred
    Compiling adder v0.1.0 (file:///projects/adder)
-    Finished test [unoptimized + debuginfo] target(s) in 0.69s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.69s
      Running unittests src/lib.rs (target/debug/deps/adder-92948b65e88960b4)
 
 running 1 test
@@ -401,7 +403,7 @@ will be run. For example, because two of our tests’ names contain <code>add</c
 run those two by running <code>cargo test add</code>:</p>
 <pre><code class="language-console">$ cargo test add
    Compiling adder v0.1.0 (file:///projects/adder)
-    Finished test [unoptimized + debuginfo] target(s) in 0.61s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.61s
      Running unittests src/lib.rs (target/debug/deps/adder-92948b65e88960b4)
 
 running 2 tests
@@ -436,7 +438,7 @@ fn expensive_test() {
 when we run our tests, <code>it_works</code> runs, but <code>expensive_test</code> doesn’t:</p>
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
-    Finished test [unoptimized + debuginfo] target(s) in 0.60s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.60s
      Running unittests src/lib.rs (target/debug/deps/adder-92948b65e88960b4)
 
 running 2 tests
@@ -456,7 +458,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 the ignored tests, we can use <code>cargo test -- --ignored</code>:</p>
 <pre><code class="language-console">$ cargo test -- --ignored
    Compiling adder v0.1.0 (file:///projects/adder)
-    Finished test [unoptimized + debuginfo] target(s) in 0.61s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.61s
      Running unittests src/lib.rs (target/debug/deps/adder-92948b65e88960b4)
 
 running 1 test

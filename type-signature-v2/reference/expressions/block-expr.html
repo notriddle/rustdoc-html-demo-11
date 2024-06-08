@@ -195,7 +195,8 @@
 </blockquote>
 <p>A <em>block expression</em>, or <em>block</em>, is a control flow expression and anonymous namespace scope for items and variable declarations.
 As a control flow expression, a block sequentially executes its component non-item declaration statements and then its final optional expression.
-As an anonymous namespace scope, item declarations are only in scope inside the block itself and variables declared by <code>let</code> statements are in scope from the next statement until the end of the block.</p>
+As an anonymous namespace scope, item declarations are only in scope inside the block itself and variables declared by <code>let</code> statements are in scope from the next statement until the end of the block.
+See the <a href="../names/scopes.html">scopes</a> chapter for more details.</p>
 <p>The syntax for a block is <code>{</code>, then any <a href="../attributes.html">inner attributes</a>, then any number of <a href="../statements.html">statements</a>, then an optional expression, called the final operand, and finally a <code>}</code>.</p>
 <p>Statements are usually required to be followed by a semicolon, with two exceptions:</p>
 <ol>
@@ -285,6 +286,57 @@ Therefore the following is illegal:</p>
     async move {
         break; // error[E0267]: `break` inside of an `async` block
     }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="const-blocks"><a class="header" href="#const-blocks"><code>const</code> blocks</a></h2>
+<blockquote>
+<p><strong><sup>Syntax</sup></strong><br />
+<em>ConstBlockExpression</em> :<br />
+   <code>const</code> <em>BlockExpression</em></p>
+</blockquote>
+<p>A <em>const block</em> is a variant of a block expression whose body evaluates at compile-time instead of at runtime.</p>
+<p>Const blocks allows you to define a constant value without having to define new <a href="../items/constant-items.html">constant items</a>, and thus they are also sometimes referred as <em>inline consts</em>.
+It also supports type inference so there is no need to specify the type, unlike <a href="../items/constant-items.html">constant items</a>.</p>
+<p>Const blocks have the ability to reference generic parameters in scope, unlike <a href="../glossary.html#free-item">free</a> constant items.
+They are desugared to constant items with generic parameters in scope (similar to associated constants, but without a trait or type they are associated with).
+For example, this code:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;T&gt;() -&gt; usize {
+    const { std::mem::size_of::&lt;T&gt;() + 1 }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>is equivalent to:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;T&gt;() -&gt; usize {
+    {
+        struct Const&lt;T&gt;(T);
+        impl&lt;T&gt; Const&lt;T&gt; {
+            const CONST: usize = std::mem::size_of::&lt;T&gt;() + 1;
+        }
+        Const::&lt;T&gt;::CONST
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If the const block expression is executed at runtime, then the constant is guaranteed to be evaluated, even if its return value is ignored:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;T&gt;() -&gt; usize {
+    // If this code ever gets executed, then the assertion has definitely
+    // been evaluated at compile-time.
+    const { assert!(std::mem::size_of::&lt;T&gt;() &gt; 0); }
+    // Here we can have unsafe code relying on the type being non-zero-sized.
+    /* ... */
+    42
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If the const block expression is not executed at runtime, it may or may not be evaluated:</p>
+<pre><pre class="playground"><code class="language-rust compile_fail edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>if false {
+    // The panic may or may not occur when the program is built.
+    const { panic!(); }
 }
 <span class="boring">}</span></code></pre></pre>
 <h2 id="unsafe-blocks"><a class="header" href="#unsafe-blocks"><code>unsafe</code> blocks</a></h2>

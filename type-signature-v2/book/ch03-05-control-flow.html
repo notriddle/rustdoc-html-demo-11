@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -215,7 +217,7 @@ to the next bit of code.</p>
 <p>Try running this code; you should see the following output:</p>
 <pre><code class="language-console">$ cargo run
    Compiling branches v0.1.0 (file:///projects/branches)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.31s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.31s
      Running `target/debug/branches`
 condition was true
 </code></pre>
@@ -233,7 +235,7 @@ condition was true
 <p>Run the program again, and look at the output:</p>
 <pre><code class="language-console">$ cargo run
    Compiling branches v0.1.0 (file:///projects/branches)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.31s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.31s
      Running `target/debug/branches`
 condition was false
 </code></pre>
@@ -297,7 +299,7 @@ expression. For example:</p>
 see the following output:</p>
 <pre><code class="language-console">$ cargo run
    Compiling branches v0.1.0 (file:///projects/branches)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.31s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.31s
      Running `target/debug/branches`
 number is divisible by 3
 </code></pre>
@@ -326,7 +328,7 @@ to a variable</span></p>
 expression. Run this code to see what happens:</p>
 <pre><code class="language-console">$ cargo run
    Compiling branches v0.1.0 (file:///projects/branches)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.30s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.30s
      Running `target/debug/branches`
 The value of number is: 5
 </code></pre>
@@ -387,9 +389,9 @@ like this:</p>
     }
 }</code></pre>
 <p>When we run this program, we’ll see <code>again!</code> printed over and over continuously
-until we stop the program manually. Most terminals support the keyboard
-shortcut <span class="keystroke">ctrl-c</span> to interrupt a program that is
-stuck in a continual loop. Give it a try:</p>
+until we stop the program manually. Most terminals support the keyboard shortcut
+<kbd>ctrl</kbd>-<kdb>c</kbd> to interrupt a program that is stuck in a continual
+loop. Give it a try:</p>
 <!-- manual-regeneration
 cd listings/ch03-common-programming-concepts/no-listing-32-loop
 cargo run
@@ -405,10 +407,9 @@ again!
 again!
 ^Cagain!
 </code></pre>
-<p>The symbol <code>^C</code> represents where you pressed <span
-class="keystroke">ctrl-c</span>. You may or may not see the word <code>again!</code>
-printed after the <code>^C</code>, depending on where the code was in the loop when it
-received the interrupt signal.</p>
+<p>The symbol <code>^C</code> represents where you pressed <kbd>ctrl</kbd>-<kbd>c</kbd>. You
+may or may not see the word <code>again!</code> printed after the <code>^C</code>, depending on where
+the code was in the loop when it received the interrupt signal.</p>
 <p>Fortunately, Rust also provides a way to break out of a loop using code. You
 can place the <code>break</code> keyword within the loop to tell the program when to stop
 executing the loop. Recall that we did this in the guessing game in the
@@ -445,6 +446,8 @@ and then check whether the <code>counter</code> is equal to <code>10</code>. Whe
 <code>break</code> keyword with the value <code>counter * 2</code>. After the loop, we use a
 semicolon to end the statement that assigns the value to <code>result</code>. Finally, we
 print the value in <code>result</code>, which in this case is <code>20</code>.</p>
+<p>You can also <code>return</code> from inside a loop. While <code>break</code> only exits the current
+loop, <code>return</code> always exits the current function.</p>
 <h4 id="loop-labels-to-disambiguate-between-multiple-loops"><a class="header" href="#loop-labels-to-disambiguate-between-multiple-loops">Loop Labels to Disambiguate Between Multiple Loops</a></h4>
 <p>If you have loops within loops, <code>break</code> and <code>continue</code> apply to the innermost
 loop at that point. You can optionally specify a <em>loop label</em> on a loop that
@@ -477,7 +480,7 @@ The inner loop without a label counts down from 10 to 9. The first <code>break</
 doesn’t specify a label will exit the inner loop only. The <code>break 'counting_up;</code> statement will exit the outer loop. This code prints:</p>
 <pre><code class="language-console">$ cargo run
    Compiling loops v0.1.0 (file:///projects/loops)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.58s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.58s
      Running `target/debug/loops`
 count = 0
 remaining = 10
@@ -538,7 +541,7 @@ when <code>index &lt; 5</code> is no longer <code>true</code>). Running this cod
 element in the array:</p>
 <pre><code class="language-console">$ cargo run
    Compiling loops v0.1.0 (file:///projects/loops)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.32s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.32s
      Running `target/debug/loops`
 the value is: 10
 the value is: 20

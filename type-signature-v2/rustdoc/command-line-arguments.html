@@ -343,7 +343,7 @@ requested theme does not exist, the builtin default (currently
 </code></pre>
 <p>will be added.</p>
 <p>When rendering Rust files, this flag is ignored.</p>
-<h2 id="--html-in-header-include-more-html-in"><a class="header" href="#--html-in-header-include-more-html-in"><code>--html-in-header</code>: include more HTML in <head></a></h2>
+<h2 id="--html-in-header-include-more-html-in-head"><a class="header" href="#--html-in-header-include-more-html-in-head"><code>--html-in-header</code>: include more HTML in <code>&lt;head&gt;</code></a></h2>
 <p>Using this flag looks like this:</p>
 <pre><code class="language-bash">$ rustdoc src/lib.rs --html-in-header header.html
 $ rustdoc README.md --html-in-header header.html
@@ -428,6 +428,10 @@ comparison operation.</p>
 <p>When <code>rustdoc</code> receives this flag, it will print an extra "Version (version)" into the sidebar of
 the crate root's docs. You can use this flag to differentiate between different versions of your
 library's documentation.</p>
+<h2 id="--load-source-code-from-the-standard-input"><a class="header" href="#--load-source-code-from-the-standard-input"><code>-</code>: load source code from the standard input</a></h2>
+<p>If you specify <code>-</code> as the INPUT on the command line, then <code>rustdoc</code> will read the
+source code from stdin (standard input stream) until the EOF, instead of the file
+system with an otherwise specified path.</p>
 <h2 id="path-load-command-line-flags-from-a-path"><a class="header" href="#path-load-command-line-flags-from-a-path"><code>@path</code>: load command-line flags from a path</a></h2>
 <p>If you specify <code>@path</code> on the command-line, then it will open <code>path</code> and read
 command line options from it. These options are one per line; a blank line indicates

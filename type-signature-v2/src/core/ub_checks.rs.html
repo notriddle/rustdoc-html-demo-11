@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/ub_checks.rs`."><title>ub_checks.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.79.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/ub_checks.rs`."><title>ub_checks.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -156,6 +156,10 @@
 <a href="#156" id="156">156</a>
 <a href="#157" id="157">157</a>
 <a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Provides the [`assert_unsafe_precondition`] macro as well as some utility functions that cover
 //! common preconditions.
 
@@ -204,6 +208,8 @@
 /// variables cannot be optimized out in MIR, an innocent-looking `let` can produce enough
 /// debuginfo to have a measurable compile-time impact on debug builds.
 </span><span class="attr">#[allow_internal_unstable(const_ub_checks)] </span><span class="comment">// permit this to be called in stably-const fn
+</span><span class="attr">#[macro_export]
+#[unstable(feature = <span class="string">"ub_checks"</span>, issue = <span class="string">"none"</span>)]
 </span><span class="macro">macro_rules!</span> assert_unsafe_precondition {
     (<span class="macro-nonterminal">$kind</span>:ident, <span class="macro-nonterminal">$message</span>:expr, ($(<span class="macro-nonterminal">$name</span>:ident:<span class="macro-nonterminal">$ty</span>:ty = <span class="macro-nonterminal">$arg</span>:expr),<span class="kw-2">*</span>$(,)<span class="question-mark">?</span>) =&gt; <span class="macro-nonterminal">$e</span>:expr $(,)<span class="question-mark">?</span>) =&gt; {
         {
@@ -233,11 +239,13 @@
         }
     };
 }
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>assert_unsafe_precondition;
+<span class="attr">#[unstable(feature = <span class="string">"ub_checks"</span>, issue = <span class="string">"none"</span>)]
+</span><span class="kw">pub use </span>assert_unsafe_precondition;
 
 <span class="doccomment">/// Checking library UB is always enabled when UB-checking is done
 /// (and we use a reexport so that there is no unnecessary wrapper function).
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>intrinsics::ub_checks <span class="kw">as </span>check_library_ub;
+</span><span class="attr">#[unstable(feature = <span class="string">"ub_checks"</span>, issue = <span class="string">"none"</span>)]
+</span><span class="kw">pub use </span>intrinsics::ub_checks <span class="kw">as </span>check_library_ub;
 
 <span class="doccomment">/// Determines whether we should check for language UB.
 ///

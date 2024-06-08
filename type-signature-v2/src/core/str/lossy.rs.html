@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/str/lossy.rs`."><title>lossy.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.79.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/str/lossy.rs`."><title>lossy.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -268,6 +268,32 @@
 <a href="#268" id="268">268</a>
 <a href="#269" id="269">269</a>
 <a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::fmt;
 <span class="kw">use </span><span class="kw">crate</span>::fmt::Formatter;
 <span class="kw">use </span><span class="kw">crate</span>::fmt::Write;
@@ -275,6 +301,46 @@
 
 <span class="kw">use </span><span class="kw">super</span>::from_utf8_unchecked;
 <span class="kw">use </span><span class="kw">super</span>::validations::utf8_char_width;
+
+<span class="kw">impl </span>[u8] {
+    <span class="doccomment">/// Creates an iterator over the contiguous valid UTF-8 ranges of this
+    /// slice, and the non-UTF-8 fragments in between.
+    ///
+    /// # Examples
+    ///
+    /// This function formats arbitrary but mostly-UTF-8 bytes into Rust source
+    /// code in the form of a C-string literal (`c"..."`).
+    ///
+    /// ```
+    /// use std::fmt::Write as _;
+    ///
+    /// pub fn cstr_literal(bytes: &amp;[u8]) -&gt; String {
+    ///     let mut repr = String::new();
+    ///     repr.push_str("c\"");
+    ///     for chunk in bytes.utf8_chunks() {
+    ///         for ch in chunk.valid().chars() {
+    ///             // Escapes \0, \t, \r, \n, \\, \', \", and uses \u{...} for non-printable characters.
+    ///             write!(repr, "{}", ch.escape_debug()).unwrap();
+    ///         }
+    ///         for byte in chunk.invalid() {
+    ///             write!(repr, "\\x{:02X}", byte).unwrap();
+    ///         }
+    ///     }
+    ///     repr.push('"');
+    ///     repr
+    /// }
+    ///
+    /// fn main() {
+    ///     let lit = cstr_literal(b"\xferris the \xf0\x9f\xa6\x80\x07");
+    ///     let expected = stringify!(c"\xFErris the 🦀\u{7}");
+    ///     assert_eq!(lit, expected);
+    /// }
+    /// ```
+    </span><span class="attr">#[stable(feature = <span class="string">"utf8_chunks"</span>, since = <span class="string">"1.79.0"</span>)]
+    </span><span class="kw">pub fn </span>utf8_chunks(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Utf8Chunks&lt;<span class="lifetime">'_</span>&gt; {
+        Utf8Chunks { source: <span class="self">self </span>}
+    }
+}
 
 <span class="doccomment">/// An item returned by the [`Utf8Chunks`] iterator.
 ///
@@ -284,15 +350,11 @@
 /// # Examples
 ///
 /// ```
-/// #![feature(utf8_chunks)]
-///
-/// use std::str::Utf8Chunks;
-///
 /// // An invalid UTF-8 string
 /// let bytes = b"foo\xF1\x80bar";
 ///
 /// // Decode the first `Utf8Chunk`
-/// let chunk = Utf8Chunks::new(bytes).next().unwrap();
+/// let chunk = bytes.utf8_chunks().next().unwrap();
 ///
 /// // The first three characters are valid UTF-8
 /// assert_eq!("foo", chunk.valid());
@@ -300,7 +362,7 @@
 /// // The fourth character is broken
 /// assert_eq!(b"\xF1\x80", chunk.invalid());
 /// ```
-</span><span class="attr">#[unstable(feature = <span class="string">"utf8_chunks"</span>, issue = <span class="string">"99543"</span>)]
+</span><span class="attr">#[stable(feature = <span class="string">"utf8_chunks"</span>, since = <span class="string">"1.79.0"</span>)]
 #[derive(Clone, Debug, PartialEq, Eq)]
 </span><span class="kw">pub struct </span>Utf8Chunk&lt;<span class="lifetime">'a</span>&gt; {
     valid: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str,
@@ -313,7 +375,7 @@
     /// This substring can be empty at the start of the string or between
     /// broken UTF-8 characters.
     </span><span class="attr">#[must_use]
-    #[unstable(feature = <span class="string">"utf8_chunks"</span>, issue = <span class="string">"99543"</span>)]
+    #[stable(feature = <span class="string">"utf8_chunks"</span>, since = <span class="string">"1.79.0"</span>)]
     </span><span class="kw">pub fn </span>valid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str {
         <span class="self">self</span>.valid
     }
@@ -333,7 +395,7 @@
     /// [`valid`]: Self::valid
     /// [`U+FFFD REPLACEMENT CHARACTER`]: crate::char::REPLACEMENT_CHARACTER
     </span><span class="attr">#[must_use]
-    #[unstable(feature = <span class="string">"utf8_chunks"</span>, issue = <span class="string">"99543"</span>)]
+    #[stable(feature = <span class="string">"utf8_chunks"</span>, since = <span class="string">"1.79.0"</span>)]
     </span><span class="kw">pub fn </span>invalid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8] {
         <span class="self">self</span>.invalid
     }
@@ -348,7 +410,7 @@
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         f.write_char(<span class="string">'"'</span>)<span class="question-mark">?</span>;
 
-        <span class="kw">for </span>chunk <span class="kw">in </span>Utf8Chunks::new(<span class="self">self</span>.<span class="number">0</span>) {
+        <span class="kw">for </span>chunk <span class="kw">in </span><span class="self">self</span>.<span class="number">0</span>.utf8_chunks() {
             <span class="comment">// Valid part.
             // Here we partially parse UTF-8 again which is suboptimal.
             </span>{
@@ -393,12 +455,8 @@
 /// [`String::from_utf8_lossy`] without allocating heap memory:
 ///
 /// ```
-/// #![feature(utf8_chunks)]
-///
-/// use std::str::Utf8Chunks;
-///
 /// fn from_utf8_lossy&lt;F&gt;(input: &amp;[u8], mut push: F) where F: FnMut(&amp;str) {
-///     for chunk in Utf8Chunks::new(input) {
+///     for chunk in input.utf8_chunks() {
 ///         push(chunk.valid());
 ///
 ///         if !chunk.invalid().is_empty() {
@@ -410,19 +468,13 @@
 ///
 /// [`String::from_utf8_lossy`]: ../../std/string/struct.String.html#method.from_utf8_lossy
 </span><span class="attr">#[must_use = <span class="string">"iterators are lazy and do nothing unless consumed"</span>]
-#[unstable(feature = <span class="string">"utf8_chunks"</span>, issue = <span class="string">"99543"</span>)]
+#[stable(feature = <span class="string">"utf8_chunks"</span>, since = <span class="string">"1.79.0"</span>)]
 #[derive(Clone)]
 </span><span class="kw">pub struct </span>Utf8Chunks&lt;<span class="lifetime">'a</span>&gt; {
     source: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8],
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Utf8Chunks&lt;<span class="lifetime">'a</span>&gt; {
-    <span class="doccomment">/// Creates a new iterator to decode the bytes.
-    </span><span class="attr">#[unstable(feature = <span class="string">"utf8_chunks"</span>, issue = <span class="string">"99543"</span>)]
-    </span><span class="kw">pub fn </span>new(bytes: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8]) -&gt; <span class="self">Self </span>{
-        <span class="self">Self </span>{ source: bytes }
-    }
-
     <span class="attr">#[doc(hidden)]
     #[unstable(feature = <span class="string">"str_internals"</span>, issue = <span class="string">"none"</span>)]
     </span><span class="kw">pub fn </span>debug(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Debug&lt;<span class="lifetime">'_</span>&gt; {
@@ -430,7 +482,7 @@
     }
 }
 
-<span class="attr">#[unstable(feature = <span class="string">"utf8_chunks"</span>, issue = <span class="string">"99543"</span>)]
+<span class="attr">#[stable(feature = <span class="string">"utf8_chunks"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Iterator <span class="kw">for </span>Utf8Chunks&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">type </span>Item = Utf8Chunk&lt;<span class="lifetime">'a</span>&gt;;
 
@@ -529,10 +581,10 @@
     }
 }
 
-<span class="attr">#[unstable(feature = <span class="string">"utf8_chunks"</span>, issue = <span class="string">"99543"</span>)]
+<span class="attr">#[stable(feature = <span class="string">"utf8_chunks"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">impl </span>FusedIterator <span class="kw">for </span>Utf8Chunks&lt;<span class="lifetime">'_</span>&gt; {}
 
-<span class="attr">#[unstable(feature = <span class="string">"utf8_chunks"</span>, issue = <span class="string">"99543"</span>)]
+<span class="attr">#[stable(feature = <span class="string">"utf8_chunks"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Utf8Chunks&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         f.debug_struct(<span class="string">"Utf8Chunks"</span>).field(<span class="string">"source"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.debug()).finish()

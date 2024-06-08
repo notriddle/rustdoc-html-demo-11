@@ -210,9 +210,12 @@ include:</p>
 of a delimited expression, delimited expressions are generally combinable,
 regardless of the number of members. Previously only applied with exactly
 one member (except for closures with explicit blocks).</li>
+<li>When line-breaking a binary operator, if the first operand spans multiple
+lines, use the base indentation of the last line.</li>
 <li>Miscellaneous <code>rustfmt</code> bugfixes.</li>
 <li>Use version-sort (sort <code>x8</code>, <code>x16</code>, <code>x32</code>, <code>x64</code>, <code>x128</code> in that order).</li>
 <li>Change "ASCIIbetical" sort to Unicode-aware "non-lowercase before lowercase".</li>
+<li>Format single associated type <code>where</code> clauses on the same line if they fit.</li>
 </ul>
 <h2 id="rust-201520182021-style-edition"><a class="header" href="#rust-201520182021-style-edition">Rust 2015/2018/2021 style edition</a></h2>
 <p>The archived version of the style guide at

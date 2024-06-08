@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -290,7 +292,7 @@ field private but the method public, and thus enable read-only access to that
 field as part of the type’s public API. We will discuss what public and private
 are and how to designate a field or method as public or private in <a href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html#exposing-paths-with-the-pub-keyword">Chapter
 7</a><!-- ignore -->.</p>
-<blockquote>
+<section class="note" aria-role="note">
 <h3 id="wheres-the---operator"><a class="header" href="#wheres-the---operator">Where’s the <code>-&gt;</code> Operator?</a></h3>
 <p>In C and C++, two different operators are used for calling methods: you use
 <code>.</code> if you’re calling a method on the object directly and <code>-&gt;</code> if you’re
@@ -331,7 +333,7 @@ and name of a method, Rust can figure out definitively whether the method is
 reading (<code>&amp;self</code>), mutating (<code>&amp;mut self</code>), or consuming (<code>self</code>). The fact
 that Rust makes borrowing implicit for method receivers is a big part of
 making ownership ergonomic in practice.</p>
-</blockquote>
+</section>
 <h3 id="methods-with-more-parameters"><a class="header" href="#methods-with-more-parameters">Methods with More Parameters</a></h3>
 <p>Let’s practice using methods by implementing a second method on the <code>Rectangle</code>
 struct. This time we want an instance of <code>Rectangle</code> to take another instance

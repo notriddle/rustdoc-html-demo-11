@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/escape.rs`."><title>escape.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.79.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/escape.rs`."><title>escape.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -114,6 +114,47 @@
 <a href="#114" id="114">114</a>
 <a href="#115" id="115">115</a>
 <a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Helper code for character escaping.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::ascii;
@@ -122,57 +163,80 @@
 
 <span class="kw">const </span>HEX_DIGITS: [ascii::Char; <span class="number">16</span>] = <span class="kw-2">*</span><span class="string">b"0123456789abcdef"</span>.as_ascii().unwrap();
 
-<span class="doccomment">/// Escapes a byte into provided buffer; returns length of escaped
-/// representation.
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>escape_ascii_into(output: <span class="kw-2">&amp;mut </span>[ascii::Char; <span class="number">4</span>], byte: u8) -&gt; Range&lt;u8&gt; {
-    <span class="attr">#[inline]
-    </span><span class="kw">fn </span>backslash(a: ascii::Char) -&gt; ([ascii::Char; <span class="number">4</span>], u8) {
-        ([ascii::Char::ReverseSolidus, a, ascii::Char::Null, ascii::Char::Null], <span class="number">2</span>)
-    }
+<span class="attr">#[inline]
+</span><span class="kw">const fn </span>backslash&lt;<span class="kw">const </span>N: usize&gt;(a: ascii::Char) -&gt; ([ascii::Char; N], Range&lt;u8&gt;) {
+    <span class="kw">const </span>{ <span class="macro">assert!</span>(N &gt;= <span class="number">2</span>) };
 
-    <span class="kw">let </span>(data, len) = <span class="kw">match </span>byte {
+    <span class="kw">let </span><span class="kw-2">mut </span>output = [ascii::Char::Null; N];
+
+    output[<span class="number">0</span>] = ascii::Char::ReverseSolidus;
+    output[<span class="number">1</span>] = a;
+
+    (output, <span class="number">0</span>..<span class="number">2</span>)
+}
+
+<span class="doccomment">/// Escapes an ASCII character.
+///
+/// Returns a buffer and the length of the escaped representation.
+</span><span class="kw">const fn </span>escape_ascii&lt;<span class="kw">const </span>N: usize&gt;(byte: u8) -&gt; ([ascii::Char; N], Range&lt;u8&gt;) {
+    <span class="kw">const </span>{ <span class="macro">assert!</span>(N &gt;= <span class="number">4</span>) };
+
+    <span class="kw">match </span>byte {
         <span class="string">b'\t' </span>=&gt; backslash(ascii::Char::SmallT),
         <span class="string">b'\r' </span>=&gt; backslash(ascii::Char::SmallR),
         <span class="string">b'\n' </span>=&gt; backslash(ascii::Char::SmallN),
         <span class="string">b'\\' </span>=&gt; backslash(ascii::Char::ReverseSolidus),
         <span class="string">b'\'' </span>=&gt; backslash(ascii::Char::Apostrophe),
         <span class="string">b'\"' </span>=&gt; backslash(ascii::Char::QuotationMark),
-        <span class="kw">_ </span>=&gt; {
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(a) = byte.as_ascii()
+        byte =&gt; {
+            <span class="kw">let </span><span class="kw-2">mut </span>output = [ascii::Char::Null; N];
+
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(c) = byte.as_ascii()
                 &amp;&amp; !byte.is_ascii_control()
             {
-                ([a, ascii::Char::Null, ascii::Char::Null, ascii::Char::Null], <span class="number">1</span>)
+                output[<span class="number">0</span>] = c;
+                (output, <span class="number">0</span>..<span class="number">1</span>)
             } <span class="kw">else </span>{
-                <span class="kw">let </span>hi = HEX_DIGITS[usize::from(byte &gt;&gt; <span class="number">4</span>)];
-                <span class="kw">let </span>lo = HEX_DIGITS[usize::from(byte &amp; <span class="number">0xf</span>)];
-                ([ascii::Char::ReverseSolidus, ascii::Char::SmallX, hi, lo], <span class="number">4</span>)
+                <span class="kw">let </span>hi = HEX_DIGITS[(byte &gt;&gt; <span class="number">4</span>) <span class="kw">as </span>usize];
+                <span class="kw">let </span>lo = HEX_DIGITS[(byte &amp; <span class="number">0xf</span>) <span class="kw">as </span>usize];
+
+                output[<span class="number">0</span>] = ascii::Char::ReverseSolidus;
+                output[<span class="number">1</span>] = ascii::Char::SmallX;
+                output[<span class="number">2</span>] = hi;
+                output[<span class="number">3</span>] = lo;
+
+                (output, <span class="number">0</span>..<span class="number">4</span>)
             }
         }
-    };
-    <span class="kw-2">*</span>output = data;
-    <span class="number">0</span>..len
+    }
 }
 
-<span class="doccomment">/// Escapes a character into provided buffer using `\u{NNNN}` representation.
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>escape_unicode_into(output: <span class="kw-2">&amp;mut </span>[ascii::Char; <span class="number">10</span>], ch: char) -&gt; Range&lt;u8&gt; {
+<span class="doccomment">/// Escapes a character `\u{NNNN}` representation.
+///
+/// Returns a buffer and the length of the escaped representation.
+</span><span class="kw">const fn </span>escape_unicode&lt;<span class="kw">const </span>N: usize&gt;(c: char) -&gt; ([ascii::Char; N], Range&lt;u8&gt;) {
+    <span class="kw">const </span>{ <span class="macro">assert!</span>(N &gt;= <span class="number">10 </span>&amp;&amp; N &lt; u8::MAX <span class="kw">as </span>usize) };
+
+    <span class="kw">let </span>c = u32::from(c);
+
+    <span class="comment">// OR-ing `1` ensures that for `c == 0` the code computes that
+    // one digit should be printed.
+    </span><span class="kw">let </span>start = (c | <span class="number">1</span>).leading_zeros() <span class="kw">as </span>usize / <span class="number">4 </span>- <span class="number">2</span>;
+
+    <span class="kw">let </span><span class="kw-2">mut </span>output = [ascii::Char::Null; N];
+    output[<span class="number">3</span>] = HEX_DIGITS[((c &gt;&gt; <span class="number">20</span>) &amp; <span class="number">15</span>) <span class="kw">as </span>usize];
+    output[<span class="number">4</span>] = HEX_DIGITS[((c &gt;&gt; <span class="number">16</span>) &amp; <span class="number">15</span>) <span class="kw">as </span>usize];
+    output[<span class="number">5</span>] = HEX_DIGITS[((c &gt;&gt; <span class="number">12</span>) &amp; <span class="number">15</span>) <span class="kw">as </span>usize];
+    output[<span class="number">6</span>] = HEX_DIGITS[((c &gt;&gt; <span class="number">8</span>) &amp; <span class="number">15</span>) <span class="kw">as </span>usize];
+    output[<span class="number">7</span>] = HEX_DIGITS[((c &gt;&gt; <span class="number">4</span>) &amp; <span class="number">15</span>) <span class="kw">as </span>usize];
+    output[<span class="number">8</span>] = HEX_DIGITS[((c &gt;&gt; <span class="number">0</span>) &amp; <span class="number">15</span>) <span class="kw">as </span>usize];
     output[<span class="number">9</span>] = ascii::Char::RightCurlyBracket;
+    output[start + <span class="number">0</span>] = ascii::Char::ReverseSolidus;
+    output[start + <span class="number">1</span>] = ascii::Char::SmallU;
+    output[start + <span class="number">2</span>] = ascii::Char::LeftCurlyBracket;
 
-    <span class="kw">let </span>ch = ch <span class="kw">as </span>u32;
-    output[<span class="number">3</span>] = HEX_DIGITS[((ch &gt;&gt; <span class="number">20</span>) &amp; <span class="number">15</span>) <span class="kw">as </span>usize];
-    output[<span class="number">4</span>] = HEX_DIGITS[((ch &gt;&gt; <span class="number">16</span>) &amp; <span class="number">15</span>) <span class="kw">as </span>usize];
-    output[<span class="number">5</span>] = HEX_DIGITS[((ch &gt;&gt; <span class="number">12</span>) &amp; <span class="number">15</span>) <span class="kw">as </span>usize];
-    output[<span class="number">6</span>] = HEX_DIGITS[((ch &gt;&gt; <span class="number">8</span>) &amp; <span class="number">15</span>) <span class="kw">as </span>usize];
-    output[<span class="number">7</span>] = HEX_DIGITS[((ch &gt;&gt; <span class="number">4</span>) &amp; <span class="number">15</span>) <span class="kw">as </span>usize];
-    output[<span class="number">8</span>] = HEX_DIGITS[((ch &gt;&gt; <span class="number">0</span>) &amp; <span class="number">15</span>) <span class="kw">as </span>usize];
-
-    <span class="comment">// or-ing 1 ensures that for ch==0 the code computes that one digit should
-    // be printed.
-    </span><span class="kw">let </span>start = (ch | <span class="number">1</span>).leading_zeros() <span class="kw">as </span>usize / <span class="number">4 </span>- <span class="number">2</span>;
-    <span class="kw">const </span>UNICODE_ESCAPE_PREFIX: <span class="kw-2">&amp;</span>[ascii::Char; <span class="number">3</span>] = <span class="string">b"\\u{"</span>.as_ascii().unwrap();
-    output[start..][..<span class="number">3</span>].copy_from_slice(UNICODE_ESCAPE_PREFIX);
-
-    (start <span class="kw">as </span>u8)..<span class="number">10
-</span>}
+    (output, (start <span class="kw">as </span>u8)..(N <span class="kw">as </span>u8))
+}
 
 <span class="doccomment">/// An iterator over an fixed-size array.
 ///
@@ -181,45 +245,63 @@
 </span><span class="attr">#[derive(Clone, Debug)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>EscapeIterInner&lt;<span class="kw">const </span>N: usize&gt; {
     <span class="comment">// The element type ensures this is always ASCII, and thus also valid UTF-8.
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) data: [ascii::Char; N],
+    </span>data: [ascii::Char; N],
 
-    <span class="comment">// Invariant: alive.start &lt;= alive.end &lt;= N.
-    </span><span class="kw">pub</span>(<span class="kw">crate</span>) alive: Range&lt;u8&gt;,
+    <span class="comment">// Invariant: `alive.start &lt;= alive.end &lt;= N`
+    </span>alive: Range&lt;u8&gt;,
 }
 
 <span class="kw">impl</span>&lt;<span class="kw">const </span>N: usize&gt; EscapeIterInner&lt;N&gt; {
-    <span class="kw">pub fn </span>new(data: [ascii::Char; N], alive: Range&lt;u8&gt;) -&gt; <span class="self">Self </span>{
-        <span class="kw">const </span>{ <span class="macro">assert!</span>(N &lt; <span class="number">256</span>) };
-        <span class="macro">debug_assert!</span>(alive.start &lt;= alive.end &amp;&amp; usize::from(alive.end) &lt;= N, <span class="string">"{alive:?}"</span>);
-        <span class="self">Self </span>{ data, alive }
+    <span class="kw">pub const fn </span>backslash(c: ascii::Char) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>(data, range) = backslash(c);
+        <span class="self">Self </span>{ data, alive: range }
     }
 
-    <span class="kw">pub fn </span>from_array&lt;<span class="kw">const </span>M: usize&gt;(array: [ascii::Char; M]) -&gt; <span class="self">Self </span>{
-        <span class="kw">const </span>{ <span class="macro">assert!</span>(M &lt;= N) };
-
-        <span class="kw">let </span><span class="kw-2">mut </span>data = [ascii::Char::Null; N];
-        data[..M].copy_from_slice(<span class="kw-2">&amp;</span>array);
-        <span class="self">Self</span>::new(data, <span class="number">0</span>..M <span class="kw">as </span>u8)
+    <span class="kw">pub const fn </span>ascii(c: u8) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>(data, range) = escape_ascii(c);
+        <span class="self">Self </span>{ data, alive: range }
     }
 
-    <span class="kw">pub fn </span>as_ascii(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[ascii::Char] {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.data[usize::from(<span class="self">self</span>.alive.start)..usize::from(<span class="self">self</span>.alive.end)]
+    <span class="kw">pub const fn </span>unicode(c: char) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>(data, range) = escape_unicode(c);
+        <span class="self">Self </span>{ data, alive: range }
     }
 
-    <span class="kw">pub fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+    <span class="attr">#[inline]
+    </span><span class="kw">pub const fn </span>empty() -&gt; <span class="self">Self </span>{
+        <span class="self">Self </span>{ data: [ascii::Char::Null; N], alive: <span class="number">0</span>..<span class="number">0 </span>}
+    }
+
+    <span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>as_ascii(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[ascii::Char] {
+        <span class="comment">// SAFETY: `self.alive` is guaranteed to be a valid range for indexing `self.data`.
+        </span><span class="kw">unsafe </span>{
+            <span class="self">self</span>.data.get_unchecked(usize::from(<span class="self">self</span>.alive.start)..usize::from(<span class="self">self</span>.alive.end))
+        }
+    }
+
+    <span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
         <span class="self">self</span>.as_ascii().as_str()
     }
 
-    <span class="kw">pub fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
+    <span class="attr">#[inline]
+    </span><span class="kw">pub fn </span>len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
         usize::from(<span class="self">self</span>.alive.end - <span class="self">self</span>.alive.start)
     }
 
     <span class="kw">pub fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;u8&gt; {
-        <span class="self">self</span>.alive.next().map(|i| <span class="self">self</span>.data[usize::from(i)].to_u8())
+        <span class="kw">let </span>i = <span class="self">self</span>.alive.next()<span class="question-mark">?</span>;
+
+        <span class="comment">// SAFETY: `i` is guaranteed to be a valid index for `self.data`.
+        </span><span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="self">self</span>.data.get_unchecked(usize::from(i)).to_u8()) }
     }
 
     <span class="kw">pub fn </span>next_back(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;u8&gt; {
-        <span class="self">self</span>.alive.next_back().map(|i| <span class="self">self</span>.data[usize::from(i)].to_u8())
+        <span class="kw">let </span>i = <span class="self">self</span>.alive.next_back()<span class="question-mark">?</span>;
+
+        <span class="comment">// SAFETY: `i` is guaranteed to be a valid index for `self.data`.
+        </span><span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="self">self</span>.data.get_unchecked(usize::from(i)).to_u8()) }
     }
 
     <span class="kw">pub fn </span>advance_by(<span class="kw-2">&amp;mut </span><span class="self">self</span>, n: usize) -&gt; <span class="prelude-ty">Result</span>&lt;(), NonZero&lt;usize&gt;&gt; {

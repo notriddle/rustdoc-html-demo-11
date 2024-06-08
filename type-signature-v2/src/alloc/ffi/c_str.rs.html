@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/alloc/src/ffi/c_str.rs`."><title>c_str.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="alloc" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.79.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../alloc/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/alloc/src/ffi/c_str.rs`."><title>c_str.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="alloc" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1142,6 +1142,15 @@
 <a href="#1142" id="1142">1142</a>
 <a href="#1143" id="1143">1143</a>
 <a href="#1144" id="1144">1144</a>
+<a href="#1145" id="1145">1145</a>
+<a href="#1146" id="1146">1146</a>
+<a href="#1147" id="1147">1147</a>
+<a href="#1148" id="1148">1148</a>
+<a href="#1149" id="1149">1149</a>
+<a href="#1150" id="1150">1150</a>
+<a href="#1151" id="1151">1151</a>
+<a href="#1152" id="1152">1152</a>
+<a href="#1153" id="1153">1153</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! [`CString`] and its related types.
 
 </span><span class="attr">#[cfg(test)]
@@ -1185,6 +1194,7 @@
 /// or anything that implements &lt;code&gt;[Into]&lt;[Vec]&lt;[u8]&gt;&gt;&lt;/code&gt; (for
 /// example, you can build a `CString` straight out of a [`String`] or
 /// a &lt;code&gt;&amp;[str]&lt;/code&gt;, since both implement that trait).
+/// You can create a `CString` from a literal with `CString::from(c"Text")`.
 ///
 /// The [`CString::new`] method will actually check that the provided &lt;code&gt;&amp;[[u8]]&lt;/code&gt;
 /// does not have 0 bytes in the middle, and return an error if it
@@ -2053,6 +2063,19 @@
     }
 }
 
+<span class="attr">#[cfg(not(no_global_oom_handling))]
+#[stable(feature = <span class="string">"more_rc_default_impls"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+</span><span class="kw">impl </span>Default <span class="kw">for </span>Rc&lt;CStr&gt; {
+    <span class="doccomment">/// Creates an empty CStr inside an Rc
+    ///
+    /// This may or may not share an allocation with other Rcs on the same thread.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>c_str: <span class="kw-2">&amp;</span>CStr = Default::default();
+        Rc::from(c_str)
+    }
+}
+
 <span class="attr">#[cfg(not(test))]
 #[stable(feature = <span class="string">"default_box_extra"</span>, since = <span class="string">"1.17.0"</span>)]
 </span><span class="kw">impl </span>Default <span class="kw">for </span>Box&lt;CStr&gt; {
@@ -2213,27 +2236,22 @@
     ///
     /// # Examples
     ///
-    /// Calling `to_string_lossy` on a `CStr` containing valid UTF-8:
+    /// Calling `to_string_lossy` on a `CStr` containing valid UTF-8. The leading
+    /// `c` on the string literal denotes a `CStr`.
     ///
     /// ```
     /// use std::borrow::Cow;
-    /// use std::ffi::CStr;
     ///
-    /// let cstr = CStr::from_bytes_with_nul(b"Hello World\0")
-    ///                  .expect("CStr::from_bytes_with_nul failed");
-    /// assert_eq!(cstr.to_string_lossy(), Cow::Borrowed("Hello World"));
+    /// assert_eq!(c"Hello World".to_string_lossy(), Cow::Borrowed("Hello World"));
     /// ```
     ///
     /// Calling `to_string_lossy` on a `CStr` containing invalid UTF-8:
     ///
     /// ```
     /// use std::borrow::Cow;
-    /// use std::ffi::CStr;
     ///
-    /// let cstr = CStr::from_bytes_with_nul(b"Hello \xF0\x90\x80World\0")
-    ///                  .expect("CStr::from_bytes_with_nul failed");
     /// assert_eq!(
-    ///     cstr.to_string_lossy(),
+    ///     c"Hello \xF0\x90\x80World".to_string_lossy(),
     ///     Cow::Owned(String::from("Hello �World")) as Cow&lt;'_, str&gt;
     /// );
     /// ```

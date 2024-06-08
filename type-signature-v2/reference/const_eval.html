@@ -205,7 +205,7 @@ Recursively defining constants is not allowed.</li>
 <li><a href="expressions/tuple-expr.html">Tuple expressions</a>.</li>
 <li><a href="expressions/array-expr.html">Array expressions</a>.</li>
 <li><a href="expressions/struct-expr.html">Struct</a> expressions.</li>
-<li><a href="expressions/block-expr.html">Block expressions</a>, including <code>unsafe</code> blocks.
+<li><a href="expressions/block-expr.html">Block expressions</a>, including <code>unsafe</code> and <code>const</code> blocks.
 <ul>
 <li><a href="statements.html#let-statements">let statements</a> and thus irrefutable <a href="patterns.html">patterns</a>, including mutable bindings</li>
 <li><a href="expressions/operator-expr.html#assignment-expressions">assignment expressions</a></li>
@@ -245,6 +245,7 @@ operators used on integer and floating point types, <code>bool</code>, and <code
 </ul>
 </li>
 <li>A <a href="items/generics.html#const-generics">const generic argument</a></li>
+<li>A <a href="expressions/block-expr.html#const-blocks">const block</a></li>
 </ul>
 <h2 id="const-functions"><a class="header" href="#const-functions">Const Functions</a></h2>
 <p>A <em>const fn</em> is a function that one is permitted to call from a const context. Declaring a function

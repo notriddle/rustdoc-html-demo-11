@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -249,7 +251,7 @@ will be changing this variable’s value.</p>
 <p>When we run the program now, we get this:</p>
 <pre><code class="language-console">$ cargo run
    Compiling variables v0.1.0 (file:///projects/variables)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.30s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.30s
      Running `target/debug/variables`
 The value of x is: 5
 The value of x is: 6
@@ -327,7 +329,7 @@ When that scope is over, the inner shadowing ends and <code>x</code> returns to 
 When we run this program, it will output the following:</p>
 <pre><code class="language-console">$ cargo run
    Compiling variables v0.1.0 (file:///projects/variables)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.31s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.31s
      Running `target/debug/variables`
 The value of x in the inner scope is: 12
 The value of x is: 6
@@ -365,12 +367,6 @@ error[E0308]: mismatched types
   |                      ----- expected due to this value
 3 |     spaces = spaces.len();
   |              ^^^^^^^^^^^^ expected `&amp;str`, found `usize`
-  |
-help: try removing the method call
-  |
-3 -     spaces = spaces.len();
-3 +     spaces = spaces;
-  |
 
 For more information about this error, try `rustc --explain E0308`.
 error: could not compile `variables` (bin "variables") due to 1 previous error

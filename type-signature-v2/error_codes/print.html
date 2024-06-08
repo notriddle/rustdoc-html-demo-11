@@ -4379,8 +4379,7 @@ type Foo&lt;'a, 'b&gt; = TwoBounds&lt;'a, 'b, dyn Trait + 'b&gt;;
 <span class="boring">}</span></code></pre></pre>
 <p>For more information, see <a href="https://github.com/rust-lang/rfcs/blob/master/text/0599-default-object-bound.md">RFC 599</a> and its amendment <a href="https://github.com/rust-lang/rfcs/blob/master/text/1156-adjust-default-object-bounds.md">RFC 1156</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="error-code-e0229"><a class="header" href="#error-code-e0229">Error code E0229</a></h1>
-<p>An associated type binding was done outside of the type parameter declaration
-and <code>where</code> clause.</p>
+<p>An associated item constraint was written in an unexpected context.</p>
 <p>Erroneous code example:</p>
 <pre><pre class="playground"><code class="language-rust compile_fail E0229"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -4396,18 +4395,18 @@ impl Foo for isize {
     fn boo(&amp;self) -&gt; usize { 42 }
 }
 
-fn baz&lt;I&gt;(x: &amp;&lt;I as Foo&lt;A=Bar&gt;&gt;::A) {}
-// error: associated type bindings are not allowed here
+fn baz&lt;I&gt;(x: &amp;&lt;I as Foo&lt;A = Bar&gt;&gt;::A) {}
+// error: associated item constraint are not allowed here
 <span class="boring">}</span></code></pre></pre>
-<p>To solve this error, please move the type bindings in the type parameter
-declaration:</p>
+<p>To solve this error, please move the associated item constraints to the type
+parameter declaration:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">struct Bar;
 </span><span class="boring">trait Foo { type A; }
 </span>fn baz&lt;I: Foo&lt;A=Bar&gt;&gt;(x: &amp;&lt;I as Foo&gt;::A) {} // ok!
 <span class="boring">}</span></code></pre></pre>
-<p>Or in the <code>where</code> clause:</p>
+<p>Or into the where-clause:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">struct Bar;
@@ -8083,7 +8082,7 @@ extern "C" {}
 <p>Learn more in the <a href="https://doc.rust-lang.org/reference/attributes.html#conditional-compilation">Conditional Compilation</a> section
 of the Reference.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="error-code-e0457"><a class="header" href="#error-code-e0457">Error code E0457</a></h1>
-<h4 id="note-this-error-code-is-no-longer-emitted-by-the-compiler-47"><a class="header" href="#note-this-error-code-is-no-longer-emitted-by-the-compiler-47">Note: this error code is no longer emitted by the compiler`</a></h4>
+<h4 id="note-this-error-code-is-no-longer-emitted-by-the-compiler-47"><a class="header" href="#note-this-error-code-is-no-longer-emitted-by-the-compiler-47">Note: this error code is no longer emitted by the compiler</a></h4>
 <p>Plugin <code>..</code> only found in rlib format, but must be available in dylib format.</p>
 <p>Erroneous code example:</p>
 <p><code>rlib-plugin.rs</code></p>
@@ -9768,7 +9767,7 @@ let _add = |el| {
 
 <span class="boring">fn main() {
 </span>#[lang = "cookie"]
-fn cookie() -&gt; ! { // error: definition of an unknown language item: `cookie`
+fn cookie() -&gt; ! { // error: definition of an unknown lang item: `cookie`
     loop {}
 }
 <span class="boring">}</span></code></pre></pre>
@@ -11056,8 +11055,7 @@ fn main() {}</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="error-code-e0579"><a class="header" href="#error-code-e0579">Error code E0579</a></h1>
 <p>A lower range wasn't less than the upper range.</p>
 <p>Erroneous code example:</p>
-<pre><pre class="playground"><code class="language-rust compile_fail E0579">#![feature(exclusive_range_pattern)]
-
+<pre><pre class="playground"><code class="language-rust compile_fail E0579">
 fn main() {
     match 5u32 {
         // This range is ok, albeit pointless.
@@ -11124,6 +11122,40 @@ fn main() { }</code></pre></pre>
 }
 
 fn main() { }</code></pre></pre>
+<p>This error also includes the use of associated types with lifetime parameters.</p>
+<pre><pre class="playground"><code class="language-rust compile_fail E0582"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait Foo {
+    type Assoc&lt;'a&gt;;
+}
+
+struct Bar&lt;X, F&gt;
+where
+    X: Foo,
+    F: for&lt;'a&gt; Fn(X::Assoc&lt;'a&gt;) -&gt; &amp;'a i32
+{
+    x: X,
+    f: F
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The latter scenario encounters this error because <code>Foo::Assoc&lt;'a&gt;</code> could be
+implemented by a type that does not use the <code>'a</code> parameter, so there is no
+guarentee that <code>X::Assoc&lt;'a&gt;</code> actually uses <code>'a</code>.</p>
+<p>To fix this we can pass a dummy parameter:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">trait Foo {
+</span><span class="boring">    type Assoc&lt;'a&gt;;
+</span><span class="boring">}
+</span>struct Bar&lt;X, F&gt;
+where
+    X: Foo,
+    F: for&lt;'a&gt; Fn(X::Assoc&lt;'a&gt;, /* dummy */ &amp;'a ()) -&gt; &amp;'a i32
+{
+    x: X,
+    f: F
+}
+<span class="boring">}</span></code></pre></pre>
 <p>Note: The examples above used to be (erroneously) accepted by the
 compiler, but this was since corrected. See <a href="https://github.com/rust-lang/rust/issues/33685">issue #33685</a> for more
 details.</p>
@@ -12142,10 +12174,10 @@ yield point.</p>
 <p>Erroneous code example:</p>
 <pre><pre class="playground"><code class="language-rust compile_fail E0626"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">#![feature(coroutines, coroutine_trait, pin)]
+</span><span class="boring">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 </span><span class="boring">use std::ops::Coroutine;
 </span><span class="boring">use std::pin::Pin;
-</span>let mut b = || {
+</span>let mut b = #[coroutine] || {
     let a = &amp;String::new(); // &lt;-- This borrow...
     yield (); // ...is still in scope here, when the yield occurs.
     println!("{}", a);
@@ -12160,10 +12192,10 @@ resolve the previous example by removing the borrow and just storing
 the integer by value:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">#![feature(coroutines, coroutine_trait, pin)]
+</span><span class="boring">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 </span><span class="boring">use std::ops::Coroutine;
 </span><span class="boring">use std::pin::Pin;
-</span>let mut b = || {
+</span>let mut b = #[coroutine] || {
     let a = 3;
     yield ();
     println!("{}", a);
@@ -12176,10 +12208,10 @@ in those cases, something like the <code>Rc</code> or <code>Arc</code> types may
 <p>This error also frequently arises with iteration:</p>
 <pre><pre class="playground"><code class="language-rust compile_fail E0626"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">#![feature(coroutines, coroutine_trait, pin)]
+</span><span class="boring">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 </span><span class="boring">use std::ops::Coroutine;
 </span><span class="boring">use std::pin::Pin;
-</span>let mut b = || {
+</span>let mut b = #[coroutine] || {
   let v = vec![1,2,3];
   for &amp;x in &amp;v { // &lt;-- borrow of `v` is still in scope...
     yield x; // ...when this yield occurs.
@@ -12191,10 +12223,10 @@ Pin::new(&amp;mut b).resume(());
 <code>into_iter()</code>) to avoid borrowing:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">#![feature(coroutines, coroutine_trait, pin)]
+</span><span class="boring">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 </span><span class="boring">use std::ops::Coroutine;
 </span><span class="boring">use std::pin::Pin;
-</span>let mut b = || {
+</span>let mut b = #[coroutine] || {
   let v = vec![1,2,3];
   for x in v { // &lt;-- Take ownership of the values instead!
     yield x; // &lt;-- Now yield is OK.
@@ -12205,10 +12237,10 @@ Pin::new(&amp;mut b).resume(());
 <p>If taking ownership is not an option, using indices can work too:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">#![feature(coroutines, coroutine_trait, pin)]
+</span><span class="boring">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 </span><span class="boring">use std::ops::Coroutine;
 </span><span class="boring">use std::pin::Pin;
-</span>let mut b = || {
+</span>let mut b = #[coroutine] || {
   let v = vec![1,2,3];
   let len = v.len(); // (*)
   for i in 0..len {
@@ -12224,7 +12256,7 @@ Pin::new(&amp;mut b).resume(());
 <div style="break-before: page; page-break-before: always;"></div><h1 id="error-code-e0627"><a class="header" href="#error-code-e0627">Error code E0627</a></h1>
 <p>A yield expression was used outside of the coroutine literal.</p>
 <p>Erroneous code example:</p>
-<pre><pre class="playground"><code class="language-rust compile_fail E0627">#![feature(coroutines, coroutine_trait)]
+<pre><pre class="playground"><code class="language-rust compile_fail E0627">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 
 fn fake_coroutine() -&gt; &amp;'static str {
     yield 1;
@@ -12236,10 +12268,10 @@ fn main() {
 }</code></pre></pre>
 <p>The error occurs because keyword <code>yield</code> can only be used inside the coroutine
 literal. This can be fixed by constructing the coroutine correctly.</p>
-<pre><pre class="playground"><code class="language-rust">#![feature(coroutines, coroutine_trait)]
+<pre><pre class="playground"><code class="language-rust">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 
 fn main() {
-    let mut coroutine = || {
+    let mut coroutine = #[coroutine] || {
         yield 1;
         return "foo"
     };
@@ -12247,10 +12279,10 @@ fn main() {
 <div style="break-before: page; page-break-before: always;"></div><h1 id="error-code-e0628"><a class="header" href="#error-code-e0628">Error code E0628</a></h1>
 <p>More than one parameter was used for a coroutine.</p>
 <p>Erroneous code example:</p>
-<pre><pre class="playground"><code class="language-rust compile_fail E0628">#![feature(coroutines, coroutine_trait)]
+<pre><pre class="playground"><code class="language-rust compile_fail E0628">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 
 fn main() {
-    let coroutine = |a: i32, b: i32| {
+    let coroutine = #[coroutine] |a: i32, b: i32| {
         // error: too many parameters for a coroutine
         // Allowed only 0 or 1 parameter
         yield a;
@@ -12260,10 +12292,10 @@ fn main() {
 parameter for a coroutine.This can be fixed by using
 at most 1 parameter for the coroutine. For example, we might resolve
 the previous example by passing only one parameter.</p>
-<pre><pre class="playground"><code class="language-rust">#![feature(coroutines, coroutine_trait)]
+<pre><pre class="playground"><code class="language-rust">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 
 fn main() {
-    let coroutine = |a: i32| {
+    let coroutine = #[coroutine] |a: i32| {
         yield a;
     };
 }</code></pre></pre>
@@ -12370,7 +12402,7 @@ struct Company(i32);
 </span><span class="boring">}</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="error-code-e0637"><a class="header" href="#error-code-e0637">Error code E0637</a></h1>
 <p><code>'_</code> lifetime name or <code>&amp;T</code> without an explicit lifetime name has been used
-on illegal place.</p>
+in an illegal place.</p>
 <p>Erroneous code example:</p>
 <pre><pre class="playground"><code class="language-rust compile_fail E0106 E0637"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -12383,7 +12415,14 @@ on illegal place.</p>
     }
 }
 
-fn and_without_explicit_lifetime&lt;T&gt;()
+fn without_explicit_lifetime&lt;T&gt;()
+where
+    T: Iterator&lt;Item = &amp;u32&gt;,
+                     //^ `&amp;` without an explicit lifetime name
+{
+}
+
+fn without_hrtb&lt;T&gt;()
 where
     T: Into&lt;&amp;u32&gt;,
           //^ `&amp;` without an explicit lifetime name
@@ -12408,9 +12447,15 @@ the anonymous lifetime in Rust 2018, see <a href="https://blog.rust-lang.org/201
     }
 }
 
-fn and_without_explicit_lifetime&lt;'foo, T&gt;()
+fn without_explicit_lifetime&lt;'a, T&gt;()
 where
-    T: Into&lt;&amp;'foo u32&gt;,
+    T: Iterator&lt;Item = &amp;'a u32&gt;,
+{
+}
+
+fn without_hrtb&lt;T&gt;()
+where
+    T: for&lt;'foo&gt; Into&lt;&amp;'foo u32&gt;,
 {
 }
 <span class="boring">}</span></code></pre></pre>
@@ -13726,10 +13771,10 @@ chapter on lifetimes can be found <a href="https://doc.rust-lang.org/rust-by-exa
 <div style="break-before: page; page-break-before: always;"></div><h1 id="error-code-e0727"><a class="header" href="#error-code-e0727">Error code E0727</a></h1>
 <p>A <code>yield</code> clause was used in an <code>async</code> context.</p>
 <p>Erroneous code example:</p>
-<pre><pre class="playground"><code class="language-rust compile_fail E0727 edition2018">#![feature(coroutines)]
+<pre><pre class="playground"><code class="language-rust compile_fail E0727 edition2018">#![feature(coroutines, stmt_expr_attributes)]
 
 fn main() {
-    let coroutine = || {
+    let coroutine = #[coroutine] || {
         async {
             yield;
         }
@@ -13738,10 +13783,10 @@ fn main() {
 <p>Here, the <code>yield</code> keyword is used in an <code>async</code> block,
 which is not yet supported.</p>
 <p>To fix this error, you have to move <code>yield</code> out of the <code>async</code> block:</p>
-<pre><pre class="playground"><code class="language-rust edition2018">#![feature(coroutines)]
+<pre><pre class="playground"><code class="language-rust edition2018">#![feature(coroutines, stmt_expr_attributes)]
 
 fn main() {
-    let coroutine = || {
+    let coroutine = #[coroutine] || {
         yield;
     };
 }</code></pre></pre>

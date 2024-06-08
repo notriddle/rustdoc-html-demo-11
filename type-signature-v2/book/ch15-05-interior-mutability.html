@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -667,7 +669,7 @@ which isn’t allowed. When we run the tests for our library, the code in Listin
 15-23 will compile without any errors, but the test will fail:</p>
 <pre><code class="language-console">$ cargo test
    Compiling limit-tracker v0.1.0 (file:///projects/limit-tracker)
-    Finished test [unoptimized + debuginfo] target(s) in 0.91s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.91s
      Running unittests src/lib.rs (target/debug/deps/limit_tracker-e599811fa246dbde)
 
 running 1 test
@@ -733,9 +735,9 @@ fn main() {
 
     *value.borrow_mut() += 10;
 
-    println!("a after = {:?}", a);
-    println!("b after = {:?}", b);
-    println!("c after = {:?}", c);
+    println!("a after = {a:?}");
+    println!("b after = {b:?}");
+    println!("c after = {c:?}");
 }</code></pre></pre>
 <p><span class="caption">Listing 15-24: Using <code>Rc&lt;RefCell&lt;i32&gt;&gt;</code> to create a
 <code>List</code> that we can mutate</span></p>
@@ -758,7 +760,7 @@ on it and change the inner value.</p>
 value of 15 rather than 5:</p>
 <pre><code class="language-console">$ cargo run
    Compiling cons-list v0.1.0 (file:///projects/cons-list)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.63s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.63s
      Running `target/debug/cons-list`
 a after = Cons(RefCell { value: 15 }, Nil)
 b after = Cons(RefCell { value: 3 }, Cons(RefCell { value: 15 }, Nil))

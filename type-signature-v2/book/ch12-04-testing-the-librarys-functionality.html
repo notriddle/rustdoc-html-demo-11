@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -359,7 +361,7 @@ Chapter 10.</p>
 <p>Now let’s run the test:</p>
 <pre><code class="language-console">$ cargo test
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished test [unoptimized + debuginfo] target(s) in 0.97s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.97s
      Running unittests src/lib.rs (target/debug/deps/minigrep-9cd200e5fac0fc94)
 
 running 1 test
@@ -580,7 +582,7 @@ return them</span></p>
 and our test should pass. Let’s run the test:</p>
 <pre><code class="language-console">$ cargo test
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished test [unoptimized + debuginfo] target(s) in 1.22s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.22s
      Running unittests src/lib.rs (target/debug/deps/minigrep-9cd200e5fac0fc94)
 
 running 1 test
@@ -677,14 +679,14 @@ will print each line returned from <code>search</code>:</p>
 should return exactly one line from the Emily Dickinson poem, “frog”:</p>
 <pre><code class="language-console">$ cargo run -- frog poem.txt
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.38s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.38s
      Running `target/debug/minigrep frog poem.txt`
 How public, like a frog
 </code></pre>
 <p>Cool! Now let’s try a word that will match multiple lines, like “body”:</p>
 <pre><code class="language-console">$ cargo run -- body poem.txt
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.0s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.0s
      Running `target/debug/minigrep body poem.txt`
 I'm nobody! Who are you?
 Are you nobody, too?
@@ -694,7 +696,7 @@ How dreary to be somebody!
 word that isn’t anywhere in the poem, such as “monomorphization”:</p>
 <pre><code class="language-console">$ cargo run -- monomorphization poem.txt
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.0s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.0s
      Running `target/debug/minigrep monomorphization poem.txt`
 </code></pre>
 <p>Excellent! We’ve built our own mini version of a classic tool and learned a lot

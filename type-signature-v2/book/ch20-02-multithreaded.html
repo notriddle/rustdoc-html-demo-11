@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -583,20 +585,20 @@ have no parameters, we still need the parentheses.</p>
 nothing, but we’re trying only to make our code compile. Let’s check it again:</p>
 <pre><code class="language-console">$ cargo check
     Checking hello v0.1.0 (file:///projects/hello)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.24s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.24s
 </code></pre>
 <p>It compiles! But note that if you try <code>cargo run</code> and make a request in the
 browser, you’ll see the errors in the browser that we saw at the beginning of
 the chapter. Our library isn’t actually calling the closure passed to <code>execute</code>
 yet!</p>
-<blockquote>
+<section class="note" aria-role="note">
 <p>Note: A saying you might hear about languages with strict compilers, such as
 Haskell and Rust, is “if the code compiles, it works.” But this saying is not
 universally true. Our project compiles, but it does absolutely nothing! If we
 were building a real, complete project, this would be a good time to start
 writing unit tests to check that the code compiles <em>and</em> has the behavior we
 want.</p>
-</blockquote>
+</section>
 <h4 id="validating-the-number-of-threads-in-new"><a class="header" href="#validating-the-number-of-threads-in-new">Validating the Number of Threads in <code>new</code></a></h4>
 <p>We aren’t doing anything with the parameters to <code>new</code> and <code>execute</code>. Let’s
 implement the bodies of these functions with the behavior we want. To start,
@@ -806,7 +808,7 @@ implementation details regarding using a <code>Worker</code> struct within <code
 so we make the <code>Worker</code> struct and its <code>new</code> function private. The
 <code>Worker::new</code> function uses the <code>id</code> we give it and stores a <code>JoinHandle&lt;()&gt;</code>
 instance that is created by spawning a new thread using an empty closure.</p>
-<blockquote>
+<section class="note" aria-role="note">
 <p>Note: If the operating system can’t create a thread because there aren’t
 enough system resources, <code>thread::spawn</code> will panic. That will cause our
 whole server to panic, even though the creation of some threads might
@@ -814,7 +816,7 @@ succeed. For simplicity’s sake, this behavior is fine, but in a production
 thread pool implementation, you’d likely want to use
 <a href="../std/thread/struct.Builder.html"><code>std::thread::Builder</code></a><!-- ignore --> and its
 <a href="../std/thread/struct.Builder.html#method.spawn"><code>spawn</code></a><!-- ignore --> method that returns <code>Result</code> instead.</p>
-</blockquote>
+</section>
 <p>This code will compile and will store the number of <code>Worker</code> instances we
 specified as an argument to <code>ThreadPool::new</code>. But we’re <em>still</em> not processing
 the closure that we get in <code>execute</code>. Let’s look at how to do that next.</p>
@@ -1293,12 +1295,12 @@ There are never more than four threads created, so our system won’t get
 overloaded if the server receives a lot of requests. If we make a request to
 <em>/sleep</em>, the server will be able to serve other requests by having another
 thread run them.</p>
-<blockquote>
+<section class="note" aria-role="note">
 <p>Note: If you open <em>/sleep</em> in multiple browser windows simultaneously, they
 might load one at a time in 5 second intervals. Some web browsers execute
 multiple instances of the same request sequentially for caching reasons. This
 limitation is not caused by our web server.</p>
-</blockquote>
+</section>
 <p>After learning about the <code>while let</code> loop in Chapter 18, you might be wondering
 why we didn’t write the worker thread code as shown in Listing 20-21.</p>
 <p><span class="filename">Filename: src/lib.rs</span></p>

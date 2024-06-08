@@ -279,7 +279,7 @@ found <a href="https://rust-lang.github.io/rust-clippy/master/index.html#msrv">h
 <code>clippy</code> cfg is not set. You may need to provide a stub so that the code compiles:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>#[cfg(not(clippy)]
+</span>#[cfg(not(clippy))]
 include!(concat!(env!("OUT_DIR"), "/my_big_function-generated.rs"));
 
 #[cfg(clippy)]

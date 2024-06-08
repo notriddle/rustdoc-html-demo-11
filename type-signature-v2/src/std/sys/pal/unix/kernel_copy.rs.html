@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/kernel_copy.rs`."><title>kernel_copy.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.79.0.js"></script><script defer src="../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../std/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/kernel_copy.rs`."><title>kernel_copy.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.81.0.js"></script><script defer src="../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -728,6 +728,35 @@
 <a href="#728" id="728">728</a>
 <a href="#729" id="729">729</a>
 <a href="#730" id="730">730</a>
+<a href="#731" id="731">731</a>
+<a href="#732" id="732">732</a>
+<a href="#733" id="733">733</a>
+<a href="#734" id="734">734</a>
+<a href="#735" id="735">735</a>
+<a href="#736" id="736">736</a>
+<a href="#737" id="737">737</a>
+<a href="#738" id="738">738</a>
+<a href="#739" id="739">739</a>
+<a href="#740" id="740">740</a>
+<a href="#741" id="741">741</a>
+<a href="#742" id="742">742</a>
+<a href="#743" id="743">743</a>
+<a href="#744" id="744">744</a>
+<a href="#745" id="745">745</a>
+<a href="#746" id="746">746</a>
+<a href="#747" id="747">747</a>
+<a href="#748" id="748">748</a>
+<a href="#749" id="749">749</a>
+<a href="#750" id="750">750</a>
+<a href="#751" id="751">751</a>
+<a href="#752" id="752">752</a>
+<a href="#753" id="753">753</a>
+<a href="#754" id="754">754</a>
+<a href="#755" id="755">755</a>
+<a href="#756" id="756">756</a>
+<a href="#757" id="757">757</a>
+<a href="#758" id="758">758</a>
+<a href="#759" id="759">759</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! This module contains specializations that can offload `io::copy()` operations on file descriptor
 //! containing types (`File`, `TcpStream`, etc.) to more efficient syscalls than `read(2)` and `write(2)`.
 //!
@@ -1290,6 +1319,12 @@
     // We store the availability in a global to avoid unnecessary syscalls
     </span><span class="kw">static </span>HAS_COPY_FILE_RANGE: AtomicU8 = AtomicU8::new(NOT_PROBED);
 
+    <span class="kw">let </span><span class="kw-2">mut </span>have_probed = <span class="kw">match </span>HAS_COPY_FILE_RANGE.load(Ordering::Relaxed) {
+        NOT_PROBED =&gt; <span class="bool-val">false</span>,
+        UNAVAILABLE =&gt; <span class="kw">return </span>CopyResult::Fallback(<span class="number">0</span>),
+        <span class="kw">_ </span>=&gt; <span class="bool-val">true</span>,
+    };
+
     <span class="macro">syscall!</span> {
         <span class="kw">fn </span>copy_file_range(
             fd_in: libc::c_int,
@@ -1301,25 +1336,22 @@
         ) -&gt; libc::ssize_t
     }
 
-    <span class="kw">match </span>HAS_COPY_FILE_RANGE.load(Ordering::Relaxed) {
-        NOT_PROBED =&gt; {
-            <span class="comment">// EPERM can indicate seccomp filters or an immutable file.
-            // To distinguish these cases we probe with invalid file descriptors which should result in EBADF if the syscall is supported
-            // and some other error (ENOSYS or EPERM) if it's not available
-            </span><span class="kw">let </span>result = <span class="kw">unsafe </span>{
-                cvt(copy_file_range(INVALID_FD, ptr::null_mut(), INVALID_FD, ptr::null_mut(), <span class="number">1</span>, <span class="number">0</span>))
-            };
-
-            <span class="kw">if </span><span class="macro">matches!</span>(result.map_err(|e| e.raw_os_error()), <span class="prelude-val">Err</span>(<span class="prelude-val">Some</span>(EBADF))) {
-                HAS_COPY_FILE_RANGE.store(AVAILABLE, Ordering::Relaxed);
-            } <span class="kw">else </span>{
-                HAS_COPY_FILE_RANGE.store(UNAVAILABLE, Ordering::Relaxed);
-                <span class="kw">return </span>CopyResult::Fallback(<span class="number">0</span>);
-            }
+    <span class="kw">fn </span>probe_copy_file_range_support() -&gt; u8 {
+        <span class="comment">// In some cases, we cannot determine availability from the first
+        // `copy_file_range` call. In this case, we probe with an invalid file
+        // descriptor so that the results are easily interpretable.
+        </span><span class="kw">match unsafe </span>{
+            cvt(copy_file_range(INVALID_FD, ptr::null_mut(), INVALID_FD, ptr::null_mut(), <span class="number">1</span>, <span class="number">0</span>))
+                .map_err(|e| e.raw_os_error())
+        } {
+            <span class="prelude-val">Err</span>(<span class="prelude-val">Some</span>(EPERM | ENOSYS)) =&gt; UNAVAILABLE,
+            <span class="prelude-val">Err</span>(<span class="prelude-val">Some</span>(EBADF)) =&gt; AVAILABLE,
+            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(<span class="string">"unexpected copy_file_range probe success"</span>),
+            <span class="comment">// Treat other errors as the syscall
+            // being unavailable.
+            </span><span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; UNAVAILABLE,
         }
-        UNAVAILABLE =&gt; <span class="kw">return </span>CopyResult::Fallback(<span class="number">0</span>),
-        <span class="kw">_ </span>=&gt; {}
-    };
+    }
 
     <span class="kw">let </span><span class="kw-2">mut </span>written = <span class="number">0u64</span>;
     <span class="kw">while </span>written &lt; max_len {
@@ -1333,6 +1365,11 @@
             // because copy_file_range adjusts the file offset automatically
             </span>cvt(copy_file_range(reader, ptr::null_mut(), writer, ptr::null_mut(), bytes_to_copy, <span class="number">0</span>))
         };
+
+        <span class="kw">if </span>!have_probed &amp;&amp; copy_result.is_ok() {
+            have_probed = <span class="bool-val">true</span>;
+            HAS_COPY_FILE_RANGE.store(AVAILABLE, Ordering::Relaxed);
+        }
 
         <span class="kw">match </span>copy_result {
             <span class="prelude-val">Ok</span>(<span class="number">0</span>) <span class="kw">if </span>written == <span class="number">0 </span>=&gt; {
@@ -1349,7 +1386,28 @@
                 <span class="kw">return match </span>err.raw_os_error() {
                     <span class="comment">// when file offset + max_length &gt; u64::MAX
                     </span><span class="prelude-val">Some</span>(EOVERFLOW) =&gt; CopyResult::Fallback(written),
-                    <span class="prelude-val">Some</span>(ENOSYS | EXDEV | EINVAL | EPERM | EOPNOTSUPP | EBADF) <span class="kw">if </span>written == <span class="number">0 </span>=&gt; {
+                    <span class="prelude-val">Some</span>(raw_os_error @ (ENOSYS | EXDEV | EINVAL | EPERM | EOPNOTSUPP | EBADF))
+                        <span class="kw">if </span>written == <span class="number">0 </span>=&gt;
+                    {
+                        <span class="kw">if </span>!have_probed {
+                            <span class="kw">let </span>available = <span class="kw">if </span><span class="macro">matches!</span>(raw_os_error, ENOSYS | EOPNOTSUPP | EPERM) {
+                                <span class="comment">// EPERM can indicate seccomp filters or an
+                                // immutable file. To distinguish these
+                                // cases we probe with invalid file
+                                // descriptors which should result in EBADF
+                                // if the syscall is supported and EPERM or
+                                // ENOSYS if it's not available.
+                                //
+                                // For EOPNOTSUPP, see below. In the case of
+                                // ENOSYS, we try to cover for faulty FUSE
+                                // drivers.
+                                </span>probe_copy_file_range_support()
+                            } <span class="kw">else </span>{
+                                AVAILABLE
+                            };
+                            HAS_COPY_FILE_RANGE.store(available, Ordering::Relaxed);
+                        }
+
                         <span class="comment">// Try fallback io::copy if either:
                         // - Kernel version is &lt; 4.5 (ENOSYS¹)
                         // - Files are mounted on different fs (EXDEV)

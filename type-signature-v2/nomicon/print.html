@@ -7114,7 +7114,10 @@ libc = { version = "0.2.146", default-features = false }
 <strong>the default features of <code>libc</code> include the <code>std</code> crate and so must be
 disabled.</strong></p>
 <p>Alternatively, we can use the unstable <code>rustc_private</code> private feature together
-with an <code>extern crate libc;</code> declaration as shown in the examples below.</p>
+with an <code>extern crate libc;</code> declaration as shown in the examples below. Note that
+windows-msvc targets do not require a libc, and correspondingly there is no <code>libc</code>
+crate in their sysroot. We do not need the <code>extern crate libc;</code> below, and having it
+on a windows-msvc target would be a compile error.</p>
 <h2 id="writing-an-executable-without-std"><a class="header" href="#writing-an-executable-without-std">Writing an executable without <code>std</code></a></h2>
 <p>We will probably need a nightly version of the compiler to produce
 a <code>#![no_std]</code> executable because on many platforms, we have to provide the
@@ -7128,11 +7131,12 @@ in the same format as C (aside from the exact integer types being used):</p>
 #![allow(internal_features)]
 #![no_std]
 
-// Necessary for `panic = "unwind"` builds on some platforms.
+// Necessary for `panic = "unwind"` builds on cfg(unix) platforms.
 #![feature(panic_unwind)]
 extern crate unwind;
 
 // Pull in the system libc library for what crt0.o likely requires.
+#[cfg(not(windows))]
 extern crate libc;
 
 use core::panic::PanicInfo;
@@ -7158,11 +7162,12 @@ compiler's name mangling too:</p>
 #![no_std]
 #![no_main]
 
-// Necessary for `panic = "unwind"` builds on some platforms.
+// Necessary for `panic = "unwind"` builds on cfg(unix) platforms.
 #![feature(panic_unwind)]
 extern crate unwind;
 
 // Pull in the system libc library for what crt0.o likely requires.
+#[cfg(not(windows))]
 extern crate libc;
 
 use core::ffi::{c_char, c_int};

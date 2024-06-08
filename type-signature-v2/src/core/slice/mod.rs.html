@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/slice/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.79.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/slice/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -4783,6 +4783,8 @@
 <a href="#4783" id="4783">4783</a>
 <a href="#4784" id="4784">4784</a>
 <a href="#4785" id="4785">4785</a>
+<a href="#4786" id="4786">4786</a>
+<a href="#4787" id="4787">4787</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Slice management and manipulation.
 //!
 //! For more details see [`std::slice`].
@@ -4794,7 +4796,7 @@
 </span><span class="kw">use </span><span class="kw">crate</span>::cmp::Ordering::{<span class="self">self</span>, Equal, Greater, Less};
 <span class="kw">use </span><span class="kw">crate</span>::fmt;
 <span class="kw">use </span><span class="kw">crate</span>::hint;
-<span class="kw">use </span><span class="kw">crate</span>::intrinsics::exact_div;
+<span class="kw">use </span><span class="kw">crate</span>::intrinsics::{exact_div, unchecked_sub};
 <span class="kw">use </span><span class="kw">crate</span>::mem::{<span class="self">self</span>, SizedTypeProperties};
 <span class="kw">use </span><span class="kw">crate</span>::num::NonZero;
 <span class="kw">use </span><span class="kw">crate</span>::ops::{Bound, OneSidedRange, Range, RangeBounds};
@@ -5329,7 +5331,7 @@
     /// ```
     </span><span class="attr">#[inline]
     #[stable(feature = <span class="string">"slice_first_last_chunk"</span>, since = <span class="string">"1.77.0"</span>)]
-    #[rustc_const_unstable(feature = <span class="string">"const_slice_first_last_chunk"</span>, issue = <span class="string">"111774"</span>)]
+    #[rustc_const_stable(feature = <span class="string">"slice_first_last_chunk"</span>, since = <span class="string">"1.77.0"</span>)]
     </span><span class="kw">pub const fn </span>last_chunk&lt;<span class="kw">const </span>N: usize&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[T; N]&gt; {
         <span class="kw">if </span><span class="self">self</span>.len() &lt; N {
             <span class="prelude-val">None
@@ -6122,8 +6124,10 @@
     #[must_use]
     </span><span class="kw">pub const fn </span>as_chunks&lt;<span class="kw">const </span>N: usize&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="kw-2">&amp;</span>[[T; N]], <span class="kw-2">&amp;</span>[T]) {
         <span class="macro">assert!</span>(N != <span class="number">0</span>, <span class="string">"chunk size must be non-zero"</span>);
-        <span class="kw">let </span>len = <span class="self">self</span>.len() / N;
-        <span class="kw">let </span>(multiple_of_n, remainder) = <span class="self">self</span>.split_at(len * N);
+        <span class="kw">let </span>len_rounded_down = <span class="self">self</span>.len() / N * N;
+        <span class="comment">// SAFETY: The rounded-down value is always the same or smaller than the
+        // original length, and thus must be in-bounds of the slice.
+        </span><span class="kw">let </span>(multiple_of_n, remainder) = <span class="kw">unsafe </span>{ <span class="self">self</span>.split_at_unchecked(len_rounded_down) };
         <span class="comment">// SAFETY: We already panicked for zero, and ensured by construction
         // that the length of the subslice is a multiple of N.
         </span><span class="kw">let </span>array_slice = <span class="kw">unsafe </span>{ multiple_of_n.as_chunks_unchecked() };
@@ -6272,8 +6276,10 @@
     #[must_use]
     </span><span class="kw">pub const fn </span>as_chunks_mut&lt;<span class="kw">const </span>N: usize&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; (<span class="kw-2">&amp;mut </span>[[T; N]], <span class="kw-2">&amp;mut </span>[T]) {
         <span class="macro">assert!</span>(N != <span class="number">0</span>, <span class="string">"chunk size must be non-zero"</span>);
-        <span class="kw">let </span>len = <span class="self">self</span>.len() / N;
-        <span class="kw">let </span>(multiple_of_n, remainder) = <span class="self">self</span>.split_at_mut(len * N);
+        <span class="kw">let </span>len_rounded_down = <span class="self">self</span>.len() / N * N;
+        <span class="comment">// SAFETY: The rounded-down value is always the same or smaller than the
+        // original length, and thus must be in-bounds of the slice.
+        </span><span class="kw">let </span>(multiple_of_n, remainder) = <span class="kw">unsafe </span>{ <span class="self">self</span>.split_at_mut_unchecked(len_rounded_down) };
         <span class="comment">// SAFETY: We already panicked for zero, and ensured by construction
         // that the length of the subslice is a multiple of N.
         </span><span class="kw">let </span>array_slice = <span class="kw">unsafe </span>{ multiple_of_n.as_chunks_unchecked_mut() };
@@ -6749,7 +6755,7 @@
     ///     assert_eq!(right, []);
     /// }
     /// ```
-    </span><span class="attr">#[stable(feature = <span class="string">"slice_split_at_unchecked"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    </span><span class="attr">#[stable(feature = <span class="string">"slice_split_at_unchecked"</span>, since = <span class="string">"1.79.0"</span>)]
     #[rustc_const_stable(feature = <span class="string">"const_slice_split_at_unchecked"</span>, since = <span class="string">"1.77.0"</span>)]
     #[inline]
     #[must_use]
@@ -6768,7 +6774,7 @@
         );
 
         <span class="comment">// SAFETY: Caller has to check that `0 &lt;= mid &lt;= self.len()`
-        </span><span class="kw">unsafe </span>{ (from_raw_parts(ptr, mid), from_raw_parts(ptr.add(mid), len - mid)) }
+        </span><span class="kw">unsafe </span>{ (from_raw_parts(ptr, mid), from_raw_parts(ptr.add(mid), unchecked_sub(len, mid))) }
     }
 
     <span class="doccomment">/// Divides one mutable slice into two at an index, without doing bounds checking.
@@ -6802,7 +6808,7 @@
     /// }
     /// assert_eq!(v, [1, 2, 3, 4, 5, 6]);
     /// ```
-    </span><span class="attr">#[stable(feature = <span class="string">"slice_split_at_unchecked"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    </span><span class="attr">#[stable(feature = <span class="string">"slice_split_at_unchecked"</span>, since = <span class="string">"1.79.0"</span>)]
     #[rustc_const_unstable(feature = <span class="string">"const_slice_split_at_mut"</span>, issue = <span class="string">"101804"</span>)]
     #[inline]
     #[must_use]
@@ -6820,7 +6826,12 @@
         //
         // `[ptr; mid]` and `[mid; len]` are not overlapping, so returning a mutable reference
         // is fine.
-        </span><span class="kw">unsafe </span>{ (from_raw_parts_mut(ptr, mid), from_raw_parts_mut(ptr.add(mid), len - mid)) }
+        </span><span class="kw">unsafe </span>{
+            (
+                from_raw_parts_mut(ptr, mid),
+                from_raw_parts_mut(ptr.add(mid), unchecked_sub(len, mid)),
+            )
+        }
     }
 
     <span class="doccomment">/// Divides one slice into two at an index, returning `None` if the slice is
@@ -6836,8 +6847,6 @@
     /// # Examples
     ///
     /// ```
-    /// #![feature(split_at_checked)]
-    ///
     /// let v = [1, -2, 3, -4, 5, -6];
     ///
     /// {
@@ -6860,8 +6869,8 @@
     ///
     /// assert_eq!(None, v.split_at_checked(7));
     /// ```
-    </span><span class="attr">#[unstable(feature = <span class="string">"split_at_checked"</span>, reason = <span class="string">"new API"</span>, issue = <span class="string">"119128"</span>)]
-    #[rustc_const_unstable(feature = <span class="string">"split_at_checked"</span>, issue = <span class="string">"119128"</span>)]
+    </span><span class="attr">#[stable(feature = <span class="string">"split_at_checked"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    #[rustc_const_stable(feature = <span class="string">"split_at_checked"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
     #[inline]
     #[must_use]
     </span><span class="kw">pub const fn </span>split_at_checked(<span class="kw-2">&amp;</span><span class="self">self</span>, mid: usize) -&gt; <span class="prelude-ty">Option</span>&lt;(<span class="kw-2">&amp;</span>[T], <span class="kw-2">&amp;</span>[T])&gt; {
@@ -6887,8 +6896,6 @@
     /// # Examples
     ///
     /// ```
-    /// #![feature(split_at_checked)]
-    ///
     /// let mut v = [1, 0, 3, 0, 5, 6];
     ///
     /// if let Some((left, right)) = v.split_at_mut_checked(2) {
@@ -6901,8 +6908,8 @@
     ///
     /// assert_eq!(None, v.split_at_mut_checked(7));
     /// ```
-    </span><span class="attr">#[unstable(feature = <span class="string">"split_at_checked"</span>, reason = <span class="string">"new API"</span>, issue = <span class="string">"119128"</span>)]
-    #[rustc_const_unstable(feature = <span class="string">"split_at_checked"</span>, issue = <span class="string">"119128"</span>)]
+    </span><span class="attr">#[stable(feature = <span class="string">"split_at_checked"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    #[rustc_const_unstable(feature = <span class="string">"const_slice_split_at_mut"</span>, issue = <span class="string">"101804"</span>)]
     #[inline]
     #[must_use]
     </span><span class="kw">pub const fn </span>split_at_mut_checked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, mid: usize) -&gt; <span class="prelude-ty">Option</span>&lt;(<span class="kw-2">&amp;mut </span>[T], <span class="kw-2">&amp;mut </span>[T])&gt; {
@@ -9311,23 +9318,22 @@
     /// # Examples
     ///
     /// ```
-    /// #![feature(slice_flatten)]
-    ///
-    /// assert_eq!([[1, 2, 3], [4, 5, 6]].flatten(), &amp;[1, 2, 3, 4, 5, 6]);
+    /// assert_eq!([[1, 2, 3], [4, 5, 6]].as_flattened(), &amp;[1, 2, 3, 4, 5, 6]);
     ///
     /// assert_eq!(
-    ///     [[1, 2, 3], [4, 5, 6]].flatten(),
-    ///     [[1, 2], [3, 4], [5, 6]].flatten(),
+    ///     [[1, 2, 3], [4, 5, 6]].as_flattened(),
+    ///     [[1, 2], [3, 4], [5, 6]].as_flattened(),
     /// );
     ///
     /// let slice_of_empty_arrays: &amp;[[i32; 0]] = &amp;[[], [], [], [], []];
-    /// assert!(slice_of_empty_arrays.flatten().is_empty());
+    /// assert!(slice_of_empty_arrays.as_flattened().is_empty());
     ///
     /// let empty_slice_of_arrays: &amp;[[u32; 10]] = &amp;[];
-    /// assert!(empty_slice_of_arrays.flatten().is_empty());
+    /// assert!(empty_slice_of_arrays.as_flattened().is_empty());
     /// ```
-    </span><span class="attr">#[unstable(feature = <span class="string">"slice_flatten"</span>, issue = <span class="string">"95629"</span>)]
-    </span><span class="kw">pub const fn </span>flatten(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
+    </span><span class="attr">#[stable(feature = <span class="string">"slice_flatten"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    #[rustc_const_unstable(feature = <span class="string">"const_slice_flatten"</span>, issue = <span class="string">"95629"</span>)]
+    </span><span class="kw">pub const fn </span>as_flattened(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
         <span class="kw">let </span>len = <span class="kw">if </span>T::IS_ZST {
             <span class="self">self</span>.len().checked_mul(N).expect(<span class="string">"slice len overflow"</span>)
         } <span class="kw">else </span>{
@@ -9352,8 +9358,6 @@
     /// # Examples
     ///
     /// ```
-    /// #![feature(slice_flatten)]
-    ///
     /// fn add_5_to_all(slice: &amp;mut [i32]) {
     ///     for i in slice {
     ///         *i += 5;
@@ -9361,11 +9365,11 @@
     /// }
     ///
     /// let mut array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
-    /// add_5_to_all(array.flatten_mut());
+    /// add_5_to_all(array.as_flattened_mut());
     /// assert_eq!(array, [[6, 7, 8], [9, 10, 11], [12, 13, 14]]);
     /// ```
-    </span><span class="attr">#[unstable(feature = <span class="string">"slice_flatten"</span>, issue = <span class="string">"95629"</span>)]
-    </span><span class="kw">pub fn </span>flatten_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
+    </span><span class="attr">#[stable(feature = <span class="string">"slice_flatten"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    </span><span class="kw">pub fn </span>as_flattened_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
         <span class="kw">let </span>len = <span class="kw">if </span>T::IS_ZST {
             <span class="self">self</span>.len().checked_mul(N).expect(<span class="string">"slice len overflow"</span>)
         } <span class="kw">else </span>{

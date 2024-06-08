@@ -215,17 +215,20 @@ the alignment of the type respectively.</p>
 <tr><td><code>u32</code> / <code>i32</code></td><td>4</td></tr>
 <tr><td><code>u64</code> / <code>i64</code></td><td>8</td></tr>
 <tr><td><code>u128</code> / <code>i128</code></td><td>16</td></tr>
+<tr><td><code>usize</code> / <code>isize</code></td><td>See below</td></tr>
 <tr><td><code>f32</code></td><td>4</td></tr>
 <tr><td><code>f64</code></td><td>8</td></tr>
 <tr><td><code>char</code></td><td>4</td></tr>
 </tbody></table>
 </div>
 <p><code>usize</code> and <code>isize</code> have a size big enough to contain every address on the
-target platform. For example, on a 32 bit target, this is 4 bytes and on a 64
+target platform. For example, on a 32 bit target, this is 4 bytes, and on a 64
 bit target, this is 8 bytes.</p>
-<p>Most primitives are generally aligned to their size, although this is
-platform-specific behavior. In particular, on many 32-bit platforms <code>u64</code>
-and <code>f64</code> are only aligned to 32 bits.</p>
+<p>The alignment of primitives is platform-specific.
+In most cases, their alignment is equal to their size, but it may be less.
+In particular, <code>i128</code> and <code>u128</code> are often aligned to 4 or 8 bytes even though
+their size is 16, and on many 32-bit platforms, <code>i64</code>, <code>u64</code>, and <code>f64</code> are only
+aligned to 4 bytes, not 8.</p>
 <h2 id="pointers-and-references-layout"><a class="header" href="#pointers-and-references-layout">Pointers and References Layout</a></h2>
 <p>Pointers and references have the same layout. Mutability of the pointer or
 reference does not change the layout.</p>

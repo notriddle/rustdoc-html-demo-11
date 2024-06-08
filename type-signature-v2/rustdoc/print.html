@@ -460,7 +460,7 @@ requested theme does not exist, the builtin default (currently
 </code></pre>
 <p>will be added.</p>
 <p>When rendering Rust files, this flag is ignored.</p>
-<h2 id="--html-in-header-include-more-html-in"><a class="header" href="#--html-in-header-include-more-html-in"><code>--html-in-header</code>: include more HTML in <head></a></h2>
+<h2 id="--html-in-header-include-more-html-in-head"><a class="header" href="#--html-in-header-include-more-html-in-head"><code>--html-in-header</code>: include more HTML in <code>&lt;head&gt;</code></a></h2>
 <p>Using this flag looks like this:</p>
 <pre><code class="language-bash">$ rustdoc src/lib.rs --html-in-header header.html
 $ rustdoc README.md --html-in-header header.html
@@ -545,6 +545,10 @@ comparison operation.</p>
 <p>When <code>rustdoc</code> receives this flag, it will print an extra "Version (version)" into the sidebar of
 the crate root's docs. You can use this flag to differentiate between different versions of your
 library's documentation.</p>
+<h2 id="--load-source-code-from-the-standard-input"><a class="header" href="#--load-source-code-from-the-standard-input"><code>-</code>: load source code from the standard input</a></h2>
+<p>If you specify <code>-</code> as the INPUT on the command line, then <code>rustdoc</code> will read the
+source code from stdin (standard input stream) until the EOF, instead of the file
+system with an otherwise specified path.</p>
 <h2 id="path-load-command-line-flags-from-a-path"><a class="header" href="#path-load-command-line-flags-from-a-path"><code>@path</code>: load command-line flags from a path</a></h2>
 <p>If you specify <code>@path</code> on the command-line, then it will open <code>path</code> and read
 command line options from it. These options are one per line; a blank line indicates
@@ -1787,7 +1791,7 @@ render differently in this case:</p>
 [f]: g
 </code></pre>
 <p><code>1.</code> and <code>2.</code> will be displayed as is in the rendered documentation (ie, <code>[a]</code> and <code>[b][c]</code>)
-whereas <code>3.</code> and <code>4.</code> will be replaced by a link targetting <code>e</code> for <code>[d](e)</code> and <code>g</code> for <code>[f]</code>.</p>
+whereas <code>3.</code> and <code>4.</code> will be replaced by a link targeting <code>e</code> for <code>[d](e)</code> and <code>g</code> for <code>[f]</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="documentation-tests"><a class="header" href="#documentation-tests">Documentation tests</a></h1>
 <p><code>rustdoc</code> supports executing your documentation examples as tests. This makes sure
 that examples within your documentation are up to date and working.</p>
@@ -2103,6 +2107,38 @@ that the code sample should be compiled using the respective edition of Rust.</p
 /// ```
 <span class="boring">fn foo() {}
 </span><span class="boring">}</span></code></pre></pre>
+<h3 id="custom-css-classes-for-code-blocks"><a class="header" href="#custom-css-classes-for-code-blocks">Custom CSS classes for code blocks</a></h3>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// ```custom,{class=language-c}
+/// int main(void) { return 0; }
+/// ```
+pub struct Bar;
+<span class="boring">}</span></code></pre></pre>
+<p>The text <code>int main(void) { return 0; }</code> is rendered without highlighting in a code block
+with the class <code>language-c</code>. This can be used to highlight other languages through JavaScript
+libraries for example.</p>
+<p>Without the <code>custom</code> attribute, it would be generated as a Rust code example with an additional
+<code>language-C</code> CSS class. Therefore, if you specifically don't want it to be a Rust code example,
+don't forget to add the <code>custom</code> attribute.</p>
+<p>To be noted that you can replace <code>class=</code> with <code>.</code> to achieve the same result:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// ```custom,{.language-c}
+/// int main(void) { return 0; }
+/// ```
+pub struct Bar;
+<span class="boring">}</span></code></pre></pre>
+<p>To be noted, <code>rust</code> and <code>.rust</code>/<code>class=rust</code> have different effects: <code>rust</code> indicates that this is
+a Rust code block whereas the two others add a "rust" CSS class on the code block.</p>
+<p>You can also use double quotes:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// ```"not rust" {."hello everyone"}
+/// int main(void) { return 0; }
+/// ```
+pub struct Bar;
+<span class="boring">}</span></code></pre></pre>
 <h2 id="syntax-reference"><a class="header" href="#syntax-reference">Syntax reference</a></h2>
 <p>The <em>exact</em> syntax for code blocks, including the edge cases, can be found
 in the <a href="https://spec.commonmark.org/0.29/#fenced-code-blocks">Fenced Code Blocks</a>
@@ -2502,7 +2538,7 @@ warning: 1 warning emitted
 <h2 id="redundant_explicit_links"><a class="header" href="#redundant_explicit_links"><code>redundant_explicit_links</code></a></h2>
 <p>This lint is <strong>warn-by-default</strong>. It detects explicit links that are the same
 as computed automatic links.
-This usually means the explicit links are removeable. For example:</p>
+This usually means the explicit links are removable. For example:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span>#![warn(rustdoc::redundant_explicit_links)] // note: unnecessary - warns by default.
 
@@ -3113,44 +3149,6 @@ add the <code>--scrape-tests</code> flag.</p>
 </ul>
 <p>This flag enables the generation of links in the source code pages which allow the reader
 to jump to a type definition.</p>
-<h3 id="custom-css-classes-for-code-blocks"><a class="header" href="#custom-css-classes-for-code-blocks">Custom CSS classes for code blocks</a></h3>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span>#![feature(custom_code_classes_in_docs)]
-
-<span class="boring">fn main() {
-</span>/// ```custom,{class=language-c}
-/// int main(void) { return 0; }
-/// ```
-pub struct Bar;
-<span class="boring">}</span></code></pre></pre>
-<p>The text <code>int main(void) { return 0; }</code> is rendered without highlighting in a code block
-with the class <code>language-c</code>. This can be used to highlight other languages through JavaScript
-libraries for example.</p>
-<p>Without the <code>custom</code> attribute, it would be generated as a Rust code example with an additional
-<code>language-C</code> CSS class. Therefore, if you specifically don't want it to be a Rust code example,
-don't forget to add the <code>custom</code> attribute.</p>
-<p>To be noted that you can replace <code>class=</code> with <code>.</code> to achieve the same result:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span>#![feature(custom_code_classes_in_docs)]
-
-<span class="boring">fn main() {
-</span>/// ```custom,{.language-c}
-/// int main(void) { return 0; }
-/// ```
-pub struct Bar;
-<span class="boring">}</span></code></pre></pre>
-<p>To be noted, <code>rust</code> and <code>.rust</code>/<code>class=rust</code> have different effects: <code>rust</code> indicates that this is
-a Rust code block whereas the two others add a "rust" CSS class on the code block.</p>
-<p>You can also use double quotes:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span>#![feature(custom_code_classes_in_docs)]
-
-<span class="boring">fn main() {
-</span>/// ```"not rust" {."hello everyone"}
-/// int main(void) { return 0; }
-/// ```
-pub struct Bar;
-<span class="boring">}</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="deprecated-features"><a class="header" href="#deprecated-features">Deprecated features</a></h1>
 <h2 id="passes"><a class="header" href="#passes">Passes</a></h2>
 <p>Rustdoc has a concept called "passes". These are transformations that

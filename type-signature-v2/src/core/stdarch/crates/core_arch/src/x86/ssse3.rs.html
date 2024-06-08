@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/../../stdarch/crates/core_arch/src/x86/ssse3.rs`."><title>ssse3.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../../../../../" data-static-root-path="../../../../../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../../../src-files1.79.0.js"></script><script defer src="../../../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/../../stdarch/crates/core_arch/src/x86/ssse3.rs`."><title>ssse3.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../../../../../" data-static-root-path="../../../../../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../../../src-files1.81.0.js"></script><script defer src="../../../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -665,7 +665,10 @@
 #[cfg_attr(test, assert_instr(pabsb))]
 #[stable(feature = <span class="string">"simd_x86"</span>, since = <span class="string">"1.27.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>_mm_abs_epi8(a: __m128i) -&gt; __m128i {
-    transmute(pabsb128(a.as_i8x16()))
+    <span class="kw">let </span>a = a.as_i8x16();
+    <span class="kw">let </span>zero = i8x16::splat(<span class="number">0</span>);
+    <span class="kw">let </span>r = simd_select::&lt;m8x16, <span class="kw">_</span>&gt;(simd_lt(a, zero), simd_neg(a), a);
+    transmute(r)
 }
 
 <span class="doccomment">/// Computes the absolute value of each of the packed 16-bit signed integers in
@@ -678,7 +681,10 @@
 #[cfg_attr(test, assert_instr(pabsw))]
 #[stable(feature = <span class="string">"simd_x86"</span>, since = <span class="string">"1.27.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>_mm_abs_epi16(a: __m128i) -&gt; __m128i {
-    transmute(pabsw128(a.as_i16x8()))
+    <span class="kw">let </span>a = a.as_i16x8();
+    <span class="kw">let </span>zero = i16x8::splat(<span class="number">0</span>);
+    <span class="kw">let </span>r = simd_select::&lt;m16x8, <span class="kw">_</span>&gt;(simd_lt(a, zero), simd_neg(a), a);
+    transmute(r)
 }
 
 <span class="doccomment">/// Computes the absolute value of each of the packed 32-bit signed integers in
@@ -691,7 +697,10 @@
 #[cfg_attr(test, assert_instr(pabsd))]
 #[stable(feature = <span class="string">"simd_x86"</span>, since = <span class="string">"1.27.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>_mm_abs_epi32(a: __m128i) -&gt; __m128i {
-    transmute(pabsd128(a.as_i32x4()))
+    <span class="kw">let </span>a = a.as_i32x4();
+    <span class="kw">let </span>zero = i32x4::splat(<span class="number">0</span>);
+    <span class="kw">let </span>r = simd_select::&lt;m32x4, <span class="kw">_</span>&gt;(simd_lt(a, zero), simd_neg(a), a);
+    transmute(r)
 }
 
 <span class="doccomment">/// Shuffles bytes from `a` according to the content of `b`.
@@ -933,15 +942,6 @@
 
 <span class="attr">#[allow(improper_ctypes)]
 </span><span class="kw">extern </span><span class="string">"C" </span>{
-    <span class="attr">#[link_name = <span class="string">"llvm.x86.ssse3.pabs.b.128"</span>]
-    </span><span class="kw">fn </span>pabsb128(a: i8x16) -&gt; u8x16;
-
-    <span class="attr">#[link_name = <span class="string">"llvm.x86.ssse3.pabs.w.128"</span>]
-    </span><span class="kw">fn </span>pabsw128(a: i16x8) -&gt; u16x8;
-
-    <span class="attr">#[link_name = <span class="string">"llvm.x86.ssse3.pabs.d.128"</span>]
-    </span><span class="kw">fn </span>pabsd128(a: i32x4) -&gt; u32x4;
-
     <span class="attr">#[link_name = <span class="string">"llvm.x86.ssse3.pshuf.b.128"</span>]
     </span><span class="kw">fn </span>pshufb128(a: u8x16, b: u8x16) -&gt; u8x16;
 

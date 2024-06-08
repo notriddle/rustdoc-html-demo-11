@@ -308,7 +308,8 @@ transcribed more than once or not at all.</p>
 <p>For reasons of backwards compatibility, though <code>_</code> <a href="expressions/underscore-expr.html">is also an
 expression</a>, a standalone underscore is not matched by
 the <code>expr</code> fragment specifier. However, <code>_</code> is matched by the <code>expr</code> fragment
-specifier when it appears as a subexpression.</p>
+specifier when it appears as a subexpression.
+For the same reason, a standalone <a href="expressions/block-expr.html#const-blocks">const block</a> is not matched but it is matched when appearing as a subexpression.</p>
 <blockquote>
 <p><strong>Edition Differences</strong>: Starting with the 2021 edition, <code>pat</code> fragment-specifiers match top-level or-patterns (that is, they accept <a href="patterns.html"><em>Pattern</em></a>).</p>
 <p>Before the 2021 edition, they match exactly the same fragments as <code>pat_param</code> (that is, they accept <a href="patterns.html"><em>PatternNoTopAlt</em></a>).</p>

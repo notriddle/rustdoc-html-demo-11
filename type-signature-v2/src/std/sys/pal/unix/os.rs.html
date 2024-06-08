@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/os.rs`."><title>os.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.79.0.js"></script><script defer src="../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../std/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/os.rs`."><title>os.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.81.0.js"></script><script defer src="../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -790,6 +790,8 @@
 <a href="#790" id="790">790</a>
 <a href="#791" id="791">791</a>
 <a href="#792" id="792">792</a>
+<a href="#793" id="793">793</a>
+<a href="#794" id="794">794</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Implementation of `std::os` functionality for unix systems
 
 </span><span class="attr">#![allow(unused_imports)] </span><span class="comment">// lots of cfg code here
@@ -855,17 +857,7 @@
     </span>)]
     #[cfg_attr(any(target_os = <span class="string">"solaris"</span>, target_os = <span class="string">"illumos"</span>), link_name = <span class="string">"___errno"</span>)]
     #[cfg_attr(target_os = <span class="string">"nto"</span>, link_name = <span class="string">"__get_errno_ptr"</span>)]
-    #[cfg_attr(
-        any(
-            target_os = <span class="string">"macos"</span>,
-            target_os = <span class="string">"ios"</span>,
-            target_os = <span class="string">"tvos"</span>,
-            target_os = <span class="string">"freebsd"</span>,
-            target_os = <span class="string">"watchos"</span>,
-            target_os = <span class="string">"visionos"</span>,
-        ),
-        link_name = <span class="string">"__error"
-    </span>)]
+    #[cfg_attr(any(target_os = <span class="string">"freebsd"</span>, target_vendor = <span class="string">"apple"</span>), link_name = <span class="string">"__error"</span>)]
     #[cfg_attr(target_os = <span class="string">"haiku"</span>, link_name = <span class="string">"_errnop"</span>)]
     #[cfg_attr(target_os = <span class="string">"aix"</span>, link_name = <span class="string">"_Errno"</span>)]
     </span><span class="kw">fn </span>errno_location() -&gt; <span class="kw-2">*mut </span>c_int;
@@ -1223,13 +1215,7 @@
     <span class="prelude-val">Ok</span>(PathBuf::from(OsString::from_vec(e)))
 }
 
-<span class="attr">#[cfg(any(
-    target_os = <span class="string">"macos"</span>,
-    target_os = <span class="string">"ios"</span>,
-    target_os = <span class="string">"watchos"</span>,
-    target_os = <span class="string">"visionos"</span>,
-    target_os = <span class="string">"tvos"
-</span>))]
+<span class="attr">#[cfg(target_vendor = <span class="string">"apple"</span>)]
 </span><span class="kw">pub fn </span>current_exe() -&gt; io::Result&lt;PathBuf&gt; {
     <span class="kw">unsafe </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>sz: u32 = <span class="number">0</span>;
@@ -1384,12 +1370,36 @@
     }
 }
 
-<span class="attr">#[cfg(target_os = <span class="string">"macos"</span>)]
+<span class="comment">// Use `_NSGetEnviron` on Apple platforms.
+//
+// `_NSGetEnviron` is the documented alternative (see `man environ`), and has
+// been available since the first versions of both macOS and iOS.
+//
+// Nowadays, specifically since macOS 10.8, `environ` has been exposed through
+// `libdyld.dylib`, which is linked via. `libSystem.dylib`:
+// &lt;https://github.com/apple-oss-distributions/dyld/blob/dyld-1160.6/libdyld/libdyldGlue.cpp#L913&gt;
+//
+// So in the end, it likely doesn't really matter which option we use, but the
+// performance cost of using `_NSGetEnviron` is extremely miniscule, and it
+// might be ever so slightly more supported, so let's just use that.
+//
+// NOTE: The header where this is defined (`crt_externs.h`) was added to the
+// iOS 13.0 SDK, which has been the source of a great deal of confusion in the
+// past about the availability of this API.
+//
+// NOTE(madsmtm): Neither this nor using `environ` has been verified to not
+// cause App Store rejections; if this is found to be the case, an alternative
+// implementation of this is possible using `[NSProcessInfo environment]`
+// - which internally uses `_NSGetEnviron` and a system-wide lock on the
+// environment variables to protect against `setenv`, so using that might be
+// desirable anyhow? Though it also means that we have to link to Foundation.
+</span><span class="attr">#[cfg(target_vendor = <span class="string">"apple"</span>)]
 </span><span class="kw">pub unsafe fn </span>environ() -&gt; <span class="kw-2">*mut *const *const </span>c_char {
     libc::_NSGetEnviron() <span class="kw">as </span><span class="kw-2">*mut *const *const </span>c_char
 }
 
-<span class="attr">#[cfg(not(target_os = <span class="string">"macos"</span>))]
+<span class="comment">// Use the `environ` static which is part of POSIX.
+</span><span class="attr">#[cfg(not(target_vendor = <span class="string">"apple"</span>))]
 </span><span class="kw">pub unsafe fn </span>environ() -&gt; <span class="kw-2">*mut *const *const </span>c_char {
     <span class="kw">extern </span><span class="string">"C" </span>{
         <span class="kw">static </span><span class="kw-2">mut </span>environ: <span class="kw-2">*const *const </span>c_char;
@@ -1459,19 +1469,19 @@
     .flatten()
 }
 
-<span class="kw">pub fn </span>setenv(k: <span class="kw-2">&amp;</span>OsStr, v: <span class="kw-2">&amp;</span>OsStr) -&gt; io::Result&lt;()&gt; {
+<span class="kw">pub unsafe fn </span>setenv(k: <span class="kw-2">&amp;</span>OsStr, v: <span class="kw-2">&amp;</span>OsStr) -&gt; io::Result&lt;()&gt; {
     run_with_cstr(k.as_bytes(), <span class="kw-2">&amp;</span>|k| {
         run_with_cstr(v.as_bytes(), <span class="kw-2">&amp;</span>|v| {
             <span class="kw">let </span>_guard = ENV_LOCK.write();
-            cvt(<span class="kw">unsafe </span>{ libc::setenv(k.as_ptr(), v.as_ptr(), <span class="number">1</span>) }).map(drop)
+            cvt(libc::setenv(k.as_ptr(), v.as_ptr(), <span class="number">1</span>)).map(drop)
         })
     })
 }
 
-<span class="kw">pub fn </span>unsetenv(n: <span class="kw-2">&amp;</span>OsStr) -&gt; io::Result&lt;()&gt; {
+<span class="kw">pub unsafe fn </span>unsetenv(n: <span class="kw-2">&amp;</span>OsStr) -&gt; io::Result&lt;()&gt; {
     run_with_cstr(n.as_bytes(), <span class="kw-2">&amp;</span>|nbuf| {
         <span class="kw">let </span>_guard = ENV_LOCK.write();
-        cvt(<span class="kw">unsafe </span>{ libc::unsetenv(nbuf.as_ptr()) }).map(drop)
+        cvt(libc::unsetenv(nbuf.as_ptr())).map(drop)
     })
 }
 
@@ -1495,32 +1505,26 @@
 
     <span class="attr">#[cfg(any(
         target_os = <span class="string">"android"</span>,
-        target_os = <span class="string">"ios"</span>,
-        target_os = <span class="string">"tvos"</span>,
-        target_os = <span class="string">"watchos"</span>,
-        target_os = <span class="string">"visionos"</span>,
         target_os = <span class="string">"emscripten"</span>,
         target_os = <span class="string">"redox"</span>,
         target_os = <span class="string">"vxworks"</span>,
         target_os = <span class="string">"espidf"</span>,
         target_os = <span class="string">"horizon"</span>,
         target_os = <span class="string">"vita"</span>,
+        all(target_vendor = <span class="string">"apple"</span>, not(target_os = <span class="string">"macos"</span>)),
     ))]
     </span><span class="kw">unsafe fn </span>fallback() -&gt; <span class="prelude-ty">Option</span>&lt;OsString&gt; {
         <span class="prelude-val">None
     </span>}
     <span class="attr">#[cfg(not(any(
         target_os = <span class="string">"android"</span>,
-        target_os = <span class="string">"ios"</span>,
-        target_os = <span class="string">"tvos"</span>,
-        target_os = <span class="string">"watchos"</span>,
-        target_os = <span class="string">"visionos"</span>,
         target_os = <span class="string">"emscripten"</span>,
         target_os = <span class="string">"redox"</span>,
         target_os = <span class="string">"vxworks"</span>,
         target_os = <span class="string">"espidf"</span>,
         target_os = <span class="string">"horizon"</span>,
         target_os = <span class="string">"vita"</span>,
+        all(target_vendor = <span class="string">"apple"</span>, not(target_os = <span class="string">"macos"</span>)),
     )))]
     </span><span class="kw">unsafe fn </span>fallback() -&gt; <span class="prelude-ty">Option</span>&lt;OsString&gt; {
         <span class="kw">let </span>amt = <span class="kw">match </span>libc::sysconf(libc::_SC_GETPW_R_SIZE_MAX) {

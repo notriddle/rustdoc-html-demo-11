@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -340,7 +342,7 @@ body:</p>
 try to call <code>dangerous</code> without the <code>unsafe</code> block, we’ll get an error:</p>
 <pre><code class="language-console">$ cargo run
    Compiling unsafe-example v0.1.0 (file:///projects/unsafe-example)
-error[E0133]: call to unsafe function is unsafe and requires unsafe function or block
+error[E0133]: call to unsafe function `dangerous` is unsafe and requires unsafe function or block
  --&gt; src/main.rs:4:5
   |
 4 |     dangerous();
@@ -522,7 +524,7 @@ functions from another language we want to call. The <code>"C"</code> part defin
 <em>application binary interface (ABI)</em> the external function uses: the ABI
 defines how to call the function at the assembly level. The <code>"C"</code> ABI is the
 most common and follows the C programming language’s ABI.</p>
-<blockquote>
+<section class="note" aria-role="note">
 <h4 id="calling-rust-functions-from-other-languages"><a class="header" href="#calling-rust-functions-from-other-languages">Calling Rust Functions from Other Languages</a></h4>
 <p>We can also use <code>extern</code> to create an interface that allows other languages
 to call Rust functions. Instead of creating a whole <code>extern</code> block, we add
@@ -544,7 +546,7 @@ pub extern "C" fn call_from_c() {
 }
 <span class="boring">}</span></code></pre></pre>
 <p>This usage of <code>extern</code> does not require <code>unsafe</code>.</p>
-</blockquote>
+</section>
 <h3 id="accessing-or-modifying-a-mutable-static-variable"><a class="header" href="#accessing-or-modifying-a-mutable-static-variable">Accessing or Modifying a Mutable Static Variable</a></h3>
 <p>In this book, we’ve not yet talked about <em>global variables</em>, which Rust does
 support but can be problematic with Rust’s ownership rules. If two threads are
@@ -556,7 +558,7 @@ value.</p>
 <pre><pre class="playground"><code class="language-rust">static HELLO_WORLD: &amp;str = "Hello, world!";
 
 fn main() {
-    println!("name is: {}", HELLO_WORLD);
+    println!("name is: {HELLO_WORLD}");
 }</code></pre></pre>
 <p><span class="caption">Listing 19-9: Defining and using an immutable static
 variable</span></p>
@@ -588,7 +590,7 @@ fn main() {
     add_to_count(3);
 
     unsafe {
-        println!("COUNTER: {}", COUNTER);
+        println!("COUNTER: {COUNTER}");
     }
 }</code></pre></pre>
 <p><span class="caption">Listing 19-10: Reading from or writing to a mutable

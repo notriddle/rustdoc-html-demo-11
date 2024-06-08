@@ -491,6 +491,38 @@ that the code sample should be compiled using the respective edition of Rust.</p
 /// ```
 <span class="boring">fn foo() {}
 </span><span class="boring">}</span></code></pre></pre>
+<h3 id="custom-css-classes-for-code-blocks"><a class="header" href="#custom-css-classes-for-code-blocks">Custom CSS classes for code blocks</a></h3>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// ```custom,{class=language-c}
+/// int main(void) { return 0; }
+/// ```
+pub struct Bar;
+<span class="boring">}</span></code></pre></pre>
+<p>The text <code>int main(void) { return 0; }</code> is rendered without highlighting in a code block
+with the class <code>language-c</code>. This can be used to highlight other languages through JavaScript
+libraries for example.</p>
+<p>Without the <code>custom</code> attribute, it would be generated as a Rust code example with an additional
+<code>language-C</code> CSS class. Therefore, if you specifically don't want it to be a Rust code example,
+don't forget to add the <code>custom</code> attribute.</p>
+<p>To be noted that you can replace <code>class=</code> with <code>.</code> to achieve the same result:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// ```custom,{.language-c}
+/// int main(void) { return 0; }
+/// ```
+pub struct Bar;
+<span class="boring">}</span></code></pre></pre>
+<p>To be noted, <code>rust</code> and <code>.rust</code>/<code>class=rust</code> have different effects: <code>rust</code> indicates that this is
+a Rust code block whereas the two others add a "rust" CSS class on the code block.</p>
+<p>You can also use double quotes:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// ```"not rust" {."hello everyone"}
+/// int main(void) { return 0; }
+/// ```
+pub struct Bar;
+<span class="boring">}</span></code></pre></pre>
 <h2 id="syntax-reference"><a class="header" href="#syntax-reference">Syntax reference</a></h2>
 <p>The <em>exact</em> syntax for code blocks, including the edge cases, can be found
 in the <a href="https://spec.commonmark.org/0.29/#fenced-code-blocks">Fenced Code Blocks</a>

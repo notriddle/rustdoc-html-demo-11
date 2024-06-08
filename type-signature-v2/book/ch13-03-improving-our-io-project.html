@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -482,7 +484,7 @@ the <code>Iterator</code> trait and returns <code>String</code> values.</p>
 <code>args</code> has a generic type with the trait bounds <code>impl Iterator&lt;Item = String&gt;</code>
 instead of <code>&amp;[String]</code>. This usage of the <code>impl Trait</code> syntax we discussed in
 the <a href="ch10-02-traits.html#traits-as-parameters">“Traits as Parameters”</a><!-- ignore --> section of Chapter 10
-means that <code>args</code> can be any type that implements the <code>Iterator</code> type and
+means that <code>args</code> can be any type that implements the <code>Iterator</code> trait and
 returns <code>String</code> items.</p>
 <p>Because we’re taking ownership of <code>args</code> and we’ll be mutating <code>args</code> by
 iterating over it, we can add the <code>mut</code> keyword into the specification of the

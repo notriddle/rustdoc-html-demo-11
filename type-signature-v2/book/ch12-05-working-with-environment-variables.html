@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -402,7 +404,7 @@ find matches no matter what the case of the query is.</p>
 <p>Let’s see if this implementation passes the tests:</p>
 <pre><code class="language-console">$ cargo test
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished test [unoptimized + debuginfo] target(s) in 1.33s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.33s
      Running unittests src/lib.rs (target/debug/deps/minigrep-9cd200e5fac0fc94)
 
 running 2 tests
@@ -767,7 +769,7 @@ variable set and with the query <code>to</code>, which should match any line tha
 the word “to” in all lowercase:</p>
 <pre><code class="language-console">$ cargo run -- to poem.txt
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.0s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.0s
      Running `target/debug/minigrep to poem.txt`
 Are you nobody, too?
 How dreary to be somebody!

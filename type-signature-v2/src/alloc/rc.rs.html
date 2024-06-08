@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/alloc/src/rc.rs`."><title>rc.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="alloc" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.79.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../alloc/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/alloc/src/rc.rs`."><title>rc.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="alloc" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -3602,6 +3602,55 @@
 <a href="#3602" id="3602">3602</a>
 <a href="#3603" id="3603">3603</a>
 <a href="#3604" id="3604">3604</a>
+<a href="#3605" id="3605">3605</a>
+<a href="#3606" id="3606">3606</a>
+<a href="#3607" id="3607">3607</a>
+<a href="#3608" id="3608">3608</a>
+<a href="#3609" id="3609">3609</a>
+<a href="#3610" id="3610">3610</a>
+<a href="#3611" id="3611">3611</a>
+<a href="#3612" id="3612">3612</a>
+<a href="#3613" id="3613">3613</a>
+<a href="#3614" id="3614">3614</a>
+<a href="#3615" id="3615">3615</a>
+<a href="#3616" id="3616">3616</a>
+<a href="#3617" id="3617">3617</a>
+<a href="#3618" id="3618">3618</a>
+<a href="#3619" id="3619">3619</a>
+<a href="#3620" id="3620">3620</a>
+<a href="#3621" id="3621">3621</a>
+<a href="#3622" id="3622">3622</a>
+<a href="#3623" id="3623">3623</a>
+<a href="#3624" id="3624">3624</a>
+<a href="#3625" id="3625">3625</a>
+<a href="#3626" id="3626">3626</a>
+<a href="#3627" id="3627">3627</a>
+<a href="#3628" id="3628">3628</a>
+<a href="#3629" id="3629">3629</a>
+<a href="#3630" id="3630">3630</a>
+<a href="#3631" id="3631">3631</a>
+<a href="#3632" id="3632">3632</a>
+<a href="#3633" id="3633">3633</a>
+<a href="#3634" id="3634">3634</a>
+<a href="#3635" id="3635">3635</a>
+<a href="#3636" id="3636">3636</a>
+<a href="#3637" id="3637">3637</a>
+<a href="#3638" id="3638">3638</a>
+<a href="#3639" id="3639">3639</a>
+<a href="#3640" id="3640">3640</a>
+<a href="#3641" id="3641">3641</a>
+<a href="#3642" id="3642">3642</a>
+<a href="#3643" id="3643">3643</a>
+<a href="#3644" id="3644">3644</a>
+<a href="#3645" id="3645">3645</a>
+<a href="#3646" id="3646">3646</a>
+<a href="#3647" id="3647">3647</a>
+<a href="#3648" id="3648">3648</a>
+<a href="#3649" id="3649">3649</a>
+<a href="#3650" id="3650">3650</a>
+<a href="#3651" id="3651">3651</a>
+<a href="#3652" id="3652">3652</a>
+<a href="#3653" id="3653">3653</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Single-threaded reference-counting pointers. 'Rc' stands for 'Reference
 //! Counted'.
 //!
@@ -3861,8 +3910,6 @@
 <span class="attr">#[cfg(not(no_global_oom_handling))]
 </span><span class="kw">use </span>core::iter;
 <span class="kw">use </span>core::marker::{PhantomData, Unsize};
-<span class="attr">#[cfg(not(no_global_oom_handling))]
-</span><span class="kw">use </span>core::mem::size_of_val;
 <span class="kw">use </span>core::mem::{<span class="self">self</span>, align_of_val_raw, forget, ManuallyDrop};
 <span class="kw">use </span>core::ops::{CoerceUnsized, Deref, DerefMut, DerefPure, DispatchFromDyn, Receiver};
 <span class="kw">use </span>core::panic::{RefUnwindSafe, UnwindSafe};
@@ -3967,6 +4014,12 @@
         <span class="comment">// This unsafety is ok because while this Rc is alive we're guaranteed
         // that the inner pointer is valid.
         </span><span class="kw">unsafe </span>{ <span class="self">self</span>.ptr.as_ref() }
+    }
+
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>into_inner_with_allocator(this: <span class="self">Self</span>) -&gt; (NonNull&lt;RcBox&lt;T&gt;&gt;, A) {
+        <span class="kw">let </span>this = mem::ManuallyDrop::new(this);
+        (this.ptr, <span class="kw">unsafe </span>{ ptr::read(<span class="kw-2">&amp;</span>this.alloc) })
     }
 
     <span class="attr">#[inline]
@@ -4749,12 +4802,9 @@
     /// ```
     </span><span class="attr">#[unstable(feature = <span class="string">"new_uninit"</span>, issue = <span class="string">"63291"</span>)]
     #[inline]
-    </span><span class="kw">pub unsafe fn </span>assume_init(<span class="self">self</span>) -&gt; Rc&lt;T, A&gt;
-    <span class="kw">where
-        </span>A: Clone,
-    {
-        <span class="kw">let </span>md_self = mem::ManuallyDrop::new(<span class="self">self</span>);
-        <span class="kw">unsafe </span>{ Rc::from_inner_in(md_self.ptr.cast(), md_self.alloc.clone()) }
+    </span><span class="kw">pub unsafe fn </span>assume_init(<span class="self">self</span>) -&gt; Rc&lt;T, A&gt; {
+        <span class="kw">let </span>(ptr, alloc) = Rc::into_inner_with_allocator(<span class="self">self</span>);
+        <span class="kw">unsafe </span>{ Rc::from_inner_in(ptr.cast(), alloc) }
     }
 }
 
@@ -4793,12 +4843,9 @@
     /// ```
     </span><span class="attr">#[unstable(feature = <span class="string">"new_uninit"</span>, issue = <span class="string">"63291"</span>)]
     #[inline]
-    </span><span class="kw">pub unsafe fn </span>assume_init(<span class="self">self</span>) -&gt; Rc&lt;[T], A&gt;
-    <span class="kw">where
-        </span>A: Clone,
-    {
-        <span class="kw">let </span>md_self = mem::ManuallyDrop::new(<span class="self">self</span>);
-        <span class="kw">unsafe </span>{ Rc::from_ptr_in(md_self.ptr.as_ptr() <span class="kw">as _</span>, md_self.alloc.clone()) }
+    </span><span class="kw">pub unsafe fn </span>assume_init(<span class="self">self</span>) -&gt; Rc&lt;[T], A&gt; {
+        <span class="kw">let </span>(ptr, alloc) = Rc::into_inner_with_allocator(<span class="self">self</span>);
+        <span class="kw">unsafe </span>{ Rc::from_ptr_in(ptr.as_ptr() <span class="kw">as _</span>, alloc) }
     }
 }
 
@@ -4958,6 +5005,33 @@
         <span class="kw">let </span>ptr = <span class="self">Self</span>::as_ptr(<span class="kw-2">&amp;</span>this);
         mem::forget(this);
         ptr
+    }
+
+    <span class="doccomment">/// Consumes the `Rc`, returning the wrapped pointer and allocator.
+    ///
+    /// To avoid a memory leak the pointer must be converted back to an `Rc` using
+    /// [`Rc::from_raw_in`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// #![feature(allocator_api)]
+    /// use std::rc::Rc;
+    /// use std::alloc::System;
+    ///
+    /// let x = Rc::new_in("hello".to_owned(), System);
+    /// let (ptr, alloc) = Rc::into_raw_with_allocator(x);
+    /// assert_eq!(unsafe { &amp;*ptr }, "hello");
+    /// let x = unsafe { Rc::from_raw_in(ptr, alloc) };
+    /// assert_eq!(&amp;*x, "hello");
+    /// ```
+    </span><span class="attr">#[unstable(feature = <span class="string">"allocator_api"</span>, issue = <span class="string">"32838"</span>)]
+    </span><span class="kw">pub fn </span>into_raw_with_allocator(this: <span class="self">Self</span>) -&gt; (<span class="kw-2">*const </span>T, A) {
+        <span class="kw">let </span>this = mem::ManuallyDrop::new(this);
+        <span class="kw">let </span>ptr = <span class="self">Self</span>::as_ptr(<span class="kw-2">&amp;</span>this);
+        <span class="comment">// Safety: `this` is ManuallyDrop so the allocator will not be double-dropped
+        </span><span class="kw">let </span>alloc = <span class="kw">unsafe </span>{ ptr::read(<span class="kw-2">&amp;</span>this.alloc) };
+        (ptr, alloc)
     }
 
     <span class="doccomment">/// Provides a raw pointer to the data.
@@ -5413,7 +5487,9 @@
         // reference to the allocation.
         </span><span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut </span>this.ptr.as_mut().value }
     }
+}
 
+<span class="kw">impl</span>&lt;T: Clone, A: Allocator&gt; Rc&lt;T, A&gt; {
     <span class="doccomment">/// If we have the only reference to `T` then unwrap it. Otherwise, clone `T` and return the
     /// clone.
     ///
@@ -5449,7 +5525,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;A: Allocator + Clone&gt; Rc&lt;<span class="kw">dyn </span>Any, A&gt; {
+<span class="kw">impl</span>&lt;A: Allocator&gt; Rc&lt;<span class="kw">dyn </span>Any, A&gt; {
     <span class="doccomment">/// Attempt to downcast the `Rc&lt;dyn Any&gt;` to a concrete type.
     ///
     /// # Examples
@@ -5473,10 +5549,8 @@
     </span><span class="kw">pub fn </span>downcast&lt;T: Any&gt;(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Rc&lt;T, A&gt;, <span class="self">Self</span>&gt; {
         <span class="kw">if </span>(<span class="kw-2">*</span><span class="self">self</span>).is::&lt;T&gt;() {
             <span class="kw">unsafe </span>{
-                <span class="kw">let </span>ptr = <span class="self">self</span>.ptr.cast::&lt;RcBox&lt;T&gt;&gt;();
-                <span class="kw">let </span>alloc = <span class="self">self</span>.alloc.clone();
-                forget(<span class="self">self</span>);
-                <span class="prelude-val">Ok</span>(Rc::from_inner_in(ptr, alloc))
+                <span class="kw">let </span>(ptr, alloc) = Rc::into_inner_with_allocator(<span class="self">self</span>);
+                <span class="prelude-val">Ok</span>(Rc::from_inner_in(ptr.cast(), alloc))
             }
         } <span class="kw">else </span>{
             <span class="prelude-val">Err</span>(<span class="self">self</span>)
@@ -5513,10 +5587,8 @@
     #[unstable(feature = <span class="string">"downcast_unchecked"</span>, issue = <span class="string">"90850"</span>)]
     </span><span class="kw">pub unsafe fn </span>downcast_unchecked&lt;T: Any&gt;(<span class="self">self</span>) -&gt; Rc&lt;T, A&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = <span class="self">self</span>.ptr.cast::&lt;RcBox&lt;T&gt;&gt;();
-            <span class="kw">let </span>alloc = <span class="self">self</span>.alloc.clone();
-            mem::forget(<span class="self">self</span>);
-            Rc::from_inner_in(ptr, alloc)
+            <span class="kw">let </span>(ptr, alloc) = Rc::into_inner_with_allocator(<span class="self">self</span>);
+            Rc::from_inner_in(ptr.cast(), alloc)
         }
     }
 }
@@ -5827,6 +5899,31 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">fn </span>default() -&gt; Rc&lt;T&gt; {
         Rc::new(Default::default())
+    }
+}
+
+<span class="attr">#[cfg(not(no_global_oom_handling))]
+#[stable(feature = <span class="string">"more_rc_default_impls"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+</span><span class="kw">impl </span>Default <span class="kw">for </span>Rc&lt;str&gt; {
+    <span class="doccomment">/// Creates an empty str inside an Rc
+    ///
+    /// This may or may not share an allocation with other Rcs on the same thread.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        Rc::from(<span class="string">""</span>)
+    }
+}
+
+<span class="attr">#[cfg(not(no_global_oom_handling))]
+#[stable(feature = <span class="string">"more_rc_default_impls"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+</span><span class="kw">impl</span>&lt;T&gt; Default <span class="kw">for </span>Rc&lt;[T]&gt; {
+    <span class="doccomment">/// Creates an empty `[T]` inside an Rc
+    ///
+    /// This may or may not share an allocation with other Rcs on the same thread.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>arr: [T; <span class="number">0</span>] = [];
+        Rc::from(arr)
     }
 }
 
@@ -6265,12 +6362,13 @@
 }
 
 <span class="attr">#[stable(feature = <span class="string">"boxed_slice_try_from"</span>, since = <span class="string">"1.43.0"</span>)]
-</span><span class="kw">impl</span>&lt;T, <span class="kw">const </span>N: usize&gt; TryFrom&lt;Rc&lt;[T]&gt;&gt; <span class="kw">for </span>Rc&lt;[T; N]&gt; {
-    <span class="kw">type </span>Error = Rc&lt;[T]&gt;;
+</span><span class="kw">impl</span>&lt;T, A: Allocator, <span class="kw">const </span>N: usize&gt; TryFrom&lt;Rc&lt;[T], A&gt;&gt; <span class="kw">for </span>Rc&lt;[T; N], A&gt; {
+    <span class="kw">type </span>Error = Rc&lt;[T], A&gt;;
 
-    <span class="kw">fn </span>try_from(boxed_slice: Rc&lt;[T]&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+    <span class="kw">fn </span>try_from(boxed_slice: Rc&lt;[T], A&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
         <span class="kw">if </span>boxed_slice.len() == N {
-            <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ Rc::from_raw(Rc::into_raw(boxed_slice) <span class="kw">as </span><span class="kw-2">*mut </span>[T; N]) })
+            <span class="kw">let </span>(ptr, alloc) = Rc::into_inner_with_allocator(boxed_slice);
+            <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ Rc::from_inner_in(ptr.cast(), alloc) })
         } <span class="kw">else </span>{
             <span class="prelude-val">Err</span>(boxed_slice)
         }
@@ -6604,11 +6702,11 @@
         result
     }
 
-    <span class="doccomment">/// Consumes the `Weak&lt;T&gt;` and turns it into a raw pointer.
+    <span class="doccomment">/// Consumes the `Weak&lt;T&gt;`, returning the wrapped pointer and allocator.
     ///
     /// This converts the weak pointer into a raw pointer, while still preserving the ownership of
     /// one weak reference (the weak count is not modified by this operation). It can be turned
-    /// back into the `Weak&lt;T&gt;` with [`from_raw`].
+    /// back into the `Weak&lt;T&gt;` with [`from_raw_in`].
     ///
     /// The same restrictions of accessing the target of the pointer as with
     /// [`as_ptr`] apply.
@@ -6616,30 +6714,30 @@
     /// # Examples
     ///
     /// ```
+    /// #![feature(allocator_api)]
     /// use std::rc::{Rc, Weak};
+    /// use std::alloc::System;
     ///
-    /// let strong = Rc::new("hello".to_owned());
+    /// let strong = Rc::new_in("hello".to_owned(), System);
     /// let weak = Rc::downgrade(&amp;strong);
-    /// let raw = weak.into_raw();
+    /// let (raw, alloc) = weak.into_raw_with_allocator();
     ///
     /// assert_eq!(1, Rc::weak_count(&amp;strong));
     /// assert_eq!("hello", unsafe { &amp;*raw });
     ///
-    /// drop(unsafe { Weak::from_raw(raw) });
+    /// drop(unsafe { Weak::from_raw_in(raw, alloc) });
     /// assert_eq!(0, Rc::weak_count(&amp;strong));
     /// ```
     ///
-    /// [`from_raw`]: Weak::from_raw
+    /// [`from_raw_in`]: Weak::from_raw_in
     /// [`as_ptr`]: Weak::as_ptr
     </span><span class="attr">#[inline]
     #[unstable(feature = <span class="string">"allocator_api"</span>, issue = <span class="string">"32838"</span>)]
-    </span><span class="kw">pub fn </span>into_raw_and_alloc(<span class="self">self</span>) -&gt; (<span class="kw-2">*const </span>T, A)
-    <span class="kw">where
-        </span>A: Clone,
-    {
-        <span class="kw">let </span>result = <span class="self">self</span>.as_ptr();
-        <span class="kw">let </span>alloc = <span class="self">self</span>.alloc.clone();
-        mem::forget(<span class="self">self</span>);
+    </span><span class="kw">pub fn </span>into_raw_with_allocator(<span class="self">self</span>) -&gt; (<span class="kw-2">*const </span>T, A) {
+        <span class="kw">let </span>this = mem::ManuallyDrop::new(<span class="self">self</span>);
+        <span class="kw">let </span>result = this.as_ptr();
+        <span class="comment">// Safety: `this` is ManuallyDrop so the allocator will not be double-dropped
+        </span><span class="kw">let </span>alloc = <span class="kw">unsafe </span>{ ptr::read(<span class="kw-2">&amp;</span>this.alloc) };
         (result, alloc)
     }
 

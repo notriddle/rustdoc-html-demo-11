@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -187,7 +189,7 @@ variant.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">fn main() {
 </span>    let config_max = Some(3u8);
     match config_max {
-        Some(max) =&gt; println!("The maximum is configured to be {}", max),
+        Some(max) =&gt; println!("The maximum is configured to be {max}"),
         _ =&gt; (),
     }
 <span class="boring">}</span></code></pre></pre>
@@ -202,7 +204,7 @@ code behaves the same as the <code>match</code> in Listing 6-6:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">fn main() {
 </span>    let config_max = Some(3u8);
     if let Some(max) = config_max {
-        println!("The maximum is configured to be {}", max);
+        println!("The maximum is configured to be {max}");
     }
 <span class="boring">}</span></code></pre></pre>
 <p>The syntax <code>if let</code> takes a pattern and an expression separated by an equal
@@ -244,7 +246,7 @@ expression, like this:</p>
 </span><span class="boring">    let coin = Coin::Penny;
 </span>    let mut count = 0;
     match coin {
-        Coin::Quarter(state) =&gt; println!("State quarter from {:?}!", state),
+        Coin::Quarter(state) =&gt; println!("State quarter from {state:?}!"),
         _ =&gt; count += 1,
     }
 <span class="boring">}</span></code></pre></pre>
@@ -267,7 +269,7 @@ expression, like this:</p>
 </span><span class="boring">    let coin = Coin::Penny;
 </span>    let mut count = 0;
     if let Coin::Quarter(state) = coin {
-        println!("State quarter from {:?}!", state);
+        println!("State quarter from {state:?}!");
     } else {
         count += 1;
     }

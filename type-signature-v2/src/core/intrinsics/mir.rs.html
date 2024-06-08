@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/intrinsics/mir.rs`."><title>mir.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.79.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/intrinsics/mir.rs`."><title>mir.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -677,6 +677,16 @@
 <a href="#677" id="677">677</a>
 <a href="#678" id="678">678</a>
 <a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Rustc internal tooling for hand-writing MIR.
 //!
 //! If for some reasons you are not writing rustc tests and have found yourself considering using
@@ -699,7 +709,7 @@
 //!
 //! #[custom_mir(dialect = "built")]
 //! pub fn simple(x: i32) -&gt; i32 {
-//!     mir!(
+//!     mir! {
 //!         let temp2: i32;
 //!
 //!         {
@@ -712,7 +722,7 @@
 //!             RET = temp2;
 //!             Return()
 //!         }
-//!     )
+//!     }
 //! }
 //! ```
 //!
@@ -750,7 +760,7 @@
 //!
 //! #[custom_mir(dialect = "built")]
 //! pub fn choose_load(a: &amp;i32, b: &amp;i32, c: bool) -&gt; i32 {
-//!     mir!(
+//!     mir! {
 //!         {
 //!             match c {
 //!                 true =&gt; t,
@@ -772,20 +782,22 @@
 //!             RET = *temp;
 //!             Return()
 //!         }
-//!     )
+//!     }
 //! }
 //!
 //! #[custom_mir(dialect = "built")]
 //! fn unwrap_unchecked&lt;T&gt;(opt: Option&lt;T&gt;) -&gt; T {
-//!     mir!({
-//!         RET = Move(Field(Variant(opt, 1), 0));
-//!         Return()
-//!     })
+//!     mir! {
+//!         {
+//!             RET = Move(Field(Variant(opt, 1), 0));
+//!             Return()
+//!         }
+//!     }
 //! }
 //!
 //! #[custom_mir(dialect = "runtime", phase = "optimized")]
 //! fn push_and_pop&lt;T&gt;(v: &amp;mut Vec&lt;T&gt;, value: T) {
-//!     mir!(
+//!     mir! {
 //!         let _unused;
 //!         let popped;
 //!
@@ -804,19 +816,19 @@
 //!         ret = {
 //!             Return()
 //!         }
-//!     )
+//!     }
 //! }
 //!
 //! #[custom_mir(dialect = "runtime", phase = "optimized")]
 //! fn annotated_return_type() -&gt; (i32, bool) {
-//!     mir!(
+//!     mir! {
 //!         type RET = (i32, bool);
 //!         {
 //!             RET.0 = 1;
 //!             RET.1 = true;
 //!             Return()
 //!         }
-//!     )
+//!     }
 //! }
 //! ```
 //!
@@ -831,7 +843,7 @@
 //!
 //! #[custom_mir(dialect = "built")]
 //! fn borrow_error(should_init: bool) -&gt; i32 {
-//!     mir!(
+//!     mir! {
 //!         let temp: i32;
 //!
 //!         {
@@ -850,7 +862,7 @@
 //!             RET = temp;
 //!             Return()
 //!         }
-//!     )
+//!     }
 //! }
 //! ```
 //!
@@ -858,7 +870,7 @@
 //! error[E0381]: used binding is possibly-uninitialized
 //!   --&gt; test.rs:24:13
 //!    |
-//! 8  | /     mir!(
+//! 8  | /     mir! {
 //! 9  | |         let temp: i32;
 //! 10 | |
 //! 11 | |         {
@@ -870,7 +882,7 @@
 //!    | |             ^^^^^^^^^^ value used here but it is possibly-uninitialized
 //! 25 | |             Return()
 //! 26 | |         }
-//! 27 | |     )
+//! 27 | |     }
 //!    | |_____- binding declared here but left uninitialized
 //!
 //! error: aborting due to 1 previous error
@@ -1039,6 +1051,10 @@
 <span class="macro">define!</span>(<span class="string">"mir_deinit"</span>, <span class="kw">fn </span>Deinit&lt;T&gt;(place: T));
 <span class="macro">define!</span>(<span class="string">"mir_checked"</span>, <span class="kw">fn </span>Checked&lt;T&gt;(binop: T) -&gt; (T, bool));
 <span class="macro">define!</span>(<span class="string">"mir_len"</span>, <span class="kw">fn </span>Len&lt;T&gt;(place: T) -&gt; usize);
+<span class="macro">define!</span>(
+    <span class="string">"mir_ptr_metadata"</span>,
+    <span class="kw">fn </span>PtrMetadata&lt;P: <span class="question-mark">?</span>Sized&gt;(place: <span class="kw-2">*const </span>P) -&gt; &lt;P <span class="kw">as </span>::core::ptr::Pointee&gt;::Metadata
+);
 <span class="macro">define!</span>(<span class="string">"mir_copy_for_deref"</span>, <span class="kw">fn </span>CopyForDeref&lt;T&gt;(place: T) -&gt; T);
 <span class="macro">define!</span>(<span class="string">"mir_retag"</span>, <span class="kw">fn </span>Retag&lt;T&gt;(place: T));
 <span class="macro">define!</span>(<span class="string">"mir_move"</span>, <span class="kw">fn </span>Move&lt;T&gt;(place: T) -&gt; T);
@@ -1082,18 +1098,22 @@
     ///
     /// #[custom_mir(dialect = "built")]
     /// fn unwrap_deref(opt: Option&lt;&amp;i32&gt;) -&gt; i32 {
-    ///     mir!({
-    ///         RET = *Field::&lt;&amp;i32&gt;(Variant(opt, 1), 0);
-    ///         Return()
-    ///     })
+    ///     mir! {
+    ///         {
+    ///             RET = *Field::&lt;&amp;i32&gt;(Variant(opt, 1), 0);
+    ///             Return()
+    ///         }
+    ///     }
     /// }
     ///
     /// #[custom_mir(dialect = "built")]
     /// fn set(opt: &amp;mut Option&lt;i32&gt;) {
-    ///     mir!({
-    ///         place!(Field(Variant(*opt, 1), 0)) = 5;
-    ///         Return()
-    ///     })
+    ///     mir! {
+    ///         {
+    ///             place!(Field(Variant(*opt, 1), 0)) = 5;
+    ///             Return()
+    ///         }
+    ///     }
     /// }
     /// ```
     </span><span class="kw">fn </span>Field&lt;F&gt;(place: (), field: u32) -&gt; F
@@ -1130,7 +1150,7 @@
 /// your MIR into something that is easier to parse in the compiler.
 </span><span class="attr">#[rustc_macro_transparency = <span class="string">"transparent"</span>]
 </span><span class="kw">pub macro </span>mir {
-    (
+    {
         $(<span class="kw">type </span>RET = <span class="macro-nonterminal">$ret_ty</span>:ty ;)<span class="question-mark">?
         </span>$(<span class="kw">let </span><span class="macro-nonterminal">$local_decl</span>:ident $(: <span class="macro-nonterminal">$local_decl_ty</span>:ty)<span class="question-mark">? </span>;)*
         $(debug <span class="macro-nonterminal">$dbg_name</span>:ident =&gt; <span class="macro-nonterminal">$dbg_data</span>:expr ;)*
@@ -1144,7 +1164,7 @@
                 $(<span class="macro-nonterminal">$block</span>:tt)*
             }
         )*
-    ) =&gt; {{
+    } =&gt; {{
         <span class="comment">// First, we declare all basic blocks.
         </span><span class="macro">__internal_declare_basic_blocks!</span>($(
             <span class="macro-nonterminal">$block_name </span>$((<span class="macro-nonterminal">$block_cleanup</span>))<span class="question-mark">?

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/fmt/num.rs`."><title>num.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.79.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/fmt/num.rs`."><title>num.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -691,6 +691,39 @@
 <a href="#691" id="691">691</a>
 <a href="#692" id="692">692</a>
 <a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
+<a href="#708" id="708">708</a>
+<a href="#709" id="709">709</a>
+<a href="#710" id="710">710</a>
+<a href="#711" id="711">711</a>
+<a href="#712" id="712">712</a>
+<a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
+<a href="#716" id="716">716</a>
+<a href="#717" id="717">717</a>
+<a href="#718" id="718">718</a>
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
+<a href="#721" id="721">721</a>
+<a href="#722" id="722">722</a>
+<a href="#723" id="723">723</a>
+<a href="#724" id="724">724</a>
+<a href="#725" id="725">725</a>
+<a href="#726" id="726">726</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Integer and floating-point number formatting
 
 </span><span class="kw">use </span><span class="kw">crate</span>::fmt;
@@ -905,7 +938,8 @@
 
 <span class="macro">macro_rules!</span> impl_Display {
     ($(<span class="macro-nonterminal">$t</span>:ident),* <span class="kw">as </span><span class="macro-nonterminal">$u</span>:ident via <span class="macro-nonterminal">$conv_fn</span>:ident named <span class="macro-nonterminal">$name</span>:ident) =&gt; {
-        <span class="kw">fn </span><span class="macro-nonterminal">$name</span>(<span class="kw-2">mut </span>n: <span class="macro-nonterminal">$u</span>, is_nonnegative: bool, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        <span class="attr">#[cfg(not(feature = <span class="string">"optimize_for_size"</span>))]
+        </span><span class="kw">fn </span><span class="macro-nonterminal">$name</span>(<span class="kw-2">mut </span>n: <span class="macro-nonterminal">$u</span>, is_nonnegative: bool, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
             <span class="comment">// 2^128 is about 3*10^38, so 39 gives an extra byte of space
             </span><span class="kw">let </span><span class="kw-2">mut </span>buf = [MaybeUninit::&lt;u8&gt;::uninit(); <span class="number">39</span>];
             <span class="kw">let </span><span class="kw-2">mut </span>curr = buf.len();
@@ -963,6 +997,38 @@
 
             <span class="comment">// SAFETY: `curr` &gt; 0 (since we made `buf` large enough), and all the chars are valid
             // UTF-8 since `DEC_DIGITS_LUT` is
+            </span><span class="kw">let </span>buf_slice = <span class="kw">unsafe </span>{
+                str::from_utf8_unchecked(
+                    slice::from_raw_parts(buf_ptr.add(curr), buf.len() - curr))
+            };
+            f.pad_integral(is_nonnegative, <span class="string">""</span>, buf_slice)
+        }
+
+        <span class="attr">#[cfg(feature = <span class="string">"optimize_for_size"</span>)]
+        </span><span class="kw">fn </span><span class="macro-nonterminal">$name</span>(<span class="kw-2">mut </span>n: <span class="macro-nonterminal">$u</span>, is_nonnegative: bool, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+            <span class="comment">// 2^128 is about 3*10^38, so 39 gives an extra byte of space
+            </span><span class="kw">let </span><span class="kw-2">mut </span>buf = [MaybeUninit::&lt;u8&gt;::uninit(); <span class="number">39</span>];
+            <span class="kw">let </span><span class="kw-2">mut </span>curr = buf.len();
+            <span class="kw">let </span>buf_ptr = MaybeUninit::slice_as_mut_ptr(<span class="kw-2">&amp;mut </span>buf);
+
+            <span class="comment">// SAFETY: To show that it's OK to copy into `buf_ptr`, notice that at the beginning
+            // `curr == buf.len() == 39 &gt; log(n)` since `n &lt; 2^128 &lt; 10^39`, and at
+            // each step this is kept the same as `n` is divided. Since `n` is always
+            // non-negative, this means that `curr &gt; 0` so `buf_ptr[curr..curr + 1]`
+            // is safe to access.
+            </span><span class="kw">unsafe </span>{
+                <span class="kw">loop </span>{
+                    curr -= <span class="number">1</span>;
+                    buf_ptr.add(curr).write((n % <span class="number">10</span>) <span class="kw">as </span>u8 + <span class="string">b'0'</span>);
+                    n /= <span class="number">10</span>;
+
+                    <span class="kw">if </span>n == <span class="number">0 </span>{
+                        <span class="kw">break</span>;
+                    }
+                }
+            }
+
+            <span class="comment">// SAFETY: `curr` &gt; 0 (since we made `buf` large enough), and all the chars are valid UTF-8
             </span><span class="kw">let </span>buf_slice = <span class="kw">unsafe </span>{
                 str::from_utf8_unchecked(
                     slice::from_raw_parts(buf_ptr.add(curr), buf.len() - curr))

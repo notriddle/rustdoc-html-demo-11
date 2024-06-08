@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -209,7 +211,7 @@ iteration of the loop, which prints out each value.</p>
     let v1_iter = v1.iter();
 
     for val in v1_iter {
-        println!("Got: {}", val);
+        println!("Got: {val}");
     }
 <span class="boring">}</span></code></pre></pre>
 <p><span class="caption">Listing 13-11: Using an iterator in a <code>for</code> loop</span></p>
@@ -342,7 +344,7 @@ help: use `let _ = ...` to ignore the resulting value
   |     +++++++
 
 warning: `iterators` (bin "iterators") generated 1 warning
-    Finished dev [unoptimized + debuginfo] target(s) in 0.47s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.47s
      Running `target/debug/iterators`
 </code></pre>
 <p>The code in Listing 13-14 doesn’t do anything; the closure we’ve specified

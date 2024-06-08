@@ -230,15 +230,12 @@ execution, and may reside in read-only memory.</p>
 <li><a href="items/implementations.html">implementations</a></li>
 <li><a href="items/external-blocks.html"><code>extern</code> blocks</a></li>
 </ul>
-<p>Some items form an implicit scope for the declaration of sub-items. In other
-words, within a function or module, declarations of items can (in many cases)
-be mixed with the statements, control blocks, and similar artifacts that
-otherwise compose the item body. The meaning of these scoped items is the same
-as if the item was declared outside the scope — it is still a static item
-— except that the item's <em>path name</em> within the module namespace is
-qualified by the name of the enclosing item, or is private to the enclosing
-item (in the case of functions). The grammar specifies the exact locations in
-which sub-item declarations may appear.</p>
+<p>Items may be declared in the <a href="crates-and-source-files.html">root of the crate</a>, a <a href="items/modules.html">module</a>, or a <a href="expressions/block-expr.html">block expression</a>.
+A subset of items, called <a href="items/associated-items.html">associated items</a>, may be declared in <a href="items/traits.html">traits</a> and <a href="items/implementations.html">implementations</a>.
+A subset of items, called external items, may be declared in <a href="items/external-blocks.html"><code>extern</code> blocks</a>.</p>
+<p>Items may be defined in any order, with the exception of <a href="macros-by-example.html"><code>macro_rules</code></a> which has its own scoping behavior.
+<a href="names/name-resolution.html">Name resolution</a> of item names allows items to be defined before or after where the item is referred to in the module or block.</p>
+<p>See <a href="names/scopes.html#item-scopes">item scopes</a> for information on the scoping rules of items.</p>
 
                     </main>
 

@@ -22,7 +22,7 @@
 
     <div id="versioninfo">
   <img src="https://www.rust-lang.org/logos/rust-logo-32x32-blk.png" width="32" height="32" alt="Rust logo"><br>
-  <span class="white-sticker"><a href="https://www.rust-lang.org">Rust</a> 1.79.0-dev</span><br>
+  <span class="white-sticker"><a href="https://www.rust-lang.org">Rust</a> 1.81.0-dev</span><br>
   <a href="https://github.com/rust-lang/rust/commit/"
     class="hash white-sticker"></a>
 </div>
@@ -43,14 +43,14 @@ A <code>for</code> loop executes some code for each item in a collection.</p>
 
 <span class="kw">let </span><span class="kw-2">mut </span>number = <span class="number">3</span>;
 <span class="kw">while </span>number != <span class="number">0 </span>{
-    <span class="macro">println!</span>(<span class="string">"{}!"</span>, number);
+    <span class="macro">println!</span>(<span class="string">"{number}!"</span>);
     number = number - <span class="number">1</span>;
 }
 
 <span class="kw">let </span>a = [<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>];
 <span class="kw">for </span>element <span class="kw">in </span>a.iter() {
-    <span class="macro">println!</span>(<span class="string">"the value is: {}"</span>, element);
-}</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn+main()+%7B%0A++++loop+%7B%0A++++++++println!(%22again!%22);%0A++++%7D%0A++++%0A++++let+mut+number+=+3;%0A++++while+number+!=+0+%7B%0A++++++++println!(%22%7B%7D!%22,+number);%0A++++++++number+=+number+-+1;%0A++++%7D%0A++++%0A++++let+a+=+%5B10,+20,+30,+40,+50%5D;%0A++++for+element+in+a.iter()+%7B%0A++++++++println!(%22the+value+is:+%7B%7D%22,+element);%0A++++%7D%0A%7D&amp;edition=2015">Run</a></div>
+    <span class="macro">println!</span>(<span class="string">"the value is: {element}"</span>);
+}</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn+main()+%7B%0A++++loop+%7B%0A++++++++println!(%22again!%22);%0A++++%7D%0A++++%0A++++let+mut+number+=+3;%0A++++while+number+!=+0+%7B%0A++++++++println!(%22%7Bnumber%7D!%22);%0A++++++++number+=+number+-+1;%0A++++%7D%0A++++%0A++++let+a+=+%5B10,+20,+30,+40,+50%5D;%0A++++for+element+in+a.iter()+%7B%0A++++++++println!(%22the+value+is:+%7Belement%7D%22);%0A++++%7D%0A%7D&amp;edition=2015">Run</a></div>
 <hr />
 <p>You can find the latest version of this information
 <a href="ch03-05-control-flow.html#repetition-with-loops">here</a>.</p>

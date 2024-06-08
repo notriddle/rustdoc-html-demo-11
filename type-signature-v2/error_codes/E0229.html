@@ -178,8 +178,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="error-code-e0229"><a class="header" href="#error-code-e0229">Error code E0229</a></h1>
-<p>An associated type binding was done outside of the type parameter declaration
-and <code>where</code> clause.</p>
+<p>An associated item constraint was written in an unexpected context.</p>
 <p>Erroneous code example:</p>
 <pre><pre class="playground"><code class="language-rust compile_fail E0229"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -195,18 +194,18 @@ impl Foo for isize {
     fn boo(&amp;self) -&gt; usize { 42 }
 }
 
-fn baz&lt;I&gt;(x: &amp;&lt;I as Foo&lt;A=Bar&gt;&gt;::A) {}
-// error: associated type bindings are not allowed here
+fn baz&lt;I&gt;(x: &amp;&lt;I as Foo&lt;A = Bar&gt;&gt;::A) {}
+// error: associated item constraint are not allowed here
 <span class="boring">}</span></code></pre></pre>
-<p>To solve this error, please move the type bindings in the type parameter
-declaration:</p>
+<p>To solve this error, please move the associated item constraints to the type
+parameter declaration:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">struct Bar;
 </span><span class="boring">trait Foo { type A; }
 </span>fn baz&lt;I: Foo&lt;A=Bar&gt;&gt;(x: &amp;&lt;I as Foo&gt;::A) {} // ok!
 <span class="boring">}</span></code></pre></pre>
-<p>Or in the <code>where</code> clause:</p>
+<p>Or into the where-clause:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">struct Bar;

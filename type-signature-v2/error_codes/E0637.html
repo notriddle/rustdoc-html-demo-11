@@ -179,7 +179,7 @@
                     <main>
                         <h1 id="error-code-e0637"><a class="header" href="#error-code-e0637">Error code E0637</a></h1>
 <p><code>'_</code> lifetime name or <code>&amp;T</code> without an explicit lifetime name has been used
-on illegal place.</p>
+in an illegal place.</p>
 <p>Erroneous code example:</p>
 <pre><pre class="playground"><code class="language-rust compile_fail E0106 E0637"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -192,7 +192,14 @@ on illegal place.</p>
     }
 }
 
-fn and_without_explicit_lifetime&lt;T&gt;()
+fn without_explicit_lifetime&lt;T&gt;()
+where
+    T: Iterator&lt;Item = &amp;u32&gt;,
+                     //^ `&amp;` without an explicit lifetime name
+{
+}
+
+fn without_hrtb&lt;T&gt;()
 where
     T: Into&lt;&amp;u32&gt;,
           //^ `&amp;` without an explicit lifetime name
@@ -217,9 +224,15 @@ the anonymous lifetime in Rust 2018, see <a href="https://blog.rust-lang.org/201
     }
 }
 
-fn and_without_explicit_lifetime&lt;'foo, T&gt;()
+fn without_explicit_lifetime&lt;'a, T&gt;()
 where
-    T: Into&lt;&amp;'foo u32&gt;,
+    T: Iterator&lt;Item = &amp;'a u32&gt;,
+{
+}
+
+fn without_hrtb&lt;T&gt;()
+where
+    T: for&lt;'foo&gt; Into&lt;&amp;'foo u32&gt;,
 {
 }
 <span class="boring">}</span></code></pre></pre>

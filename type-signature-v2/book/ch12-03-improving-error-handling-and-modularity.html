@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -198,12 +200,13 @@ reading the file fails, but the error message just prints <code>Should have been
 example, the file could be missing, or we might not have permission to open it.
 Right now, regardless of the situation, we’d print the same error message for
 everything, which wouldn’t give the user any information!</p>
-<p>Fourth, we use <code>expect</code> repeatedly to handle different errors, and if the user
-runs our program without specifying enough arguments, they’ll get an <code>index out of bounds</code> error from Rust that doesn’t clearly explain the problem. It would
-be best if all the error-handling code were in one place so future maintainers
-had only one place to consult the code if the error-handling logic needed to
-change. Having all the error-handling code in one place will also ensure that
-we’re printing messages that will be meaningful to our end users.</p>
+<p>Fourth, we use <code>expect</code> to handle an error, and if the user runs our program
+without specifying enough arguments, they’ll get an <code>index out of bounds</code> error
+from Rust that doesn’t clearly explain the problem. It would be best if all the
+error-handling code were in one place so future maintainers had only one place
+to consult the code if the error-handling logic needed to change. Having all the
+error-handling code in one place will also ensure that we’re printing messages
+that will be meaningful to our end users.</p>
 <p>Let’s address these four problems by refactoring our project.</p>
 <h3 id="separation-of-concerns-for-binary-projects"><a class="header" href="#separation-of-concerns-for-binary-projects">Separation of Concerns for Binary Projects</a></h3>
 <p>The organizational problem of allocating responsibility for multiple tasks to
@@ -249,8 +252,8 @@ function <code>parse_config</code>, which we’ll define in <em>src/main.rs</em>
 
     // --snip--
 <span class="boring">
-</span><span class="boring">    println!("Searching for {}", query);
-</span><span class="boring">    println!("In file {}", file_path);
+</span><span class="boring">    println!("Searching for {query}");
+</span><span class="boring">    println!("In file {file_path}");
 </span><span class="boring">
 </span><span class="boring">    let contents = fs::read_to_string(file_path)
 </span><span class="boring">        .expect("Should have been able to read the file");
@@ -341,7 +344,7 @@ takes more time and memory than storing a reference to the string data.
 However, cloning the data also makes our code very straightforward because we
 don’t have to manage the lifetimes of the references; in this circumstance,
 giving up a little performance to gain simplicity is a worthwhile trade-off.</p>
-<blockquote>
+<section class="note" aria-role="note">
 <h3 id="the-trade-offs-of-using-clone"><a class="header" href="#the-trade-offs-of-using-clone">The Trade-Offs of Using <code>clone</code></a></h3>
 <p>There’s a tendency among many Rustaceans to avoid using <code>clone</code> to fix
 ownership problems because of its runtime cost. In
@@ -353,7 +356,7 @@ a working program that’s a bit inefficient than to try to hyperoptimize code
 on your first pass. As you become more experienced with Rust, it’ll be
 easier to start with the most efficient solution, but for now, it’s
 perfectly acceptable to call <code>clone</code>.</p>
-</blockquote>
+</section>
 <p>We’ve updated <code>main</code> so it places the instance of <code>Config</code> returned by
 <code>parse_config</code> into a variable named <code>config</code>, and we updated the code that
 previously used the separate <code>query</code> and <code>file_path</code> variables so it now uses
@@ -425,7 +428,7 @@ panic if the vector contains fewer than three items. Try running the program
 without any arguments; it will look like this:</p>
 <pre><code class="language-console">$ cargo run
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.0s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.0s
      Running `target/debug/minigrep`
 thread 'main' panicked at src/main.rs:27:21:
 index out of bounds: the len is 1 but the index is 1
@@ -488,7 +491,7 @@ will be true, and we call the <code>panic!</code> macro to end the program immed
 arguments again to see what the error looks like now:</p>
 <pre><code class="language-console">$ cargo run
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.0s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.0s
      Running `target/debug/minigrep`
 thread 'main' panicked at src/main.rs:26:13:
 not enough arguments
@@ -636,7 +639,7 @@ number that was passed as the exit status code. This is similar to the
 extra output. Let’s try it:</p>
 <pre><code class="language-console">$ cargo run
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.48s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.48s
      Running `target/debug/minigrep`
 Problem parsing arguments: not enough arguments
 </code></pre>
@@ -801,7 +804,7 @@ help: use `let _ = ...` to ignore the resulting value
    |     +++++++
 
 warning: `minigrep` (bin "minigrep") generated 1 warning
-    Finished dev [unoptimized + debuginfo] target(s) in 0.71s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.71s
      Running `target/debug/minigrep the poem.txt`
 Searching for the
 In file poem.txt

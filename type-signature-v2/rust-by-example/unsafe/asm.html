@@ -500,7 +500,7 @@ assert_eq!(x, 4 * 6);
 <span class="boring">}
 </span><span class="boring">}</span></code></pre></pre>
 <h2 id="symbol-operands-and-abi-clobbers"><a class="header" href="#symbol-operands-and-abi-clobbers">Symbol operands and ABI clobbers</a></h2>
-<p>By default, <code>asm!</code> assumes that any register not specified as an output will have its contents preserved by the assembly code. The <a href="../../reference/inline-assembly.html#abi-clobbers"><code>clobber_abi</code></a> argument to <code>asm!</code> tells the compiler to automatically insert the necessary clobber operands according to the given calling convention ABI: any register which is not fully preserved in that ABI will be treated as clobbered.  Multiple <code>clobber_abi</code> arguments may be provided and all clobbers from all specified ABIs will be inserted.</p>
+<p>By default, <code>asm!</code> assumes that any register not specified as an output will have its contents preserved by the assembly code. The <a href="https://doc.rust-lang.org/stable/reference/inline-assembly.html#abi-clobbers"><code>clobber_abi</code></a> argument to <code>asm!</code> tells the compiler to automatically insert the necessary clobber operands according to the given calling convention ABI: any register which is not fully preserved in that ABI will be treated as clobbered.  Multiple <code>clobber_abi</code> arguments may be provided and all clobbers from all specified ABIs will be inserted.</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">#[cfg(target_arch = "x86_64")] {

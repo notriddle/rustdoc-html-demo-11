@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/alloc.rs`."><title>alloc.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.79.0.js"></script><script defer src="../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../std/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/alloc.rs`."><title>alloc.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.81.0.js"></script><script defer src="../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -86,24 +86,6 @@
 <a href="#86" id="86">86</a>
 <a href="#87" id="87">87</a>
 <a href="#88" id="88">88</a>
-<a href="#89" id="89">89</a>
-<a href="#90" id="90">90</a>
-<a href="#91" id="91">91</a>
-<a href="#92" id="92">92</a>
-<a href="#93" id="93">93</a>
-<a href="#94" id="94">94</a>
-<a href="#95" id="95">95</a>
-<a href="#96" id="96">96</a>
-<a href="#97" id="97">97</a>
-<a href="#98" id="98">98</a>
-<a href="#99" id="99">99</a>
-<a href="#100" id="100">100</a>
-<a href="#101" id="101">101</a>
-<a href="#102" id="102">102</a>
-<a href="#103" id="103">103</a>
-<a href="#104" id="104">104</a>
-<a href="#105" id="105">105</a>
-<a href="#106" id="106">106</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::alloc::{GlobalAlloc, Layout, System};
 <span class="kw">use </span><span class="kw">crate</span>::ptr;
 <span class="kw">use </span><span class="kw">crate</span>::sys::common::alloc::{realloc_fallback, MIN_ALIGN};
@@ -119,7 +101,13 @@
         </span><span class="kw">if </span>layout.align() &lt;= MIN_ALIGN &amp;&amp; layout.align() &lt;= layout.size() {
             libc::malloc(layout.size()) <span class="kw">as </span><span class="kw-2">*mut </span>u8
         } <span class="kw">else </span>{
-            <span class="attr">#[cfg(target_os = <span class="string">"macos"</span>)]
+            <span class="comment">// `posix_memalign` returns a non-aligned value if supplied a very
+            // large alignment on older versions of Apple's platforms (unknown
+            // exactly which version range, but the issue is definitely
+            // present in macOS 10.14 and iOS 13.3).
+            //
+            // &lt;https://github.com/rust-lang/rust/issues/30170&gt;
+            </span><span class="attr">#[cfg(target_vendor = <span class="string">"apple"</span>)]
             </span>{
                 <span class="kw">if </span>layout.align() &gt; (<span class="number">1 </span>&lt;&lt; <span class="number">31</span>) {
                     <span class="kw">return </span>ptr::null_mut();
@@ -159,51 +147,27 @@
 }
 
 <span class="macro">cfg_if::cfg_if!</span> {
-    <span class="kw">if </span><span class="attr">#[cfg(any(
-        target_os = <span class="string">"android"</span>,
-        target_os = <span class="string">"illumos"</span>,
-        target_os = <span class="string">"redox"</span>,
-        target_os = <span class="string">"solaris"</span>,
-        target_os = <span class="string">"espidf"</span>,
+    <span class="comment">// We use posix_memalign wherever possible, but some targets have very incomplete POSIX coverage
+    // so we need a fallback for those.
+    </span><span class="kw">if </span><span class="attr">#[cfg(any(
         target_os = <span class="string">"horizon"</span>,
         target_os = <span class="string">"vita"</span>,
     ))] </span>{
         <span class="attr">#[inline]
         </span><span class="kw">unsafe fn </span>aligned_malloc(layout: <span class="kw-2">&amp;</span>Layout) -&gt; <span class="kw-2">*mut </span>u8 {
-            <span class="comment">// On android we currently target API level 9 which unfortunately
-            // doesn't have the `posix_memalign` API used below. Instead we use
-            // `memalign`, but this unfortunately has the property on some systems
-            // where the memory returned cannot be deallocated by `free`!
-            //
-            // Upon closer inspection, however, this appears to work just fine with
-            // Android, so for this platform we should be fine to call `memalign`
-            // (which is present in API level 9). Some helpful references could
-            // possibly be chromium using memalign [1], attempts at documenting that
-            // memalign + free is ok [2] [3], or the current source of chromium
-            // which still uses memalign on android [4].
-            //
-            // [1]: https://codereview.chromium.org/10796020/
-            // [2]: https://code.google.com/p/android/issues/detail?id=35391
-            // [3]: https://bugs.chromium.org/p/chromium/issues/detail?id=138579
-            // [4]: https://chromium.googlesource.com/chromium/src/base/+/master/
-            //                                       /memory/aligned_memory.cc
-            </span>libc::memalign(layout.align(), layout.size()) <span class="kw">as </span><span class="kw-2">*mut </span>u8
-        }
-    } <span class="kw">else if </span><span class="attr">#[cfg(target_os = <span class="string">"wasi"</span>)] </span>{
-        <span class="attr">#[inline]
-        </span><span class="kw">unsafe fn </span>aligned_malloc(layout: <span class="kw-2">&amp;</span>Layout) -&gt; <span class="kw-2">*mut </span>u8 {
-            <span class="comment">// C11 aligned_alloc requires that the size be a multiple of the alignment.
-            // Layout already checks that the size rounded up doesn't overflow isize::MAX.
-            </span><span class="kw">let </span>align = layout.align();
-            <span class="kw">let </span>size = layout.size().next_multiple_of(align);
-            libc::aligned_alloc(align, size) <span class="kw">as </span><span class="kw-2">*mut </span>u8
+            libc::memalign(layout.align(), layout.size()) <span class="kw">as </span><span class="kw-2">*mut </span>u8
         }
     } <span class="kw">else </span>{
         <span class="attr">#[inline]
         </span><span class="kw">unsafe fn </span>aligned_malloc(layout: <span class="kw-2">&amp;</span>Layout) -&gt; <span class="kw-2">*mut </span>u8 {
             <span class="kw">let </span><span class="kw-2">mut </span>out = ptr::null_mut();
-            <span class="comment">// posix_memalign requires that the alignment be a multiple of `sizeof(void*)`.
-            // Since these are all powers of 2, we can just use max.
+            <span class="comment">// We prefer posix_memalign over aligned_alloc since it is more widely available, and
+            // since with aligned_alloc, implementations are making almost arbitrary choices for
+            // which alignments are "supported", making it hard to use. For instance, some
+            // implementations require the size to be a multiple of the alignment (wasi emmalloc),
+            // while others require the alignment to be at least the pointer size (Illumos, macOS).
+            // posix_memalign only has one, clear requirement: that the alignment be a multiple of
+            // `sizeof(void*)`. Since these are all powers of 2, we can just use max.
             </span><span class="kw">let </span>align = layout.align().max(<span class="kw">crate</span>::mem::size_of::&lt;usize&gt;());
             <span class="kw">let </span>ret = libc::posix_memalign(<span class="kw-2">&amp;mut </span>out, align, layout.size());
             <span class="kw">if </span>ret != <span class="number">0 </span>{ ptr::null_mut() } <span class="kw">else </span>{ out <span class="kw">as </span><span class="kw-2">*mut </span>u8 }

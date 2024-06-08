@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -455,7 +457,7 @@ we’ll implement behavior for this type such that every instance of
 have a known result for testing purposes. We wouldn’t need any data to
 implement that behavior! You’ll see in Chapter 10 how to define traits and
 implement them on any type, including unit-like structs.</p>
-<blockquote>
+<section class="note" aria-role="note">
 <h3 id="ownership-of-struct-data"><a class="header" href="#ownership-of-struct-data">Ownership of Struct Data</a></h3>
 <p>In the <code>User</code> struct definition in Listing 5-1, we used the owned <code>String</code>
 type rather than the <code>&amp;str</code> string slice type. This is a deliberate choice
@@ -519,7 +521,7 @@ error: could not compile `structs` (bin "structs") due to 2 previous errors
 <p>In Chapter 10, we’ll discuss how to fix these errors so you can store
 references in structs, but for now, we’ll fix errors like these using owned
 types like <code>String</code> instead of references like <code>&amp;str</code>.</p>
-</blockquote>
+</section>
 <!-- manual-regeneration
 for the error above
 after running update-rustc.sh:

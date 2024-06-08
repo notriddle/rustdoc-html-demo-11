@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -196,7 +198,7 @@ executable. Instead, they define functionality intended to be shared with
 multiple projects. For example, the <code>rand</code> crate we used in <a href="ch02-00-guessing-game-tutorial.html#generating-a-random-number">Chapter
 2</a><!-- ignore --> provides functionality that generates random numbers.
 Most of the time when Rustaceans say “crate”, they mean library crate, and they
-use “crate” interchangeably with the general programming concept of a “library".</p>
+use “crate” interchangeably with the general programming concept of a “library“.</p>
 <p>The <em>crate root</em> is a source file that the Rust compiler starts from and makes
 up the root module of your crate (we’ll explain modules in depth in the
 <a href="ch07-02-defining-modules-to-control-scope-and-privacy.html">“Defining Modules to Control Scope and Privacy”</a><!-- ignore -->
@@ -208,11 +210,12 @@ for the command-line tool you’ve been using to build your code. The Cargo
 package also contains a library crate that the binary crate depends on. Other
 projects can depend on the Cargo library crate to use the same logic the Cargo
 command-line tool uses.</p>
-<p>A package can contain as many binary crates as you like, but at most only one
+<p>A crate can come in one of two forms: a binary crate or a library crate. A
+package can contain as many binary crates as you like, but at most only one
 library crate. A package must contain at least one crate, whether that’s a
 library or binary crate.</p>
-<p>Let’s walk through what happens when we create a package. First, we enter the
-command <code>cargo new</code>:</p>
+<p>Let’s walk through what happens when we create a package. First we enter the
+command <code>cargo new my-project</code>:</p>
 <pre><code class="language-console">$ cargo new my-project
      Created binary (application) `my-project` package
 $ ls my-project
@@ -221,15 +224,15 @@ src
 $ ls my-project/src
 main.rs
 </code></pre>
-<p>After we run <code>cargo new</code>, we use <code>ls</code> to see what Cargo creates. In the project
-directory, there’s a <em>Cargo.toml</em> file, giving us a package. There’s also a
-<em>src</em> directory that contains <em>main.rs</em>. Open <em>Cargo.toml</em> in your text editor,
-and note there’s no mention of <em>src/main.rs</em>. Cargo follows a convention that
-<em>src/main.rs</em> is the crate root of a binary crate with the same name as the
-package. Likewise, Cargo knows that if the package directory contains
-<em>src/lib.rs</em>, the package contains a library crate with the same name as the
-package, and <em>src/lib.rs</em> is its crate root. Cargo passes the crate root files
-to <code>rustc</code> to build the library or binary.</p>
+<p>After we run <code>cargo new my-project</code>, we use <code>ls</code> to see what Cargo creates. In
+the project directory, there’s a <em>Cargo.toml</em> file, giving us a package.
+There’s also a <em>src</em> directory that contains <em>main.rs</em>. Open <em>Cargo.toml</em> in
+your text editor, and note there’s no mention of <em>src/main.rs</em>. Cargo follows a
+convention that <em>src/main.rs</em> is the crate root of a binary crate with the same
+name as the package. Likewise, Cargo knows that if the package directory
+contains <em>src/lib.rs</em>, the package contains a library crate with the same name
+as the package, and <em>src/lib.rs</em> is its crate root. Cargo passes the crate root
+files to <code>rustc</code> to build the library or binary.</p>
 <p>Here, we have a package that only contains <em>src/main.rs</em>, meaning it only
 contains a binary crate named <code>my-project</code>. If a package contains <em>src/main.rs</em>
 and <em>src/lib.rs</em>, it has two crates: a binary and a library, both with the same

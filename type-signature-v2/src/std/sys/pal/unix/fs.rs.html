@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/fs.rs`."><title>fs.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.79.0.js"></script><script defer src="../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../std/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/fs.rs`."><title>fs.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.81.0.js"></script><script defer src="../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2223,51 +2223,6 @@
 <a href="#2223" id="2223">2223</a>
 <a href="#2224" id="2224">2224</a>
 <a href="#2225" id="2225">2225</a>
-<a href="#2226" id="2226">2226</a>
-<a href="#2227" id="2227">2227</a>
-<a href="#2228" id="2228">2228</a>
-<a href="#2229" id="2229">2229</a>
-<a href="#2230" id="2230">2230</a>
-<a href="#2231" id="2231">2231</a>
-<a href="#2232" id="2232">2232</a>
-<a href="#2233" id="2233">2233</a>
-<a href="#2234" id="2234">2234</a>
-<a href="#2235" id="2235">2235</a>
-<a href="#2236" id="2236">2236</a>
-<a href="#2237" id="2237">2237</a>
-<a href="#2238" id="2238">2238</a>
-<a href="#2239" id="2239">2239</a>
-<a href="#2240" id="2240">2240</a>
-<a href="#2241" id="2241">2241</a>
-<a href="#2242" id="2242">2242</a>
-<a href="#2243" id="2243">2243</a>
-<a href="#2244" id="2244">2244</a>
-<a href="#2245" id="2245">2245</a>
-<a href="#2246" id="2246">2246</a>
-<a href="#2247" id="2247">2247</a>
-<a href="#2248" id="2248">2248</a>
-<a href="#2249" id="2249">2249</a>
-<a href="#2250" id="2250">2250</a>
-<a href="#2251" id="2251">2251</a>
-<a href="#2252" id="2252">2252</a>
-<a href="#2253" id="2253">2253</a>
-<a href="#2254" id="2254">2254</a>
-<a href="#2255" id="2255">2255</a>
-<a href="#2256" id="2256">2256</a>
-<a href="#2257" id="2257">2257</a>
-<a href="#2258" id="2258">2258</a>
-<a href="#2259" id="2259">2259</a>
-<a href="#2260" id="2260">2260</a>
-<a href="#2261" id="2261">2261</a>
-<a href="#2262" id="2262">2262</a>
-<a href="#2263" id="2263">2263</a>
-<a href="#2264" id="2264">2264</a>
-<a href="#2265" id="2265">2265</a>
-<a href="#2266" id="2266">2266</a>
-<a href="#2267" id="2267">2267</a>
-<a href="#2268" id="2268">2268</a>
-<a href="#2269" id="2269">2269</a>
-<a href="#2270" id="2270">2270</a>
 </pre></div><pre class="rust"><code><span class="comment">// miri has some special hacks here that make things unused.
 </span><span class="attr">#![cfg_attr(miri, allow(unused))]
 
@@ -2290,14 +2245,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::sys::{cvt, cvt_r};
 <span class="kw">use </span><span class="kw">crate</span>::sys_common::{AsInner, AsInnerMut, FromInner, IntoInner};
 
-<span class="attr">#[cfg(any(
-    all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"gnu"</span>),
-    target_os = <span class="string">"macos"</span>,
-    target_os = <span class="string">"ios"</span>,
-    target_os = <span class="string">"tvos"</span>,
-    target_os = <span class="string">"watchos"</span>,
-    target_os = <span class="string">"visionos"</span>,
-))]
+<span class="attr">#[cfg(any(all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"gnu"</span>), target_vendor = <span class="string">"apple"</span>))]
 </span><span class="kw">use </span><span class="kw">crate</span>::sys::weak::syscall;
 <span class="attr">#[cfg(any(target_os = <span class="string">"android"</span>, target_os = <span class="string">"macos"</span>, target_os = <span class="string">"solaris"</span>))]
 </span><span class="kw">use </span><span class="kw">crate</span>::sys::weak::weak;
@@ -2305,13 +2253,9 @@
 <span class="kw">use </span>libc::{c_int, mode_t};
 
 <span class="attr">#[cfg(any(
-    target_os = <span class="string">"macos"</span>,
-    target_os = <span class="string">"ios"</span>,
-    target_os = <span class="string">"tvos"</span>,
-    target_os = <span class="string">"watchos"</span>,
-    target_os = <span class="string">"visionos"</span>,
     target_os = <span class="string">"solaris"</span>,
-    all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"gnu"</span>)
+    all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"gnu"</span>),
+    target_vendor = <span class="string">"apple"</span>,
 ))]
 </span><span class="kw">use </span>libc::c_char;
 <span class="attr">#[cfg(any(
@@ -2468,20 +2412,16 @@
                 <span class="kw">return </span><span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(err));
             }
 
-            <span class="comment">// `ENOSYS` might come from a faulty FUSE driver.
-            //
-            // Other errors are not a good enough indicator either -- it is
-            // known that `EPERM` can be returned as a result of using seccomp to
-            // block the syscall.
+            <span class="comment">// We're not yet entirely sure whether `statx` is usable on this kernel
+            // or not. Syscalls can return errors from things other than the kernel
+            // per se, e.g. `EPERM` can be returned if seccomp is used to block the
+            // syscall, or `ENOSYS` might be returned from a faulty FUSE driver.
             //
             // Availability is checked by performing a call which expects `EFAULT`
             // if the syscall is usable.
             //
             // See: https://github.com/rust-lang/rust/issues/65662
             //
-            // FIXME this can probably just do the call if `EPERM` was received, but
-            // previous iteration of the code checked it for all errors and for now
-            // this is retained.
             // FIXME what about transient conditions like `ENOMEM`?
             </span><span class="kw">let </span>err2 = cvt(statx(<span class="number">0</span>, ptr::null(), <span class="number">0</span>, libc::STATX_ALL, ptr::null_mut()))
                 .err()
@@ -2649,13 +2589,7 @@
 </span><span class="kw">pub struct </span>FileTimes {
     accessed: <span class="prelude-ty">Option</span>&lt;SystemTime&gt;,
     modified: <span class="prelude-ty">Option</span>&lt;SystemTime&gt;,
-    <span class="attr">#[cfg(any(
-        target_os = <span class="string">"macos"</span>,
-        target_os = <span class="string">"ios"</span>,
-        target_os = <span class="string">"watchos"</span>,
-        target_os = <span class="string">"visionos"</span>,
-        target_os = <span class="string">"tvos"
-    </span>))]
+    <span class="attr">#[cfg(target_vendor = <span class="string">"apple"</span>)]
     </span>created: <span class="prelude-ty">Option</span>&lt;SystemTime&gt;,
 }
 
@@ -2828,15 +2762,7 @@
         SystemTime::new(<span class="self">self</span>.stat.st_atim.tv_sec <span class="kw">as </span>i64, <span class="self">self</span>.stat.st_atim.tv_nsec <span class="kw">as </span>i64)
     }
 
-    <span class="attr">#[cfg(any(
-        target_os = <span class="string">"freebsd"</span>,
-        target_os = <span class="string">"openbsd"</span>,
-        target_os = <span class="string">"macos"</span>,
-        target_os = <span class="string">"ios"</span>,
-        target_os = <span class="string">"tvos"</span>,
-        target_os = <span class="string">"watchos"</span>,
-        target_os = <span class="string">"visionos"</span>,
-    ))]
+    <span class="attr">#[cfg(any(target_os = <span class="string">"freebsd"</span>, target_os = <span class="string">"openbsd"</span>, target_vendor = <span class="string">"apple"</span>))]
     </span><span class="kw">pub fn </span>created(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;SystemTime&gt; {
         SystemTime::new(<span class="self">self</span>.stat.st_birthtime <span class="kw">as </span>i64, <span class="self">self</span>.stat.st_birthtime_nsec <span class="kw">as </span>i64)
     }
@@ -2844,12 +2770,8 @@
     <span class="attr">#[cfg(not(any(
         target_os = <span class="string">"freebsd"</span>,
         target_os = <span class="string">"openbsd"</span>,
-        target_os = <span class="string">"macos"</span>,
-        target_os = <span class="string">"ios"</span>,
-        target_os = <span class="string">"tvos"</span>,
-        target_os = <span class="string">"watchos"</span>,
-        target_os = <span class="string">"visionos"</span>,
         target_os = <span class="string">"vita"</span>,
+        target_vendor = <span class="string">"apple"</span>,
     )))]
     </span><span class="kw">pub fn </span>created(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;SystemTime&gt; {
         <span class="macro">cfg_has_statx!</span> {
@@ -2929,13 +2851,7 @@
         <span class="self">self</span>.modified = <span class="prelude-val">Some</span>(t);
     }
 
-    <span class="attr">#[cfg(any(
-        target_os = <span class="string">"macos"</span>,
-        target_os = <span class="string">"ios"</span>,
-        target_os = <span class="string">"watchos"</span>,
-        target_os = <span class="string">"visionos"</span>,
-        target_os = <span class="string">"tvos"
-    </span>))]
+    <span class="attr">#[cfg(target_vendor = <span class="string">"apple"</span>)]
     </span><span class="kw">pub fn </span>set_created(<span class="kw-2">&amp;mut </span><span class="self">self</span>, t: SystemTime) {
         <span class="self">self</span>.created = <span class="prelude-val">Some</span>(t);
     }
@@ -3138,8 +3054,43 @@
     }
 }
 
+<span class="doccomment">/// Aborts the process if a file desceriptor is not open, if debug asserts are enabled
+///
+/// Many IO syscalls can't be fully trusted about EBADF error codes because those
+/// might get bubbled up from a remote FUSE server rather than the file descriptor
+/// in the current process being invalid.
+///
+/// So we check file flags instead which live on the file descriptor and not the underlying file.
+/// The downside is that it costs an extra syscall, so we only do it for debug.
+</span><span class="attr">#[inline]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>debug_assert_fd_is_open(fd: RawFd) {
+    <span class="kw">use </span><span class="kw">crate</span>::sys::os::errno;
+
+    <span class="comment">// this is similar to assert_unsafe_precondition!() but it doesn't require const
+    </span><span class="kw">if </span>core::ub_checks::check_library_ub() {
+        <span class="kw">if unsafe </span>{ libc::fcntl(fd, libc::F_GETFD) } == -<span class="number">1 </span>&amp;&amp; errno() == libc::EBADF {
+            <span class="macro">rtabort!</span>(<span class="string">"IO Safety violation: owned file descriptor already closed"</span>);
+        }
+    }
+}
+
 <span class="kw">impl </span>Drop <span class="kw">for </span>Dir {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="comment">// dirfd isn't supported everywhere
+        </span><span class="attr">#[cfg(not(any(
+            miri,
+            target_os = <span class="string">"redox"</span>,
+            target_os = <span class="string">"nto"</span>,
+            target_os = <span class="string">"vita"</span>,
+            target_os = <span class="string">"hurd"</span>,
+            target_os = <span class="string">"espidf"</span>,
+            target_os = <span class="string">"fuchsia"</span>,
+            target_os = <span class="string">"horizon"</span>,
+        )))]
+        </span>{
+            <span class="kw">let </span>fd = <span class="kw">unsafe </span>{ libc::dirfd(<span class="self">self</span>.<span class="number">0</span>) };
+            debug_assert_fd_is_open(fd);
+        }
         <span class="kw">let </span>r = <span class="kw">unsafe </span>{ libc::closedir(<span class="self">self</span>.<span class="number">0</span>) };
         <span class="macro">assert!</span>(
             r == <span class="number">0 </span>|| <span class="kw">crate</span>::io::Error::last_os_error().is_interrupted(),
@@ -3236,11 +3187,6 @@
     }
 
     <span class="attr">#[cfg(any(
-        target_os = <span class="string">"macos"</span>,
-        target_os = <span class="string">"ios"</span>,
-        target_os = <span class="string">"tvos"</span>,
-        target_os = <span class="string">"watchos"</span>,
-        target_os = <span class="string">"visionos"</span>,
         target_os = <span class="string">"linux"</span>,
         target_os = <span class="string">"emscripten"</span>,
         target_os = <span class="string">"android"</span>,
@@ -3257,6 +3203,7 @@
         target_os = <span class="string">"aix"</span>,
         target_os = <span class="string">"nto"</span>,
         target_os = <span class="string">"hurd"</span>,
+        target_vendor = <span class="string">"apple"</span>,
     ))]
     </span><span class="kw">pub fn </span>ino(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u64 {
         <span class="self">self</span>.entry.d_ino <span class="kw">as </span>u64
@@ -3273,16 +3220,12 @@
     }
 
     <span class="attr">#[cfg(any(
-        target_os = <span class="string">"macos"</span>,
-        target_os = <span class="string">"ios"</span>,
-        target_os = <span class="string">"tvos"</span>,
-        target_os = <span class="string">"watchos"</span>,
-        target_os = <span class="string">"visionos"</span>,
         target_os = <span class="string">"netbsd"</span>,
         target_os = <span class="string">"openbsd"</span>,
         target_os = <span class="string">"freebsd"</span>,
-        target_os = <span class="string">"dragonfly"
-    </span>))]
+        target_os = <span class="string">"dragonfly"</span>,
+        target_vendor = <span class="string">"apple"</span>,
+    ))]
     </span><span class="kw">fn </span>name_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[u8] {
         <span class="kw">use </span><span class="kw">crate</span>::slice;
         <span class="kw">unsafe </span>{
@@ -3293,16 +3236,12 @@
         }
     }
     <span class="attr">#[cfg(not(any(
-        target_os = <span class="string">"macos"</span>,
-        target_os = <span class="string">"ios"</span>,
-        target_os = <span class="string">"tvos"</span>,
-        target_os = <span class="string">"watchos"</span>,
-        target_os = <span class="string">"visionos"</span>,
         target_os = <span class="string">"netbsd"</span>,
         target_os = <span class="string">"openbsd"</span>,
         target_os = <span class="string">"freebsd"</span>,
-        target_os = <span class="string">"dragonfly"
-    </span>)))]
+        target_os = <span class="string">"dragonfly"</span>,
+        target_vendor = <span class="string">"apple"</span>,
+    )))]
     </span><span class="kw">fn </span>name_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[u8] {
         <span class="self">self</span>.name_cstr().to_bytes()
     }
@@ -3479,23 +3418,11 @@
         cvt_r(|| <span class="kw">unsafe </span>{ os_fsync(<span class="self">self</span>.as_raw_fd()) })<span class="question-mark">?</span>;
         <span class="kw">return </span><span class="prelude-val">Ok</span>(());
 
-        <span class="attr">#[cfg(any(
-            target_os = <span class="string">"macos"</span>,
-            target_os = <span class="string">"ios"</span>,
-            target_os = <span class="string">"tvos"</span>,
-            target_os = <span class="string">"watchos"</span>,
-            target_os = <span class="string">"visionos"</span>,
-        ))]
+        <span class="attr">#[cfg(target_vendor = <span class="string">"apple"</span>)]
         </span><span class="kw">unsafe fn </span>os_fsync(fd: c_int) -&gt; c_int {
             libc::fcntl(fd, libc::F_FULLFSYNC)
         }
-        <span class="attr">#[cfg(not(any(
-            target_os = <span class="string">"macos"</span>,
-            target_os = <span class="string">"ios"</span>,
-            target_os = <span class="string">"tvos"</span>,
-            target_os = <span class="string">"watchos"</span>,
-            target_os = <span class="string">"visionos"</span>,
-        )))]
+        <span class="attr">#[cfg(not(target_vendor = <span class="string">"apple"</span>))]
         </span><span class="kw">unsafe fn </span>os_fsync(fd: c_int) -&gt; c_int {
             libc::fsync(fd)
         }
@@ -3505,13 +3432,7 @@
         cvt_r(|| <span class="kw">unsafe </span>{ os_datasync(<span class="self">self</span>.as_raw_fd()) })<span class="question-mark">?</span>;
         <span class="kw">return </span><span class="prelude-val">Ok</span>(());
 
-        <span class="attr">#[cfg(any(
-            target_os = <span class="string">"macos"</span>,
-            target_os = <span class="string">"ios"</span>,
-            target_os = <span class="string">"tvos"</span>,
-            target_os = <span class="string">"watchos"</span>,
-            target_os = <span class="string">"visionos"</span>,
-        ))]
+        <span class="attr">#[cfg(target_vendor = <span class="string">"apple"</span>)]
         </span><span class="kw">unsafe fn </span>os_datasync(fd: c_int) -&gt; c_int {
             libc::fcntl(fd, libc::F_FULLFSYNC)
         }
@@ -3530,16 +3451,12 @@
         <span class="attr">#[cfg(not(any(
             target_os = <span class="string">"android"</span>,
             target_os = <span class="string">"freebsd"</span>,
-            target_os = <span class="string">"ios"</span>,
-            target_os = <span class="string">"tvos"</span>,
             target_os = <span class="string">"linux"</span>,
-            target_os = <span class="string">"macos"</span>,
             target_os = <span class="string">"netbsd"</span>,
             target_os = <span class="string">"openbsd"</span>,
-            target_os = <span class="string">"watchos"</span>,
-            target_os = <span class="string">"visionos"</span>,
             target_os = <span class="string">"nto"</span>,
             target_os = <span class="string">"hurd"</span>,
+            target_vendor = <span class="string">"apple"</span>,
         )))]
         </span><span class="kw">unsafe fn </span>os_datasync(fd: c_int) -&gt; c_int {
             libc::fsync(fd)
@@ -3648,7 +3565,7 @@
                     io::ErrorKind::Unsupported,
                     <span class="string">"setting file times not supported"</span>,
                 ))
-            } <span class="kw">else if </span><span class="attr">#[cfg(any(target_os = <span class="string">"macos"</span>, target_os = <span class="string">"ios"</span>, target_os = <span class="string">"tvos"</span>, target_os = <span class="string">"watchos"</span>, target_os = <span class="string">"visionos"</span>))] </span>{
+            } <span class="kw">else if </span><span class="attr">#[cfg(target_vendor = <span class="string">"apple"</span>)] </span>{
                 <span class="kw">let </span><span class="kw-2">mut </span>buf = [mem::MaybeUninit::&lt;libc::timespec&gt;::uninit(); <span class="number">3</span>];
                 <span class="kw">let </span><span class="kw-2">mut </span>num_times = <span class="number">0</span>;
                 <span class="kw">let </span><span class="kw-2">mut </span>attrlist: libc::attrlist = <span class="kw">unsafe </span>{ mem::zeroed() };
@@ -3789,29 +3706,33 @@
 
 <span class="kw">impl </span>fmt::Debug <span class="kw">for </span>File {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
-        <span class="attr">#[cfg(any(
-            target_os = <span class="string">"linux"</span>,
-            target_os = <span class="string">"netbsd"</span>,
-            target_os = <span class="string">"illumos"</span>,
-            target_os = <span class="string">"solaris"
-        </span>))]
+        <span class="attr">#[cfg(any(target_os = <span class="string">"linux"</span>, target_os = <span class="string">"illumos"</span>, target_os = <span class="string">"solaris"</span>))]
         </span><span class="kw">fn </span>get_path(fd: c_int) -&gt; <span class="prelude-ty">Option</span>&lt;PathBuf&gt; {
             <span class="kw">let </span><span class="kw-2">mut </span>p = PathBuf::from(<span class="string">"/proc/self/fd"</span>);
             p.push(<span class="kw-2">&amp;</span>fd.to_string());
             readlink(<span class="kw-2">&amp;</span>p).ok()
         }
 
-        <span class="attr">#[cfg(target_os = <span class="string">"macos"</span>)]
+        <span class="attr">#[cfg(any(target_vendor = <span class="string">"apple"</span>, target_os = <span class="string">"netbsd"</span>))]
         </span><span class="kw">fn </span>get_path(fd: c_int) -&gt; <span class="prelude-ty">Option</span>&lt;PathBuf&gt; {
             <span class="comment">// FIXME: The use of PATH_MAX is generally not encouraged, but it
-            // is inevitable in this case because macOS defines `fcntl` with
-            // `F_GETPATH` in terms of `MAXPATHLEN`, and there are no
+            // is inevitable in this case because Apple targets and NetBSD define `fcntl`
+            // with `F_GETPATH` in terms of `MAXPATHLEN`, and there are no
             // alternatives. If a better method is invented, it should be used
             // instead.
             </span><span class="kw">let </span><span class="kw-2">mut </span>buf = <span class="macro">vec!</span>[<span class="number">0</span>; libc::PATH_MAX <span class="kw">as </span>usize];
             <span class="kw">let </span>n = <span class="kw">unsafe </span>{ libc::fcntl(fd, libc::F_GETPATH, buf.as_ptr()) };
             <span class="kw">if </span>n == -<span class="number">1 </span>{
-                <span class="kw">return </span><span class="prelude-val">None</span>;
+                <span class="macro">cfg_if::cfg_if!</span> {
+                    <span class="kw">if </span><span class="attr">#[cfg(target_os = <span class="string">"netbsd"</span>)] </span>{
+                        <span class="comment">// fallback to procfs as last resort
+                        </span><span class="kw">let </span><span class="kw-2">mut </span>p = PathBuf::from(<span class="string">"/proc/self/fd"</span>);
+                        p.push(<span class="kw-2">&amp;</span>fd.to_string());
+                        <span class="kw">return </span>readlink(<span class="kw-2">&amp;</span>p).ok();
+                    } <span class="kw">else </span>{
+                        <span class="kw">return </span><span class="prelude-val">None</span>;
+                    }
+                }
             }
             <span class="kw">let </span>l = buf.iter().position(|<span class="kw-2">&amp;</span>c| c == <span class="number">0</span>).unwrap();
             buf.truncate(l <span class="kw">as </span>usize);
@@ -3846,13 +3767,13 @@
 
         <span class="attr">#[cfg(not(any(
             target_os = <span class="string">"linux"</span>,
-            target_os = <span class="string">"macos"</span>,
             target_os = <span class="string">"vxworks"</span>,
             all(target_os = <span class="string">"freebsd"</span>, target_arch = <span class="string">"x86_64"</span>),
             target_os = <span class="string">"netbsd"</span>,
             target_os = <span class="string">"illumos"</span>,
-            target_os = <span class="string">"solaris"
-        </span>)))]
+            target_os = <span class="string">"solaris"</span>,
+            target_vendor = <span class="string">"apple"</span>,
+        )))]
         </span><span class="kw">fn </span>get_path(_fd: c_int) -&gt; <span class="prelude-ty">Option</span>&lt;PathBuf&gt; {
             <span class="comment">// FIXME(#24570): implement this for other Unix platforms
             </span><span class="prelude-val">None
@@ -3860,13 +3781,15 @@
 
         <span class="attr">#[cfg(any(
             target_os = <span class="string">"linux"</span>,
-            target_os = <span class="string">"macos"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"netbsd"</span>,
             target_os = <span class="string">"openbsd"</span>,
-            target_os = <span class="string">"vxworks"
-        </span>))]
+            target_os = <span class="string">"vxworks"</span>,
+            target_os = <span class="string">"solaris"</span>,
+            target_os = <span class="string">"illumos"</span>,
+            target_vendor = <span class="string">"apple"</span>,
+        ))]
         </span><span class="kw">fn </span>get_mode(fd: c_int) -&gt; <span class="prelude-ty">Option</span>&lt;(bool, bool)&gt; {
             <span class="kw">let </span>mode = <span class="kw">unsafe </span>{ libc::fcntl(fd, libc::F_GETFL) };
             <span class="kw">if </span>mode == -<span class="number">1 </span>{
@@ -3882,13 +3805,15 @@
 
         <span class="attr">#[cfg(not(any(
             target_os = <span class="string">"linux"</span>,
-            target_os = <span class="string">"macos"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"hurd"</span>,
             target_os = <span class="string">"netbsd"</span>,
             target_os = <span class="string">"openbsd"</span>,
-            target_os = <span class="string">"vxworks"
-        </span>)))]
+            target_os = <span class="string">"vxworks"</span>,
+            target_os = <span class="string">"solaris"</span>,
+            target_os = <span class="string">"illumos"</span>,
+            target_vendor = <span class="string">"apple"</span>,
+        )))]
         </span><span class="kw">fn </span>get_mode(_fd: c_int) -&gt; <span class="prelude-ty">Option</span>&lt;(bool, bool)&gt; {
             <span class="comment">// FIXME(#24570): implement this for other Unix platforms
             </span><span class="prelude-val">None
@@ -4180,15 +4105,7 @@
     <span class="prelude-val">Ok</span>((writer, writer_metadata))
 }
 
-<span class="attr">#[cfg(not(any(
-    target_os = <span class="string">"linux"</span>,
-    target_os = <span class="string">"android"</span>,
-    target_os = <span class="string">"macos"</span>,
-    target_os = <span class="string">"ios"</span>,
-    target_os = <span class="string">"tvos"</span>,
-    target_os = <span class="string">"watchos"</span>,
-    target_os = <span class="string">"visionos"</span>,
-)))]
+<span class="attr">#[cfg(not(any(target_os = <span class="string">"linux"</span>, target_os = <span class="string">"android"</span>, target_vendor = <span class="string">"apple"</span>)))]
 </span><span class="kw">pub fn </span>copy(from: <span class="kw-2">&amp;</span>Path, to: <span class="kw-2">&amp;</span>Path) -&gt; io::Result&lt;u64&gt; {
     <span class="kw">let </span>(<span class="kw-2">mut </span>reader, reader_metadata) = open_from(from)<span class="question-mark">?</span>;
     <span class="kw">let </span>(<span class="kw-2">mut </span>writer, <span class="kw">_</span>) = open_to_and_set_permissions(to, reader_metadata)<span class="question-mark">?</span>;
@@ -4214,13 +4131,7 @@
     }
 }
 
-<span class="attr">#[cfg(any(
-    target_os = <span class="string">"macos"</span>,
-    target_os = <span class="string">"ios"</span>,
-    target_os = <span class="string">"watchos"</span>,
-    target_os = <span class="string">"visionos"</span>,
-    target_os = <span class="string">"tvos"
-</span>))]
+<span class="attr">#[cfg(target_vendor = <span class="string">"apple"</span>)]
 </span><span class="kw">pub fn </span>copy(from: <span class="kw-2">&amp;</span>Path, to: <span class="kw-2">&amp;</span>Path) -&gt; io::Result&lt;u64&gt; {
     <span class="kw">use </span><span class="kw">crate</span>::sync::atomic::{AtomicBool, Ordering};
 
@@ -4232,8 +4143,7 @@
             <span class="comment">// The code below ensures that `FreeOnDrop` is never a null pointer
             </span><span class="kw">unsafe </span>{
                 <span class="comment">// `copyfile_state_free` returns -1 if the `to` or `from` files
-                // cannot be closed. However, this is not considered this an
-                // error.
+                // cannot be closed. However, this is not considered an error.
                 </span>libc::copyfile_state_free(<span class="self">self</span>.<span class="number">0</span>);
             }
         }

@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -316,7 +318,7 @@ quarter’s state. Then we can use <code>state</code> in the code for that arm, 
         Coin::Nickel =&gt; 5,
         Coin::Dime =&gt; 10,
         Coin::Quarter(state) =&gt; {
-            println!("State quarter from {:?}!", state);
+            println!("State quarter from {state:?}!");
             25
         }
     }
@@ -439,8 +441,8 @@ error[E0004]: non-exhaustive patterns: `None` not covered
   |               ^ pattern `None` not covered
   |
 note: `Option&lt;i32&gt;` defined here
- --&gt; /rustc/07dca489ac2d933c78d3c5158e3f43beefeb02ce/library/core/src/option.rs:570:1
- ::: /rustc/07dca489ac2d933c78d3c5158e3f43beefeb02ce/library/core/src/option.rs:574:5
+ --&gt; /rustc/9b00956e56009bab2aa15d7bff10916599e3d6d6/library/core/src/option.rs:572:1
+ ::: /rustc/9b00956e56009bab2aa15d7bff10916599e3d6d6/library/core/src/option.rs:576:5
   |
   = note: not covered
   = note: the matched value is of type `Option&lt;i32&gt;`

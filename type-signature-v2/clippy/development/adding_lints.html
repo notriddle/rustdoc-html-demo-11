@@ -430,10 +430,10 @@ have to deal with the AST and don't have to deal with the type system at all.
 This is good, because it makes writing this particular lint less complicated.</p>
 <p>We have to make this decision with every new Clippy lint. It boils down to using
 either <a href="https://doc.rust-lang.org/nightly/nightly-rustc/rustc_lint/trait.EarlyLintPass.html"><code>EarlyLintPass</code></a> or <a href="https://doc.rust-lang.org/nightly/nightly-rustc/rustc_lint/trait.LateLintPass.html"><code>LateLintPass</code></a>.</p>
-<p>In short, the <code>LateLintPass</code> has access to type information while the
-<code>EarlyLintPass</code> doesn't. If you don't need access to type information, use the
-<code>EarlyLintPass</code>. The <code>EarlyLintPass</code> is also faster. However, linting speed
-hasn't really been a concern with Clippy so far.</p>
+<p>In short, the <code>EarlyLintPass</code> runs before type checking and
+<a href="https://rustc-dev-guide.rust-lang.org/hir.html">HIR</a> lowering and the <code>LateLintPass</code>
+has access to type information. Consider using the <code>LateLintPass</code> unless you need
+something specific from the <code>EarlyLintPass</code>.</p>
 <p>Since we don't need type information for checking the function name, we used
 <code>--pass=early</code> when running the new lint automation and all the imports were
 added accordingly.</p>
@@ -648,6 +648,10 @@ lint declaration.</p>
     "function named `foo`, which is not a descriptive name"
 }
 <span class="boring">}</span></code></pre></pre>
+<p>If the lint is in the <code>restriction</code> group because it lints things that are not
+necessarily “bad” but are more of a style choice, then replace the
+“Why is this bad?” section heading with “Why restrict this?”, to avoid writing
+“Why is this bad? It isn't, but ...”.</p>
 <p>Once your lint is merged, this documentation will show up in the <a href="https://rust-lang.github.io/rust-clippy/master/index.html">lint
 list</a>.</p>
 <h2 id="running-rustfmt"><a class="header" href="#running-rustfmt">Running rustfmt</a></h2>

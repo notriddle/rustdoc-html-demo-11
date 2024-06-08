@@ -1532,7 +1532,8 @@ transcribed more than once or not at all.</p>
 <p>For reasons of backwards compatibility, though <code>_</code> <a href="expressions/underscore-expr.html">is also an
 expression</a>, a standalone underscore is not matched by
 the <code>expr</code> fragment specifier. However, <code>_</code> is matched by the <code>expr</code> fragment
-specifier when it appears as a subexpression.</p>
+specifier when it appears as a subexpression.
+For the same reason, a standalone <a href="expressions/block-expr.html#const-blocks">const block</a> is not matched but it is matched when appearing as a subexpression.</p>
 <blockquote>
 <p><strong>Edition Differences</strong>: Starting with the 2021 edition, <code>pat</code> fragment-specifiers match top-level or-patterns (that is, they accept <a href="patterns.html"><em>Pattern</em></a>).</p>
 <p>Before the 2021 edition, they match exactly the same fragments as <code>pat_param</code> (that is, they accept <a href="patterns.html"><em>PatternNoTopAlt</em></a>).</p>
@@ -2407,6 +2408,8 @@ empty.</p>
 <li><code>"llvm"</code></li>
 <li><code>"eabihf"</code></li>
 <li><code>"abi64"</code></li>
+<li><code>"sim"</code></li>
+<li><code>"macabi"</code></li>
 </ul>
 <h3 id="target_endian"><a class="header" href="#target_endian"><code>target_endian</code></a></h3>
 <p>Key-value option set once with either a value of "little" or "big" depending
@@ -2615,15 +2618,12 @@ execution, and may reside in read-only memory.</p>
 <li><a href="items/implementations.html">implementations</a></li>
 <li><a href="items/external-blocks.html"><code>extern</code> blocks</a></li>
 </ul>
-<p>Some items form an implicit scope for the declaration of sub-items. In other
-words, within a function or module, declarations of items can (in many cases)
-be mixed with the statements, control blocks, and similar artifacts that
-otherwise compose the item body. The meaning of these scoped items is the same
-as if the item was declared outside the scope — it is still a static item
-— except that the item's <em>path name</em> within the module namespace is
-qualified by the name of the enclosing item, or is private to the enclosing
-item (in the case of functions). The grammar specifies the exact locations in
-which sub-item declarations may appear.</p>
+<p>Items may be declared in the <a href="crates-and-source-files.html">root of the crate</a>, a <a href="items/modules.html">module</a>, or a <a href="expressions/block-expr.html">block expression</a>.
+A subset of items, called <a href="items/associated-items.html">associated items</a>, may be declared in <a href="items/traits.html">traits</a> and <a href="items/implementations.html">implementations</a>.
+A subset of items, called external items, may be declared in <a href="items/external-blocks.html"><code>extern</code> blocks</a>.</p>
+<p>Items may be defined in any order, with the exception of <a href="macros-by-example.html"><code>macro_rules</code></a> which has its own scoping behavior.
+<a href="names/name-resolution.html">Name resolution</a> of item names allows items to be defined before or after where the item is referred to in the module or block.</p>
+<p>See <a href="names/scopes.html#item-scopes">item scopes</a> for information on the scoping rules of items.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="modules"><a class="header" href="#modules">Modules</a></h1>
 <blockquote>
 <p><strong><sup>Syntax:</sup></strong><br />
@@ -4645,13 +4645,13 @@ API itself</li>
 </ul>
 <h2 id="variadic-functions"><a class="header" href="#variadic-functions">Variadic functions</a></h2>
 <p>Functions within external blocks may be variadic by specifying <code>...</code> as the
-last argument. There must be at least one parameter before the variadic
-parameter. The variadic parameter may optionally be specified with an
+last argument. The variadic parameter may optionally be specified with an
 identifier.</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>extern "C" {
-    fn foo(x: i32, ...);
+    fn foo(...);
+    fn bar(x: i32, ...);
     fn with_name(format: *const u8, args: ...);
 }
 <span class="boring">}</span></code></pre></pre>
@@ -4825,7 +4825,7 @@ restrictions as <a href="items/functions.html#attributes-on-function-parameters"
 <p><em>LifetimeParam</em> :<br />
    <a href="items/../tokens.html#lifetimes-and-loop-labels">LIFETIME_OR_LABEL</a> ( <code>:</code> <a href="items/../trait-bounds.html"><em>LifetimeBounds</em></a> )<sup>?</sup></p>
 <p><em>TypeParam</em> :<br />
-   <a href="items/../identifiers.html">IDENTIFIER</a>( <code>:</code> <a href="items/../trait-bounds.html"><em>TypeParamBounds</em></a><sup>?</sup> )<sup>?</sup> ( <code>=</code> <a href="items/../types.html#type-expressions"><em>Type</em></a> )<sup>?</sup></p>
+   <a href="items/../identifiers.html">IDENTIFIER</a> ( <code>:</code> <a href="items/../trait-bounds.html"><em>TypeParamBounds</em></a><sup>?</sup> )<sup>?</sup> ( <code>=</code> <a href="items/../types.html#type-expressions"><em>Type</em></a> )<sup>?</sup></p>
 <p><em>ConstParam</em>:<br />
    <code>const</code> <a href="items/../identifiers.html">IDENTIFIER</a> <code>:</code> <a href="items/../types.html#type-expressions"><em>Type</em></a> ( <code>=</code> <em><a href="items/../expressions/block-expr.html">Block</a></em> | <a href="items/../identifiers.html">IDENTIFIER</a> | -<sup>?</sup><a href="items/../expressions/literal-expr.html">LITERAL</a> )<sup>?</sup></p>
 </blockquote>
@@ -4834,7 +4834,8 @@ restrictions as <a href="items/functions.html#attributes-on-function-parameters"
 parameters are listed in angle <span class="parenthetical">brackets (<code>&lt;...&gt;</code>)</span>,
 usually immediately after the name of the item and before its definition. For
 implementations, which don't have a name, they come directly after <code>impl</code>.
-The order of generic parameters is restricted to lifetime parameters and then type and const parameters intermixed.</p>
+The order of generic parameters is restricted to lifetime parameters and then type and const parameters intermixed.
+The same parameter name may not be declared more than once in a <em>GenericParams</em> list.</p>
 <p>Some examples of items with type, const, and lifetime parameters:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -4846,7 +4847,8 @@ struct EitherOrderWorks&lt;const N: bool, U&gt;(U);
 <span class="boring">}</span></code></pre></pre>
 <p>Generic parameters are in scope within the item definition where they are
 declared. They are not in scope for items declared within the body of a
-function as described in <a href="items/../statements.html#item-declarations">item declarations</a>.</p>
+function as described in <a href="items/../statements.html#item-declarations">item declarations</a>.
+See <a href="items/../names/scopes.html#generic-parameter-scopes">generic parameter scopes</a> for more details.</p>
 <p><a href="items/../types/pointer.html#shared-references-">References</a>, <a href="items/../types/pointer.html#raw-pointers-const-and-mut">raw pointers</a>, <a href="items/../types/array.html">arrays</a>, <a href="items/../types/slice.html">slices</a>, <a href="items/../types/tuple.html">tuples</a>, and
 <a href="items/../types/function-pointer.html">function pointers</a> have lifetime or type parameters as well, but are not
 referred to with path syntax.</p>
@@ -5789,6 +5791,7 @@ added in future.</li>
 <li>Debugger
 <ul>
 <li><a href="attributes/debugger.html#the-debugger_visualizer-attribute"><code>debugger_visualizer</code></a> — Embeds a file that specifies debugger output for a type.</li>
+<li><a href="attributes/debugger.html#the-collapse_debuginfo-attribute"><code>collapse_debuginfo</code></a> — Controls how macro invocations are encoded in debuginfo.</li>
 </ul>
 </li>
 </ul>
@@ -6413,7 +6416,7 @@ in another manual hosted on the <a href="https://github.com/riscv">RISC-V GitHub
 <tr><td><code>zks</code></td><td><code>zksed</code>, <code>zksh</code>, <code>zbkb</code>, <code>zbkc</code>, <code>zkbx</code></td><td><a href="https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zks.adoc">Zks</a> — ShangMi Algorithm Suite</td></tr>
 <tr><td><code>zksed</code></td><td></td><td><a href="https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zksed.adoc">Zksed</a> — ShangMi Suite: SM4 Block Cipher Instructions</td></tr>
 <tr><td><code>zksh</code></td><td></td><td><a href="https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zksh.adoc">Zksh</a> — ShangMi Suite: SM3 Hash Function Instructions</td></tr>
-<tr><td><code>zkt</code></td><td></td><td><a href="https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zkr.adoc">Zkt</a> — Data Independent Execution Latency Subset</td></tr>
+<tr><td><code>zkt</code></td><td></td><td><a href="https://github.com/riscv/riscv-crypto/blob/e2dd7d98b7f34d477e38cb5fd7a3af4379525189/doc/scalar/riscv-crypto-scalar-zkt.adoc">Zkt</a> — Data Independent Execution Latency Subset</td></tr>
 </tbody></table>
 </div><!-- Keep links near each table to make it easier to move and update. -->
 <h4 id="wasm32-or-wasm64"><a class="header" href="#wasm32-or-wasm64"><code>wasm32</code> or <code>wasm64</code></a></h4>
@@ -6424,6 +6427,11 @@ attempting to use instructions unsupported by the Wasm engine will fail at load
 time without the risk of being interpreted in a way different from what the
 compiler expected.</p>
 <div class="table-wrapper"><table><thead><tr><th>Feature</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>bulk-memory</code></td><td><a href="https://github.com/WebAssembly/bulk-memory-operations">WebAssembly bulk memory operations proposal</a></td></tr>
+<tr><td><code>extended-const</code></td><td><a href="https://github.com/WebAssembly/extended-const">WebAssembly extended const expressions proposal</a></td></tr>
+<tr><td><code>mutable-globals</code></td><td><a href="https://github.com/WebAssembly/mutable-global">WebAssembly mutable global proposal</a></td></tr>
+<tr><td><code>nontrapping-fptoint</code></td><td><a href="https://github.com/WebAssembly/nontrapping-float-to-int-conversions">WebAssembly non-trapping float-to-int conversion proposal</a></td></tr>
+<tr><td><code>sign-ext</code></td><td><a href="https://github.com/WebAssembly/sign-extension-ops">WebAssembly sign extension operators Proposal</a></td></tr>
 <tr><td><code>simd128</code></td><td><a href="https://github.com/webassembly/simd">WebAssembly simd proposal</a></td></tr>
 </tbody></table>
 </div>
@@ -6627,6 +6635,12 @@ pub struct Config {
 }
 
 #[non_exhaustive]
+pub struct Token;
+
+#[non_exhaustive]
+pub struct Id(pub u64);
+
+#[non_exhaustive]
 pub enum Error {
     Message(String),
     Other,
@@ -6640,11 +6654,13 @@ pub enum Message {
 
 // Non-exhaustive structs can be constructed as normal within the defining crate.
 let config = Config { window_width: 640, window_height: 480 };
+let token = Token;
+let id = Id(4);
 
 // Non-exhaustive structs can be matched on exhaustively within the defining crate.
-if let Config { window_width, window_height } = config {
-    // ...
-}
+let Config { window_width, window_height } = config;
+let Token = token;
+let Id(id_number) = id;
 
 let error = Error::Other;
 let message = Message::Reaction(3);
@@ -6668,43 +6684,62 @@ preserve backwards compatibility when new fields or variants are added.</p>
 <ul>
 <li>Non-exhaustive variants (<a href="attributes/../items/structs.html"><code>struct</code></a> or <a href="attributes/../items/enumerations.html"><code>enum</code> variant</a>) cannot be constructed
 with a <a href="attributes/../expressions/struct-expr.html"><em>StructExpression</em></a> (including with <a href="attributes/../expressions/struct-expr.html#functional-update-syntax">functional update syntax</a>).</li>
+<li>The implicitly defined same-named constant of a <a href="attributes/../items/structs.html">unit-like struct</a>,
+or the same-named constructor function of a <a href="attributes/../items/structs.html">tuple struct</a>,
+has a <a href="attributes/../visibility-and-privacy.html">visibility</a> no greater than <code>pub(crate)</code>.
+That is, if the struct’s visibility is <code>pub</code>, then the constant or constructor’s visibility
+is <code>pub(crate)</code>, and otherwise the visibility of the two items is the same
+(as is the case without <code>#[non_exhaustive]</code>).</li>
 <li><a href="attributes/../items/enumerations.html"><code>enum</code></a> instances can be constructed.</li>
 </ul>
+<p>The following examples of construction do not compile when outside the defining crate:</p>
 <!-- ignore: requires external crates -->
-<pre><code class="language-rust ignore">// `Config`, `Error`, and `Message` are types defined in an upstream crate that have been
-// annotated as `#[non_exhaustive]`.
-use upstream::{Config, Error, Message};
+<pre><code class="language-rust ignore">// These are types defined in an upstream crate that have been annotated as
+// `#[non_exhaustive]`.
+use upstream::{Config, Token, Id, Error, Message};
 
-// Cannot construct an instance of `Config`, if new fields were added in
+// Cannot construct an instance of `Config`; if new fields were added in
 // a new version of `upstream` then this would fail to compile, so it is
 // disallowed.
 let config = Config { window_width: 640, window_height: 480 };
 
-// Can construct an instance of `Error`, new variants being introduced would
+// Cannot construct an instance of `Token`; if new fields were added, then
+// it would not be a unit-like struct any more, so the same-named constant
+// created by it being a unit-like struct is not public outside the crate;
+// this code fails to compile.
+let token = Token;
+
+// Cannot construct an instance of `Id`; if new fields were added, then
+// its constructor function signature would change, so its constructor
+// function is not public outside the crate; this code fails to compile.
+let id = Id(5);
+
+// Can construct an instance of `Error`; new variants being introduced would
 // not result in this failing to compile.
 let error = Error::Message("foo".to_string());
 
-// Cannot construct an instance of `Message::Send` or `Message::Reaction`,
+// Cannot construct an instance of `Message::Send` or `Message::Reaction`;
 // if new fields were added in a new version of `upstream` then this would
 // fail to compile, so it is disallowed.
 let message = Message::Send { from: 0, to: 1, contents: "foo".to_string(), };
 let message = Message::Reaction(0);
 
-// Cannot construct an instance of `Message::Quit`, if this were converted to
+// Cannot construct an instance of `Message::Quit`; if this were converted to
 // a tuple-variant `upstream` then this would fail to compile.
 let message = Message::Quit;</code></pre>
 <p>There are limitations when matching on non-exhaustive types outside of the defining crate:</p>
 <ul>
 <li>When pattern matching on a non-exhaustive variant (<a href="attributes/../items/structs.html"><code>struct</code></a> or <a href="attributes/../items/enumerations.html"><code>enum</code> variant</a>),
-a <a href="attributes/../patterns.html#struct-patterns"><em>StructPattern</em></a> must be used which must include a <code>..</code>. Tuple variant constructor visibility
-is lowered to <code>min($vis, pub(crate))</code>.</li>
+a <a href="attributes/../patterns.html#struct-patterns"><em>StructPattern</em></a> must be used which must include a <code>..</code>. A tuple variant's constructor's
+<a href="attributes/../visibility-and-privacy.html">visibility</a> is reduced to be no greater than <code>pub(crate)</code>.</li>
 <li>When pattern matching on a non-exhaustive <a href="attributes/../items/enumerations.html"><code>enum</code></a>, matching on a variant does not
 contribute towards the exhaustiveness of the arms.</li>
 </ul>
+<p>The following examples of matching do not compile when outside the defining crate:</p>
 <!-- ignore: requires external crates -->
-<pre><code class="language-rust  ignore">// `Config`, `Error`, and `Message` are types defined in an upstream crate that have been
-// annotated as `#[non_exhaustive]`.
-use upstream::{Config, Error, Message};
+<pre><code class="language-rust  ignore">// These are types defined in an upstream crate that have been annotated as
+// `#[non_exhaustive]`.
+use upstream::{Config, Token, Id, Error, Message};
 
 // Cannot match on a non-exhaustive enum without including a wildcard arm.
 match error {
@@ -6717,6 +6752,13 @@ match error {
 if let Ok(Config { window_width, window_height }) = config {
     // would compile with: `..`
 }
+
+// Cannot match a non-exhaustive unit-like or tuple struct except by using
+// braced struct syntax with a wildcard.
+// This would compile as `let Token { .. } = token;`
+let Token = token;
+// This would compile as `let Id { 0: id_number, .. } = id;`
+let Id(id_number) = id;
 
 match message {
   // Cannot match on a non-exhaustive struct enum variant without including a wildcard.
@@ -6840,6 +6882,30 @@ gdb.current_objfile().pretty_printers.append(lookup)
 <div class="footnote-definition" id="rust-gdb"><sup class="footnote-definition-label">1</sup>
 <p>Note: This assumes you are using the <code>rust-gdb</code> script which configures pretty-printers for standard library types like <code>String</code>.</p>
 </div>
+<h2 id="the-collapse_debuginfo-attribute"><a class="header" href="#the-collapse_debuginfo-attribute">The <code>collapse_debuginfo</code> attribute</a></h2>
+<p>The <em><code>collapse_debuginfo</code> <a href="attributes/../attributes.html">attribute</a></em> controls whether code locations from a macro definition are collapsed into a single location associated with the macro's call site,
+when generating debuginfo for code calling this macro.</p>
+<p>The attribute uses the <a href="attributes/../attributes.html#meta-item-attribute-syntax"><em>MetaListIdents</em></a> syntax to specify its inputs, and can only be applied to macro definitions.</p>
+<p>Accepted options:</p>
+<ul>
+<li><code>#[collapse_debuginfo(yes)]</code> — code locations in debuginfo are collapsed.</li>
+<li><code>#[collapse_debuginfo(no)]</code> — code locations in debuginfo are not collapsed.</li>
+<li><code>#[collapse_debuginfo(external)]</code> — code locations in debuginfo are collapsed only if the macro comes from a different crate.</li>
+</ul>
+<p>The <code>external</code> behavior is the default for macros that don't have this attribute, unless they are built-in macros.
+For built-in macros the default is <code>yes</code>.</p>
+<blockquote>
+<p><strong>Note</strong>: <code>rustc</code> has a <code>-C collapse-macro-debuginfo</code> CLI option to override both the default collapsing behavior and <code>#[collapse_debuginfo]</code> attributes.</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[collapse_debuginfo(yes)]
+macro_rules! example {
+    () =&gt; {
+        println!("hello!");
+    };
+}
+<span class="boring">}</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="statements-and-expressions"><a class="header" href="#statements-and-expressions">Statements and expressions</a></h1>
 <p>Rust is <em>primarily</em> an expression language.
 This means that most forms of value-producing or effect-causing evaluation are directed by the uniform syntax category of <em>expressions</em>.
@@ -6863,7 +6929,7 @@ The declared names may denote new variables or new <a href="items.html">items</a
 <p>The two kinds of declaration statements are item declarations and <code>let</code> statements.</p>
 <h3 id="item-declarations"><a class="header" href="#item-declarations">Item declarations</a></h3>
 <p>An <em>item declaration statement</em> has a syntactic form identical to an <a href="items.html">item declaration</a> within a <a href="items/modules.html">module</a>.
-Declaring an item within a statement block restricts its scope to the block containing the statement.
+Declaring an item within a statement block restricts its <a href="names/scopes.html">scope</a> to the block containing the statement.
 The item is not given a <a href="paths.html#canonical-paths">canonical path</a> nor are any sub-items it may declare.
 The exception to this is that associated items defined by <a href="items/implementations.html">implementations</a> are still accessible in outer scopes as long as the item and, if applicable, trait are accessible.
 It is otherwise identical in meaning to declaring the item inside a module.</p>
@@ -6986,6 +7052,7 @@ The attributes that have meaning on a statement are <a href="conditional-compila
    <a href="attributes.html"><em>OuterAttribute</em></a><sup>*</sup><a href="expressions.html#expression-attributes">†</a><br />
    (<br />
          <a href="expressions/block-expr.html"><em>BlockExpression</em></a><br />
+      | <a href="expressions/block-expr.html#const-blocks"><em>ConstBlockExpression</em></a><br />
       | <a href="expressions/block-expr.html#unsafe-blocks"><em>UnsafeBlockExpression</em></a><br />
       | <a href="expressions/loop-expr.html"><em>LoopExpression</em></a><br />
       | <a href="expressions/if-expr.html#if-expressions"><em>IfExpression</em></a><br />
@@ -7616,6 +7683,7 @@ let some_constructor = Some::&lt;i32&gt;;
 let push_integer = Vec::&lt;i32&gt;::push;
 let slice_reverse = &lt;[i32]&gt;::reverse;
 <span class="boring">}</span></code></pre></pre>
+<p>Evaluation of associated constants is handled the same way as <a href="expressions/block-expr.html#const-blocks"><code>const</code> blocks</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="block-expressions"><a class="header" href="#block-expressions">Block expressions</a></h1>
 <blockquote>
 <p><strong><sup>Syntax</sup></strong><br />
@@ -7631,7 +7699,8 @@ let slice_reverse = &lt;[i32]&gt;::reverse;
 </blockquote>
 <p>A <em>block expression</em>, or <em>block</em>, is a control flow expression and anonymous namespace scope for items and variable declarations.
 As a control flow expression, a block sequentially executes its component non-item declaration statements and then its final optional expression.
-As an anonymous namespace scope, item declarations are only in scope inside the block itself and variables declared by <code>let</code> statements are in scope from the next statement until the end of the block.</p>
+As an anonymous namespace scope, item declarations are only in scope inside the block itself and variables declared by <code>let</code> statements are in scope from the next statement until the end of the block.
+See the <a href="expressions/../names/scopes.html">scopes</a> chapter for more details.</p>
 <p>The syntax for a block is <code>{</code>, then any <a href="expressions/../attributes.html">inner attributes</a>, then any number of <a href="expressions/../statements.html">statements</a>, then an optional expression, called the final operand, and finally a <code>}</code>.</p>
 <p>Statements are usually required to be followed by a semicolon, with two exceptions:</p>
 <ol>
@@ -7721,6 +7790,57 @@ Therefore the following is illegal:</p>
     async move {
         break; // error[E0267]: `break` inside of an `async` block
     }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="const-blocks"><a class="header" href="#const-blocks"><code>const</code> blocks</a></h2>
+<blockquote>
+<p><strong><sup>Syntax</sup></strong><br />
+<em>ConstBlockExpression</em> :<br />
+   <code>const</code> <em>BlockExpression</em></p>
+</blockquote>
+<p>A <em>const block</em> is a variant of a block expression whose body evaluates at compile-time instead of at runtime.</p>
+<p>Const blocks allows you to define a constant value without having to define new <a href="expressions/../items/constant-items.html">constant items</a>, and thus they are also sometimes referred as <em>inline consts</em>.
+It also supports type inference so there is no need to specify the type, unlike <a href="expressions/../items/constant-items.html">constant items</a>.</p>
+<p>Const blocks have the ability to reference generic parameters in scope, unlike <a href="expressions/../glossary.html#free-item">free</a> constant items.
+They are desugared to constant items with generic parameters in scope (similar to associated constants, but without a trait or type they are associated with).
+For example, this code:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;T&gt;() -&gt; usize {
+    const { std::mem::size_of::&lt;T&gt;() + 1 }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>is equivalent to:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;T&gt;() -&gt; usize {
+    {
+        struct Const&lt;T&gt;(T);
+        impl&lt;T&gt; Const&lt;T&gt; {
+            const CONST: usize = std::mem::size_of::&lt;T&gt;() + 1;
+        }
+        Const::&lt;T&gt;::CONST
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If the const block expression is executed at runtime, then the constant is guaranteed to be evaluated, even if its return value is ignored:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;T&gt;() -&gt; usize {
+    // If this code ever gets executed, then the assertion has definitely
+    // been evaluated at compile-time.
+    const { assert!(std::mem::size_of::&lt;T&gt;() &gt; 0); }
+    // Here we can have unsafe code relying on the type being non-zero-sized.
+    /* ... */
+    42
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If the const block expression is not executed at runtime, it may or may not be evaluated:</p>
+<pre><pre class="playground"><code class="language-rust compile_fail edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>if false {
+    // The panic may or may not occur when the program is built.
+    const { panic!(); }
 }
 <span class="boring">}</span></code></pre></pre>
 <h2 id="unsafe-blocks"><a class="header" href="#unsafe-blocks"><code>unsafe</code> blocks</a></h2>
@@ -9645,9 +9765,6 @@ if let (a, 3) = (1, 2) {           // "(a, 3)" is refutable, and will not match
 <p><em>Literal patterns</em> match exactly the same value as what is created by the literal.
 Since negative numbers are not <a href="expressions/literal-expr.html">literals</a>, literal patterns also accept an optional minus sign before the literal, which acts like the negation operator.</p>
 <div class="warning">
-<p>Floating-point literals are currently accepted, but due to the complexity of comparing them, they are going to be forbidden on literal patterns in a future version of Rust (see <a href="https://github.com/rust-lang/rust/issues/41620">issue #41620</a>).</p>
-</div>
-<div class="warning">
 <p>C string and raw C string literals are accepted in literal patterns, but <code>&amp;CStr</code>
 doesn't implement structural equality (<code>#[derive(Eq, PartialEq)]</code>) and therefore
 any such <code>match</code> on a <code>&amp;CStr</code> will be rejected with a type error.</p>
@@ -9674,7 +9791,7 @@ any such <code>match</code> on a <code>&amp;CStr</code> will be rejected with a 
 <p>Identifier patterns bind the value they match to a variable.
 The identifier must be unique within the pattern.
 The variable will shadow any variables of the same name in scope.
-The scope of the new binding depends on the context of where the pattern is used (such as a <code>let</code> binding or a <code>match</code> arm).</p>
+The <a href="names/scopes.html">scope</a> of the new binding depends on the context of where the pattern is used (such as a <code>let</code> binding or a <code>match</code> arm).</p>
 <p>Patterns that consist of only an identifier, possibly with a <code>mut</code>, match any value and bind it to that identifier.
 This is the most commonly used pattern in variable declarations and parameters for functions and closures.</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
@@ -9868,6 +9985,8 @@ match tuple {
    | <em>RangeFromPattern</em><br />
    | <em>RangeToInclusivePattern</em><br />
    | <em>ObsoleteRangePattern</em></p>
+<p><em>RangeExclusivePattern</em> :<br />
+      <em>RangePatternBound</em> <code>..</code> <em>RangePatternBound</em></p>
 <p><em>RangeInclusivePattern</em> :<br />
       <em>RangePatternBound</em> <code>..=</code> <em>RangePatternBound</em></p>
 <p><em>RangeFromPattern</em> :<br />
@@ -9888,9 +10007,10 @@ They comprise a <em>sigil</em> (one of <code>..</code>, <code>..=</code>, or <co
 A bound on the left of the sigil is a <em>lower bound</em>.
 A bound on the right is an <em>upper bound</em>.</p>
 <p>A range pattern with both a lower and upper bound will match all values between and including both of its bounds.
-It is written as its lower bound, followed by <code>..=</code>, followed by its upper bound.
+It is written as its lower bound, followed by <code>..</code> for end-exclusive or <code>..=</code> for end-inclusive, followed by its upper bound.
 The type of the range pattern is the type unification of its upper and lower bounds.</p>
-<p>For example, a pattern <code>'m'..='p'</code> will match only the values <code>'m'</code>, <code>'n'</code>, <code>'o'</code>, and <code>'p'</code>.</p>
+<p>For example, a pattern <code>'m'..='p'</code> will match only the values <code>'m'</code>, <code>'n'</code>, <code>'o'</code>, and <code>'p'</code>.
+Similarly, <code>'m'..'p'</code> will match only <code>'m'</code>, <code>'n'</code> and <code>'o'</code>, specifically <strong>not</strong> including <code>'p'</code>.</p>
 <p>The lower bound cannot be greater than the upper bound.
 That is, in <code>a..=b</code>, a ≤ b must be the case.
 For example, it is an error to have a range pattern <code>10..=0</code>.</p>
@@ -9910,6 +10030,7 @@ For example, <code>..=10</code> will match 10, 1, 0, and for signed integer type
 <p>If the bounds is written as a path, after macro resolution, the path must resolve to a constant item of the type <code>char</code>, an integer type, or a float type.</p>
 <p>The type and value of the bounds is dependent upon how it is written out.
 If the bounds is a <a href="expressions/path-expr.html">path</a>, the pattern has the type and value of the <a href="items/constant-items.html">constant</a> the path resolves to.
+For float range patterns, the constant may not be a <code>NaN</code>.
 If it is a literal, it has the type and value of the corresponding <a href="expressions/literal-expr.html">literal expression</a>.
 If is a literal preceded by a <code>-</code>, it has the same type as the corresponding <a href="expressions/literal-expr.html">literal expression</a> and the value of <a href="expressions/operator-expr.html#negation-operators">negating</a> the value of the corresponding literal expression.</p>
 <p>Examples:</p>
@@ -9925,7 +10046,7 @@ If is a literal preceded by a <code>-</code>, it has the same type as the corres
 
 <span class="boring">let ph = 10;
 </span>println!("{}", match ph {
-    0..=6 =&gt; "acid",
+    0..7 =&gt; "acid",
     7 =&gt; "neutral",
     8..=14 =&gt; "base",
     _ =&gt; unreachable!(),
@@ -9990,14 +10111,8 @@ println!("{}", match 0xfacade {
 For example, <code>0u8..=255u8</code> is irrefutable.
 The range of values for an integer type is the closed range from its minimum to maximum value.
 The range of values for a <code>char</code> type are precisely those ranges containing all Unicode Scalar Values: <code>'\u{0000}'..='\u{D7FF}'</code> and <code>'\u{E000}'..='\u{10FFFF}'</code>.</p>
-<p>Floating point range patterns are deprecated and may be removed in a future Rust release.
-See <a href="https://github.com/rust-lang/rust/issues/41620">issue #41620</a> for more information.</p>
 <blockquote>
 <p><strong>Edition Differences</strong>: Before the 2021 edition, range patterns with both a lower and upper bound may also be written using <code>...</code> in place of <code>..=</code>, with the same meaning.</p>
-</blockquote>
-<blockquote>
-<p><strong>Note</strong>: Although range patterns use the same syntax as <a href="expressions/range-expr.html">range expressions</a>, there are no exclusive range patterns.
-That is, neither <code>x .. y</code> nor <code>.. x</code> are valid range patterns.</p>
 </blockquote>
 <h2 id="reference-patterns"><a class="header" href="#reference-patterns">Reference patterns</a></h2>
 <blockquote>
@@ -10215,10 +10330,27 @@ to structs or enum variants that have no fields.</p>
 <li>associated constants</li>
 </ul>
 <p>Qualified path patterns can only refer to associated constants.</p>
-<p>Constants cannot be a union type.
-Struct and enum constants must have <code>#[derive(PartialEq, Eq)]</code> (not merely implemented).</p>
 <p>Path patterns are irrefutable when they refer to structs or an enum variant when the enum has only one variant or a constant whose type is irrefutable.
 They are refutable when they refer to refutable constants or enum variants for enums with multiple variants.</p>
+<h3 id="constant-patterns"><a class="header" href="#constant-patterns">Constant patterns</a></h3>
+<p>When a constant <code>C</code> of type <code>T</code> is used as a pattern, we first check that <code>T: PartialEq</code>.
+Furthermore we require that the value of <code>C</code> <em>has (recursive) structural equality</em>, which is defined recursively as follows:</p>
+<ul>
+<li>Integers as well as <code>str</code>, <code>bool</code> and <code>char</code> values always have structural equality.</li>
+<li>Tuples, arrays, and slices have structural equality if all their fields/elements have structural equality.
+(In particular, <code>()</code> and <code>[]</code> always have structural equality.)</li>
+<li>References have structural equality if the value they point to has structural equality.</li>
+<li>A value of <code>struct</code> or <code>enum</code> type has structural equality if its <code>PartialEq</code> instance is derived via <code>#[derive(PartialEq)]</code>,
+and all fields (for enums: of the active variant) have structural equality.</li>
+<li>A raw pointer has structural equality if it was defined as a constant integer (and then cast/transmuted).</li>
+<li>A float value has structural equality if it is not a <code>NaN</code>.</li>
+<li>Nothing else has structural equality.</li>
+</ul>
+<p>In particular, the value of <code>C</code> must be known at pattern-building time (which is pre-monomorphization).
+This means that associated consts that involve generic parameters cannot be used as patterns.</p>
+<p>After ensuring all conditions are met, the constant value is translated into a pattern, and now behaves exactly as-if that pattern had been written directly.
+In particular, it fully participates in exhaustiveness checking.
+(For raw pointers, constants are the only way to write such patterns. Only <code>_</code> is ever considered exhaustive for these types.)</p>
 <h2 id="or-patterns"><a class="header" href="#or-patterns">Or-patterns</a></h2>
 <p><em>Or-patterns</em> are patterns that match on one of two or more sub-patterns (for example <code>A | B | C</code>).
 They can nest arbitrarily.
@@ -11319,17 +11451,20 @@ the alignment of the type respectively.</p>
 <tr><td><code>u32</code> / <code>i32</code></td><td>4</td></tr>
 <tr><td><code>u64</code> / <code>i64</code></td><td>8</td></tr>
 <tr><td><code>u128</code> / <code>i128</code></td><td>16</td></tr>
+<tr><td><code>usize</code> / <code>isize</code></td><td>See below</td></tr>
 <tr><td><code>f32</code></td><td>4</td></tr>
 <tr><td><code>f64</code></td><td>8</td></tr>
 <tr><td><code>char</code></td><td>4</td></tr>
 </tbody></table>
 </div>
 <p><code>usize</code> and <code>isize</code> have a size big enough to contain every address on the
-target platform. For example, on a 32 bit target, this is 4 bytes and on a 64
+target platform. For example, on a 32 bit target, this is 4 bytes, and on a 64
 bit target, this is 8 bytes.</p>
-<p>Most primitives are generally aligned to their size, although this is
-platform-specific behavior. In particular, on many 32-bit platforms <code>u64</code>
-and <code>f64</code> are only aligned to 32 bits.</p>
+<p>The alignment of primitives is platform-specific.
+In most cases, their alignment is equal to their size, but it may be less.
+In particular, <code>i128</code> and <code>u128</code> are often aligned to 4 or 8 bytes even though
+their size is 16, and on many 32-bit platforms, <code>i64</code>, <code>u64</code>, and <code>f64</code> are only
+aligned to 4 bytes, not 8.</p>
 <h2 id="pointers-and-references-layout"><a class="header" href="#pointers-and-references-layout">Pointers and References Layout</a></h2>
 <p>Pointers and references have the same layout. Mutability of the pointer or
 reference does not change the layout.</p>
@@ -12058,7 +12193,7 @@ that is true <em>for all</em> lifetimes. For example, a bound such as <code>for&
 }
 <span class="boring">}</span></code></pre></pre>
 <p>Higher-ranked lifetimes may also be specified just before the trait: the only
-difference is the scope of the lifetime parameter, which extends only to the
+difference is the <a href="names/scopes.html#higher-ranked-trait-bound-scopes">scope</a> of the lifetime parameter, which extends only to the
 end of the following trait instead of the whole bound. This function is
 equivalent to the last one.</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
@@ -12984,6 +13119,7 @@ types:</p>
 <ul>
 <li>Types with a built-in <code>Copy</code> implementation (see above)</li>
 <li><a href="types/tuple.html">Tuples</a> of <code>Clone</code> types</li>
+<li><a href="types/closure.html">Closures</a> that only capture values of <code>Clone</code> types or capture no values from the environment</li>
 </ul>
 <h2 id="send"><a class="header" href="#send"><code>Send</code></a></h2>
 <p>The <a href="../std/marker/trait.Send.html"><code>Send</code></a> trait indicates that a value of this type is safe to send from one
@@ -13039,7 +13175,7 @@ source text where that name may be referenced.</p>
 <p>Some entities are <a href="names.html#explicitly-declared-entities">explicitly declared</a> in the
 source code, and some are <a href="names.html#implicitly-declared-entities">implicitly declared</a>
 as part of the language or compiler extensions.</p>
-<p><a href="paths.html"><em>Paths</em></a> are used to refer to an entity, possibly in another scope. Lifetimes
+<p><a href="paths.html"><em>Paths</em></a> are used to refer to an entity, possibly in another module or type. Lifetimes
 and loop labels use a <a href="tokens.html#lifetimes-and-loop-labels">dedicated syntax</a> using a
 leading quote.</p>
 <p>Names are segregated into different <a href="names/namespaces.html"><em>namespaces</em></a>, allowing entities in
@@ -13227,9 +13363,253 @@ This prevents one style from shadowing another.</p>
 <p>For example, the <a href="names/../conditional-compilation.html#the-cfg-attribute"><code>cfg</code> attribute</a> and the <a href="names/../conditional-compilation.html#the-cfg-macro"><code>cfg</code> macro</a> are two different entities with the same name in the macro namespace, but they can still be used in their respective context.</p>
 <p>It is still an error for a <a href="names/../items/use-declarations.html"><code>use</code> import</a> to shadow another macro, regardless of their sub-namespaces.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="scopes"><a class="header" href="#scopes">Scopes</a></h1>
-<blockquote>
-<p><strong>Note</strong>: This is a placeholder for future expansion.</p>
-</blockquote>
+<p>A <em>scope</em> is the region of source text where a named <a href="names/../names.html">entity</a> may be referenced with that name.
+The following sections provide details on the scoping rules and behavior, which depend on the kind of entity and where it is declared.
+The process of how names are resolved to entities is described in the <a href="names/name-resolution.html">name resolution</a> chapter.
+More information on "drop scopes" used for the purpose of running destructors may be found in the <a href="names/../destructors.html">destructors</a> chapter.</p>
+<h2 id="item-scopes"><a class="header" href="#item-scopes">Item scopes</a></h2>
+<p>The name of an <a href="names/../items.html">item</a> declared directly in a <a href="names/../items/modules.html">module</a> has a scope that extends from the start of the module to the end of the module. These items are also members of the module and can be referred to with a <a href="names/../paths.html">path</a> leading from their module.</p>
+<p>The name of an item declared as a <a href="names/../statements.html">statement</a> has a scope that extends from the start of the block the item statement is in until the end of the block.</p>
+<p>It is an error to introduce an item with a duplicate name of another item in the same <a href="names/namespaces.html">namespace</a> within the same module or block.
+<a href="names/../items/use-declarations.html">Asterisk glob imports</a> have special behavior for dealing with duplicate names and shadowing, see the linked chapter for more details.
+Items in a module may shadow items in a <a href="names/scopes.html#prelude-scopes">prelude</a>.</p>
+<p>Item names from outer modules are not in scope within a nested module.
+A <a href="names/../paths.html">path</a> may be used to refer to an item in another module.</p>
+<h3 id="associated-item-scopes"><a class="header" href="#associated-item-scopes">Associated item scopes</a></h3>
+<p><a href="names/../items/associated-items.html">Associated items</a> are not scoped and can only be referred to by using a <a href="names/../paths.html">path</a> leading from the type or trait they are associated with.
+<a href="names/../items/associated-items.html#methods">Methods</a> can also be referred to via <a href="names/../expressions/call-expr.html">call expressions</a>.</p>
+<p>Similar to items within a module or block,  it is an error to introduce an item within a trait or implementation that is a duplicate of another item in the trait or impl in the same namespace.</p>
+<h2 id="pattern-binding-scopes"><a class="header" href="#pattern-binding-scopes">Pattern binding scopes</a></h2>
+<p>The scope of a local variable <a href="names/../patterns.html">pattern</a> binding depends on where it is used:</p>
+<ul>
+<li><a href="names/../statements.html#let-statements"><code>let</code> statement</a> bindings range from just after the <code>let</code> statement until the end of the block where it is declared.</li>
+<li><a href="names/../items/functions.html#function-parameters">Function parameter</a> bindings are within the body of the function.</li>
+<li><a href="names/../expressions/closure-expr.html">Closure parameter</a> bindings are within the closure body.</li>
+<li><a href="names/../expressions/loop-expr.html#iterator-loops"><code>for</code></a> and <a href="names/../expressions/loop-expr.html#predicate-pattern-loops"><code>while let</code></a> bindings are within the loop body.</li>
+<li><a href="names/../expressions/if-expr.html#if-let-expressions"><code>if let</code></a> bindings are within the consequent block.</li>
+<li><a href="names/../expressions/match-expr.html"><code>match</code> arms</a> bindings are within the <a href="names/../expressions/match-expr.html#match-guards">match guard</a> and the match arm expression.</li>
+</ul>
+<p>Local variable scopes do not extend into item declarations.</p>
+<!-- Not entirely, see https://github.com/rust-lang/rust/issues/33118 -->
+<h3 id="pattern-binding-shadowing"><a class="header" href="#pattern-binding-shadowing">Pattern binding shadowing</a></h3>
+<p>Pattern bindings are allowed to shadow any name in scope with the following exceptions which are an error:</p>
+<ul>
+<li><a href="names/../items/generics.html#const-generics">Const generic parameters</a></li>
+<li><a href="names/../items/static-items.html">Static items</a></li>
+<li><a href="names/../items/constant-items.html">Const items</a></li>
+<li>Constructors for <a href="names/../items/structs.html">structs</a> and <a href="names/../items/enumerations.html">enums</a></li>
+</ul>
+<p>The following example illustrates how local bindings can shadow item declarations:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn shadow_example() {
+    // Since there are no local variables in scope yet, this resolves to the function.
+    foo(); // prints `function`
+    let foo = || println!("closure");
+    fn foo() { println!("function"); }
+    // This resolves to the local closure since it shadows the item.
+    foo(); // prints `closure`
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="generic-parameter-scopes"><a class="header" href="#generic-parameter-scopes">Generic parameter scopes</a></h2>
+<p>Generic parameters are declared in a <a href="names/../items/generics.html"><em>GenericParams</em></a> list.
+The scope of a generic parameter is within the item it is declared on.</p>
+<p>All parameters are in scope within the generic parameter list regardless of the order they are declared.
+The following shows some examples where a parameter may be referenced before it is declared:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// The 'b bound is referenced before it is declared.
+fn params_scope&lt;'a: 'b, 'b&gt;() {}
+
+<span class="boring">trait SomeTrait&lt;const Z: usize&gt; {}
+</span>// The const N is referenced in the trait bound before it is declared.
+fn f&lt;T: SomeTrait&lt;N&gt;, const N: usize&gt;() {}
+<span class="boring">}</span></code></pre></pre>
+<p>Generic parameters are also in scope for type bounds and where clauses, for example:</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">trait SomeTrait&lt;'a, T&gt; {}
+</span>// The &lt;'a, U&gt; for `SomeTrait` refer to the 'a and U parameters of `bounds_scope`.
+fn bounds_scope&lt;'a, T: SomeTrait&lt;'a, U&gt;, U&gt;() {}
+
+fn where_scope&lt;'a, T, U&gt;()
+    where T: SomeTrait&lt;'a, U&gt;
+{}
+<span class="boring">}</span></code></pre></pre>
+<p>It is an error for <a href="names/../items.html">items</a> declared inside a function to refer to a generic parameter from their outer scope.</p>
+<pre><pre class="playground"><code class="language-rust compile_fail edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example&lt;T&gt;() {
+    fn inner(x: T) {} // ERROR: can't use generic parameters from outer function
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="generic-parameter-shadowing"><a class="header" href="#generic-parameter-shadowing">Generic parameter shadowing</a></h3>
+<p>It is an error to shadow a generic parameter with the exception that items declared within functions are allowed to shadow generic parameter names from the function.</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn example&lt;'a, T, const N: usize&gt;() {
+    // Items within functions are allowed to shadow generic parameter in scope.
+    fn inner_lifetime&lt;'a&gt;() {} // OK
+    fn inner_type&lt;T&gt;() {} // OK
+    fn inner_const&lt;const N: usize&gt;() {} // OK
+}
+<span class="boring">}</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust compile_fail edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait SomeTrait&lt;'a, T, const N: usize&gt; {
+    fn example_lifetime&lt;'a&gt;() {} // ERROR: 'a is already in use
+    fn example_type&lt;T&gt;() {} // ERROR: T is already in use
+    fn example_const&lt;const N: usize&gt;() {} // ERROR: N is already in use
+    fn example_mixed&lt;const T: usize&gt;() {} // ERROR: T is already in use
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="lifetime-scopes"><a class="header" href="#lifetime-scopes">Lifetime scopes</a></h3>
+<p>Lifetime parameters are declared in a <a href="names/../items/generics.html"><em>GenericParams</em></a> list and <a href="names/../trait-bounds.html#higher-ranked-trait-bounds">higher-ranked trait bounds</a>.</p>
+<p>The <code>'static</code> lifetime and <a href="names/../lifetime-elision.html">placeholder lifetime</a> <code>'_</code> have a special meaning and cannot be declared as a parameter.</p>
+<h4 id="lifetime-generic-parameter-scopes"><a class="header" href="#lifetime-generic-parameter-scopes">Lifetime generic parameter scopes</a></h4>
+<p><a href="names/../items/constant-items.html">Constant</a> and <a href="names/../items/static-items.html">static</a> items and <a href="names/../const_eval.html#const-context">const contexts</a> only ever allow <code>'static</code> lifetime references, so no other lifetime may be in scope within them.
+<a href="names/../items/associated-items.html#associated-constants">Associated consts</a> do allow referring to lifetimes declared in their trait or implementation.</p>
+<h4 id="higher-ranked-trait-bound-scopes"><a class="header" href="#higher-ranked-trait-bound-scopes">Higher-ranked trait bound scopes</a></h4>
+<p>The scope of a lifetime parameter declared as a <a href="names/../trait-bounds.html#higher-ranked-trait-bounds">higher-ranked trait bound</a> depends on the scenario where it is used.</p>
+<ul>
+<li>As a <a href="names/../items/generics.html"><em>TypeBoundWhereClauseItem</em></a> the declared lifetimes are in scope in the type and the type bounds.</li>
+<li>As a <a href="names/../trait-bounds.html"><em>TraitBound</em></a> the declared lifetimes are in scope within the bound type path.</li>
+<li>As a <a href="names/../types/function-pointer.html"><em>BareFunctionType</em></a> the declared lifetimes are in scope within the function parameters and return type.</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">trait Trait&lt;'a&gt;{}
+</span>
+fn where_clause&lt;T&gt;()
+    // 'a is in scope in both the type and the type bounds.
+    where for &lt;'a&gt; &amp;'a T: Trait&lt;'a&gt;
+{}
+
+fn bound&lt;T&gt;()
+    // 'a is in scope within the bound.
+    where T: for &lt;'a&gt; Trait&lt;'a&gt;
+{}
+
+<span class="boring">struct Example&lt;'a&gt; {
+</span><span class="boring">    field: &amp;'a u32
+</span><span class="boring">}
+</span>
+// 'a is in scope in both the parameters and return type.
+type FnExample = for&lt;'a&gt; fn(x: Example&lt;'a&gt;) -&gt; Example&lt;'a&gt;;
+<span class="boring">}</span></code></pre></pre>
+<h4 id="impl-trait-restrictions"><a class="header" href="#impl-trait-restrictions">Impl trait restrictions</a></h4>
+<p><a href="names/../types/impl-trait.html">Impl trait</a> types can only reference lifetimes declared on a function or implementation.</p>
+<!-- not able to demonstrate the scope error because the compiler panics
+     https://github.com/rust-lang/rust/issues/67830
+-->
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">trait Trait1 {
+</span><span class="boring">    type Item;
+</span><span class="boring">}
+</span><span class="boring">trait Trait2&lt;'a&gt; {}
+</span><span class="boring">
+</span><span class="boring">struct Example;
+</span><span class="boring">
+</span><span class="boring">impl Trait1 for Example {
+</span><span class="boring">    type Item = Element;
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">struct Element;
+</span><span class="boring">impl&lt;'a&gt; Trait2&lt;'a&gt; for Element {}
+</span><span class="boring">
+</span>// The `impl Trait2` here is not allowed to refer to 'b but it is allowed to
+// refer to 'a.
+fn foo&lt;'a&gt;() -&gt; impl for&lt;'b&gt; Trait1&lt;Item = impl Trait2&lt;'a&gt;&gt; {
+    // ...
+<span class="boring">   Example
+</span>}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="loop-label-scopes"><a class="header" href="#loop-label-scopes">Loop label scopes</a></h2>
+<p><a href="names/../expressions/loop-expr.html#loop-labels">Loop labels</a> may be declared by a <a href="names/../expressions/loop-expr.html">loop expression</a>.
+The scope of a loop label is from the point it is declared till the end of the loop expression.
+The scope does not extend into <a href="names/../items.html">items</a>, <a href="names/../expressions/closure-expr.html">closures</a>, <a href="names/../expressions/block-expr.html#async-blocks">async blocks</a>, <a href="names/../items/generics.html#const-generics">const arguments</a>, <a href="names/../const_eval.html#const-context">const contexts</a>, and the iterator expression of the defining <a href="names/../expressions/loop-expr.html#iterator-loops"><code>for</code> loop</a>.</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>'a: for n in 0..3 {
+    if n % 2 == 0 {
+        break 'a;
+    }
+    fn inner() {
+        // Using 'a here would be an error.
+        // break 'a;
+    }
+}
+
+// The label is in scope for the expression of `while` loops.
+'a: while break 'a {}         // Loop does not run.
+'a: while let _ = break 'a {} // Loop does not run.
+
+// The label is not in scope in the defining `for` loop:
+'a: for outer in 0..5 {
+    // This will break the outer loop, skipping the inner loop and stopping
+    // the outer loop.
+    'a: for inner in { break 'a; 0..1 } {
+        println!("{}", inner); // This does not run.
+    }
+    println!("{}", outer); // This does not run, either.
+}
+
+<span class="boring">}</span></code></pre></pre>
+<p>Loop labels may shadow labels of the same name in outer scopes.
+References to a label refer to the closest definition.</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Loop label shadowing example.
+'a: for outer in 0..5 {
+    'a: for inner in 0..5 {
+        // This terminates the inner loop, but the outer loop continues to run.
+        break 'a;
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="prelude-scopes"><a class="header" href="#prelude-scopes">Prelude scopes</a></h2>
+<p><a href="names/preludes.html">Preludes</a> bring entities into scope of every module.
+The entities are not members of the module, but are implicitly queried during <a href="names/name-resolution.html">name resolution</a>.
+The prelude names may be shadowed by declarations in a module.</p>
+<p>The preludes are layered such that one shadows another if they contain entities of the same name.
+The order that preludes may shadow other preludes is the following where earlier entries may shadow later ones:</p>
+<ol>
+<li><a href="names/preludes.html#extern-prelude">Extern prelude</a></li>
+<li><a href="names/preludes.html#tool-prelude">Tool prelude</a></li>
+<li><a href="names/preludes.html#macro_use-prelude"><code>macro_use</code> prelude</a></li>
+<li><a href="names/preludes.html#standard-library-prelude">Standard library prelude</a></li>
+<li><a href="names/preludes.html#language-prelude">Language prelude</a></li>
+</ol>
+<h2 id="macro_rules-scopes"><a class="header" href="#macro_rules-scopes"><code>macro_rules</code> scopes</a></h2>
+<p>The scope of <code>macro_rules</code> macros is described in the <a href="names/../macros-by-example.html">Macros By Example</a> chapter.
+The behavior depends on the use of the <a href="names/../macros-by-example.html#the-macro_use-attribute"><code>macro_use</code></a> and <a href="names/../macros-by-example.html#path-based-scope"><code>macro_export</code></a> attributes.</p>
+<h2 id="derive-macro-helper-attributes-1"><a class="header" href="#derive-macro-helper-attributes-1">Derive macro helper attributes</a></h2>
+<p><a href="names/../procedural-macros.html#derive-macro-helper-attributes">Derive macro helper attributes</a> are in scope in the item where their corresponding <a href="names/../attributes/derive.html"><code>derive</code> attribute</a> is specified.
+The scope extends from just after the <code>derive</code> attribute to the end of the item. <!-- Note: Not strictly true, see https://github.com/rust-lang/rust/issues/79202, but this is the intention. -->
+Helper attributes shadow other attributes of the same name in scope.</p>
+<h2 id="self-scope"><a class="header" href="#self-scope"><code>Self</code> scope</a></h2>
+<p>Although <a href="names/../paths.html#self-1"><code>Self</code></a> is a keyword with special meaning, it interacts with name resolution in a way similar to normal names.</p>
+<p>The implicit <code>Self</code> type in the definition of a <a href="names/../items/structs.html">struct</a>, <a href="names/../items/enumerations.html">enum</a>, <a href="names/../items/unions.html">union</a>, <a href="names/../items/traits.html">trait</a>, or <a href="names/../items/implementations.html">implementation</a> is treated similarly to a <a href="names/scopes.html#generic-parameter-scopes">generic parameter</a>, and is in scope in the same way as a generic type parameter.</p>
+<p>The implicit <code>Self</code> constructor in the value <a href="names/namespaces.html">namespace</a> of an <a href="names/../items/implementations.html">implementation</a> is in scope within the body of the implementation (the implementation's <a href="names/../items/associated-items.html">associated items</a>).</p>
+<pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Self type within struct definition.
+struct Recursive {
+    f1: Option&lt;Box&lt;Self&gt;&gt;
+}
+
+// Self type within generic parameters.
+struct SelfGeneric&lt;T: Into&lt;Self&gt;&gt;(T);
+
+// Self value constructor within an implementation.
+struct ImplExample();
+impl ImplExample {
+    fn example() -&gt; Self { // Self type
+        Self() // Self value constructor
+    }
+}
+<span class="boring">}</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="preludes"><a class="header" href="#preludes">Preludes</a></h1>
 <p>A <em>prelude</em> is a collection of names that are automatically brought into scope
 of every module in a crate.</p>
@@ -15140,7 +15520,7 @@ Recursively defining constants is not allowed.</li>
 <li><a href="expressions/tuple-expr.html">Tuple expressions</a>.</li>
 <li><a href="expressions/array-expr.html">Array expressions</a>.</li>
 <li><a href="expressions/struct-expr.html">Struct</a> expressions.</li>
-<li><a href="expressions/block-expr.html">Block expressions</a>, including <code>unsafe</code> blocks.
+<li><a href="expressions/block-expr.html">Block expressions</a>, including <code>unsafe</code> and <code>const</code> blocks.
 <ul>
 <li><a href="statements.html#let-statements">let statements</a> and thus irrefutable <a href="patterns.html">patterns</a>, including mutable bindings</li>
 <li><a href="expressions/operator-expr.html#assignment-expressions">assignment expressions</a></li>
@@ -15180,6 +15560,7 @@ operators used on integer and floating point types, <code>bool</code>, and <code
 </ul>
 </li>
 <li>A <a href="items/generics.html#const-generics">const generic argument</a></li>
+<li>A <a href="expressions/block-expr.html#const-blocks">const block</a></li>
 </ul>
 <h2 id="const-functions-1"><a class="header" href="#const-functions-1">Const Functions</a></h2>
 <p>A <em>const fn</em> is a function that one is permitted to call from a const context. Declaring a function

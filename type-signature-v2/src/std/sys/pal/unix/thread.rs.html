@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/thread.rs`."><title>thread.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.79.0.js"></script><script defer src="../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../std/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/thread.rs`."><title>thread.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.81.0.js"></script><script defer src="../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -728,9 +728,6 @@
 <a href="#728" id="728">728</a>
 <a href="#729" id="729">729</a>
 <a href="#730" id="730">730</a>
-<a href="#731" id="731">731</a>
-<a href="#732" id="732">732</a>
-<a href="#733" id="733">733</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::cmp;
 <span class="kw">use </span><span class="kw">crate</span>::ffi::CStr;
 <span class="kw">use </span><span class="kw">crate</span>::io;
@@ -883,13 +880,7 @@
         }
     }
 
-    <span class="attr">#[cfg(any(
-        target_os = <span class="string">"macos"</span>,
-        target_os = <span class="string">"ios"</span>,
-        target_os = <span class="string">"watchos"</span>,
-        target_os = <span class="string">"visionos"</span>,
-        target_os = <span class="string">"tvos"
-    </span>))]
+    <span class="attr">#[cfg(target_vendor = <span class="string">"apple"</span>)]
     </span><span class="kw">pub fn </span>set_name(name: <span class="kw-2">&amp;</span>CStr) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>name = truncate_cstr::&lt;{ libc::MAXTHREADNAMESIZE }&gt;(name);
@@ -1034,14 +1025,10 @@
 
 <span class="attr">#[cfg(any(
     target_os = <span class="string">"linux"</span>,
-    target_os = <span class="string">"macos"</span>,
-    target_os = <span class="string">"ios"</span>,
-    target_os = <span class="string">"tvos"</span>,
-    target_os = <span class="string">"watchos"</span>,
-    target_os = <span class="string">"visionos"</span>,
     target_os = <span class="string">"nto"</span>,
     target_os = <span class="string">"solaris"</span>,
     target_os = <span class="string">"illumos"</span>,
+    target_vendor = <span class="string">"apple"</span>,
 ))]
 </span><span class="kw">fn </span>truncate_cstr&lt;<span class="kw">const </span>MAX_WITH_NUL: usize&gt;(cstr: <span class="kw-2">&amp;</span>CStr) -&gt; [libc::c_char; MAX_WITH_NUL] {
     <span class="kw">let </span><span class="kw-2">mut </span>result = [<span class="number">0</span>; MAX_WITH_NUL];
@@ -1058,11 +1045,9 @@
             target_os = <span class="string">"emscripten"</span>,
             target_os = <span class="string">"fuchsia"</span>,
             target_os = <span class="string">"hurd"</span>,
-            target_os = <span class="string">"ios"</span>,
-            target_os = <span class="string">"tvos"</span>,
             target_os = <span class="string">"linux"</span>,
-            target_os = <span class="string">"macos"</span>,
             target_os = <span class="string">"aix"</span>,
+            target_vendor = <span class="string">"apple"</span>,
         ))] </span>{
             <span class="attr">#[allow(unused_assignments)]
             #[allow(unused_mut)]
@@ -1462,6 +1447,15 @@
 
 <span class="attr">#[cfg(target_os = <span class="string">"netbsd"</span>)]
 </span><span class="kw">unsafe fn </span>min_stack_size(<span class="kw">_</span>: <span class="kw-2">*const </span>libc::pthread_attr_t) -&gt; usize {
-    <span class="number">2048 </span><span class="comment">// just a guess
-</span>}
+    <span class="kw">static </span>STACK: <span class="kw">crate</span>::sync::OnceLock&lt;usize&gt; = <span class="kw">crate</span>::sync::OnceLock::new();
+
+    <span class="kw-2">*</span>STACK.get_or_init(|| {
+        <span class="kw">let </span><span class="kw-2">mut </span>stack = <span class="kw">unsafe </span>{ libc::sysconf(libc::_SC_THREAD_STACK_MIN) };
+        <span class="kw">if </span>stack &lt; <span class="number">0 </span>{
+            stack = <span class="number">2048</span>; <span class="comment">// just a guess
+        </span>}
+
+        stack <span class="kw">as </span>usize
+    })
+}
 </code></pre></div></section></main></body></html>

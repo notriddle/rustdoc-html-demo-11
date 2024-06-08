@@ -454,6 +454,36 @@ subsequent line. Put each sub-expression on its own line:</p>
 <span class="boring">}</span></code></pre></pre>
 <p>Prefer line-breaking at an assignment operator (either <code>=</code> or <code>+=</code>, etc.) rather
 than at other binary operators.</p>
+<p>If line-breaking at a binary operator (including assignment operators) where the
+first operand spans multiple lines, use the base indentation of the <em>last</em>
+line of the first operand, and indent relative to that:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl SomeType {
+    fn method(&amp;mut self) {
+        self.array[array_index as usize]
+            .as_mut()
+            .expect("thing must exist")
+            .extra_info =
+                long_long_long_long_long_long_long_long_long_long_long_long_long_long_long;
+
+        self.array[array_index as usize]
+            .as_mut()
+            .expect("thing must exist")
+            .extra_info
+                + long_long_long_long_long_long_long_long_long_long_long_long_long_long_long;
+
+        self.array[array_index as usize]
+            .as_mut()
+            .expect("thing must exist")
+            .extra_info = Some(ExtraInfo {
+                parent,
+                count: count as u16,
+                children: children.into_boxed_slice(),
+            });
+    }
+}
+<span class="boring">}</span></code></pre></pre>
 <h3 id="casts-as"><a class="header" href="#casts-as">Casts (<code>as</code>)</a></h3>
 <p>Format <code>as</code> casts like a binary operator. In particular, always include spaces
 around <code>as</code>, and if line-breaking, break before the <code>as</code> (never after) and

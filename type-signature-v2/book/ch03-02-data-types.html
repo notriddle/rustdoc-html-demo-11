@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -271,7 +273,7 @@ have the same value as if you had specified <code>1000</code>.</p>
 defaults are generally good places to start: integer types default to <code>i32</code>.
 The primary situation in which you’d use <code>isize</code> or <code>usize</code> is when indexing
 some sort of collection.</p>
-<blockquote>
+<section class="note" aria-role="note">
 <h5 id="integer-overflow"><a class="header" href="#integer-overflow">Integer Overflow</a></h5>
 <p>Let’s say you have a variable of type <code>u8</code> that can hold values between 0 and
 255. If you try to change the variable to a value outside that range, such as
@@ -300,7 +302,7 @@ the <code>overflowing_*</code> methods.</li>
 <li>Saturate at the value’s minimum or maximum values with the <code>saturating_*</code>
 methods.</li>
 </ul>
-</blockquote>
+</section>
 <h4 id="floating-point-types"><a class="header" href="#floating-point-types">Floating-Point Types</a></h4>
 <p>Rust also has two primitive types for <em>floating-point numbers</em>, which are
 numbers with decimal points. Rust’s floating-point types are <code>f32</code> and <code>f64</code>,

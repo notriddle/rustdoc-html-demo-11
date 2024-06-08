@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -185,11 +187,11 @@ newtypes are useful as types. Then we’ll move on to type aliases, a feature
 similar to newtypes but with slightly different semantics. We’ll also discuss
 the <code>!</code> type and dynamically sized types.</p>
 <h3 id="using-the-newtype-pattern-for-type-safety-and-abstraction"><a class="header" href="#using-the-newtype-pattern-for-type-safety-and-abstraction">Using the Newtype Pattern for Type Safety and Abstraction</a></h3>
-<blockquote>
+<section class="note" aria-role="note">
 <p>Note: This section assumes you’ve read the earlier section <a href="ch19-03-advanced-traits.html#using-the-newtype-pattern-to-implement-external-traits-on-external-types">“Using the
 Newtype Pattern to Implement External Traits on External
 Types.”</a><!-- ignore --></p>
-</blockquote>
+</section>
 <p>The newtype pattern is also useful for tasks beyond those we’ve discussed so
 far, including statically enforcing that values are never confused and
 indicating the units of a value. You saw an example of using newtypes to

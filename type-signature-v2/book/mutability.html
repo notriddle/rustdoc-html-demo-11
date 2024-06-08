@@ -22,7 +22,7 @@
 
     <div id="versioninfo">
   <img src="https://www.rust-lang.org/logos/rust-logo-32x32-blk.png" width="32" height="32" alt="Rust logo"><br>
-  <span class="white-sticker"><a href="https://www.rust-lang.org">Rust</a> 1.79.0-dev</span><br>
+  <span class="white-sticker"><a href="https://www.rust-lang.org">Rust</a> 1.81.0-dev</span><br>
   <a href="https://github.com/rust-lang/rust/commit/"
     class="hash white-sticker"></a>
 </div>
@@ -35,9 +35,9 @@
 </blockquote>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span><span class="kw-2">mut </span>x = <span class="number">5</span>;
-<span class="macro">println!</span>(<span class="string">"The value of x is: {}"</span>, x);
+<span class="macro">println!</span>(<span class="string">"The value of x is: {x}"</span>);
 x = <span class="number">6</span>;
-<span class="macro">println!</span>(<span class="string">"The value of x is: {}"</span>, x);</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn+main()+%7B%0A++++let+mut+x+=+5;%0A++++println!(%22The+value+of+x+is:+%7B%7D%22,+x);%0A++++x+=+6;%0A++++println!(%22The+value+of+x+is:+%7B%7D%22,+x);%0A%7D&amp;edition=2015">Run</a></div>
+<span class="macro">println!</span>(<span class="string">"The value of x is: {x}"</span>);</code></pre><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn+main()+%7B%0A++++let+mut+x+=+5;%0A++++println!(%22The+value+of+x+is:+%7Bx%7D%22);%0A++++x+=+6;%0A++++println!(%22The+value+of+x+is:+%7Bx%7D%22);%0A%7D&amp;edition=2015">Run</a></div>
 <hr />
 <p>Here are the relevant sections in the new and old books:</p>
 <ul>

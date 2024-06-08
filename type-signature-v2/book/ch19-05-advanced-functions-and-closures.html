@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -209,7 +211,7 @@ fn do_twice(f: fn(i32) -&gt; i32, arg: i32) -&gt; i32 {
 fn main() {
     let answer = do_twice(add_one, 5);
 
-    println!("The answer is: {}", answer);
+    println!("The answer is: {answer}");
 }</code></pre></pre>
 <p><span class="caption">Listing 19-27: Using the <code>fn</code> type to accept a function
 pointer as an argument</span></p>

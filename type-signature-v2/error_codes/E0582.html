@@ -198,6 +198,40 @@ fn main() { }</code></pre></pre>
 }
 
 fn main() { }</code></pre></pre>
+<p>This error also includes the use of associated types with lifetime parameters.</p>
+<pre><pre class="playground"><code class="language-rust compile_fail E0582"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait Foo {
+    type Assoc&lt;'a&gt;;
+}
+
+struct Bar&lt;X, F&gt;
+where
+    X: Foo,
+    F: for&lt;'a&gt; Fn(X::Assoc&lt;'a&gt;) -&gt; &amp;'a i32
+{
+    x: X,
+    f: F
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The latter scenario encounters this error because <code>Foo::Assoc&lt;'a&gt;</code> could be
+implemented by a type that does not use the <code>'a</code> parameter, so there is no
+guarentee that <code>X::Assoc&lt;'a&gt;</code> actually uses <code>'a</code>.</p>
+<p>To fix this we can pass a dummy parameter:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span><span class="boring">trait Foo {
+</span><span class="boring">    type Assoc&lt;'a&gt;;
+</span><span class="boring">}
+</span>struct Bar&lt;X, F&gt;
+where
+    X: Foo,
+    F: for&lt;'a&gt; Fn(X::Assoc&lt;'a&gt;, /* dummy */ &amp;'a ()) -&gt; &amp;'a i32
+{
+    x: X,
+    f: F
+}
+<span class="boring">}</span></code></pre></pre>
 <p>Note: The examples above used to be (erroneously) accepted by the
 compiler, but this was since corrected. See <a href="https://github.com/rust-lang/rust/issues/33685">issue #33685</a> for more
 details.</p>

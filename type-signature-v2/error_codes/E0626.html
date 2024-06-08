@@ -183,10 +183,10 @@ yield point.</p>
 <p>Erroneous code example:</p>
 <pre><pre class="playground"><code class="language-rust compile_fail E0626"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">#![feature(coroutines, coroutine_trait, pin)]
+</span><span class="boring">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 </span><span class="boring">use std::ops::Coroutine;
 </span><span class="boring">use std::pin::Pin;
-</span>let mut b = || {
+</span>let mut b = #[coroutine] || {
     let a = &amp;String::new(); // &lt;-- This borrow...
     yield (); // ...is still in scope here, when the yield occurs.
     println!("{}", a);
@@ -201,10 +201,10 @@ resolve the previous example by removing the borrow and just storing
 the integer by value:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">#![feature(coroutines, coroutine_trait, pin)]
+</span><span class="boring">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 </span><span class="boring">use std::ops::Coroutine;
 </span><span class="boring">use std::pin::Pin;
-</span>let mut b = || {
+</span>let mut b = #[coroutine] || {
     let a = 3;
     yield ();
     println!("{}", a);
@@ -217,10 +217,10 @@ in those cases, something like the <code>Rc</code> or <code>Arc</code> types may
 <p>This error also frequently arises with iteration:</p>
 <pre><pre class="playground"><code class="language-rust compile_fail E0626"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">#![feature(coroutines, coroutine_trait, pin)]
+</span><span class="boring">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 </span><span class="boring">use std::ops::Coroutine;
 </span><span class="boring">use std::pin::Pin;
-</span>let mut b = || {
+</span>let mut b = #[coroutine] || {
   let v = vec![1,2,3];
   for &amp;x in &amp;v { // &lt;-- borrow of `v` is still in scope...
     yield x; // ...when this yield occurs.
@@ -232,10 +232,10 @@ Pin::new(&amp;mut b).resume(());
 <code>into_iter()</code>) to avoid borrowing:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">#![feature(coroutines, coroutine_trait, pin)]
+</span><span class="boring">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 </span><span class="boring">use std::ops::Coroutine;
 </span><span class="boring">use std::pin::Pin;
-</span>let mut b = || {
+</span>let mut b = #[coroutine] || {
   let v = vec![1,2,3];
   for x in v { // &lt;-- Take ownership of the values instead!
     yield x; // &lt;-- Now yield is OK.
@@ -246,10 +246,10 @@ Pin::new(&amp;mut b).resume(());
 <p>If taking ownership is not an option, using indices can work too:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span><span class="boring">#![feature(coroutines, coroutine_trait, pin)]
+</span><span class="boring">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 </span><span class="boring">use std::ops::Coroutine;
 </span><span class="boring">use std::pin::Pin;
-</span>let mut b = || {
+</span>let mut b = #[coroutine] || {
   let v = vec![1,2,3];
   let len = v.len(); // (*)
   for i in 0..len {

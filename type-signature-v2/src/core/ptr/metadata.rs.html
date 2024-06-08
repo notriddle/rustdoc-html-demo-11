@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/ptr/metadata.rs`."><title>metadata.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.79.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/ptr/metadata.rs`."><title>metadata.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -278,10 +278,28 @@
 <a href="#278" id="278">278</a>
 <a href="#279" id="279">279</a>
 <a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
 </pre></div><pre class="rust"><code><span class="attr">#![unstable(feature = <span class="string">"ptr_metadata"</span>, issue = <span class="string">"81513"</span>)]
 
 </span><span class="kw">use </span><span class="kw">crate</span>::fmt;
 <span class="kw">use </span><span class="kw">crate</span>::hash::{Hash, Hasher};
+<span class="kw">use </span><span class="kw">crate</span>::intrinsics::aggregate_raw_ptr;
+<span class="attr">#[cfg(not(bootstrap))]
+</span><span class="kw">use </span><span class="kw">crate</span>::intrinsics::ptr_metadata;
 <span class="kw">use </span><span class="kw">crate</span>::marker::Freeze;
 
 <span class="doccomment">/// Provides the pointer metadata type of any pointed-to type.
@@ -373,10 +391,17 @@
 </span><span class="attr">#[rustc_const_unstable(feature = <span class="string">"ptr_metadata"</span>, issue = <span class="string">"81513"</span>)]
 #[inline]
 </span><span class="kw">pub const fn </span>metadata&lt;T: <span class="question-mark">?</span>Sized&gt;(ptr: <span class="kw-2">*const </span>T) -&gt; &lt;T <span class="kw">as </span>Pointee&gt;::Metadata {
-    <span class="comment">// SAFETY: Accessing the value from the `PtrRepr` union is safe since *const T
-    // and PtrComponents&lt;T&gt; have the same memory layouts. Only std can make this
-    // guarantee.
-    </span><span class="kw">unsafe </span>{ PtrRepr { const_ptr: ptr }.components.metadata }
+    <span class="attr">#[cfg(bootstrap)]
+    </span>{
+        <span class="comment">// SAFETY: Accessing the value from the `PtrRepr` union is safe since *const T
+        // and PtrComponents&lt;T&gt; have the same memory layouts. Only std can make this
+        // guarantee.
+        </span><span class="kw">unsafe </span>{ PtrRepr { const_ptr: ptr }.components.metadata }
+    }
+    <span class="attr">#[cfg(not(bootstrap))]
+    </span>{
+        ptr_metadata(ptr)
+    }
 }
 
 <span class="doccomment">/// Forms a (possibly-wide) raw pointer from a data pointer and metadata.
@@ -390,13 +415,10 @@
 #[rustc_const_unstable(feature = <span class="string">"ptr_metadata"</span>, issue = <span class="string">"81513"</span>)]
 #[inline]
 </span><span class="kw">pub const fn </span>from_raw_parts&lt;T: <span class="question-mark">?</span>Sized&gt;(
-    data_pointer: <span class="kw-2">*const </span>(),
+    data_pointer: <span class="kw-2">*const </span><span class="kw">impl </span>Thin,
     metadata: &lt;T <span class="kw">as </span>Pointee&gt;::Metadata,
 ) -&gt; <span class="kw-2">*const </span>T {
-    <span class="comment">// SAFETY: Accessing the value from the `PtrRepr` union is safe since *const T
-    // and PtrComponents&lt;T&gt; have the same memory layouts. Only std can make this
-    // guarantee.
-    </span><span class="kw">unsafe </span>{ PtrRepr { components: PtrComponents { data_pointer, metadata } }.const_ptr }
+    aggregate_raw_ptr(data_pointer, metadata)
 }
 
 <span class="doccomment">/// Performs the same functionality as [`from_raw_parts`], except that a
@@ -407,16 +429,14 @@
 #[rustc_const_unstable(feature = <span class="string">"ptr_metadata"</span>, issue = <span class="string">"81513"</span>)]
 #[inline]
 </span><span class="kw">pub const fn </span>from_raw_parts_mut&lt;T: <span class="question-mark">?</span>Sized&gt;(
-    data_pointer: <span class="kw-2">*mut </span>(),
+    data_pointer: <span class="kw-2">*mut </span><span class="kw">impl </span>Thin,
     metadata: &lt;T <span class="kw">as </span>Pointee&gt;::Metadata,
 ) -&gt; <span class="kw-2">*mut </span>T {
-    <span class="comment">// SAFETY: Accessing the value from the `PtrRepr` union is safe since *const T
-    // and PtrComponents&lt;T&gt; have the same memory layouts. Only std can make this
-    // guarantee.
-    </span><span class="kw">unsafe </span>{ PtrRepr { components: PtrComponents { data_pointer, metadata } }.mut_ptr }
+    aggregate_raw_ptr(data_pointer, metadata)
 }
 
 <span class="attr">#[repr(C)]
+#[cfg(bootstrap)]
 </span><span class="kw">union </span>PtrRepr&lt;T: <span class="question-mark">?</span>Sized&gt; {
     const_ptr: <span class="kw-2">*const </span>T,
     mut_ptr: <span class="kw-2">*mut </span>T,
@@ -424,15 +444,18 @@
 }
 
 <span class="attr">#[repr(C)]
+#[cfg(bootstrap)]
 </span><span class="kw">struct </span>PtrComponents&lt;T: <span class="question-mark">?</span>Sized&gt; {
     data_pointer: <span class="kw-2">*const </span>(),
     metadata: &lt;T <span class="kw">as </span>Pointee&gt;::Metadata,
 }
 
 <span class="comment">// Manual impl needed to avoid `T: Copy` bound.
+</span><span class="attr">#[cfg(bootstrap)]
 </span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Copy <span class="kw">for </span>PtrComponents&lt;T&gt; {}
 
 <span class="comment">// Manual impl needed to avoid `T: Clone` bound.
+</span><span class="attr">#[cfg(bootstrap)]
 </span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Clone <span class="kw">for </span>PtrComponents&lt;T&gt; {
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="kw-2">*</span><span class="self">self
@@ -463,8 +486,8 @@
 /// compare equal (since identical vtables can be deduplicated within a codegen unit).
 </span><span class="attr">#[lang = <span class="string">"dyn_metadata"</span>]
 </span><span class="kw">pub struct </span>DynMetadata&lt;Dyn: <span class="question-mark">?</span>Sized&gt; {
-    vtable_ptr: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>VTable,
-    phantom: <span class="kw">crate</span>::marker::PhantomData&lt;Dyn&gt;,
+    _vtable_ptr: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>VTable,
+    _phantom: <span class="kw">crate</span>::marker::PhantomData&lt;Dyn&gt;,
 }
 
 <span class="kw">extern </span><span class="string">"C" </span>{
@@ -476,6 +499,17 @@
 }
 
 <span class="kw">impl</span>&lt;Dyn: <span class="question-mark">?</span>Sized&gt; DynMetadata&lt;Dyn&gt; {
+    <span class="doccomment">/// One of the things that rustc_middle does with this being a lang item is
+    /// give it `FieldsShape::Primitive`, which means that as far as codegen can
+    /// tell, it *is* a reference, and thus doesn't have any fields.
+    /// That means we can't use field access, and have to transmute it instead.
+    </span><span class="attr">#[inline]
+    </span><span class="kw">fn </span>vtable_ptr(<span class="self">self</span>) -&gt; <span class="kw-2">*const </span>VTable {
+        <span class="comment">// SAFETY: this layout assumption is hard-coded into the compiler.
+        // If it's somehow not a size match, the transmute will error.
+        </span><span class="kw">unsafe </span>{ <span class="kw">crate</span>::mem::transmute::&lt;<span class="self">Self</span>, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>VTable&gt;(<span class="self">self</span>) }
+    }
+
     <span class="doccomment">/// Returns the size of the type associated with this vtable.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>size_of(<span class="self">self</span>) -&gt; usize {
@@ -483,18 +517,14 @@
         // Consider a reference like `&amp;(i32, dyn Send)`: the vtable will only store the size of the
         // `Send` part!
         // SAFETY: DynMetadata always contains a valid vtable pointer
-        </span><span class="kw">return unsafe </span>{
-            <span class="kw">crate</span>::intrinsics::vtable_size(<span class="self">self</span>.vtable_ptr <span class="kw">as </span><span class="kw-2">*const </span>VTable <span class="kw">as </span><span class="kw-2">*const </span>())
-        };
+        </span><span class="kw">return unsafe </span>{ <span class="kw">crate</span>::intrinsics::vtable_size(<span class="self">self</span>.vtable_ptr() <span class="kw">as </span><span class="kw-2">*const </span>()) };
     }
 
     <span class="doccomment">/// Returns the alignment of the type associated with this vtable.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>align_of(<span class="self">self</span>) -&gt; usize {
         <span class="comment">// SAFETY: DynMetadata always contains a valid vtable pointer
-        </span><span class="kw">return unsafe </span>{
-            <span class="kw">crate</span>::intrinsics::vtable_align(<span class="self">self</span>.vtable_ptr <span class="kw">as </span><span class="kw-2">*const </span>VTable <span class="kw">as </span><span class="kw-2">*const </span>())
-        };
+        </span><span class="kw">return unsafe </span>{ <span class="kw">crate</span>::intrinsics::vtable_align(<span class="self">self</span>.vtable_ptr() <span class="kw">as </span><span class="kw-2">*const </span>()) };
     }
 
     <span class="doccomment">/// Returns the size and alignment together as a `Layout`
@@ -511,7 +541,7 @@
 
 <span class="kw">impl</span>&lt;Dyn: <span class="question-mark">?</span>Sized&gt; fmt::Debug <span class="kw">for </span>DynMetadata&lt;Dyn&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
-        f.debug_tuple(<span class="string">"DynMetadata"</span>).field(<span class="kw-2">&amp;</span>(<span class="self">self</span>.vtable_ptr <span class="kw">as </span><span class="kw-2">*const </span>VTable)).finish()
+        f.debug_tuple(<span class="string">"DynMetadata"</span>).field(<span class="kw-2">&amp;</span><span class="self">self</span>.vtable_ptr()).finish()
     }
 }
 
@@ -533,7 +563,7 @@
 <span class="kw">impl</span>&lt;Dyn: <span class="question-mark">?</span>Sized&gt; PartialEq <span class="kw">for </span>DynMetadata&lt;Dyn&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
-        <span class="kw">crate</span>::ptr::eq::&lt;VTable&gt;(<span class="self">self</span>.vtable_ptr, other.vtable_ptr)
+        <span class="kw">crate</span>::ptr::eq::&lt;VTable&gt;(<span class="self">self</span>.vtable_ptr(), other.vtable_ptr())
     }
 }
 
@@ -541,7 +571,7 @@
     <span class="attr">#[inline]
     #[allow(ambiguous_wide_pointer_comparisons)]
     </span><span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="kw">crate</span>::cmp::Ordering {
-        (<span class="self">self</span>.vtable_ptr <span class="kw">as </span><span class="kw-2">*const </span>VTable).cmp(<span class="kw-2">&amp;</span>(other.vtable_ptr <span class="kw">as </span><span class="kw-2">*const </span>VTable))
+        &lt;<span class="kw-2">*const </span>VTable&gt;::cmp(<span class="kw-2">&amp;</span><span class="self">self</span>.vtable_ptr(), <span class="kw-2">&amp;</span>other.vtable_ptr())
     }
 }
 
@@ -555,7 +585,7 @@
 <span class="kw">impl</span>&lt;Dyn: <span class="question-mark">?</span>Sized&gt; Hash <span class="kw">for </span>DynMetadata&lt;Dyn&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>hash&lt;H: Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, hasher: <span class="kw-2">&amp;mut </span>H) {
-        <span class="kw">crate</span>::ptr::hash::&lt;VTable, <span class="kw">_</span>&gt;(<span class="self">self</span>.vtable_ptr, hasher)
+        <span class="kw">crate</span>::ptr::hash::&lt;VTable, <span class="kw">_</span>&gt;(<span class="self">self</span>.vtable_ptr(), hasher)
     }
 }
 </code></pre></div></section></main></body></html>

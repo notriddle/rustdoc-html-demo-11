@@ -714,8 +714,17 @@ before the closing <code>&gt;</code>, and use a trailing comma.</p>
 <p>Prefer to use single-letter names for generic parameters.</p>
 <h2 id="where-clauses"><a class="header" href="#where-clauses"><code>where</code> clauses</a></h2>
 <p>These rules apply for <code>where</code> clauses on any item.</p>
-<p>If immediately following a closing bracket of any kind, write the keyword
-<code>where</code> on the same line, with a space before it.</p>
+<p>If a where clause is short, and appears on a short one-line function
+declaration with no body or on a short type with no <code>=</code>, format it on
+the same line as the declaration:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn new(&amp;self) -&gt; Self where Self: Sized;
+
+type Item&lt;'a&gt;: SomeTrait where Self: 'a;
+<span class="boring">}</span></code></pre></pre>
+<p>Otherwise, if immediately following a closing bracket of any kind, write the
+keyword <code>where</code> on the same line, with a space before it.</p>
 <p>Otherwise, put <code>where</code> on a new line at the same indentation level. Put each
 component of a <code>where</code> clause on its own line, block-indented. Use a trailing
 comma, unless the clause is terminated with a semicolon. If the <code>where</code> clause
@@ -764,7 +773,7 @@ where
 = Bar&lt;T&gt;;
 <span class="boring">}</span></code></pre></pre>
 <p>If a <code>where</code> clause is very short, prefer using an inline bound on the type
-parameter.</p>
+parameter if possible.</p>
 <p>If a component of a <code>where</code> clause does not fit and contains <code>+</code>, break it
 before each <code>+</code> and block-indent the continuation lines. Put each bound on its
 own line. E.g.,</p>
@@ -831,8 +840,18 @@ where
 bound, put a space after the colon but not before:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>pub type Foo: Bar;
+</span>type Foo: Bar;
 <span class="boring">}</span></code></pre></pre>
+<p>If an associated type is short, has no <code>=</code>, and has a <code>where</code> clause with only
+one entry, format the entire type declaration including the <code>where</code> clause on
+the same line if it fits:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>type Item&lt;'a&gt; where Self: 'a;
+type Item&lt;'a&gt;: PartialEq + Send where Self: 'a;
+<span class="boring">}</span></code></pre></pre>
+<p>If the associated type has a <code>=</code>, or if the <code>where</code> clause contains multiple
+entries, format it across multiple lines as with a type alias.</p>
 <h2 id="extern-items"><a class="header" href="#extern-items">extern items</a></h2>
 <p>When writing extern items (such as <code>extern "C" fn</code>), always specify the ABI.
 For example, write <code>extern "C" fn foo ...</code>, not <code>extern fn foo ...</code>, or
@@ -1465,6 +1484,36 @@ subsequent line. Put each sub-expression on its own line:</p>
 <span class="boring">}</span></code></pre></pre>
 <p>Prefer line-breaking at an assignment operator (either <code>=</code> or <code>+=</code>, etc.) rather
 than at other binary operators.</p>
+<p>If line-breaking at a binary operator (including assignment operators) where the
+first operand spans multiple lines, use the base indentation of the <em>last</em>
+line of the first operand, and indent relative to that:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl SomeType {
+    fn method(&amp;mut self) {
+        self.array[array_index as usize]
+            .as_mut()
+            .expect("thing must exist")
+            .extra_info =
+                long_long_long_long_long_long_long_long_long_long_long_long_long_long_long;
+
+        self.array[array_index as usize]
+            .as_mut()
+            .expect("thing must exist")
+            .extra_info
+                + long_long_long_long_long_long_long_long_long_long_long_long_long_long_long;
+
+        self.array[array_index as usize]
+            .as_mut()
+            .expect("thing must exist")
+            .extra_info = Some(ExtraInfo {
+                parent,
+                count: count as u16,
+                children: children.into_boxed_slice(),
+            });
+    }
+}
+<span class="boring">}</span></code></pre></pre>
 <h3 id="casts-as"><a class="header" href="#casts-as">Casts (<code>as</code>)</a></h3>
 <p>Format <code>as</code> casts like a binary operator. In particular, always include spaces
 around <code>as</code>, and if line-breaking, break before the <code>as</code> (never after) and
@@ -2213,9 +2262,12 @@ include:</p>
 of a delimited expression, delimited expressions are generally combinable,
 regardless of the number of members. Previously only applied with exactly
 one member (except for closures with explicit blocks).</li>
+<li>When line-breaking a binary operator, if the first operand spans multiple
+lines, use the base indentation of the last line.</li>
 <li>Miscellaneous <code>rustfmt</code> bugfixes.</li>
 <li>Use version-sort (sort <code>x8</code>, <code>x16</code>, <code>x32</code>, <code>x64</code>, <code>x128</code> in that order).</li>
 <li>Change "ASCIIbetical" sort to Unicode-aware "non-lowercase before lowercase".</li>
+<li>Format single associated type <code>where</code> clauses on the same line if they fit.</li>
 </ul>
 <h2 id="rust-201520182021-style-edition"><a class="header" href="#rust-201520182021-style-edition">Rust 2015/2018/2021 style edition</a></h2>
 <p>The archived version of the style guide at

@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -188,7 +190,7 @@ help manage multiple related packages that are developed in tandem.</p>
 <p>A <em>workspace</em> is a set of packages that share the same <em>Cargo.lock</em> and output
 directory. Let’s make a project using a workspace—we’ll use trivial code so we
 can concentrate on the structure of the workspace. There are multiple ways to
-structure a workspace, so we'll just show one common way. We’ll have a
+structure a workspace, so we’ll just show one common way. We’ll have a
 workspace containing a binary and two libraries. The binary, which will provide
 the main functionality, will depend on the two libraries. One library will
 provide an <code>add_one</code> function, and a second library an <code>add_two</code> function.
@@ -396,10 +398,14 @@ error[E0432]: unresolved import `rand`
 <p>To fix this, edit the <em>Cargo.toml</em> file for the <code>adder</code> package and indicate
 that <code>rand</code> is a dependency for it as well. Building the <code>adder</code> package will
 add <code>rand</code> to the list of dependencies for <code>adder</code> in <em>Cargo.lock</em>, but no
-additional copies of <code>rand</code> will be downloaded. Cargo has ensured that every
+additional copies of <code>rand</code> will be downloaded. Cargo will ensure that every
 crate in every package in the workspace using the <code>rand</code> package will be using
-the same version, saving us space and ensuring that the crates in the workspace
-will be compatible with each other.</p>
+the same version as long as they specify compatible versions of <code>rand</code>, saving
+us space and ensuring that the crates in the workspace will be compatible with
+each other.</p>
+<p>If crates in the workspace specify incompatible versions of the same dependency,
+Cargo will resolve each of them, but will still try to resolve as few versions
+as possible.</p>
 <h4 id="adding-a-test-to-a-workspace"><a class="header" href="#adding-a-test-to-a-workspace">Adding a Test to a Workspace</a></h4>
 <p>For another enhancement, let’s add a test of the <code>add_one::add_one</code> function
 within the <code>add_one</code> crate:</p>

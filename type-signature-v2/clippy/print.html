@@ -437,7 +437,7 @@ found <a href="https://rust-lang.github.io/rust-clippy/master/index.html#msrv">h
 <code>clippy</code> cfg is not set. You may need to provide a stub so that the code compiles:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>#[cfg(not(clippy)]
+</span>#[cfg(not(clippy))]
 include!(concat!(env!("OUT_DIR"), "/my_big_function-generated.rs"));
 
 #[cfg(clippy)]
@@ -526,6 +526,14 @@ be linted.</p>
 <ul>
 <li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_raw_string_hashes"><code>unnecessary_raw_string_hashes</code></a></li>
 </ul>
+<h2 id="allow-panic-in-tests"><a class="header" href="#allow-panic-in-tests"><code>allow-panic-in-tests</code></a></h2>
+<p>Whether <code>panic</code> should be allowed in test functions or <code>#[cfg(test)]</code></p>
+<p><strong>Default Value:</strong> <code>false</code></p>
+<hr />
+<p><strong>Affected lints:</strong></p>
+<ul>
+<li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#panic"><code>panic</code></a></li>
+</ul>
 <h2 id="allow-print-in-tests"><a class="header" href="#allow-print-in-tests"><code>allow-print-in-tests</code></a></h2>
 <p>Whether print macros (ex. <code>println!</code>) should be allowed in test functions or <code>#[cfg(test)]</code></p>
 <p><strong>Default Value:</strong> <code>false</code></p>
@@ -543,6 +551,23 @@ be linted.</p>
 <ul>
 <li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#module_inception"><code>module_inception</code></a></li>
 </ul>
+<h2 id="allow-renamed-params-for"><a class="header" href="#allow-renamed-params-for"><code>allow-renamed-params-for</code></a></h2>
+<p>List of trait paths to ignore when checking renamed function parameters.</p>
+<h4 id="example"><a class="header" href="#example">Example</a></h4>
+<pre><code class="language-toml">allow-renamed-params-for = [ "std::convert::From" ]
+</code></pre>
+<h4 id="noteworthy"><a class="header" href="#noteworthy">Noteworthy</a></h4>
+<ul>
+<li>By default, the following traits are ignored: <code>From</code>, <code>TryFrom</code>, <code>FromStr</code></li>
+<li><code>".."</code> can be used as part of the list to indicate that the configured values should be appended to the
+default configuration of Clippy. By default, any configuration will replace the default value.</li>
+</ul>
+<p><strong>Default Value:</strong> <code>["core::convert::From", "core::convert::TryFrom", "core::str::FromStr"]</code></p>
+<hr />
+<p><strong>Affected lints:</strong></p>
+<ul>
+<li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#renamed_function_params"><code>renamed_function_params</code></a></li>
+</ul>
 <h2 id="allow-unwrap-in-tests"><a class="header" href="#allow-unwrap-in-tests"><code>allow-unwrap-in-tests</code></a></h2>
 <p>Whether <code>unwrap</code> should be allowed in test functions or <code>#[cfg(test)]</code></p>
 <p><strong>Default Value:</strong> <code>false</code></p>
@@ -550,6 +575,14 @@ be linted.</p>
 <p><strong>Affected lints:</strong></p>
 <ul>
 <li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#unwrap_used"><code>unwrap_used</code></a></li>
+</ul>
+<h2 id="allow-useless-vec-in-tests"><a class="header" href="#allow-useless-vec-in-tests"><code>allow-useless-vec-in-tests</code></a></h2>
+<p>Whether <code>useless_vec</code> should ignore test functions or <code>#[cfg(test)]</code></p>
+<p><strong>Default Value:</strong> <code>false</code></p>
+<hr />
+<p><strong>Affected lints:</strong></p>
+<ul>
+<li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#useless_vec"><code>useless_vec</code></a></li>
 </ul>
 <h2 id="allowed-dotfiles"><a class="header" href="#allowed-dotfiles"><code>allowed-dotfiles</code></a></h2>
 <p>Additional dotfiles (files or directories starting with a dot) to allow</p>
@@ -581,10 +614,10 @@ configuration of Clippy. By default, any configuration will replace the default 
 <p>List of prefixes to allow when determining whether an item's name ends with the module's name.
 If the rest of an item's name is an allowed prefix (e.g. item <code>ToFoo</code> or <code>to_foo</code> in module <code>foo</code>),
 then don't emit a warning.</p>
-<h4 id="example"><a class="header" href="#example">Example</a></h4>
+<h4 id="example-1"><a class="header" href="#example-1">Example</a></h4>
 <pre><code class="language-toml">allowed-prefixes = [ "to", "from" ]
 </code></pre>
-<h4 id="noteworthy"><a class="header" href="#noteworthy">Noteworthy</a></h4>
+<h4 id="noteworthy-1"><a class="header" href="#noteworthy-1">Noteworthy</a></h4>
 <ul>
 <li>By default, the following prefixes are allowed: <code>to</code>, <code>as</code>, <code>into</code>, <code>from</code>, <code>try_into</code> and <code>try_from</code></li>
 <li>PascalCase variant is included automatically for each snake_case variant (e.g. if <code>try_into</code> is included,
@@ -608,10 +641,10 @@ default configuration of Clippy. By default, any configuration will replace the 
 </ul>
 <h2 id="allowed-wildcard-imports"><a class="header" href="#allowed-wildcard-imports"><code>allowed-wildcard-imports</code></a></h2>
 <p>List of path segments allowed to have wildcard imports.</p>
-<h4 id="example-1"><a class="header" href="#example-1">Example</a></h4>
+<h4 id="example-2"><a class="header" href="#example-2">Example</a></h4>
 <pre><code class="language-toml">allowed-wildcard-imports = [ "utils", "common" ]
 </code></pre>
-<h4 id="noteworthy-1"><a class="header" href="#noteworthy-1">Noteworthy</a></h4>
+<h4 id="noteworthy-2"><a class="header" href="#noteworthy-2">Noteworthy</a></h4>
 <ol>
 <li>This configuration has no effects if used with <code>warn_on_all_wildcard_imports = true</code>.</li>
 <li>Paths with any segment that containing the word 'prelude'
@@ -626,10 +659,10 @@ are already allowed by default.</li>
 <h2 id="arithmetic-side-effects-allowed"><a class="header" href="#arithmetic-side-effects-allowed"><code>arithmetic-side-effects-allowed</code></a></h2>
 <p>Suppress checking of the passed type names in all types of operations.</p>
 <p>If a specific operation is desired, consider using <code>arithmetic_side_effects_allowed_binary</code> or <code>arithmetic_side_effects_allowed_unary</code> instead.</p>
-<h4 id="example-2"><a class="header" href="#example-2">Example</a></h4>
+<h4 id="example-3"><a class="header" href="#example-3">Example</a></h4>
 <pre><code class="language-toml">arithmetic-side-effects-allowed = ["SomeType", "AnotherType"]
 </code></pre>
-<h4 id="noteworthy-2"><a class="header" href="#noteworthy-2">Noteworthy</a></h4>
+<h4 id="noteworthy-3"><a class="header" href="#noteworthy-3">Noteworthy</a></h4>
 <p>A type, say <code>SomeType</code>, listed in this configuration has the same behavior of
 <code>["SomeType" , "*"], ["*", "SomeType"]</code> in <code>arithmetic_side_effects_allowed_binary</code>.</p>
 <p><strong>Default Value:</strong> <code>[]</code></p>
@@ -645,7 +678,7 @@ multiplication.</p>
 of the involved counterpart. For example, <code>["SomeType", "*"]</code> or <code>["*", "AnotherType"]</code>.</p>
 <p>Pairs are asymmetric, which means that <code>["SomeType", "AnotherType"]</code> is not the same as
 <code>["AnotherType", "SomeType"]</code>.</p>
-<h4 id="example-3"><a class="header" href="#example-3">Example</a></h4>
+<h4 id="example-4"><a class="header" href="#example-4">Example</a></h4>
 <pre><code class="language-toml">arithmetic-side-effects-allowed-binary = [["SomeType" , "f32"], ["AnotherType", "*"]]
 </code></pre>
 <p><strong>Default Value:</strong> <code>[]</code></p>
@@ -656,7 +689,7 @@ of the involved counterpart. For example, <code>["SomeType", "*"]</code> or <cod
 </ul>
 <h2 id="arithmetic-side-effects-allowed-unary"><a class="header" href="#arithmetic-side-effects-allowed-unary"><code>arithmetic-side-effects-allowed-unary</code></a></h2>
 <p>Suppress checking of the passed type names in unary operations like "negation" (<code>-</code>).</p>
-<h4 id="example-4"><a class="header" href="#example-4">Example</a></h4>
+<h4 id="example-5"><a class="header" href="#example-5">Example</a></h4>
 <pre><code class="language-toml">arithmetic-side-effects-allowed-unary = ["SomeType", "AnotherType"]
 </code></pre>
 <p><strong>Default Value:</strong> <code>[]</code></p>
@@ -789,7 +822,7 @@ default configuration of Clippy. By default, any configuration will replace the 
 </ul>
 <h2 id="enforce-iter-loop-reborrow"><a class="header" href="#enforce-iter-loop-reborrow"><code>enforce-iter-loop-reborrow</code></a></h2>
 <p>Whether to recommend using implicit into iter for reborrowed values.</p>
-<h4 id="example-5"><a class="header" href="#example-5">Example</a></h4>
+<h4 id="example-6"><a class="header" href="#example-6">Example</a></h4>
 <pre><code class="language-no_run">let mut vec = vec![1, 2, 3];
 let rmvec = &amp;mut vec;
 for _ in rmvec.iter() {}
@@ -848,12 +881,13 @@ for _ in &amp;mut *rmvec {}
 <li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#large_futures"><code>large_futures</code></a></li>
 </ul>
 <h2 id="ignore-interior-mutability"><a class="header" href="#ignore-interior-mutability"><code>ignore-interior-mutability</code></a></h2>
-<p>A list of paths to types that should be treated like <code>Arc</code>, i.e. ignored but
-for the generic parameters for determining interior mutability</p>
+<p>A list of paths to types that should be treated as if they do not contain interior mutability</p>
 <p><strong>Default Value:</strong> <code>["bytes::Bytes"]</code></p>
 <hr />
 <p><strong>Affected lints:</strong></p>
 <ul>
+<li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#borrow_interior_mutable_const"><code>borrow_interior_mutable_const</code></a></li>
+<li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#declare_interior_mutable_const"><code>declare_interior_mutable_const</code></a></li>
 <li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#ifs_same_cond"><code>ifs_same_cond</code></a></li>
 <li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#mutable_key_type"><code>mutable_key_type</code></a></li>
 </ul>
@@ -1167,6 +1201,14 @@ reference. By default there is no limit</p>
 <p><strong>Affected lints:</strong></p>
 <ul>
 <li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#wildcard_imports"><code>wildcard_imports</code></a></li>
+</ul>
+<h2 id="warn-unsafe-macro-metavars-in-private-macros"><a class="header" href="#warn-unsafe-macro-metavars-in-private-macros"><code>warn-unsafe-macro-metavars-in-private-macros</code></a></h2>
+<p>Whether to also emit warnings for unsafe blocks with metavariable expansions in <strong>private</strong> macros.</p>
+<p><strong>Default Value:</strong> <code>false</code></p>
+<hr />
+<p><strong>Affected lints:</strong></p>
+<ul>
+<li><a href="https://rust-lang.github.io/rust-clippy/master/index.html#macro_metavars_in_unsafe"><code>macro_metavars_in_unsafe</code></a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="clippys-lints"><a class="header" href="#clippys-lints">Clippy's Lints</a></h1>
 <p>Clippy offers a bunch of additional lints, to help its users write more correct
@@ -1748,10 +1790,10 @@ have to deal with the AST and don't have to deal with the type system at all.
 This is good, because it makes writing this particular lint less complicated.</p>
 <p>We have to make this decision with every new Clippy lint. It boils down to using
 either <a href="https://doc.rust-lang.org/nightly/nightly-rustc/rustc_lint/trait.EarlyLintPass.html"><code>EarlyLintPass</code></a> or <a href="https://doc.rust-lang.org/nightly/nightly-rustc/rustc_lint/trait.LateLintPass.html"><code>LateLintPass</code></a>.</p>
-<p>In short, the <code>LateLintPass</code> has access to type information while the
-<code>EarlyLintPass</code> doesn't. If you don't need access to type information, use the
-<code>EarlyLintPass</code>. The <code>EarlyLintPass</code> is also faster. However, linting speed
-hasn't really been a concern with Clippy so far.</p>
+<p>In short, the <code>EarlyLintPass</code> runs before type checking and
+<a href="https://rustc-dev-guide.rust-lang.org/hir.html">HIR</a> lowering and the <code>LateLintPass</code>
+has access to type information. Consider using the <code>LateLintPass</code> unless you need
+something specific from the <code>EarlyLintPass</code>.</p>
 <p>Since we don't need type information for checking the function name, we used
 <code>--pass=early</code> when running the new lint automation and all the imports were
 added accordingly.</p>
@@ -1966,6 +2008,10 @@ lint declaration.</p>
     "function named `foo`, which is not a descriptive name"
 }
 <span class="boring">}</span></code></pre></pre>
+<p>If the lint is in the <code>restriction</code> group because it lints things that are not
+necessarily “bad” but are more of a style choice, then replace the
+“Why is this bad?” section heading with “Why restrict this?”, to avoid writing
+“Why is this bad? It isn't, but ...”.</p>
 <p>Once your lint is merged, this documentation will show up in the <a href="https://rust-lang.github.io/rust-clippy/master/index.html">lint
 list</a>.</p>
 <h2 id="running-rustfmt"><a class="header" href="#running-rustfmt">Running rustfmt</a></h2>
@@ -2624,7 +2670,7 @@ supervision, that's why we have <a href="https://doc.rust-lang.org/beta/nightly-
 are always right (<code>Applicability::MachineApplicable</code>), but we use
 <code>Applicability::MaybeIncorrect</code> and others when talking about a suggestion that
 may be incorrect.</p>
-<h3 id="example-6"><a class="header" href="#example-6">Example</a></h3>
+<h3 id="example-7"><a class="header" href="#example-7">Example</a></h3>
 <p>The same lint <code>LINT_NAME</code> but that emits a suggestion would look something like this:</p>
 <pre><pre class="playground"><code class="language-rust edition2018"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {

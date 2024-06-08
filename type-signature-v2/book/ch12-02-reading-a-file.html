@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -211,8 +213,8 @@ fn main() {
 </span><span class="boring">    let query = &amp;args[1];
 </span><span class="boring">    let file_path = &amp;args[2];
 </span><span class="boring">
-</span><span class="boring">    println!("Searching for {}", query);
-</span>    println!("In file {}", file_path);
+</span><span class="boring">    println!("Searching for {query}");
+</span>    println!("In file {file_path}");
 
     let contents = fs::read_to_string(file_path)
         .expect("Should have been able to read the file");
@@ -233,7 +235,7 @@ we haven’t implemented the searching part yet) and the <em>poem.txt</em> file 
 second argument:</p>
 <pre><code class="language-console">$ cargo run -- the poem.txt
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.0s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.0s
      Running `target/debug/minigrep the poem.txt`
 Searching for the
 In file poem.txt

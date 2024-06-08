@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -238,7 +240,7 @@ call the <code>drop</code> method explicitly.</p>
 <p>When we run this program, we’ll see the following output:</p>
 <pre><code class="language-console">$ cargo run
    Compiling drop-example v0.1.0 (file:///projects/drop-example)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.60s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.60s
      Running `target/debug/drop-example`
 CustomSmartPointers created.
 Dropping CustomSmartPointer with data `other stuff`!
@@ -341,7 +343,7 @@ drop a value before it goes out of scope</span></p>
 <p>Running this code will print the following:</p>
 <pre><code class="language-console">$ cargo run
    Compiling drop-example v0.1.0 (file:///projects/drop-example)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.73s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.73s
      Running `target/debug/drop-example`
 CustomSmartPointer created.
 Dropping CustomSmartPointer with data `some data`!

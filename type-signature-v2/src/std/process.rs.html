@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/process.rs`."><title>process.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.79.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../std/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/process.rs`."><title>process.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2446,6 +2446,17 @@
 <a href="#2446" id="2446">2446</a>
 <a href="#2447" id="2447">2447</a>
 <a href="#2448" id="2448">2448</a>
+<a href="#2449" id="2449">2449</a>
+<a href="#2450" id="2450">2450</a>
+<a href="#2451" id="2451">2451</a>
+<a href="#2452" id="2452">2452</a>
+<a href="#2453" id="2453">2453</a>
+<a href="#2454" id="2454">2454</a>
+<a href="#2455" id="2455">2455</a>
+<a href="#2456" id="2456">2456</a>
+<a href="#2457" id="2457">2457</a>
+<a href="#2458" id="2458">2458</a>
+<a href="#2459" id="2459">2459</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! A module for working with processes.
 //!
 //! This module is mostly concerned with spawning and interacting with child
@@ -2538,8 +2549,8 @@
 //!
 //! # Windows argument splitting
 //!
-//! On Unix systems arguments are passed to a new process as an array of strings
-//! but on Windows arguments are passed as a single commandline string and it's
+//! On Unix systems arguments are passed to a new process as an array of strings,
+//! but on Windows arguments are passed as a single commandline string and it is
 //! up to the child process to parse it into an array. Therefore the parent and
 //! child processes must agree on how the commandline string is encoded.
 //!
@@ -2555,26 +2566,26 @@
 //! * Use [`raw_arg`] to build a custom commandline. This bypasses the escaping
 //!   rules used by [`arg`] so should be used with due caution.
 //!
-//! `cmd.exe` and `.bat` use non-standard argument parsing and are especially
+//! `cmd.exe` and `.bat` files use non-standard argument parsing and are especially
 //! vulnerable to malicious input as they may be used to run arbitrary shell
 //! commands. Untrusted arguments should be restricted as much as possible.
 //! For examples on handling this see [`raw_arg`].
 //!
-//! ### Bat file special handling
+//! ### Batch file special handling
 //!
 //! On Windows, `Command` uses the Windows API function [`CreateProcessW`] to
-//! spawn new processes. An undocumented feature of this function is that,
+//! spawn new processes. An undocumented feature of this function is that
 //! when given a `.bat` file as the application to run, it will automatically
-//! convert that into running `cmd.exe /c` with the bat file as the next argument.
+//! convert that into running `cmd.exe /c` with the batch file as the next argument.
 //!
 //! For historical reasons Rust currently preserves this behaviour when using
 //! [`Command::new`], and escapes the arguments according to `cmd.exe` rules.
 //! Due to the complexity of `cmd.exe` argument handling, it might not be
-//! possible to safely escape some special chars, and using them will result
+//! possible to safely escape some special characters, and using them will result
 //! in an error being returned at process spawn. The set of unescapeable
-//! special chars might change between releases.
+//! special characters might change between releases.
 //!
-//! Also note that running `.bat` scripts in this way may be removed in the
+//! Also note that running batch scripts in this way may be removed in the
 //! future and so should not be relied upon.
 //!
 //! [`spawn`]: Command::spawn
@@ -2934,6 +2945,10 @@
     </span><span class="kw">fn </span>is_read_vectored(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.inner.is_read_vectored()
     }
+
+    <span class="kw">fn </span>read_to_end(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;mut </span>Vec&lt;u8&gt;) -&gt; io::Result&lt;usize&gt; {
+        <span class="self">self</span>.inner.read_to_end(buf)
+    }
 }
 
 <span class="kw">impl </span>AsInner&lt;AnonPipe&gt; <span class="kw">for </span>ChildStderr {
@@ -3103,16 +3118,19 @@
     ///
     /// Note that the argument is not passed through a shell, but given
     /// literally to the program. This means that shell syntax like quotes,
-    /// escaped characters, word splitting, glob patterns, variable substitution, etc.
-    /// have no effect.
+    /// escaped characters, word splitting, glob patterns, variable substitution,
+    /// etc. have no effect.
     ///
     /// &lt;div class="warning"&gt;
     ///
-    /// On Windows use caution with untrusted inputs. Most applications use the
-    /// standard convention for decoding arguments passed to them. These are safe to use with `arg`.
-    /// However some applications, such as `cmd.exe` and `.bat` files, use a non-standard way of decoding arguments
-    /// and are therefore vulnerable to malicious input.
-    /// In the case of `cmd.exe` this is especially important because a malicious argument can potentially run arbitrary shell commands.
+    /// On Windows, use caution with untrusted inputs. Most applications use the
+    /// standard convention for decoding arguments passed to them. These are safe to
+    /// use with `arg`. However, some applications such as `cmd.exe` and `.bat` files
+    /// use a non-standard way of decoding arguments. They are therefore vulnerable
+    /// to malicious input.
+    ///
+    /// In the case of `cmd.exe` this is especially important because a malicious
+    /// argument can potentially run arbitrary shell commands.
     ///
     /// See [Windows argument splitting][windows-args] for more details
     /// or [`raw_arg`] for manually implementing non-standard argument encoding.
@@ -3154,11 +3172,14 @@
     ///
     /// &lt;div class="warning"&gt;
     ///
-    /// On Windows use caution with untrusted inputs. Most applications use the
-    /// standard convention for decoding arguments passed to them. These are safe to use with `args`.
-    /// However some applications, such as `cmd.exe` and `.bat` files, use a non-standard way of decoding arguments
-    /// and are therefore vulnerable to malicious input.
-    /// In the case of `cmd.exe` this is especially important because a malicious argument can potentially run arbitrary shell commands.
+    /// On Windows, use caution with untrusted inputs. Most applications use the
+    /// standard convention for decoding arguments passed to them. These are safe to
+    /// use with `arg`. However, some applications such as `cmd.exe` and `.bat` files
+    /// use a non-standard way of decoding arguments. They are therefore vulnerable
+    /// to malicious input.
+    ///
+    /// In the case of `cmd.exe` this is especially important because a malicious
+    /// argument can potentially run arbitrary shell commands.
     ///
     /// See [Windows argument splitting][windows-args] for more details
     /// or [`raw_arg`] for manually implementing non-standard argument encoding.
@@ -4313,7 +4334,8 @@
     /// # Examples
     ///
     /// ```
-    /// #![feature(exit_status_error, generic_nonzero)]
+    /// #![feature(exit_status_error)]
+    ///
     /// # if cfg!(unix) {
     /// use std::num::NonZero;
     /// use std::process::Command;

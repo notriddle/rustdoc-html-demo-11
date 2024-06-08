@@ -306,9 +306,6 @@ if let (a, 3) = (1, 2) {           // "(a, 3)" is refutable, and will not match
 <p><em>Literal patterns</em> match exactly the same value as what is created by the literal.
 Since negative numbers are not <a href="expressions/literal-expr.html">literals</a>, literal patterns also accept an optional minus sign before the literal, which acts like the negation operator.</p>
 <div class="warning">
-<p>Floating-point literals are currently accepted, but due to the complexity of comparing them, they are going to be forbidden on literal patterns in a future version of Rust (see <a href="https://github.com/rust-lang/rust/issues/41620">issue #41620</a>).</p>
-</div>
-<div class="warning">
 <p>C string and raw C string literals are accepted in literal patterns, but <code>&amp;CStr</code>
 doesn't implement structural equality (<code>#[derive(Eq, PartialEq)]</code>) and therefore
 any such <code>match</code> on a <code>&amp;CStr</code> will be rejected with a type error.</p>
@@ -335,7 +332,7 @@ any such <code>match</code> on a <code>&amp;CStr</code> will be rejected with a 
 <p>Identifier patterns bind the value they match to a variable.
 The identifier must be unique within the pattern.
 The variable will shadow any variables of the same name in scope.
-The scope of the new binding depends on the context of where the pattern is used (such as a <code>let</code> binding or a <code>match</code> arm).</p>
+The <a href="names/scopes.html">scope</a> of the new binding depends on the context of where the pattern is used (such as a <code>let</code> binding or a <code>match</code> arm).</p>
 <p>Patterns that consist of only an identifier, possibly with a <code>mut</code>, match any value and bind it to that identifier.
 This is the most commonly used pattern in variable declarations and parameters for functions and closures.</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
@@ -529,6 +526,8 @@ match tuple {
    | <em>RangeFromPattern</em><br />
    | <em>RangeToInclusivePattern</em><br />
    | <em>ObsoleteRangePattern</em></p>
+<p><em>RangeExclusivePattern</em> :<br />
+      <em>RangePatternBound</em> <code>..</code> <em>RangePatternBound</em></p>
 <p><em>RangeInclusivePattern</em> :<br />
       <em>RangePatternBound</em> <code>..=</code> <em>RangePatternBound</em></p>
 <p><em>RangeFromPattern</em> :<br />
@@ -549,9 +548,10 @@ They comprise a <em>sigil</em> (one of <code>..</code>, <code>..=</code>, or <co
 A bound on the left of the sigil is a <em>lower bound</em>.
 A bound on the right is an <em>upper bound</em>.</p>
 <p>A range pattern with both a lower and upper bound will match all values between and including both of its bounds.
-It is written as its lower bound, followed by <code>..=</code>, followed by its upper bound.
+It is written as its lower bound, followed by <code>..</code> for end-exclusive or <code>..=</code> for end-inclusive, followed by its upper bound.
 The type of the range pattern is the type unification of its upper and lower bounds.</p>
-<p>For example, a pattern <code>'m'..='p'</code> will match only the values <code>'m'</code>, <code>'n'</code>, <code>'o'</code>, and <code>'p'</code>.</p>
+<p>For example, a pattern <code>'m'..='p'</code> will match only the values <code>'m'</code>, <code>'n'</code>, <code>'o'</code>, and <code>'p'</code>.
+Similarly, <code>'m'..'p'</code> will match only <code>'m'</code>, <code>'n'</code> and <code>'o'</code>, specifically <strong>not</strong> including <code>'p'</code>.</p>
 <p>The lower bound cannot be greater than the upper bound.
 That is, in <code>a..=b</code>, a ≤ b must be the case.
 For example, it is an error to have a range pattern <code>10..=0</code>.</p>
@@ -571,6 +571,7 @@ For example, <code>..=10</code> will match 10, 1, 0, and for signed integer type
 <p>If the bounds is written as a path, after macro resolution, the path must resolve to a constant item of the type <code>char</code>, an integer type, or a float type.</p>
 <p>The type and value of the bounds is dependent upon how it is written out.
 If the bounds is a <a href="expressions/path-expr.html">path</a>, the pattern has the type and value of the <a href="items/constant-items.html">constant</a> the path resolves to.
+For float range patterns, the constant may not be a <code>NaN</code>.
 If it is a literal, it has the type and value of the corresponding <a href="expressions/literal-expr.html">literal expression</a>.
 If is a literal preceded by a <code>-</code>, it has the same type as the corresponding <a href="expressions/literal-expr.html">literal expression</a> and the value of <a href="expressions/operator-expr.html#negation-operators">negating</a> the value of the corresponding literal expression.</p>
 <p>Examples:</p>
@@ -586,7 +587,7 @@ If is a literal preceded by a <code>-</code>, it has the same type as the corres
 
 <span class="boring">let ph = 10;
 </span>println!("{}", match ph {
-    0..=6 =&gt; "acid",
+    0..7 =&gt; "acid",
     7 =&gt; "neutral",
     8..=14 =&gt; "base",
     _ =&gt; unreachable!(),
@@ -651,14 +652,8 @@ println!("{}", match 0xfacade {
 For example, <code>0u8..=255u8</code> is irrefutable.
 The range of values for an integer type is the closed range from its minimum to maximum value.
 The range of values for a <code>char</code> type are precisely those ranges containing all Unicode Scalar Values: <code>'\u{0000}'..='\u{D7FF}'</code> and <code>'\u{E000}'..='\u{10FFFF}'</code>.</p>
-<p>Floating point range patterns are deprecated and may be removed in a future Rust release.
-See <a href="https://github.com/rust-lang/rust/issues/41620">issue #41620</a> for more information.</p>
 <blockquote>
 <p><strong>Edition Differences</strong>: Before the 2021 edition, range patterns with both a lower and upper bound may also be written using <code>...</code> in place of <code>..=</code>, with the same meaning.</p>
-</blockquote>
-<blockquote>
-<p><strong>Note</strong>: Although range patterns use the same syntax as <a href="expressions/range-expr.html">range expressions</a>, there are no exclusive range patterns.
-That is, neither <code>x .. y</code> nor <code>.. x</code> are valid range patterns.</p>
 </blockquote>
 <h2 id="reference-patterns"><a class="header" href="#reference-patterns">Reference patterns</a></h2>
 <blockquote>
@@ -876,10 +871,27 @@ to structs or enum variants that have no fields.</p>
 <li>associated constants</li>
 </ul>
 <p>Qualified path patterns can only refer to associated constants.</p>
-<p>Constants cannot be a union type.
-Struct and enum constants must have <code>#[derive(PartialEq, Eq)]</code> (not merely implemented).</p>
 <p>Path patterns are irrefutable when they refer to structs or an enum variant when the enum has only one variant or a constant whose type is irrefutable.
 They are refutable when they refer to refutable constants or enum variants for enums with multiple variants.</p>
+<h3 id="constant-patterns"><a class="header" href="#constant-patterns">Constant patterns</a></h3>
+<p>When a constant <code>C</code> of type <code>T</code> is used as a pattern, we first check that <code>T: PartialEq</code>.
+Furthermore we require that the value of <code>C</code> <em>has (recursive) structural equality</em>, which is defined recursively as follows:</p>
+<ul>
+<li>Integers as well as <code>str</code>, <code>bool</code> and <code>char</code> values always have structural equality.</li>
+<li>Tuples, arrays, and slices have structural equality if all their fields/elements have structural equality.
+(In particular, <code>()</code> and <code>[]</code> always have structural equality.)</li>
+<li>References have structural equality if the value they point to has structural equality.</li>
+<li>A value of <code>struct</code> or <code>enum</code> type has structural equality if its <code>PartialEq</code> instance is derived via <code>#[derive(PartialEq)]</code>,
+and all fields (for enums: of the active variant) have structural equality.</li>
+<li>A raw pointer has structural equality if it was defined as a constant integer (and then cast/transmuted).</li>
+<li>A float value has structural equality if it is not a <code>NaN</code>.</li>
+<li>Nothing else has structural equality.</li>
+</ul>
+<p>In particular, the value of <code>C</code> must be known at pattern-building time (which is pre-monomorphization).
+This means that associated consts that involve generic parameters cannot be used as patterns.</p>
+<p>After ensuring all conditions are met, the constant value is translated into a pattern, and now behaves exactly as-if that pattern had been written directly.
+In particular, it fully participates in exhaustiveness checking.
+(For raw pointers, constants are the only way to write such patterns. Only <code>_</code> is ever considered exhaustive for these types.)</p>
 <h2 id="or-patterns"><a class="header" href="#or-patterns">Or-patterns</a></h2>
 <p><em>Or-patterns</em> are patterns that match on one of two or more sub-patterns (for example <code>A | B | C</code>).
 They can nest arbitrarily.

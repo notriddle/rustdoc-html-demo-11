@@ -191,7 +191,7 @@
 <p><em>LifetimeParam</em> :<br />
    <a href="../tokens.html#lifetimes-and-loop-labels">LIFETIME_OR_LABEL</a> ( <code>:</code> <a href="../trait-bounds.html"><em>LifetimeBounds</em></a> )<sup>?</sup></p>
 <p><em>TypeParam</em> :<br />
-   <a href="../identifiers.html">IDENTIFIER</a>( <code>:</code> <a href="../trait-bounds.html"><em>TypeParamBounds</em></a><sup>?</sup> )<sup>?</sup> ( <code>=</code> <a href="../types.html#type-expressions"><em>Type</em></a> )<sup>?</sup></p>
+   <a href="../identifiers.html">IDENTIFIER</a> ( <code>:</code> <a href="../trait-bounds.html"><em>TypeParamBounds</em></a><sup>?</sup> )<sup>?</sup> ( <code>=</code> <a href="../types.html#type-expressions"><em>Type</em></a> )<sup>?</sup></p>
 <p><em>ConstParam</em>:<br />
    <code>const</code> <a href="../identifiers.html">IDENTIFIER</a> <code>:</code> <a href="../types.html#type-expressions"><em>Type</em></a> ( <code>=</code> <em><a href="../expressions/block-expr.html">Block</a></em> | <a href="../identifiers.html">IDENTIFIER</a> | -<sup>?</sup><a href="../expressions/literal-expr.html">LITERAL</a> )<sup>?</sup></p>
 </blockquote>
@@ -200,7 +200,8 @@
 parameters are listed in angle <span class="parenthetical">brackets (<code>&lt;...&gt;</code>)</span>,
 usually immediately after the name of the item and before its definition. For
 implementations, which don't have a name, they come directly after <code>impl</code>.
-The order of generic parameters is restricted to lifetime parameters and then type and const parameters intermixed.</p>
+The order of generic parameters is restricted to lifetime parameters and then type and const parameters intermixed.
+The same parameter name may not be declared more than once in a <em>GenericParams</em> list.</p>
 <p>Some examples of items with type, const, and lifetime parameters:</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -212,7 +213,8 @@ struct EitherOrderWorks&lt;const N: bool, U&gt;(U);
 <span class="boring">}</span></code></pre></pre>
 <p>Generic parameters are in scope within the item definition where they are
 declared. They are not in scope for items declared within the body of a
-function as described in <a href="../statements.html#item-declarations">item declarations</a>.</p>
+function as described in <a href="../statements.html#item-declarations">item declarations</a>.
+See <a href="../names/scopes.html#generic-parameter-scopes">generic parameter scopes</a> for more details.</p>
 <p><a href="../types/pointer.html#shared-references-">References</a>, <a href="../types/pointer.html#raw-pointers-const-and-mut">raw pointers</a>, <a href="../types/array.html">arrays</a>, <a href="../types/slice.html">slices</a>, <a href="../types/tuple.html">tuples</a>, and
 <a href="../types/function-pointer.html">function pointers</a> have lifetime or type parameters as well, but are not
 referred to with path syntax.</p>

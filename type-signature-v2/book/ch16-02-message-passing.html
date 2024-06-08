@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -184,7 +186,7 @@ passing</em>, where threads or actors communicate by sending each other messages
 containing data. Here’s the idea in a slogan from <a href="https://golang.org/doc/effective_go.html#concurrency">the Go language
 documentation</a>:
 “Do not communicate by sharing memory; instead, share memory by communicating.”</p>
-<p>To accomplish message-sending concurrency, Rust's standard library provides an
+<p>To accomplish message-sending concurrency, Rust’s standard library provides an
 implementation of <em>channels</em>. A channel is a general programming concept by
 which data is sent from one thread to another.</p>
 <p>You can imagine a channel in programming as being like a directional channel of
@@ -223,7 +225,7 @@ of the streams will end up in one river at the end. We’ll start with a single
 producer for now, but we’ll add multiple producers when we get this example
 working.</p>
 <p>The <code>mpsc::channel</code> function returns a tuple, the first element of which is the
-sending end--the transmitter--and the second element is the receiving end--the
+sending end—the transmitter—and the second element is the receiving end—the
 receiver. The abbreviations <code>tx</code> and <code>rx</code> are traditionally used in many fields
 for <em>transmitter</em> and <em>receiver</em> respectively, so we name our variables as such
 to indicate each end. We’re using a <code>let</code> statement with a pattern that
@@ -274,7 +276,7 @@ fn main() {
     });
 
     let received = rx.recv().unwrap();
-    println!("Got: {}", received);
+    println!("Got: {received}");
 }</code></pre></pre>
 <p><span class="caption">Listing 16-8: Receiving the value “hi” in the main thread
 and printing it</span></p>
@@ -319,11 +321,11 @@ fn main() {
     thread::spawn(move || {
         let val = String::from("hi");
         tx.send(val).unwrap();
-        println!("val is {}", val);
+        println!("val is {val}");
     });
 
     let received = rx.recv().unwrap();
-    println!("Got: {}", received);
+    println!("Got: {received}");
 }</code></pre>
 <p><span class="caption">Listing 16-9: Attempting to use <code>val</code> after we’ve sent it
 down the channel</span></p>
@@ -336,14 +338,14 @@ us an error if we try to compile the code in Listing 16-9:</p>
 <pre><code class="language-console">$ cargo run
    Compiling message-passing v0.1.0 (file:///projects/message-passing)
 error[E0382]: borrow of moved value: `val`
-  --&gt; src/main.rs:10:31
+  --&gt; src/main.rs:10:26
    |
 8  |         let val = String::from("hi");
    |             --- move occurs because `val` has type `String`, which does not implement the `Copy` trait
 9  |         tx.send(val).unwrap();
    |                 --- value moved here
-10 |         println!("val is {}", val);
-   |                               ^^^ value borrowed here after move
+10 |         println!("val is {val}");
+   |                          ^^^^^ value borrowed here after move
    |
    = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
 help: consider cloning the value if the performance cost is acceptable
@@ -387,7 +389,7 @@ fn main() {
     });
 
     for received in rx {
-        println!("Got: {}", received);
+        println!("Got: {received}");
     }
 }</code></pre>
 <p><span class="caption">Listing 16-10: Sending multiple messages and pausing
@@ -457,7 +459,7 @@ so by cloning the transmitter, as shown in Listing 16-11:</p>
     });
 
     for received in rx {
-        println!("Got: {}", received);
+        println!("Got: {received}");
     }
 
     // --snip--

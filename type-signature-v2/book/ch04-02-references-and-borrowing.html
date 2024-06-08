@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -195,7 +197,7 @@ reference to an object as a parameter instead of taking ownership of the value:<
 
     let len = calculate_length(&amp;s1);
 
-    println!("The length of '{}' is {}.", s1, len);
+    println!("The length of '{s1}' is {len}.");
 }
 
 fn calculate_length(s: &amp;String) -&gt; usize {
@@ -210,19 +212,19 @@ to some value without taking ownership of it. Figure 4-5 depicts this concept.</
 for s1. The table for s1 contains the stack data for s1 and points to the
 string data on the heap." src="img/trpl04-05.svg" class="center" /></p>
 <p><span class="caption">Figure 4-5: A diagram of <code>&amp;String s</code> pointing at <code>String s1</code></span></p>
-<blockquote>
+<section class="note" aria-role="note">
 <p>Note: The opposite of referencing by using <code>&amp;</code> is <em>dereferencing</em>, which is
 accomplished with the dereference operator, <code>*</code>. We’ll see some uses of the
 dereference operator in Chapter 8 and discuss details of dereferencing in
 Chapter 15.</p>
-</blockquote>
+</section>
 <p>Let’s take a closer look at the function call here:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">fn main() {
 </span>    let s1 = String::from("hello");
 
     let len = calculate_length(&amp;s1);
 <span class="boring">
-</span><span class="boring">    println!("The length of '{}' is {}.", s1, len);
+</span><span class="boring">    println!("The length of '{s1}' is {len}.");
 </span><span class="boring">}
 </span><span class="boring">
 </span><span class="boring">fn calculate_length(s: &amp;String) -&gt; usize {
@@ -238,7 +240,7 @@ the parameter <code>s</code> is a reference. Let’s add some explanatory annota
 </span><span class="boring">
 </span><span class="boring">    let len = calculate_length(&amp;s1);
 </span><span class="boring">
-</span><span class="boring">    println!("The length of '{}' is {}.", s1, len);
+</span><span class="boring">    println!("The length of '{s1}' is {len}.");
 </span><span class="boring">}
 </span><span class="boring">
 </span>fn calculate_length(s: &amp;String) -&gt; usize { // s is a reference to a String
@@ -405,11 +407,11 @@ occurs before the mutable reference is introduced:</p>
 
     let r1 = &amp;s; // no problem
     let r2 = &amp;s; // no problem
-    println!("{} and {}", r1, r2);
+    println!("{r1} and {r2}");
     // variables r1 and r2 will not be used after this point
 
     let r3 = &amp;mut s; // no problem
-    println!("{}", r3);
+    println!("{r3}");
 <span class="boring">}</span></code></pre></pre>
 <p>The scopes of the immutable references <code>r1</code> and <code>r2</code> end after the <code>println!</code>
 where they are last used, which is before the mutable reference <code>r3</code> is
@@ -460,8 +462,15 @@ help: instead, you are more likely to want to return an owned value
 5 + fn dangle() -&gt; String {
   |
 
-For more information about this error, try `rustc --explain E0106`.
-error: could not compile `ownership` (bin "ownership") due to 1 previous error
+error[E0515]: cannot return reference to local variable `s`
+ --&gt; src/main.rs:8:5
+  |
+8 |     &amp;s
+  |     ^^ returns a reference to data owned by the current function
+
+Some errors have detailed explanations: E0106, E0515.
+For more information about an error, try `rustc --explain E0106`.
+error: could not compile `ownership` (bin "ownership") due to 2 previous errors
 </code></pre>
 <p>This error message refers to a feature we haven’t covered yet: lifetimes. We’ll
 discuss lifetimes in detail in Chapter 10. But, if you disregard the parts

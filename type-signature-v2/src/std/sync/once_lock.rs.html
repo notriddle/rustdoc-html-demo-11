@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sync/once_lock.rs`."><title>once_lock.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.79.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../std/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sync/once_lock.rs`."><title>once_lock.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -603,6 +603,25 @@
 <a href="#603" id="603">603</a>
 <a href="#604" id="604">604</a>
 <a href="#605" id="605">605</a>
+<a href="#606" id="606">606</a>
+<a href="#607" id="607">607</a>
+<a href="#608" id="608">608</a>
+<a href="#609" id="609">609</a>
+<a href="#610" id="610">610</a>
+<a href="#611" id="611">611</a>
+<a href="#612" id="612">612</a>
+<a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
+<a href="#620" id="620">620</a>
+<a href="#621" id="621">621</a>
+<a href="#622" id="622">622</a>
+<a href="#623" id="623">623</a>
+<a href="#624" id="624">624</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::cell::UnsafeCell;
 <span class="kw">use </span><span class="kw">crate</span>::fmt;
 <span class="kw">use </span><span class="kw">crate</span>::marker::PhantomData;
@@ -610,49 +629,19 @@
 <span class="kw">use </span><span class="kw">crate</span>::panic::{RefUnwindSafe, UnwindSafe};
 <span class="kw">use </span><span class="kw">crate</span>::sync::Once;
 
-<span class="doccomment">/// A synchronization primitive which can be written to only once.
+<span class="doccomment">/// A synchronization primitive which can nominally be written to only once.
 ///
 /// This type is a thread-safe [`OnceCell`], and can be used in statics.
+/// In many simple cases, you can use [`LazyLock&lt;T, F&gt;`] instead to get the benefits of this type
+/// with less effort: `LazyLock&lt;T, F&gt;` "looks like" `&amp;T` because it initializes with `F` on deref!
+/// Where OnceLock shines is when LazyLock is too simple to support a given case, as LazyLock
+/// doesn't allow additional inputs to its function after you call [`LazyLock::new(|| ...)`].
 ///
 /// [`OnceCell`]: crate::cell::OnceCell
+/// [`LazyLock&lt;T, F&gt;`]: crate::sync::LazyLock
+/// [`LazyLock::new(|| ...)`]: crate::sync::LazyLock::new
 ///
 /// # Examples
-///
-/// Using `OnceLock` to store a function’s previously computed value (a.k.a.
-/// ‘lazy static’ or ‘memoizing’):
-///
-/// ```
-/// use std::sync::OnceLock;
-///
-/// struct DeepThought {
-///     answer: String,
-/// }
-///
-/// impl DeepThought {
-/// #   fn great_question() -&gt; String {
-/// #       "42".to_string()
-/// #   }
-/// #
-///     fn new() -&gt; Self {
-///         Self {
-///             // M3 Ultra takes about 16 million years in --release config
-///             answer: Self::great_question(),
-///         }
-///     }
-/// }
-///
-/// fn computation() -&gt; &amp;'static DeepThought {
-///     // n.b. static items do not call [`Drop`] on program termination, so if
-///     // [`DeepThought`] impls Drop, that will not be used for this instance.
-///     static COMPUTATION: OnceLock&lt;DeepThought&gt; = OnceLock::new();
-///     COMPUTATION.get_or_init(|| DeepThought::new())
-/// }
-///
-/// // The `DeepThought` is built, stored in the `OnceLock`, and returned.
-/// let _ = computation().answer;
-/// // The `DeepThought` is retrieved from the `OnceLock` and returned.
-/// let _ = computation().answer;
-/// ```
 ///
 /// Writing to a `OnceLock` from a separate thread:
 ///
@@ -677,6 +666,55 @@
 ///     CELL.get(),
 ///     Some(&amp;12345),
 /// );
+/// ```
+///
+/// You can use `OnceLock` to implement a type that requires "append-only" logic:
+///
+/// ```
+/// use std::sync::{OnceLock, atomic::{AtomicU32, Ordering}};
+/// use std::thread;
+///
+/// struct OnceList&lt;T&gt; {
+///     data: OnceLock&lt;T&gt;,
+///     next: OnceLock&lt;Box&lt;OnceList&lt;T&gt;&gt;&gt;,
+/// }
+/// impl&lt;T&gt; OnceList&lt;T&gt; {
+///     const fn new() -&gt; OnceList&lt;T&gt; {
+///         OnceList { data: OnceLock::new(), next: OnceLock::new() }
+///     }
+///     fn push(&amp;self, value: T) {
+///         // FIXME: this impl is concise, but is also slow for long lists or many threads.
+///         // as an exercise, consider how you might improve on it while preserving the behavior
+///         if let Err(value) = self.data.set(value) {
+///             let next = self.next.get_or_init(|| Box::new(OnceList::new()));
+///             next.push(value)
+///         };
+///     }
+///     fn contains(&amp;self, example: &amp;T) -&gt; bool
+///     where
+///         T: PartialEq,
+///     {
+///         self.data.get().map(|item| item == example).filter(|v| *v).unwrap_or_else(|| {
+///             self.next.get().map(|next| next.contains(example)).unwrap_or(false)
+///         })
+///     }
+/// }
+///
+/// // Let's exercise this new Sync append-only list by doing a little counting
+/// static LIST: OnceList&lt;u32&gt; = OnceList::new();
+/// static COUNTER: AtomicU32 = AtomicU32::new(0);
+///
+/// let vec = (0..thread::available_parallelism().unwrap().get()).map(|_| thread::spawn(|| {
+///     while let i @ 0..=1000 = COUNTER.fetch_add(1, Ordering::Relaxed) {
+///         LIST.push(i);
+///     }
+/// })).collect::&lt;Vec&lt;thread::JoinHandle&lt;_&gt;&gt;&gt;();
+/// vec.into_iter().for_each(|handle| handle.join().unwrap());
+///
+/// for i in 0..=1000 {
+///     assert!(LIST.contains(&amp;i));
+/// }
+///
 /// ```
 </span><span class="attr">#[stable(feature = <span class="string">"once_cell"</span>, since = <span class="string">"1.70.0"</span>)]
 </span><span class="kw">pub struct </span>OnceLock&lt;T&gt; {

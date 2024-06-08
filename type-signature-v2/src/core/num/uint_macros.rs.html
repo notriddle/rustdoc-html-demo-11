@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/num/uint_macros.rs`."><title>uint_macros.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.79.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/num/uint_macros.rs`."><title>uint_macros.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2989,6 +2989,119 @@
 <a href="#2989" id="2989">2989</a>
 <a href="#2990" id="2990">2990</a>
 <a href="#2991" id="2991">2991</a>
+<a href="#2992" id="2992">2992</a>
+<a href="#2993" id="2993">2993</a>
+<a href="#2994" id="2994">2994</a>
+<a href="#2995" id="2995">2995</a>
+<a href="#2996" id="2996">2996</a>
+<a href="#2997" id="2997">2997</a>
+<a href="#2998" id="2998">2998</a>
+<a href="#2999" id="2999">2999</a>
+<a href="#3000" id="3000">3000</a>
+<a href="#3001" id="3001">3001</a>
+<a href="#3002" id="3002">3002</a>
+<a href="#3003" id="3003">3003</a>
+<a href="#3004" id="3004">3004</a>
+<a href="#3005" id="3005">3005</a>
+<a href="#3006" id="3006">3006</a>
+<a href="#3007" id="3007">3007</a>
+<a href="#3008" id="3008">3008</a>
+<a href="#3009" id="3009">3009</a>
+<a href="#3010" id="3010">3010</a>
+<a href="#3011" id="3011">3011</a>
+<a href="#3012" id="3012">3012</a>
+<a href="#3013" id="3013">3013</a>
+<a href="#3014" id="3014">3014</a>
+<a href="#3015" id="3015">3015</a>
+<a href="#3016" id="3016">3016</a>
+<a href="#3017" id="3017">3017</a>
+<a href="#3018" id="3018">3018</a>
+<a href="#3019" id="3019">3019</a>
+<a href="#3020" id="3020">3020</a>
+<a href="#3021" id="3021">3021</a>
+<a href="#3022" id="3022">3022</a>
+<a href="#3023" id="3023">3023</a>
+<a href="#3024" id="3024">3024</a>
+<a href="#3025" id="3025">3025</a>
+<a href="#3026" id="3026">3026</a>
+<a href="#3027" id="3027">3027</a>
+<a href="#3028" id="3028">3028</a>
+<a href="#3029" id="3029">3029</a>
+<a href="#3030" id="3030">3030</a>
+<a href="#3031" id="3031">3031</a>
+<a href="#3032" id="3032">3032</a>
+<a href="#3033" id="3033">3033</a>
+<a href="#3034" id="3034">3034</a>
+<a href="#3035" id="3035">3035</a>
+<a href="#3036" id="3036">3036</a>
+<a href="#3037" id="3037">3037</a>
+<a href="#3038" id="3038">3038</a>
+<a href="#3039" id="3039">3039</a>
+<a href="#3040" id="3040">3040</a>
+<a href="#3041" id="3041">3041</a>
+<a href="#3042" id="3042">3042</a>
+<a href="#3043" id="3043">3043</a>
+<a href="#3044" id="3044">3044</a>
+<a href="#3045" id="3045">3045</a>
+<a href="#3046" id="3046">3046</a>
+<a href="#3047" id="3047">3047</a>
+<a href="#3048" id="3048">3048</a>
+<a href="#3049" id="3049">3049</a>
+<a href="#3050" id="3050">3050</a>
+<a href="#3051" id="3051">3051</a>
+<a href="#3052" id="3052">3052</a>
+<a href="#3053" id="3053">3053</a>
+<a href="#3054" id="3054">3054</a>
+<a href="#3055" id="3055">3055</a>
+<a href="#3056" id="3056">3056</a>
+<a href="#3057" id="3057">3057</a>
+<a href="#3058" id="3058">3058</a>
+<a href="#3059" id="3059">3059</a>
+<a href="#3060" id="3060">3060</a>
+<a href="#3061" id="3061">3061</a>
+<a href="#3062" id="3062">3062</a>
+<a href="#3063" id="3063">3063</a>
+<a href="#3064" id="3064">3064</a>
+<a href="#3065" id="3065">3065</a>
+<a href="#3066" id="3066">3066</a>
+<a href="#3067" id="3067">3067</a>
+<a href="#3068" id="3068">3068</a>
+<a href="#3069" id="3069">3069</a>
+<a href="#3070" id="3070">3070</a>
+<a href="#3071" id="3071">3071</a>
+<a href="#3072" id="3072">3072</a>
+<a href="#3073" id="3073">3073</a>
+<a href="#3074" id="3074">3074</a>
+<a href="#3075" id="3075">3075</a>
+<a href="#3076" id="3076">3076</a>
+<a href="#3077" id="3077">3077</a>
+<a href="#3078" id="3078">3078</a>
+<a href="#3079" id="3079">3079</a>
+<a href="#3080" id="3080">3080</a>
+<a href="#3081" id="3081">3081</a>
+<a href="#3082" id="3082">3082</a>
+<a href="#3083" id="3083">3083</a>
+<a href="#3084" id="3084">3084</a>
+<a href="#3085" id="3085">3085</a>
+<a href="#3086" id="3086">3086</a>
+<a href="#3087" id="3087">3087</a>
+<a href="#3088" id="3088">3088</a>
+<a href="#3089" id="3089">3089</a>
+<a href="#3090" id="3090">3090</a>
+<a href="#3091" id="3091">3091</a>
+<a href="#3092" id="3092">3092</a>
+<a href="#3093" id="3093">3093</a>
+<a href="#3094" id="3094">3094</a>
+<a href="#3095" id="3095">3095</a>
+<a href="#3096" id="3096">3096</a>
+<a href="#3097" id="3097">3097</a>
+<a href="#3098" id="3098">3098</a>
+<a href="#3099" id="3099">3099</a>
+<a href="#3100" id="3100">3100</a>
+<a href="#3101" id="3101">3101</a>
+<a href="#3102" id="3102">3102</a>
+<a href="#3103" id="3103">3103</a>
+<a href="#3104" id="3104">3104</a>
 </pre></div><pre class="rust"><code><span class="macro">macro_rules!</span> uint_impl {
     (
         <span class="self">Self </span>= <span class="macro-nonterminal">$SelfT</span>:ty,
@@ -3068,7 +3181,7 @@
                       without modifying the original"</span>]
         #[inline(always)]
         </span><span class="kw">pub const fn </span>count_ones(<span class="self">self</span>) -&gt; u32 {
-            intrinsics::ctpop(<span class="self">self </span><span class="kw">as </span><span class="macro-nonterminal">$ActualT</span>) <span class="kw">as </span>u32
+            <span class="kw">return </span>intrinsics::ctpop(<span class="self">self</span>);
         }
 
         <span class="doccomment">/// Returns the number of zeros in the binary representation of `self`.
@@ -3110,7 +3223,7 @@
                       without modifying the original"</span>]
         #[inline(always)]
         </span><span class="kw">pub const fn </span>leading_zeros(<span class="self">self</span>) -&gt; u32 {
-            intrinsics::ctlz(<span class="self">self </span><span class="kw">as </span><span class="macro-nonterminal">$ActualT</span>) <span class="kw">as </span>u32
+            <span class="kw">return </span>intrinsics::ctlz(<span class="self">self </span><span class="kw">as </span><span class="macro-nonterminal">$ActualT</span>);
         }
 
         <span class="doccomment">/// Returns the number of trailing zeros in the binary representation
@@ -3131,7 +3244,7 @@
                       without modifying the original"</span>]
         #[inline(always)]
         </span><span class="kw">pub const fn </span>trailing_zeros(<span class="self">self</span>) -&gt; u32 {
-            intrinsics::cttz(<span class="self">self</span>) <span class="kw">as </span>u32
+            <span class="kw">return </span>intrinsics::cttz(<span class="self">self</span>);
         }
 
         <span class="doccomment">/// Returns the number of leading ones in the binary representation of `self`.
@@ -3175,6 +3288,30 @@
             (!<span class="self">self</span>).trailing_zeros()
         }
 
+        <span class="doccomment">/// Returns the bit pattern of `self` reinterpreted as a signed integer of the same size.
+        ///
+        /// This produces the same result as an `as` cast, but ensures that the bit-width remains
+        /// the same.
+        ///
+        /// # Examples
+        ///
+        /// Basic usage:
+        ///
+        /// ```
+        /// #![feature(integer_sign_cast)]
+        ///
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"let n = "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">"::MAX;"</span>)]
+        </span><span class="doccomment">///
+        </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(n.cast_signed(), -1"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$SignedT</span>), <span class="string">");"</span>)]
+        </span><span class="doccomment">/// ```
+        </span><span class="attr">#[unstable(feature = <span class="string">"integer_sign_cast"</span>, issue = <span class="string">"125882"</span>)]
+        #[must_use = <span class="string">"this returns the result of the operation, \
+                      without modifying the original"</span>]
+        #[inline(always)]
+        </span><span class="kw">pub const fn </span>cast_signed(<span class="self">self</span>) -&gt; <span class="macro-nonterminal">$SignedT </span>{
+            <span class="self">self </span><span class="kw">as </span><span class="macro-nonterminal">$SignedT
+        </span>}
+
         <span class="doccomment">/// Shifts the bits to the left by a specified amount, `n`,
         /// wrapping the truncated bits to the end of the resulting integer.
         ///
@@ -3196,7 +3333,7 @@
                       without modifying the original"</span>]
         #[inline(always)]
         </span><span class="kw">pub const fn </span>rotate_left(<span class="self">self</span>, n: u32) -&gt; <span class="self">Self </span>{
-            intrinsics::rotate_left(<span class="self">self</span>, n <span class="kw">as </span><span class="macro-nonterminal">$SelfT</span>)
+            <span class="kw">return </span>intrinsics::rotate_left(<span class="self">self</span>, n);
         }
 
         <span class="doccomment">/// Shifts the bits to the right by a specified amount, `n`,
@@ -3221,7 +3358,7 @@
                       without modifying the original"</span>]
         #[inline(always)]
         </span><span class="kw">pub const fn </span>rotate_right(<span class="self">self</span>, n: u32) -&gt; <span class="self">Self </span>{
-            intrinsics::rotate_right(<span class="self">self</span>, n <span class="kw">as </span><span class="macro-nonterminal">$SelfT</span>)
+            <span class="kw">return </span>intrinsics::rotate_right(<span class="self">self</span>, n);
         }
 
         <span class="doccomment">/// Reverses the byte order of the integer.
@@ -3479,16 +3616,26 @@
         /// [`unwrap_unchecked`]: option/enum.Option.html#method.unwrap_unchecked
         </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"[`checked_add`]: "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">"::checked_add"</span>)]
         #[doc = <span class="macro">concat!</span>(<span class="string">"[`wrapping_add`]: "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">"::wrapping_add"</span>)]
-        #[stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
-        #[rustc_const_stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+        #[stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"1.79.0"</span>)]
+        #[rustc_const_stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"1.79.0"</span>)]
         #[must_use = <span class="string">"this returns the result of the operation, \
                       without modifying the original"</span>]
         #[inline(always)]
         #[cfg_attr(miri, track_caller)] </span><span class="comment">// even without panics, this helps for Miri backtraces
         </span><span class="kw">pub const unsafe fn </span>unchecked_add(<span class="self">self</span>, rhs: <span class="self">Self</span>) -&gt; <span class="self">Self </span>{
-            <span class="comment">// SAFETY: the caller must uphold the safety contract for
-            // `unchecked_add`.
-            </span><span class="kw">unsafe </span>{ intrinsics::unchecked_add(<span class="self">self</span>, rhs) }
+            <span class="macro">assert_unsafe_precondition!</span>(
+                check_language_ub,
+                <span class="macro">concat!</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">"::unchecked_add cannot overflow"</span>),
+                (
+                    lhs: <span class="macro-nonterminal">$SelfT </span>= <span class="self">self</span>,
+                    rhs: <span class="macro-nonterminal">$SelfT </span>= rhs,
+                ) =&gt; !lhs.overflowing_add(rhs).<span class="number">1</span>,
+            );
+
+            <span class="comment">// SAFETY: this is guaranteed to be safe by the caller.
+            </span><span class="kw">unsafe </span>{
+                intrinsics::unchecked_add(<span class="self">self</span>, rhs)
+            }
         }
 
         <span class="doccomment">/// Checked addition with a signed integer. Computes `self + rhs`,
@@ -3570,8 +3717,17 @@
                       without modifying the original"</span>]
         #[inline]
         </span><span class="kw">pub const fn </span>checked_sub(<span class="self">self</span>, rhs: <span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
-            <span class="kw">let </span>(a, b) = <span class="self">self</span>.overflowing_sub(rhs);
-            <span class="kw">if </span><span class="macro">unlikely!</span>(b) { <span class="prelude-val">None </span>} <span class="kw">else </span>{ <span class="prelude-val">Some</span>(a) }
+            <span class="comment">// Per PR#103299, there's no advantage to the `overflowing` intrinsic
+            // for *unsigned* subtraction and we just emit the manual check anyway.
+            // Thus, rather than using `overflowing_sub` that produces a wrapping
+            // subtraction, check it ourself so we can use an unchecked one.
+
+            </span><span class="kw">if </span><span class="self">self </span>&lt; rhs {
+                <span class="prelude-val">None
+            </span>} <span class="kw">else </span>{
+                <span class="comment">// SAFETY: just checked this can't overflow
+                </span><span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ intrinsics::unchecked_sub(<span class="self">self</span>, rhs) })
+            }
         }
 
         <span class="doccomment">/// Strict integer subtraction. Computes `self - rhs`, panicking if
@@ -3618,6 +3774,31 @@
         /// If you're just trying to avoid the panic in debug mode, then **do not**
         /// use this.  Instead, you're looking for [`wrapping_sub`].
         ///
+        /// If you find yourself writing code like this:
+        ///
+        /// ```
+        /// # let foo = 30_u32;
+        /// # let bar = 20;
+        /// if foo &gt;= bar {
+        ///     // SAFETY: just checked it will not overflow
+        ///     let diff = unsafe { foo.unchecked_sub(bar) };
+        ///     // ... use diff ...
+        /// }
+        /// ```
+        ///
+        /// Consider changing it to
+        ///
+        /// ```
+        /// # let foo = 30_u32;
+        /// # let bar = 20;
+        /// if let Some(diff) = foo.checked_sub(bar) {
+        ///     // ... use diff ...
+        /// }
+        /// ```
+        ///
+        /// As that does exactly the same thing -- including telling the optimizer
+        /// that the subtraction cannot overflow -- but avoids needing `unsafe`.
+        ///
         /// # Safety
         ///
         /// This results in undefined behavior when
@@ -3627,16 +3808,26 @@
         /// [`unwrap_unchecked`]: option/enum.Option.html#method.unwrap_unchecked
         </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"[`checked_sub`]: "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">"::checked_sub"</span>)]
         #[doc = <span class="macro">concat!</span>(<span class="string">"[`wrapping_sub`]: "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">"::wrapping_sub"</span>)]
-        #[stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
-        #[rustc_const_stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+        #[stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"1.79.0"</span>)]
+        #[rustc_const_stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"1.79.0"</span>)]
         #[must_use = <span class="string">"this returns the result of the operation, \
                       without modifying the original"</span>]
         #[inline(always)]
         #[cfg_attr(miri, track_caller)] </span><span class="comment">// even without panics, this helps for Miri backtraces
         </span><span class="kw">pub const unsafe fn </span>unchecked_sub(<span class="self">self</span>, rhs: <span class="self">Self</span>) -&gt; <span class="self">Self </span>{
-            <span class="comment">// SAFETY: the caller must uphold the safety contract for
-            // `unchecked_sub`.
-            </span><span class="kw">unsafe </span>{ intrinsics::unchecked_sub(<span class="self">self</span>, rhs) }
+            <span class="macro">assert_unsafe_precondition!</span>(
+                check_language_ub,
+                <span class="macro">concat!</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">"::unchecked_sub cannot overflow"</span>),
+                (
+                    lhs: <span class="macro-nonterminal">$SelfT </span>= <span class="self">self</span>,
+                    rhs: <span class="macro-nonterminal">$SelfT </span>= rhs,
+                ) =&gt; !lhs.overflowing_sub(rhs).<span class="number">1</span>,
+            );
+
+            <span class="comment">// SAFETY: this is guaranteed to be safe by the caller.
+            </span><span class="kw">unsafe </span>{
+                intrinsics::unchecked_sub(<span class="self">self</span>, rhs)
+            }
         }
 
         <span class="doccomment">/// Checked integer multiplication. Computes `self * rhs`, returning
@@ -3713,16 +3904,26 @@
         /// [`unwrap_unchecked`]: option/enum.Option.html#method.unwrap_unchecked
         </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"[`checked_mul`]: "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">"::checked_mul"</span>)]
         #[doc = <span class="macro">concat!</span>(<span class="string">"[`wrapping_mul`]: "</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">"::wrapping_mul"</span>)]
-        #[stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
-        #[rustc_const_stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+        #[stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"1.79.0"</span>)]
+        #[rustc_const_stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"1.79.0"</span>)]
         #[must_use = <span class="string">"this returns the result of the operation, \
                       without modifying the original"</span>]
         #[inline(always)]
         #[cfg_attr(miri, track_caller)] </span><span class="comment">// even without panics, this helps for Miri backtraces
         </span><span class="kw">pub const unsafe fn </span>unchecked_mul(<span class="self">self</span>, rhs: <span class="self">Self</span>) -&gt; <span class="self">Self </span>{
-            <span class="comment">// SAFETY: the caller must uphold the safety contract for
-            // `unchecked_mul`.
-            </span><span class="kw">unsafe </span>{ intrinsics::unchecked_mul(<span class="self">self</span>, rhs) }
+            <span class="macro">assert_unsafe_precondition!</span>(
+                check_language_ub,
+                <span class="macro">concat!</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">"::unchecked_mul cannot overflow"</span>),
+                (
+                    lhs: <span class="macro-nonterminal">$SelfT </span>= <span class="self">self</span>,
+                    rhs: <span class="macro-nonterminal">$SelfT </span>= rhs,
+                ) =&gt; !lhs.overflowing_mul(rhs).<span class="number">1</span>,
+            );
+
+            <span class="comment">// SAFETY: this is guaranteed to be safe by the caller.
+            </span><span class="kw">unsafe </span>{
+                intrinsics::unchecked_mul(<span class="self">self</span>, rhs)
+            }
         }
 
         <span class="doccomment">/// Checked integer division. Computes `self / rhs`, returning `None`
@@ -4075,20 +4276,30 @@
         </span><span class="kw">pub const fn </span>checked_ilog(<span class="self">self</span>, base: <span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;u32&gt; {
             <span class="kw">if </span><span class="self">self </span>&lt;= <span class="number">0 </span>|| base &lt;= <span class="number">1 </span>{
                 <span class="prelude-val">None
-            </span>} <span class="kw">else </span>{
-                <span class="kw">let </span><span class="kw-2">mut </span>n = <span class="number">0</span>;
-                <span class="kw">let </span><span class="kw-2">mut </span>r = <span class="self">self</span>;
+            </span>} <span class="kw">else if </span><span class="self">self </span>&lt; base {
+                <span class="prelude-val">Some</span>(<span class="number">0</span>)
+            } <span class="kw">else </span>{
+                <span class="comment">// Since base &gt;= self, n &gt;= 1
+                </span><span class="kw">let </span><span class="kw-2">mut </span>n = <span class="number">1</span>;
+                <span class="kw">let </span><span class="kw-2">mut </span>r = base;
 
                 <span class="comment">// Optimization for 128 bit wide integers.
                 </span><span class="kw">if </span><span class="self">Self</span>::BITS == <span class="number">128 </span>{
-                    <span class="kw">let </span>b = <span class="self">Self</span>::ilog2(<span class="self">self</span>) / (<span class="self">Self</span>::ilog2(base) + <span class="number">1</span>);
-                    n += b;
-                    r /= base.pow(b <span class="kw">as </span>u32);
+                    <span class="comment">// The following is a correct lower bound for ⌊log(base,self)⌋ because
+                    //
+                    // log(base,self) = log(2,self) / log(2,base)
+                    //                ≥ ⌊log(2,self)⌋ / (⌊log(2,base)⌋ + 1)
+                    //
+                    // hence
+                    //
+                    // ⌊log(base,self)⌋ ≥ ⌊ ⌊log(2,self)⌋ / (⌊log(2,base)⌋ + 1) ⌋ .
+                    </span>n = <span class="self">self</span>.ilog2() / (base.ilog2() + <span class="number">1</span>);
+                    r = base.pow(n);
                 }
 
-                <span class="kw">while </span>r &gt;= base {
-                    r /= base;
+                <span class="kw">while </span>r &lt;= <span class="self">self </span>/ base {
                     n += <span class="number">1</span>;
+                    r <span class="kw-2">*</span>= base;
                 }
                 <span class="prelude-val">Some</span>(n)
             }
@@ -4213,12 +4424,19 @@
         </span><span class="doccomment">/// ```
         </span><span class="attr">#[stable(feature = <span class="string">"wrapping"</span>, since = <span class="string">"1.7.0"</span>)]
         #[rustc_const_stable(feature = <span class="string">"const_checked_int_methods"</span>, since = <span class="string">"1.47.0"</span>)]
+        </span><span class="comment">// We could always go back to wrapping
+        </span><span class="attr">#[rustc_allow_const_fn_unstable(unchecked_shifts)]
         #[must_use = <span class="string">"this returns the result of the operation, \
                       without modifying the original"</span>]
         #[inline]
         </span><span class="kw">pub const fn </span>checked_shl(<span class="self">self</span>, rhs: u32) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
-            <span class="kw">let </span>(a, b) = <span class="self">self</span>.overflowing_shl(rhs);
-            <span class="kw">if </span><span class="macro">unlikely!</span>(b) { <span class="prelude-val">None </span>} <span class="kw">else </span>{ <span class="prelude-val">Some</span>(a) }
+            <span class="comment">// Not using overflowing_shl as that's a wrapping shift
+            </span><span class="kw">if </span>rhs &lt; <span class="self">Self</span>::BITS {
+                <span class="comment">// SAFETY: just checked the RHS is in-range
+                </span><span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ <span class="self">self</span>.unchecked_shl(rhs) })
+            } <span class="kw">else </span>{
+                <span class="prelude-val">None
+            </span>}
         }
 
         <span class="doccomment">/// Strict shift left. Computes `self &lt;&lt; rhs`, panicking if `rhs` is larger
@@ -4277,17 +4495,17 @@
         #[inline(always)]
         #[cfg_attr(miri, track_caller)] </span><span class="comment">// even without panics, this helps for Miri backtraces
         </span><span class="kw">pub const unsafe fn </span>unchecked_shl(<span class="self">self</span>, rhs: u32) -&gt; <span class="self">Self </span>{
-            <span class="attr">#[cfg(bootstrap)]
-            </span>{
-                <span class="comment">// For bootstrapping, just use built-in primitive shift.
-                // panicking is a legal manifestation of UB
-                </span><span class="self">self </span>&lt;&lt; rhs
-            }
-            <span class="attr">#[cfg(not(bootstrap))]
-            </span>{
-                <span class="comment">// SAFETY: the caller must uphold the safety contract for
-                // `unchecked_shl`.
-                </span><span class="kw">unsafe </span>{ intrinsics::unchecked_shl(<span class="self">self</span>, rhs) }
+            <span class="macro">assert_unsafe_precondition!</span>(
+                check_language_ub,
+                <span class="macro">concat!</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">"::unchecked_shl cannot overflow"</span>),
+                (
+                    rhs: u32 = rhs,
+                ) =&gt; rhs &lt; &lt;<span class="macro-nonterminal">$ActualT</span>&gt;::BITS,
+            );
+
+            <span class="comment">// SAFETY: this is guaranteed to be safe by the caller.
+            </span><span class="kw">unsafe </span>{
+                intrinsics::unchecked_shl(<span class="self">self</span>, rhs)
             }
         }
 
@@ -4304,12 +4522,19 @@
         </span><span class="doccomment">/// ```
         </span><span class="attr">#[stable(feature = <span class="string">"wrapping"</span>, since = <span class="string">"1.7.0"</span>)]
         #[rustc_const_stable(feature = <span class="string">"const_checked_int_methods"</span>, since = <span class="string">"1.47.0"</span>)]
+        </span><span class="comment">// We could always go back to wrapping
+        </span><span class="attr">#[rustc_allow_const_fn_unstable(unchecked_shifts)]
         #[must_use = <span class="string">"this returns the result of the operation, \
                       without modifying the original"</span>]
         #[inline]
         </span><span class="kw">pub const fn </span>checked_shr(<span class="self">self</span>, rhs: u32) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
-            <span class="kw">let </span>(a, b) = <span class="self">self</span>.overflowing_shr(rhs);
-            <span class="kw">if </span><span class="macro">unlikely!</span>(b) { <span class="prelude-val">None </span>} <span class="kw">else </span>{ <span class="prelude-val">Some</span>(a) }
+            <span class="comment">// Not using overflowing_shr as that's a wrapping shift
+            </span><span class="kw">if </span>rhs &lt; <span class="self">Self</span>::BITS {
+                <span class="comment">// SAFETY: just checked the RHS is in-range
+                </span><span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ <span class="self">self</span>.unchecked_shr(rhs) })
+            } <span class="kw">else </span>{
+                <span class="prelude-val">None
+            </span>}
         }
 
         <span class="doccomment">/// Strict shift right. Computes `self &gt;&gt; rhs`, panicking `rhs` is
@@ -4368,17 +4593,17 @@
         #[inline(always)]
         #[cfg_attr(miri, track_caller)] </span><span class="comment">// even without panics, this helps for Miri backtraces
         </span><span class="kw">pub const unsafe fn </span>unchecked_shr(<span class="self">self</span>, rhs: u32) -&gt; <span class="self">Self </span>{
-            <span class="attr">#[cfg(bootstrap)]
-            </span>{
-                <span class="comment">// For bootstrapping, just use built-in primitive shift.
-                // panicking is a legal manifestation of UB
-                </span><span class="self">self </span>&gt;&gt; rhs
-            }
-            <span class="attr">#[cfg(not(bootstrap))]
-            </span>{
-                <span class="comment">// SAFETY: the caller must uphold the safety contract for
-                // `unchecked_shr`.
-                </span><span class="kw">unsafe </span>{ intrinsics::unchecked_shr(<span class="self">self</span>, rhs) }
+            <span class="macro">assert_unsafe_precondition!</span>(
+                check_language_ub,
+                <span class="macro">concat!</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">"::unchecked_shr cannot overflow"</span>),
+                (
+                    rhs: u32 = rhs,
+                ) =&gt; rhs &lt; &lt;<span class="macro-nonterminal">$ActualT</span>&gt;::BITS,
+            );
+
+            <span class="comment">// SAFETY: this is guaranteed to be safe by the caller.
+            </span><span class="kw">unsafe </span>{
+                intrinsics::unchecked_shr(<span class="self">self</span>, rhs)
             }
         }
 
@@ -5718,6 +5943,7 @@
         /// ```
         </span><span class="attr">#[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(2"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">".next_power_of_two(), 2);"</span>)]
         #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(3"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">".next_power_of_two(), 4);"</span>)]
+        #[doc = <span class="macro">concat!</span>(<span class="string">"assert_eq!(0"</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$SelfT</span>), <span class="string">".next_power_of_two(), 1);"</span>)]
         </span><span class="doccomment">/// ```
         </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
         #[rustc_const_stable(feature = <span class="string">"const_int_pow"</span>, since = <span class="string">"1.50.0"</span>)]

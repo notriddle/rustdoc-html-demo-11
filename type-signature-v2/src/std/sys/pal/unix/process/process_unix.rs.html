@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/process/process_unix.rs`."><title>process_unix.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../../../../" data-static-root-path="../../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../../src-files1.79.0.js"></script><script defer src="../../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../../std/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/process/process_unix.rs`."><title>process_unix.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../../../../" data-static-root-path="../../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../../src-files1.81.0.js"></script><script defer src="../../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1126,15 +1126,6 @@
 <a href="#1126" id="1126">1126</a>
 <a href="#1127" id="1127">1127</a>
 <a href="#1128" id="1128">1128</a>
-<a href="#1129" id="1129">1129</a>
-<a href="#1130" id="1130">1130</a>
-<a href="#1131" id="1131">1131</a>
-<a href="#1132" id="1132">1132</a>
-<a href="#1133" id="1133">1133</a>
-<a href="#1134" id="1134">1134</a>
-<a href="#1135" id="1135">1135</a>
-<a href="#1136" id="1136">1136</a>
-<a href="#1137" id="1137">1137</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::fmt;
 <span class="kw">use </span><span class="kw">crate</span>::io::{<span class="self">self</span>, Error, ErrorKind};
 <span class="kw">use </span><span class="kw">crate</span>::mem;
@@ -1490,11 +1481,11 @@
             <span class="comment">// Inherit the signal mask from the parent rather than resetting it (i.e. do not call
             // pthread_sigmask).
 
-            // If #[unix_sigpipe] is specified, don't reset SIGPIPE to SIG_DFL.
-            // If #[unix_sigpipe] is not specified, reset SIGPIPE to SIG_DFL for backward compatibility.
+            // If -Zon-broken-pipe is used, don't reset SIGPIPE to SIG_DFL.
+            // If -Zon-broken-pipe is not used, reset SIGPIPE to SIG_DFL for backward compatibility.
             //
-            // #[unix_sigpipe] is an opportunity to change the default here.
-            </span><span class="kw">if </span>!<span class="kw">crate</span>::sys::pal::unix_sigpipe_attr_specified() {
+            // -Zon-broken-pipe is an opportunity to change the default here.
+            </span><span class="kw">if </span>!<span class="kw">crate</span>::sys::pal::on_broken_pipe_flag_used() {
                 <span class="attr">#[cfg(target_os = <span class="string">"android"</span>)] </span><span class="comment">// see issue #88585
                 </span>{
                     <span class="kw">let </span><span class="kw-2">mut </span>action: libc::sigaction = mem::zeroed();
@@ -1557,13 +1548,11 @@
     }
 
     <span class="attr">#[cfg(not(any(
-        target_os = <span class="string">"macos"</span>,
-        target_os = <span class="string">"tvos"</span>,
-        target_os = <span class="string">"watchos"</span>,
         target_os = <span class="string">"freebsd"</span>,
         all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"gnu"</span>),
         all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"musl"</span>),
         target_os = <span class="string">"nto"</span>,
+        target_vendor = <span class="string">"apple"</span>,
     )))]
     </span><span class="kw">fn </span>posix_spawn(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
@@ -1576,14 +1565,11 @@
     <span class="comment">// Only support platforms for which posix_spawn() can return ENOENT
     // directly.
     </span><span class="attr">#[cfg(any(
-        target_os = <span class="string">"macos"</span>,
-        <span class="comment">// FIXME: `target_os = "ios"`?
-        </span>target_os = <span class="string">"tvos"</span>,
-        target_os = <span class="string">"watchos"</span>,
         target_os = <span class="string">"freebsd"</span>,
         all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"gnu"</span>),
         all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"musl"</span>),
         target_os = <span class="string">"nto"</span>,
+        target_vendor = <span class="string">"apple"</span>,
     ))]
     </span><span class="kw">fn </span>posix_spawn(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
@@ -1592,7 +1578,7 @@
     ) -&gt; io::Result&lt;<span class="prelude-ty">Option</span>&lt;Process&gt;&gt; {
         <span class="kw">use </span><span class="kw">crate</span>::mem::MaybeUninit;
         <span class="kw">use </span><span class="kw">crate</span>::sys::weak::weak;
-        <span class="kw">use </span><span class="kw">crate</span>::sys::{<span class="self">self</span>, cvt_nz, unix_sigpipe_attr_specified};
+        <span class="kw">use </span><span class="kw">crate</span>::sys::{<span class="self">self</span>, cvt_nz, on_broken_pipe_flag_used};
 
         <span class="kw">if </span><span class="self">self</span>.get_gid().is_some()
             || <span class="self">self</span>.get_uid().is_some()
@@ -1667,7 +1653,7 @@
         }
         <span class="kw">let </span>addchdir = <span class="kw">match </span><span class="self">self</span>.get_cwd() {
             <span class="prelude-val">Some</span>(cwd) =&gt; {
-                <span class="kw">if </span><span class="macro">cfg!</span>(any(target_os = <span class="string">"macos"</span>, target_os = <span class="string">"tvos"</span>, target_os = <span class="string">"watchos"</span>)) {
+                <span class="kw">if </span><span class="macro">cfg!</span>(target_vendor = <span class="string">"apple"</span>) {
                     <span class="comment">// There is a bug in macOS where a relative executable
                     // path like "../myprogram" will cause `posix_spawn` to
                     // successfully launch the program, but erroneously return
@@ -1754,11 +1740,11 @@
             <span class="comment">// Inherit the signal mask from this process rather than resetting it (i.e. do not call
             // posix_spawnattr_setsigmask).
 
-            // If #[unix_sigpipe] is specified, don't reset SIGPIPE to SIG_DFL.
-            // If #[unix_sigpipe] is not specified, reset SIGPIPE to SIG_DFL for backward compatibility.
+            // If -Zon-broken-pipe is used, don't reset SIGPIPE to SIG_DFL.
+            // If -Zon-broken-pipe is not used, reset SIGPIPE to SIG_DFL for backward compatibility.
             //
-            // #[unix_sigpipe] is an opportunity to change the default here.
-            </span><span class="kw">if </span>!unix_sigpipe_attr_specified() {
+            // -Zon-broken-pipe is an opportunity to change the default here.
+            </span><span class="kw">if </span>!on_broken_pipe_flag_used() {
                 <span class="kw">let </span><span class="kw-2">mut </span>default_set = MaybeUninit::&lt;libc::sigset_t&gt;::uninit();
                 cvt(sigemptyset(default_set.as_mut_ptr()))<span class="question-mark">?</span>;
                 cvt(sigaddset(default_set.as_mut_ptr(), libc::SIGPIPE))<span class="question-mark">?</span>;
@@ -2177,25 +2163,21 @@
         <span class="attr">#[cfg(any(target_os = <span class="string">"linux"</span>, target_os = <span class="string">"nto"</span>))]
         </span>libc::SIGPWR =&gt; <span class="string">" (SIGPWR)"</span>,
         <span class="attr">#[cfg(any(
-            target_os = <span class="string">"macos"</span>,
-            target_os = <span class="string">"ios"</span>,
-            target_os = <span class="string">"tvos"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"netbsd"</span>,
             target_os = <span class="string">"openbsd"</span>,
             target_os = <span class="string">"dragonfly"</span>,
             target_os = <span class="string">"nto"</span>,
+            target_vendor = <span class="string">"apple"</span>,
         ))]
         </span>libc::SIGEMT =&gt; <span class="string">" (SIGEMT)"</span>,
         <span class="attr">#[cfg(any(
-            target_os = <span class="string">"macos"</span>,
-            target_os = <span class="string">"ios"</span>,
-            target_os = <span class="string">"tvos"</span>,
             target_os = <span class="string">"freebsd"</span>,
             target_os = <span class="string">"netbsd"</span>,
             target_os = <span class="string">"openbsd"</span>,
-            target_os = <span class="string">"dragonfly"
-        </span>))]
+            target_os = <span class="string">"dragonfly"</span>,
+            target_vendor = <span class="string">"apple"</span>,
+        ))]
         </span>libc::SIGINFO =&gt; <span class="string">" (SIGINFO)"</span>,
         <span class="attr">#[cfg(target_os = <span class="string">"hurd"</span>)]
         </span>libc::SIGLOST =&gt; <span class="string">" (SIGLOST)"</span>,

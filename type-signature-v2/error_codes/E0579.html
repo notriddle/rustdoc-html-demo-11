@@ -180,8 +180,7 @@
                         <h1 id="error-code-e0579"><a class="header" href="#error-code-e0579">Error code E0579</a></h1>
 <p>A lower range wasn't less than the upper range.</p>
 <p>Erroneous code example:</p>
-<pre><pre class="playground"><code class="language-rust compile_fail E0579">#![feature(exclusive_range_pattern)]
-
+<pre><pre class="playground"><code class="language-rust compile_fail E0579">
 fn main() {
     match 5u32 {
         // This range is ok, albeit pointless.

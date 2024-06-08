@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Manually manage memory through raw pointers."><title>core::ptr - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../sidebar-items1.79.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button><a class="logo-container" href="../../core/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt=""></a></nav><nav class="sidebar"><div class="sidebar-crate"><a class="logo-container" href="../../core/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2><a href="../../core/index.html">core</a><span class="version">1.79.0-dev</span></h2></div><h2 class="location"><a href="#">Module ptr</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#reexports">Re-exports</a></li><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li><li><a href="#trait-aliases">Trait Aliases</a></li></ul></section><h2><a href="../index.html">In crate core</a></h2></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../index.html">core</a>::<wbr><a class="mod" href="#">ptr</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><span class="since" title="Stable since Rust version 1.0.0">1.0.0</span> · <a class="src" href="../../src/core/ptr/mod.rs.html#1-2278">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Manually manage memory through raw pointers.</p>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Manually manage memory through raw pointers."><title>core::ptr - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../sidebar-items1.81.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button><a class="logo-container" href="../../core/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt=""></a></nav><nav class="sidebar"><div class="sidebar-crate"><a class="logo-container" href="../../core/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2><a href="../../core/index.html">core</a><span class="version">1.81.0-dev</span></h2></div><h2 class="location"><a href="#">Module ptr</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#reexports">Re-exports</a></li><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li><li><a href="#trait-aliases">Trait Aliases</a></li></ul></section><h2><a href="../index.html">In crate core</a></h2></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../index.html">core</a>::<wbr><a class="mod" href="#">ptr</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><span class="since" title="Stable since Rust version 1.0.0">1.0.0</span> · <a class="src" href="../../src/core/ptr/mod.rs.html#1-2297">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Manually manage memory through raw pointers.</p>
 <p><em><a href="../primitive.pointer.html" title="primitive pointer">See also the pointer primitive types</a>.</em></p>
 <h2 id="safety"><a class="doc-anchor" href="#safety">§</a>Safety</h2>
 <p>Many functions in this module take raw pointers as arguments and read from or write to them. For
@@ -11,17 +11,13 @@ implicitly assumes it to be <code>size_of::&lt;T&gt;()</code> bytes.</p>
 <p>The precise rules for validity are not determined yet. The guarantees that are
 provided at this point are very minimal:</p>
 <ul>
-<li>A <a href="fn.null.html" title="fn core::ptr::null">null</a> pointer is <em>never</em> valid, not even for accesses of <a href="../../nomicon/exotic-sizes.html#zero-sized-types-zsts">size zero</a>.</li>
+<li>For operations of <a href="../../nomicon/exotic-sizes.html#zero-sized-types-zsts">size zero</a>, <em>every</em> pointer is valid, including the <a href="fn.null.html" title="fn core::ptr::null">null</a> pointer.
+The following points are only concerned with non-zero-sized accesses.</li>
+<li>A <a href="fn.null.html" title="fn core::ptr::null">null</a> pointer is <em>never</em> valid.</li>
 <li>For a pointer to be valid, it is necessary, but not always sufficient, that the pointer
 be <em>dereferenceable</em>: the memory range of the given size starting at the pointer must all be
 within the bounds of a single allocated object. Note that in Rust,
 every (stack-allocated) variable is considered a separate allocated object.</li>
-<li>Even for operations of <a href="../../nomicon/exotic-sizes.html#zero-sized-types-zsts">size zero</a>, the pointer must not be pointing to deallocated
-memory, i.e., deallocation makes pointers invalid even for zero-sized operations. However,
-casting any non-zero integer <em>literal</em> to a pointer is valid for zero-sized accesses, even if
-some memory happens to exist at that address and gets deallocated. This corresponds to writing
-your own allocator: allocating zero-sized objects is not very hard. The canonical way to
-obtain a pointer that is valid for zero-sized accesses is <a href="struct.NonNull.html#method.dangling" title="associated function core::ptr::NonNull::dangling"><code>NonNull::dangling</code></a>.</li>
 <li>All accesses performed by functions in this module are <em>non-atomic</em> in the sense
 of <a href="../sync/atomic/index.html" title="mod core::sync::atomic">atomic operations</a> used to synchronize between threads. This means it is
 undefined behavior to perform two concurrent accesses to the same location from different
@@ -52,11 +48,37 @@ this requirement in their documentation. Notable exceptions to this are
 has size 0, i.e., even if memory is not actually touched. Consider using
 <a href="struct.NonNull.html#method.dangling" title="associated function core::ptr::NonNull::dangling"><code>NonNull::dangling</code></a> in such cases.</p>
 <h3 id="allocated-object"><a class="doc-anchor" href="#allocated-object">§</a>Allocated object</h3>
-<p>For several operations, such as <a href="../primitive.pointer.html#method.offset" title="method pointer::offset"><code>offset</code></a> or field projections (<code>expr.field</code>), the notion of an
-“allocated object” becomes relevant. An allocated object is a contiguous region of memory.
-Common examples of allocated objects include stack-allocated variables (each variable is a
-separate allocated object), heap allocations (each allocation created by the global allocator is
-a separate allocated object), and <code>static</code> variables.</p>
+<p>An <em>allocated object</em> is a subset of program memory which is addressable
+from Rust, and within which pointer arithmetic is possible. Examples of
+allocated objects include heap allocations, stack-allocated variables,
+statics, and consts. The safety preconditions of some Rust operations -
+such as <code>offset</code> and field projections (<code>expr.field</code>) - are defined in
+terms of the allocated objects on which they operate.</p>
+<p>An allocated object has a base address, a size, and a set of memory
+addresses. It is possible for an allocated object to have zero size, but
+such an allocated object will still have a base address. The base address
+of an allocated object is not necessarily unique. While it is currently the
+case that an allocated object always has a set of memory addresses which is
+fully contiguous (i.e., has no “holes”), there is no guarantee that this
+will not change in the future.</p>
+<p>For any allocated object with <code>base</code> address, <code>size</code>, and a set of
+<code>addresses</code>, the following are guaranteed:</p>
+<ul>
+<li>For all addresses <code>a</code> in <code>addresses</code>, <code>a</code> is in the range <code>base .. (base + size)</code> (note that this requires <code>a &lt; base + size</code>, not <code>a &lt;= base + size</code>)</li>
+<li><code>base</code> is not equal to <a href="fn.null.html" title="fn core::ptr::null"><code>null()</code></a> (i.e., the address with the numerical
+value 0)</li>
+<li><code>base + size &lt;= usize::MAX</code></li>
+<li><code>size &lt;= isize::MAX</code></li>
+</ul>
+<p>As a consequence of these guarantees, given any address <code>a</code> within the set
+of addresses of an allocated object:</p>
+<ul>
+<li>It is guaranteed that <code>a - base</code> does not overflow <code>isize</code></li>
+<li>It is guaranteed that <code>a - base</code> is non-negative</li>
+<li>It is guaranteed that, given <code>o = a - base</code> (i.e., the offset of <code>a</code> within
+the allocated object), <code>base + o</code> will not wrap around the address space (in
+other words, will not overflow <code>usize</code>)</li>
+</ul>
 <h2 id="strict-provenance"><a class="doc-anchor" href="#strict-provenance">§</a>Strict Provenance</h2>
 <p><strong>The following text is non-normative, insufficiently formal, and is an extremely strict
 interpretation of provenance. It’s ok if your code doesn’t strictly conform to it.</strong></p>

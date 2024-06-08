@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -226,7 +228,7 @@ scope rather than the function. By doing so, we can easily use other functions
 from <code>std::env</code>. It’s also less ambiguous than adding <code>use std::env::args</code> and
 then calling the function with just <code>args</code>, because <code>args</code> might easily be
 mistaken for a function that’s defined in the current module.</p>
-<blockquote>
+<section class="note" aria-role="note">
 <h3 id="the-args-function-and-invalid-unicode"><a class="header" href="#the-args-function-and-invalid-unicode">The <code>args</code> Function and Invalid Unicode</a></h3>
 <p>Note that <code>std::env::args</code> will panic if any argument contains invalid
 Unicode. If your program needs to accept arguments containing invalid
@@ -234,7 +236,7 @@ Unicode, use <code>std::env::args_os</code> instead. That function returns an it
 that produces <code>OsString</code> values instead of <code>String</code> values. We’ve chosen to
 use <code>std::env::args</code> here for simplicity, because <code>OsString</code> values differ
 per platform and are more complex to work with than <code>String</code> values.</p>
-</blockquote>
+</section>
 <p>On the first line of <code>main</code>, we call <code>env::args</code>, and we immediately use
 <code>collect</code> to turn the iterator into a vector containing all the values produced
 by the iterator. We can use the <code>collect</code> function to create many kinds of
@@ -246,7 +248,7 @@ isn’t able to infer the kind of collection you want.</p>
 first with no arguments and then with two arguments:</p>
 <pre><code class="language-console">$ cargo run
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.61s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.61s
      Running `target/debug/minigrep`
 [src/main.rs:5:5] args = [
     "target/debug/minigrep",
@@ -254,7 +256,7 @@ first with no arguments and then with two arguments:</p>
 </code></pre>
 <pre><code class="language-console">$ cargo run -- needle haystack
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished dev [unoptimized + debuginfo] target(s) in 1.57s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.57s
      Running `target/debug/minigrep needle haystack`
 [src/main.rs:5:5] args = [
     "target/debug/minigrep",
@@ -283,8 +285,8 @@ fn main() {
     let query = &amp;args[1];
     let file_path = &amp;args[2];
 
-    println!("Searching for {}", query);
-    println!("In file {}", file_path);
+    println!("Searching for {query}");
+    println!("In file {file_path}");
 }</code></pre>
 <p><span class="caption">Listing 12-2: Creating variables to hold the query
 argument and file path argument</span></p>
@@ -299,7 +301,7 @@ working as we intend. Let’s run this program again with the arguments <code>te
 and <code>sample.txt</code>:</p>
 <pre><code class="language-console">$ cargo run -- test sample.txt
    Compiling minigrep v0.1.0 (file:///projects/minigrep)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.0s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.0s
      Running `target/debug/minigrep test sample.txt`
 Searching for test
 In file sample.txt

@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -286,7 +288,7 @@ later if the result is needed.</p>
 <p>Running this code prints:</p>
 <pre><code class="language-console">$ cargo run
    Compiling shirt-company v0.1.0 (file:///projects/shirt-company)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.27s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.27s
      Running `target/debug/shirt-company`
 The user with preference Some(Red) gets Red
 The user with preference None gets Blue
@@ -432,13 +434,13 @@ the value:</p>
 <p><span class="filename">Filename: src/main.rs</span></p>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let list = vec![1, 2, 3];
-    println!("Before defining closure: {:?}", list);
+    println!("Before defining closure: {list:?}");
 
-    let only_borrows = || println!("From closure: {:?}", list);
+    let only_borrows = || println!("From closure: {list:?}");
 
-    println!("Before calling closure: {:?}", list);
+    println!("Before calling closure: {list:?}");
     only_borrows();
-    println!("After calling closure: {:?}", list);
+    println!("After calling closure: {list:?}");
 }</code></pre></pre>
 <p><span class="caption">Listing 13-4: Defining and calling a closure that
 captures an immutable reference</span></p>
@@ -451,7 +453,7 @@ the closure definition but before the closure is called, and after the closure
 is called. This code compiles, runs, and prints:</p>
 <pre><code class="language-console">$ cargo run
    Compiling closure-example v0.1.0 (file:///projects/closure-example)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.43s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.43s
      Running `target/debug/closure-example`
 Before defining closure: [1, 2, 3]
 Before calling closure: [1, 2, 3]
@@ -463,19 +465,19 @@ the <code>list</code> vector. The closure now captures a mutable reference:</p>
 <p><span class="filename">Filename: src/main.rs</span></p>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let mut list = vec![1, 2, 3];
-    println!("Before defining closure: {:?}", list);
+    println!("Before defining closure: {list:?}");
 
     let mut borrows_mutably = || list.push(7);
 
     borrows_mutably();
-    println!("After calling closure: {:?}", list);
+    println!("After calling closure: {list:?}");
 }</code></pre></pre>
 <p><span class="caption">Listing 13-5: Defining and calling a closure that
 captures a mutable reference</span></p>
 <p>This code compiles, runs, and prints:</p>
 <pre><code class="language-console">$ cargo run
    Compiling closure-example v0.1.0 (file:///projects/closure-example)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.43s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.43s
      Running `target/debug/closure-example`
 Before defining closure: [1, 2, 3]
 After calling closure: [1, 2, 3, 7]
@@ -501,9 +503,9 @@ to print the vector in a new thread rather than in the main thread:</p>
 
 fn main() {
     let list = vec![1, 2, 3];
-    println!("Before defining closure: {:?}", list);
+    println!("Before defining closure: {list:?}");
 
-    thread::spawn(move || println!("From thread: {:?}", list))
+    thread::spawn(move || println!("From thread: {list:?}"))
         .join()
         .unwrap();
 }</code></pre></pre>
@@ -511,7 +513,7 @@ fn main() {
 thread to take ownership of <code>list</code></span></p>
 <p>We spawn a new thread, giving the thread a closure to run as an argument. The
 closure body prints out the list. In Listing 13-4, the closure only captured
-<code>list</code> using an immutable reference because that's the least amount of access
+<code>list</code> using an immutable reference because that’s the least amount of access
 to <code>list</code> needed to print it. In this example, even though the closure body
 still only needs an immutable reference, we need to specify that <code>list</code> should
 be moved into the closure by putting the <code>move</code> keyword at the beginning of the
@@ -581,16 +583,16 @@ Using <code>FnOnce</code> in the trait bound expresses the constraint that
 <code>unwrap_or_else</code> is only going to call <code>f</code> at most one time. In the body of
 <code>unwrap_or_else</code>, we can see that if the <code>Option</code> is <code>Some</code>, <code>f</code> won’t be
 called. If the <code>Option</code> is <code>None</code>, <code>f</code> will be called once. Because all
-closures implement <code>FnOnce</code>, <code>unwrap_or_else</code> accepts the most different kinds
-of closures and is as flexible as it can be.</p>
-<blockquote>
+closures implement <code>FnOnce</code>, <code>unwrap_or_else</code> accepts all three kinds of
+closures and is as flexible as it can be.</p>
+<section class="note" aria-role="note">
 <p>Note: Functions can implement all three of the <code>Fn</code> traits too. If what we
 want to do doesn’t require capturing a value from the environment, we can use
 the name of a function rather than a closure where we need something that
 implements one of the <code>Fn</code> traits. For example, on an <code>Option&lt;Vec&lt;T&gt;&gt;</code> value,
 we could call <code>unwrap_or_else(Vec::new)</code> to get a new, empty vector if the
 value is <code>None</code>.</p>
-</blockquote>
+</section>
 <p>Now let’s look at the standard library method <code>sort_by_key</code> defined on slices,
 to see how that differs from <code>unwrap_or_else</code> and why <code>sort_by_key</code> uses
 <code>FnMut</code> instead of <code>FnOnce</code> for the trait bound. The closure gets one argument
@@ -614,14 +616,14 @@ fn main() {
     ];
 
     list.sort_by_key(|r| r.width);
-    println!("{:#?}", list);
+    println!("{list:#?}");
 }</code></pre></pre>
 <p><span class="caption">Listing 13-7: Using <code>sort_by_key</code> to order rectangles by
 width</span></p>
 <p>This code prints:</p>
 <pre><code class="language-console">$ cargo run
    Compiling rectangles v0.1.0 (file:///projects/rectangles)
-    Finished dev [unoptimized + debuginfo] target(s) in 0.41s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.41s
      Running `target/debug/rectangles`
 [
     Rectangle {
@@ -665,7 +667,7 @@ fn main() {
         sort_operations.push(value);
         r.width
     });
-    println!("{:#?}", list);
+    println!("{list:#?}");
 }</code></pre>
 <p><span class="caption">Listing 13-8: Attempting to use an <code>FnOnce</code> closure with
 <code>sort_by_key</code></span></p>
@@ -723,7 +725,7 @@ fn main() {
         num_sort_operations += 1;
         r.width
     });
-    println!("{:#?}, sorted in {num_sort_operations} operations", list);
+    println!("{list:#?}, sorted in {num_sort_operations} operations");
 }</code></pre></pre>
 <p><span class="caption">Listing 13-9: Using an <code>FnMut</code> closure with <code>sort_by_key</code>
 is allowed</span></p>

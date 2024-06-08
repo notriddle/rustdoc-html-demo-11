@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -259,7 +261,7 @@ mod tests {
 Rust code, and the <code>tests</code> module is just another module. As we discussed in
 the <a href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html">“Paths for Referring to an Item in the Module Tree”</a><!-- ignore -->
 section, items in child modules can use the items in their ancestor modules. In
-this test, we bring all of the <code>test</code> module’s parent’s items into scope with
+this test, we bring all of the <code>tests</code> module’s parent’s items into scope with
 <code>use super::*</code>, and then the test can call <code>internal_adder</code>. If you don’t think
 private functions should be tested, there’s nothing in Rust that will compel
 you to do so.</p>
@@ -289,23 +291,23 @@ files as an individual crate.</p>
 </code></pre>
 <p>Enter the code in Listing 11-13 into the <em>tests/integration_test.rs</em> file:</p>
 <p><span class="filename">Filename: tests/integration_test.rs</span></p>
-<pre><code class="language-rust ignore">use adder;
+<pre><code class="language-rust ignore">use adder::add_two;
 
 #[test]
 fn it_adds_two() {
-    assert_eq!(4, adder::add_two(2));
+    assert_eq!(4, add_two(2));
 }</code></pre>
 <p><span class="caption">Listing 11-13: An integration test of a function in the
 <code>adder</code> crate</span></p>
 <p>Each file in the <code>tests</code> directory is a separate crate, so we need to bring our
-library into each test crate’s scope. For that reason we add <code>use adder</code> at the
-top of the code, which we didn’t need in the unit tests.</p>
+library into each test crate’s scope. For that reason we add <code>use adder::add_two</code> at the top of the code, which we didn’t need in the unit
+tests.</p>
 <p>We don’t need to annotate any code in <em>tests/integration_test.rs</em> with
 <code>#[cfg(test)]</code>. Cargo treats the <code>tests</code> directory specially and compiles files
 in this directory only when we run <code>cargo test</code>. Run <code>cargo test</code> now:</p>
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
-    Finished test [unoptimized + debuginfo] target(s) in 1.31s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.31s
      Running unittests src/lib.rs (target/debug/deps/adder-1082c4b063a8fbe6)
 
 running 1 test
@@ -346,7 +348,7 @@ particular integration test file, use the <code>--test</code> argument of <code>
 followed by the name of the file:</p>
 <pre><code class="language-console">$ cargo test --test integration_test
    Compiling adder v0.1.0 (file:///projects/adder)
-    Finished test [unoptimized + debuginfo] target(s) in 0.64s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.64s
      Running tests/integration_test.rs (target/debug/deps/integration_test-82e7799c1bc62298)
 
 running 1 test
@@ -381,7 +383,7 @@ we want to call from multiple test functions in multiple test files:</p>
 did we call the <code>setup</code> function from anywhere:</p>
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
-    Finished test [unoptimized + debuginfo] target(s) in 0.89s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.89s
      Running unittests src/lib.rs (target/debug/deps/adder-92948b65e88960b4)
 
 running 1 test

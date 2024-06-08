@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -195,7 +197,7 @@ develop code that is safe and efficient. Keep at it!</p>
 the features that make Rust unique. In this chapter, you’ll learn ownership by
 working through some examples that focus on a very common data structure:
 strings.</p>
-<blockquote>
+<section class="note" aria-role="note">
 <h3 id="the-stack-and-the-heap"><a class="header" href="#the-stack-and-the-heap">The Stack and the Heap</a></h3>
 <p>Many programming languages don’t require you to think about the stack and the
 heap very often. But in a systems programming language like Rust, whether a
@@ -252,7 +254,7 @@ data on the heap so you don’t run out of space are all problems that ownership
 addresses. Once you understand ownership, you won’t need to think about the
 stack and the heap very often, but knowing that the main purpose of ownership
 is to manage heap data can help explain why it works the way it does.</p>
-</blockquote>
+</section>
 <h3 id="ownership-rules"><a class="header" href="#ownership-rules">Ownership Rules</a></h3>
 <p>First, let’s take a look at the ownership rules. Keep these rules in mind as we
 work through the examples that illustrate them:</p>
@@ -333,7 +335,7 @@ Module Tree”</a><!-- ignore --> in Chapter 7.</p>
 
     s.push_str(", world!"); // push_str() appends a literal to a String
 
-    println!("{}", s); // This will print `hello, world!`
+    println!("{s}"); // This will print `hello, world!`
 <span class="boring">}</span></code></pre></pre>
 <p>So, what’s the difference here? Why can <code>String</code> be mutated but literals
 cannot? The difference is in how these two types deal with memory.</p>
@@ -381,12 +383,12 @@ scope, Rust calls a special function for us. This function is called
 <a href="../std/ops/trait.Drop.html#tymethod.drop"><code>drop</code></a><!-- ignore -->, and it’s where the author of <code>String</code> can put
 the code to return the memory. Rust calls <code>drop</code> automatically at the closing
 curly bracket.</p>
-<blockquote>
+<section class="note" aria-role="note">
 <p>Note: In C++, this pattern of deallocating resources at the end of an item’s
 lifetime is sometimes called <em>Resource Acquisition Is Initialization (RAII)</em>.
 The <code>drop</code> function in Rust will be familiar to you if you’ve used RAII
 patterns.</p>
-</blockquote>
+</section>
 <p>This pattern has a profound impact on the way Rust code is written. It may seem
 simple right now, but the behavior of code can be unexpected in more
 complicated situations when we want to have multiple variables use the data
@@ -465,22 +467,22 @@ created; it won’t work:</p>
 </span>    let s1 = String::from("hello");
     let s2 = s1;
 
-    println!("{}, world!", s1);
+    println!("{s1}, world!");
 <span class="boring">}</span></code></pre>
 <p>You’ll get an error like this because Rust prevents you from using the
 invalidated reference:</p>
 <pre><code class="language-console">$ cargo run
    Compiling ownership v0.1.0 (file:///projects/ownership)
 error[E0382]: borrow of moved value: `s1`
- --&gt; src/main.rs:5:28
+ --&gt; src/main.rs:5:15
   |
 2 |     let s1 = String::from("hello");
   |         -- move occurs because `s1` has type `String`, which does not implement the `Copy` trait
 3 |     let s2 = s1;
   |              -- value moved here
 4 |
-5 |     println!("{}, world!", s1);
-  |                            ^^ value borrowed here after move
+5 |     println!("{s1}, world!");
+  |               ^^^^ value borrowed here after move
   |
   = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
 help: consider cloning the value if the performance cost is acceptable
@@ -521,7 +523,7 @@ programming languages, you’ve probably seen them before.</p>
 </span>    let s1 = String::from("hello");
     let s2 = s1.clone();
 
-    println!("s1 = {}, s2 = {}", s1, s2);
+    println!("s1 = {s1}, s2 = {s2}");
 <span class="boring">}</span></code></pre></pre>
 <p>This works just fine and explicitly produces the behavior shown in Figure 4-3,
 where the heap data <em>does</em> get copied.</p>
@@ -535,7 +537,7 @@ integers—part of which was shown in Listing 4-2—works and is valid:</p>
 </span>    let x = 5;
     let y = x;
 
-    println!("x = {}, y = {}", x, y);
+    println!("x = {x}, y = {y}");
 <span class="boring">}</span></code></pre></pre>
 <p>But this code seems to contradict what we just learned: we don’t have a call to
 <code>clone</code>, but <code>x</code> is still valid and wasn’t moved into <code>y</code>.</p>
@@ -591,12 +593,12 @@ showing where variables go into and out of scope.</p>
   // special happens.
 
 fn takes_ownership(some_string: String) { // some_string comes into scope
-    println!("{}", some_string);
+    println!("{some_string}");
 } // Here, some_string goes out of scope and `drop` is called. The backing
   // memory is freed.
 
 fn makes_copy(some_integer: i32) { // some_integer comes into scope
-    println!("{}", some_integer);
+    println!("{some_integer}");
 } // Here, some_integer goes out of scope. Nothing special happens.</code></pre></pre>
 <p><span class="caption">Listing 4-3: Functions with ownership and scope
 annotated</span></p>
@@ -656,7 +658,7 @@ from the body of the function that we might want to return as well.</p>
 
     let (s2, len) = calculate_length(s1);
 
-    println!("The length of '{}' is {}.", s2, len);
+    println!("The length of '{s2}' is {len}.");
 }
 
 fn calculate_length(s: String) -&gt; (String, usize) {

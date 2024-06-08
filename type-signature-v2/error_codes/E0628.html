@@ -180,10 +180,10 @@
                         <h1 id="error-code-e0628"><a class="header" href="#error-code-e0628">Error code E0628</a></h1>
 <p>More than one parameter was used for a coroutine.</p>
 <p>Erroneous code example:</p>
-<pre><pre class="playground"><code class="language-rust compile_fail E0628">#![feature(coroutines, coroutine_trait)]
+<pre><pre class="playground"><code class="language-rust compile_fail E0628">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 
 fn main() {
-    let coroutine = |a: i32, b: i32| {
+    let coroutine = #[coroutine] |a: i32, b: i32| {
         // error: too many parameters for a coroutine
         // Allowed only 0 or 1 parameter
         yield a;
@@ -193,10 +193,10 @@ fn main() {
 parameter for a coroutine.This can be fixed by using
 at most 1 parameter for the coroutine. For example, we might resolve
 the previous example by passing only one parameter.</p>
-<pre><pre class="playground"><code class="language-rust">#![feature(coroutines, coroutine_trait)]
+<pre><pre class="playground"><code class="language-rust">#![feature(coroutines, coroutine_trait, stmt_expr_attributes)]
 
 fn main() {
-    let coroutine = |a: i32| {
+    let coroutine = #[coroutine] |a: i32| {
         yield a;
     };
 }</code></pre></pre>

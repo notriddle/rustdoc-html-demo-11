@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/ptr/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.79.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/ptr/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2276,6 +2276,25 @@
 <a href="#2276" id="2276">2276</a>
 <a href="#2277" id="2277">2277</a>
 <a href="#2278" id="2278">2278</a>
+<a href="#2279" id="2279">2279</a>
+<a href="#2280" id="2280">2280</a>
+<a href="#2281" id="2281">2281</a>
+<a href="#2282" id="2282">2282</a>
+<a href="#2283" id="2283">2283</a>
+<a href="#2284" id="2284">2284</a>
+<a href="#2285" id="2285">2285</a>
+<a href="#2286" id="2286">2286</a>
+<a href="#2287" id="2287">2287</a>
+<a href="#2288" id="2288">2288</a>
+<a href="#2289" id="2289">2289</a>
+<a href="#2290" id="2290">2290</a>
+<a href="#2291" id="2291">2291</a>
+<a href="#2292" id="2292">2292</a>
+<a href="#2293" id="2293">2293</a>
+<a href="#2294" id="2294">2294</a>
+<a href="#2295" id="2295">2295</a>
+<a href="#2296" id="2296">2296</a>
+<a href="#2297" id="2297">2297</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Manually manage memory through raw pointers.
 //!
 //! *[See also the pointer primitive types](pointer).*
@@ -2293,19 +2312,14 @@
 //! The precise rules for validity are not determined yet. The guarantees that are
 //! provided at this point are very minimal:
 //!
-//! * A [null] pointer is *never* valid, not even for accesses of [size zero][zst].
+//! * For operations of [size zero][zst], *every* pointer is valid, including the [null] pointer.
+//!   The following points are only concerned with non-zero-sized accesses.
+//! * A [null] pointer is *never* valid.
 //! * For a pointer to be valid, it is necessary, but not always sufficient, that the pointer
 //!   be *dereferenceable*: the memory range of the given size starting at the pointer must all be
 //!   within the bounds of a single allocated object. Note that in Rust,
 //!   every (stack-allocated) variable is considered a separate allocated object.
-//! * Even for operations of [size zero][zst], the pointer must not be pointing to deallocated
-//!   memory, i.e., deallocation makes pointers invalid even for zero-sized operations. However,
-//!   casting any non-zero integer *literal* to a pointer is valid for zero-sized accesses, even if
-//!   some memory happens to exist at that address and gets deallocated. This corresponds to writing
-//!   your own allocator: allocating zero-sized objects is not very hard. The canonical way to
-//!   obtain a pointer that is valid for zero-sized accesses is [`NonNull::dangling`].
-</span><span class="comment">//FIXME: mention `ptr::dangling` above, once it is stable.
-</span><span class="doccomment">//! * All accesses performed by functions in this module are *non-atomic* in the sense
+//! * All accesses performed by functions in this module are *non-atomic* in the sense
 //!   of [atomic operations] used to synchronize between threads. This means it is
 //!   undefined behavior to perform two concurrent accesses to the same location from different
 //!   threads unless both accesses only read from memory. Notice that this explicitly
@@ -2341,11 +2355,39 @@
 //!
 //! ## Allocated object
 //!
-//! For several operations, such as [`offset`] or field projections (`expr.field`), the notion of an
-//! "allocated object" becomes relevant. An allocated object is a contiguous region of memory.
-//! Common examples of allocated objects include stack-allocated variables (each variable is a
-//! separate allocated object), heap allocations (each allocation created by the global allocator is
-//! a separate allocated object), and `static` variables.
+//! An *allocated object* is a subset of program memory which is addressable
+//! from Rust, and within which pointer arithmetic is possible. Examples of
+//! allocated objects include heap allocations, stack-allocated variables,
+//! statics, and consts. The safety preconditions of some Rust operations -
+//! such as `offset` and field projections (`expr.field`) - are defined in
+//! terms of the allocated objects on which they operate.
+//!
+//! An allocated object has a base address, a size, and a set of memory
+//! addresses. It is possible for an allocated object to have zero size, but
+//! such an allocated object will still have a base address. The base address
+//! of an allocated object is not necessarily unique. While it is currently the
+//! case that an allocated object always has a set of memory addresses which is
+//! fully contiguous (i.e., has no "holes"), there is no guarantee that this
+//! will not change in the future.
+//!
+//! For any allocated object with `base` address, `size`, and a set of
+//! `addresses`, the following are guaranteed:
+//! - For all addresses `a` in `addresses`, `a` is in the range `base .. (base +
+//!   size)` (note that this requires `a &lt; base + size`, not `a &lt;= base + size`)
+//! - `base` is not equal to [`null()`] (i.e., the address with the numerical
+//!   value 0)
+//! - `base + size &lt;= usize::MAX`
+//! - `size &lt;= isize::MAX`
+//!
+//! As a consequence of these guarantees, given any address `a` within the set
+//! of addresses of an allocated object:
+//! - It is guaranteed that `a - base` does not overflow `isize`
+//! - It is guaranteed that `a - base` is non-negative
+//! - It is guaranteed that, given `o = a - base` (i.e., the offset of `a` within
+//!   the allocated object), `base + o` will not wrap around the address space (in
+//!   other words, will not overflow `usize`)
+//!
+//! [`null()`]: null
 //!
 //! # Strict Provenance
 //!
@@ -2670,7 +2712,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::marker::FnPtr;
 <span class="kw">use </span><span class="kw">crate</span>::ub_checks;
 
-<span class="kw">use </span><span class="kw">crate</span>::mem::{<span class="self">self</span>, align_of, size_of, MaybeUninit};
+<span class="kw">use </span><span class="kw">crate</span>::mem::{<span class="self">self</span>, MaybeUninit};
 
 <span class="kw">mod </span>alignment;
 <span class="attr">#[unstable(feature = <span class="string">"ptr_alignment_type"</span>, issue = <span class="string">"102070"</span>)]
@@ -2705,9 +2747,14 @@
 
 <span class="doccomment">/// Executes the destructor (if any) of the pointed-to value.
 ///
-/// This is semantically equivalent to calling [`ptr::read`] and discarding
+/// This is almost the same as calling [`ptr::read`] and discarding
 /// the result, but has the following advantages:
-///
+</span><span class="comment">// FIXME: say something more useful than "almost the same"?
+// There are open questions here: `read` requires the value to be fully valid, e.g. if `T` is a
+// `bool` it must be 0 or 1, if it is a reference then it must be dereferenceable. `drop_in_place`
+// only requires that `*to_drop` be "valid for dropping" and we have not defined what that means. In
+// Miri it currently (May 2024) requires nothing at all for types without drop glue.
+</span><span class="doccomment">///
 /// * It is *required* to use `drop_in_place` to drop unsized types like
 ///   trait objects, because they can't be read out onto the stack and
 ///   dropped normally.
@@ -2820,7 +2867,7 @@
 #[rustc_allow_const_fn_unstable(ptr_metadata)]
 #[rustc_diagnostic_item = <span class="string">"ptr_null"</span>]
 </span><span class="kw">pub const fn </span>null&lt;T: <span class="question-mark">?</span>Sized + Thin&gt;() -&gt; <span class="kw-2">*const </span>T {
-    from_raw_parts(without_provenance(<span class="number">0</span>), ())
+    from_raw_parts(without_provenance::&lt;()&gt;(<span class="number">0</span>), ())
 }
 
 <span class="doccomment">/// Creates a null mutable raw pointer.
@@ -2846,7 +2893,7 @@
 #[rustc_allow_const_fn_unstable(ptr_metadata)]
 #[rustc_diagnostic_item = <span class="string">"ptr_null_mut"</span>]
 </span><span class="kw">pub const fn </span>null_mut&lt;T: <span class="question-mark">?</span>Sized + Thin&gt;() -&gt; <span class="kw-2">*mut </span>T {
-    from_raw_parts_mut(without_provenance_mut(<span class="number">0</span>), ())
+    from_raw_parts_mut(without_provenance_mut::&lt;()&gt;(<span class="number">0</span>), ())
 }
 
 <span class="doccomment">/// Creates a pointer with the given address and no provenance.
@@ -3090,7 +3137,7 @@
 #[rustc_allow_const_fn_unstable(ptr_metadata)]
 #[rustc_diagnostic_item = <span class="string">"ptr_slice_from_raw_parts"</span>]
 </span><span class="kw">pub const fn </span>slice_from_raw_parts&lt;T&gt;(data: <span class="kw-2">*const </span>T, len: usize) -&gt; <span class="kw-2">*const </span>[T] {
-    from_raw_parts(data.cast(), len)
+    from_raw_parts(data, len)
 }
 
 <span class="doccomment">/// Forms a raw mutable slice from a pointer and a length.
@@ -3136,7 +3183,7 @@
 #[rustc_const_unstable(feature = <span class="string">"const_slice_from_raw_parts_mut"</span>, issue = <span class="string">"67456"</span>)]
 #[rustc_diagnostic_item = <span class="string">"ptr_slice_from_raw_parts_mut"</span>]
 </span><span class="kw">pub const fn </span>slice_from_raw_parts_mut&lt;T&gt;(data: <span class="kw-2">*mut </span>T, len: usize) -&gt; <span class="kw-2">*mut </span>[T] {
-    from_raw_parts_mut(data.cast(), len)
+    from_raw_parts_mut(data, len)
 }
 
 <span class="doccomment">/// Swaps the values at two mutable locations of the same type, without
@@ -4062,16 +4109,7 @@
         assume, cttz_nonzero, exact_div, mul_with_overflow, unchecked_rem, unchecked_sub,
         wrapping_add, wrapping_mul, wrapping_sub,
     };
-    <span class="attr">#[cfg(bootstrap)]
-    </span><span class="kw">const unsafe fn </span>unchecked_shl(value: usize, shift: usize) -&gt; usize {
-        value &lt;&lt; shift
-    }
-    <span class="attr">#[cfg(bootstrap)]
-    </span><span class="kw">const unsafe fn </span>unchecked_shr(value: usize, shift: usize) -&gt; usize {
-        value &gt;&gt; shift
-    }
-    <span class="attr">#[cfg(not(bootstrap))]
-    </span><span class="kw">use </span>intrinsics::{unchecked_shl, unchecked_shr};
+    <span class="kw">use </span>intrinsics::{unchecked_shl, unchecked_shr};
 
     <span class="doccomment">/// Calculate multiplicative modular inverse of `x` modulo `m`.
     ///

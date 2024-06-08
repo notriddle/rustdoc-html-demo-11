@@ -221,7 +221,7 @@
 <code>stdin</code>, <code>stdout</code> and <code>stderr</code> handles for interaction with the underlying
 process via pipes.</p>
 <pre><code class="language-rust ignore">use std::io::prelude::*;
-use std::process::Stdio;
+use std::process::{Command, Stdio};
 
 static PANGRAM: &amp;'static str =
 "the quick brown fox jumps over the lazy dog\n";

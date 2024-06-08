@@ -1728,12 +1728,9 @@ fn main() {
     println!("My number is {:?}", num);
 }</code></pre></pre>
 <h2 id="into"><a class="header" href="#into"><code>Into</code></a></h2>
-<p>The <a href="https://doc.rust-lang.org/std/convert/trait.Into.html"><code>Into</code></a> trait is simply the reciprocal of the <code>From</code> trait. That is, if you
-have implemented the <code>From</code> trait for your type, <code>Into</code> will call it when
-necessary.</p>
-<p>Using the <code>Into</code> trait will typically require specification of the type to
-convert into as the compiler is unable to determine this most of the time.
-However this is a small trade-off considering we get the functionality for free.</p>
+<p>The <a href="https://doc.rust-lang.org/std/convert/trait.Into.html"><code>Into</code></a> trait is simply the reciprocal of the <code>From</code> trait. It
+defines how to convert a type into another type.</p>
+<p>Calling <code>into()</code> typically requires us to specify the result type as the compiler is unable to determine this most of the time.</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">use std::convert::Into;
 
 #[derive(Debug)]
@@ -1750,6 +1747,31 @@ impl Into&lt;Number&gt; for i32 {
 fn main() {
     let int = 5;
     // Try removing the type annotation
+    let num: Number = int.into();
+    println!("My number is {:?}", num);
+}</code></pre></pre>
+<h2 id="from-and-into-are-interchangable"><a class="header" href="#from-and-into-are-interchangable"><code>From</code> and <code>Into</code> are interchangable</a></h2>
+<p><code>From</code> and <code>Into</code> are designed to be complementary.
+We do not need to provide an implementation for both traits.
+If you have implemented the <code>From</code> trait for your type, <code>Into</code> will call it
+when necessary. Note, however, that the converse is not true: implementing <code>Into</code> for your type will not automatically provide it with an implementation of <code>From</code>.</p>
+<pre><pre class="playground"><code class="language-rust editable edition2021">use std::convert::From;
+
+#[derive(Debug)]
+struct Number {
+    value: i32,
+}
+
+// Define `From`
+impl From&lt;i32&gt; for Number {
+    fn from(item: i32) -&gt; Self {
+        Number { value: item }
+    }
+}
+
+fn main() {
+    let int = 5;
+    // use `Into`
     let num: Number = int.into();
     println!("My number is {:?}", num);
 }</code></pre></pre>
@@ -7875,7 +7897,7 @@ much more convenient to write a string out as-is. This is where raw string liter
     println!("{}", quotes);
 
     // If you need "# in your string, just use more #s in the delimiter.
-    // You can use up to 65535 #s.
+    // You can use up to 255 #s.
     let longer_delimiter = r###"A string with "# in it. And even "##!"###;
     println!("{}", longer_delimiter);
 }</code></pre></pre>
@@ -8883,7 +8905,7 @@ to <code>rustc</code>)</p>
 <code>stdin</code>, <code>stdout</code> and <code>stderr</code> handles for interaction with the underlying
 process via pipes.</p>
 <pre><code class="language-rust ignore">use std::io::prelude::*;
-use std::process::Stdio;
+use std::process::{Command, Stdio};
 
 static PANGRAM: &amp;'static str =
 "the quick brown fox jumps over the lazy dog\n";
@@ -10004,7 +10026,7 @@ assert_eq!(x, 4 * 6);
 <span class="boring">}
 </span><span class="boring">}</span></code></pre></pre>
 <h2 id="symbol-operands-and-abi-clobbers"><a class="header" href="#symbol-operands-and-abi-clobbers">Symbol operands and ABI clobbers</a></h2>
-<p>By default, <code>asm!</code> assumes that any register not specified as an output will have its contents preserved by the assembly code. The <a href="unsafe/../../reference/inline-assembly.html#abi-clobbers"><code>clobber_abi</code></a> argument to <code>asm!</code> tells the compiler to automatically insert the necessary clobber operands according to the given calling convention ABI: any register which is not fully preserved in that ABI will be treated as clobbered.  Multiple <code>clobber_abi</code> arguments may be provided and all clobbers from all specified ABIs will be inserted.</p>
+<p>By default, <code>asm!</code> assumes that any register not specified as an output will have its contents preserved by the assembly code. The <a href="https://doc.rust-lang.org/stable/reference/inline-assembly.html#abi-clobbers"><code>clobber_abi</code></a> argument to <code>asm!</code> tells the compiler to automatically insert the necessary clobber operands according to the given calling convention ABI: any register which is not fully preserved in that ABI will be treated as clobbered.  Multiple <code>clobber_abi</code> arguments may be provided and all clobbers from all specified ABIs will be inserted.</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span><span class="boring">#[cfg(target_arch = "x86_64")] {
@@ -10176,7 +10198,7 @@ fn main() {
     foo::r#try();
 }</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="meta"><a class="header" href="#meta">Meta</a></h1>
-<p>Some topics aren't exactly relevant to how you program but provide you
+<p>Some topics aren't exactly relevant to how you program runs but provide you
 tooling or infrastructure support which just makes things better for
 everyone. These topics include:</p>
 <ul>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/mem/maybe_uninit.rs`."><title>maybe_uninit.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.79.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/mem/maybe_uninit.rs`."><title>maybe_uninit.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1478,13 +1478,6 @@
 <a href="#1478" id="1478">1478</a>
 <a href="#1479" id="1479">1479</a>
 <a href="#1480" id="1480">1480</a>
-<a href="#1481" id="1481">1481</a>
-<a href="#1482" id="1482">1482</a>
-<a href="#1483" id="1483">1483</a>
-<a href="#1484" id="1484">1484</a>
-<a href="#1485" id="1485">1485</a>
-<a href="#1486" id="1486">1486</a>
-<a href="#1487" id="1487">1487</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::any::type_name;
 <span class="kw">use </span><span class="kw">crate</span>::fmt;
 <span class="kw">use </span><span class="kw">crate</span>::intrinsics;
@@ -1607,12 +1600,8 @@
 /// use std::mem::{self, MaybeUninit};
 ///
 /// let data = {
-///     // Create an uninitialized array of `MaybeUninit`. The `assume_init` is
-///     // safe because the type we are claiming to have initialized here is a
-///     // bunch of `MaybeUninit`s, which do not require initialization.
-///     let mut data: [MaybeUninit&lt;Vec&lt;u32&gt;&gt;; 1000] = unsafe {
-///         MaybeUninit::uninit().assume_init()
-///     };
+///     // Create an uninitialized array of `MaybeUninit`.
+///     let mut data: [MaybeUninit&lt;Vec&lt;u32&gt;&gt;; 1000] = [const { MaybeUninit::uninit() }; 1000];
 ///
 ///     // Dropping a `MaybeUninit` does nothing, so if there is a panic during this loop,
 ///     // we have a memory leak, but there is no memory safety issue.
@@ -1634,10 +1623,8 @@
 /// ```
 /// use std::mem::MaybeUninit;
 ///
-/// // Create an uninitialized array of `MaybeUninit`. The `assume_init` is
-/// // safe because the type we are claiming to have initialized here is a
-/// // bunch of `MaybeUninit`s, which do not require initialization.
-/// let mut data: [MaybeUninit&lt;String&gt;; 1000] = unsafe { MaybeUninit::uninit().assume_init() };
+/// // Create an uninitialized array of `MaybeUninit`.
+/// let mut data: [MaybeUninit&lt;String&gt;; 1000] = [const { MaybeUninit::uninit() }; 1000];
 /// // Count the number of elements we have assigned.
 /// let mut data_len: usize = 0;
 ///
@@ -1835,8 +1822,7 @@
     #[must_use]
     #[inline(always)]
     </span><span class="kw">pub const fn </span>uninit_array&lt;<span class="kw">const </span>N: usize&gt;() -&gt; [<span class="self">Self</span>; N] {
-        <span class="comment">// SAFETY: An uninitialized `[MaybeUninit&lt;_&gt;; LEN]` is valid.
-        </span><span class="kw">unsafe </span>{ MaybeUninit::&lt;[MaybeUninit&lt;T&gt;; N]&gt;::uninit().assume_init() }
+        [<span class="kw">const </span>{ MaybeUninit::uninit() }; N]
     }
 
     <span class="doccomment">/// Creates a new `MaybeUninit&lt;T&gt;` in an uninitialized state, with the memory being

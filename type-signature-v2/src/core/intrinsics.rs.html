@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/intrinsics.rs`."><title>intrinsics.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.79.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/intrinsics.rs`."><title>intrinsics.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -3100,6 +3100,62 @@
 <a href="#3100" id="3100">3100</a>
 <a href="#3101" id="3101">3101</a>
 <a href="#3102" id="3102">3102</a>
+<a href="#3103" id="3103">3103</a>
+<a href="#3104" id="3104">3104</a>
+<a href="#3105" id="3105">3105</a>
+<a href="#3106" id="3106">3106</a>
+<a href="#3107" id="3107">3107</a>
+<a href="#3108" id="3108">3108</a>
+<a href="#3109" id="3109">3109</a>
+<a href="#3110" id="3110">3110</a>
+<a href="#3111" id="3111">3111</a>
+<a href="#3112" id="3112">3112</a>
+<a href="#3113" id="3113">3113</a>
+<a href="#3114" id="3114">3114</a>
+<a href="#3115" id="3115">3115</a>
+<a href="#3116" id="3116">3116</a>
+<a href="#3117" id="3117">3117</a>
+<a href="#3118" id="3118">3118</a>
+<a href="#3119" id="3119">3119</a>
+<a href="#3120" id="3120">3120</a>
+<a href="#3121" id="3121">3121</a>
+<a href="#3122" id="3122">3122</a>
+<a href="#3123" id="3123">3123</a>
+<a href="#3124" id="3124">3124</a>
+<a href="#3125" id="3125">3125</a>
+<a href="#3126" id="3126">3126</a>
+<a href="#3127" id="3127">3127</a>
+<a href="#3128" id="3128">3128</a>
+<a href="#3129" id="3129">3129</a>
+<a href="#3130" id="3130">3130</a>
+<a href="#3131" id="3131">3131</a>
+<a href="#3132" id="3132">3132</a>
+<a href="#3133" id="3133">3133</a>
+<a href="#3134" id="3134">3134</a>
+<a href="#3135" id="3135">3135</a>
+<a href="#3136" id="3136">3136</a>
+<a href="#3137" id="3137">3137</a>
+<a href="#3138" id="3138">3138</a>
+<a href="#3139" id="3139">3139</a>
+<a href="#3140" id="3140">3140</a>
+<a href="#3141" id="3141">3141</a>
+<a href="#3142" id="3142">3142</a>
+<a href="#3143" id="3143">3143</a>
+<a href="#3144" id="3144">3144</a>
+<a href="#3145" id="3145">3145</a>
+<a href="#3146" id="3146">3146</a>
+<a href="#3147" id="3147">3147</a>
+<a href="#3148" id="3148">3148</a>
+<a href="#3149" id="3149">3149</a>
+<a href="#3150" id="3150">3150</a>
+<a href="#3151" id="3151">3151</a>
+<a href="#3152" id="3152">3152</a>
+<a href="#3153" id="3153">3153</a>
+<a href="#3154" id="3154">3154</a>
+<a href="#3155" id="3155">3155</a>
+<a href="#3156" id="3156">3156</a>
+<a href="#3157" id="3157">3157</a>
+<a href="#3158" id="3158">3158</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Compiler intrinsics.
 //!
 //! The corresponding definitions are in &lt;https://github.com/rust-lang/rust/blob/master/compiler/rustc_codegen_llvm/src/intrinsic.rs&gt;.
@@ -3167,7 +3223,6 @@
 
 </span><span class="kw">use </span><span class="kw">crate</span>::marker::DiscriminantKind;
 <span class="kw">use </span><span class="kw">crate</span>::marker::Tuple;
-<span class="kw">use </span><span class="kw">crate</span>::mem::align_of;
 <span class="kw">use </span><span class="kw">crate</span>::ptr;
 <span class="kw">use </span><span class="kw">crate</span>::ub_checks;
 
@@ -4089,6 +4144,7 @@
 #[unstable(feature = <span class="string">"core_intrinsics"</span>, issue = <span class="string">"none"</span>)]
 #[rustc_intrinsic]
 #[rustc_nounwind]
+#[cfg_attr(not(bootstrap), miri::intrinsic_fallback_is_spec)]
 </span><span class="kw">pub const fn </span>likely(b: bool) -&gt; bool {
     b
 }
@@ -4108,6 +4164,7 @@
 #[unstable(feature = <span class="string">"core_intrinsics"</span>, issue = <span class="string">"none"</span>)]
 #[rustc_intrinsic]
 #[rustc_nounwind]
+#[cfg_attr(not(bootstrap), miri::intrinsic_fallback_is_spec)]
 </span><span class="kw">pub const fn </span>unlikely(b: bool) -&gt; bool {
     b
 }
@@ -4230,7 +4287,7 @@
     /// any safety invariants.
     ///
     /// Consider using [`core::panic::Location::caller`] instead.
-    </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"const_caller_location"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"const_caller_location"</span>, since = <span class="string">"1.79.0"</span>)]
     #[rustc_safe_intrinsic]
     #[rustc_nounwind]
     </span><span class="kw">pub fn </span>caller_location() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span><span class="kw">crate</span>::panic::Location&lt;<span class="lifetime">'static</span>&gt;;
@@ -4583,10 +4640,10 @@
     ///
     /// # Safety
     ///
-    /// Both the starting and resulting pointer must be either in bounds or one
-    /// byte past the end of an allocated object. If either pointer is out of
-    /// bounds or arithmetic overflow occurs then any further use of the
-    /// returned value will result in undefined behavior.
+    /// If the computed offset is non-zero, then both the starting and resulting pointer must be
+    /// either in bounds or at the end of an allocated object. If either pointer is out
+    /// of bounds or arithmetic overflow occurs then any further use of the returned value will
+    /// result in undefined behavior.
     ///
     /// The stabilized version of this intrinsic is [`pointer::offset`].
     </span><span class="attr">#[must_use = <span class="string">"returns a new pointer rather than modifying its argument"</span>]
@@ -4602,7 +4659,7 @@
     /// # Safety
     ///
     /// Unlike the `offset` intrinsic, this intrinsic does not restrict the
-    /// resulting pointer to point into or one byte past the end of an allocated
+    /// resulting pointer to point into or at the end of an allocated
     /// object, and it wraps with two's complement arithmetic. The resulting
     /// value is not necessarily valid to be used to actually access memory.
     ///
@@ -4694,6 +4751,12 @@
     </span><span class="attr">#[rustc_nounwind]
     </span><span class="kw">pub fn </span>sqrtf64(x: f64) -&gt; f64;
 
+    <span class="doccomment">/// Raises an `f16` to an integer power.
+    ///
+    /// The stabilized version of this intrinsic is
+    /// [`f16::powi`](../../std/primitive.f16.html#method.powi)
+    </span><span class="attr">#[rustc_nounwind]
+    </span><span class="kw">pub fn </span>powif16(a: f16, x: i32) -&gt; f16;
     <span class="doccomment">/// Raises an `f32` to an integer power.
     ///
     /// The stabilized version of this intrinsic is
@@ -4706,6 +4769,12 @@
     /// [`f64::powi`](../../std/primitive.f64.html#method.powi)
     </span><span class="attr">#[rustc_nounwind]
     </span><span class="kw">pub fn </span>powif64(a: f64, x: i32) -&gt; f64;
+    <span class="doccomment">/// Raises an `f128` to an integer power.
+    ///
+    /// The stabilized version of this intrinsic is
+    /// [`f128::powi`](../../std/primitive.f128.html#method.powi)
+    </span><span class="attr">#[rustc_nounwind]
+    </span><span class="kw">pub fn </span>powif128(a: f128, x: i32) -&gt; f128;
 
     <span class="doccomment">/// Returns the sine of an `f32`.
     ///
@@ -5092,7 +5161,7 @@
     </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"const_ctpop"</span>, since = <span class="string">"1.40.0"</span>)]
     #[rustc_safe_intrinsic]
     #[rustc_nounwind]
-    </span><span class="kw">pub fn </span>ctpop&lt;T: Copy&gt;(x: T) -&gt; T;
+    </span><span class="kw">pub fn </span>ctpop&lt;T: Copy&gt;(x: T) -&gt; u32;
 
     <span class="doccomment">/// Returns the number of leading unset bits (zeroes) in an integer type `T`.
     ///
@@ -5133,7 +5202,7 @@
     </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"const_ctlz"</span>, since = <span class="string">"1.40.0"</span>)]
     #[rustc_safe_intrinsic]
     #[rustc_nounwind]
-    </span><span class="kw">pub fn </span>ctlz&lt;T: Copy&gt;(x: T) -&gt; T;
+    </span><span class="kw">pub fn </span>ctlz&lt;T: Copy&gt;(x: T) -&gt; u32;
 
     <span class="doccomment">/// Like `ctlz`, but extra-unsafe as it returns `undef` when
     /// given an `x` with value `0`.
@@ -5154,7 +5223,7 @@
     /// ```
     </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"constctlz"</span>, since = <span class="string">"1.50.0"</span>)]
     #[rustc_nounwind]
-    </span><span class="kw">pub fn </span>ctlz_nonzero&lt;T: Copy&gt;(x: T) -&gt; T;
+    </span><span class="kw">pub fn </span>ctlz_nonzero&lt;T: Copy&gt;(x: T) -&gt; u32;
 
     <span class="doccomment">/// Returns the number of trailing unset bits (zeroes) in an integer type `T`.
     ///
@@ -5195,7 +5264,7 @@
     </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"const_cttz"</span>, since = <span class="string">"1.40.0"</span>)]
     #[rustc_safe_intrinsic]
     #[rustc_nounwind]
-    </span><span class="kw">pub fn </span>cttz&lt;T: Copy&gt;(x: T) -&gt; T;
+    </span><span class="kw">pub fn </span>cttz&lt;T: Copy&gt;(x: T) -&gt; u32;
 
     <span class="doccomment">/// Like `cttz`, but extra-unsafe as it returns `undef` when
     /// given an `x` with value `0`.
@@ -5216,7 +5285,7 @@
     /// ```
     </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"const_cttz_nonzero"</span>, since = <span class="string">"1.53.0"</span>)]
     #[rustc_nounwind]
-    </span><span class="kw">pub fn </span>cttz_nonzero&lt;T: Copy&gt;(x: T) -&gt; T;
+    </span><span class="kw">pub fn </span>cttz_nonzero&lt;T: Copy&gt;(x: T) -&gt; u32;
 
     <span class="doccomment">/// Reverses the bytes in an integer type `T`.
     ///
@@ -5255,8 +5324,7 @@
     /// large and difficult to optimize.
     ///
     /// The stabilized version of this intrinsic is [`Ord::cmp`].
-    </span><span class="attr">#[cfg(not(bootstrap))]
-    #[rustc_const_unstable(feature = <span class="string">"const_three_way_compare"</span>, issue = <span class="string">"none"</span>)]
+    </span><span class="attr">#[rustc_const_unstable(feature = <span class="string">"const_three_way_compare"</span>, issue = <span class="string">"none"</span>)]
     #[rustc_safe_intrinsic]
     </span><span class="kw">pub fn </span>three_way_compare&lt;T: Copy&gt;(lhs: T, rhs: T) -&gt; <span class="kw">crate</span>::cmp::Ordering;
 
@@ -5338,8 +5406,7 @@
     /// Safe wrappers for this intrinsic are available on the integer
     /// primitives via the `checked_shl` method. For example,
     /// [`u32::checked_shl`]
-    </span><span class="attr">#[cfg(not(bootstrap))]
-    #[rustc_const_stable(feature = <span class="string">"const_int_unchecked"</span>, since = <span class="string">"1.40.0"</span>)]
+    </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"const_int_unchecked"</span>, since = <span class="string">"1.40.0"</span>)]
     #[rustc_nounwind]
     </span><span class="kw">pub fn </span>unchecked_shl&lt;T: Copy, U: Copy&gt;(x: T, y: U) -&gt; T;
     <span class="doccomment">/// Performs an unchecked right shift, resulting in undefined behavior when
@@ -5348,8 +5415,7 @@
     /// Safe wrappers for this intrinsic are available on the integer
     /// primitives via the `checked_shr` method. For example,
     /// [`u32::checked_shr`]
-    </span><span class="attr">#[cfg(not(bootstrap))]
-    #[rustc_const_stable(feature = <span class="string">"const_int_unchecked"</span>, since = <span class="string">"1.40.0"</span>)]
+    </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"const_int_unchecked"</span>, since = <span class="string">"1.40.0"</span>)]
     #[rustc_nounwind]
     </span><span class="kw">pub fn </span>unchecked_shr&lt;T: Copy, U: Copy&gt;(x: T, y: U) -&gt; T;
 
@@ -5358,7 +5424,7 @@
     ///
     /// The stable counterpart of this intrinsic is `unchecked_add` on the various
     /// integer types, such as [`u16::unchecked_add`] and [`i64::unchecked_add`].
-    </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"1.79.0"</span>)]
     #[rustc_nounwind]
     </span><span class="kw">pub fn </span>unchecked_add&lt;T: Copy&gt;(x: T, y: T) -&gt; T;
 
@@ -5367,7 +5433,7 @@
     ///
     /// The stable counterpart of this intrinsic is `unchecked_sub` on the various
     /// integer types, such as [`u16::unchecked_sub`] and [`i64::unchecked_sub`].
-    </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"1.79.0"</span>)]
     #[rustc_nounwind]
     </span><span class="kw">pub fn </span>unchecked_sub&lt;T: Copy&gt;(x: T, y: T) -&gt; T;
 
@@ -5376,7 +5442,7 @@
     ///
     /// The stable counterpart of this intrinsic is `unchecked_mul` on the various
     /// integer types, such as [`u16::unchecked_mul`] and [`i64::unchecked_mul`].
-    </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"unchecked_math"</span>, since = <span class="string">"1.79.0"</span>)]
     #[rustc_nounwind]
     </span><span class="kw">pub fn </span>unchecked_mul&lt;T: Copy&gt;(x: T, y: T) -&gt; T;
 
@@ -5393,7 +5459,7 @@
     </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"const_int_rotate"</span>, since = <span class="string">"1.40.0"</span>)]
     #[rustc_safe_intrinsic]
     #[rustc_nounwind]
-    </span><span class="kw">pub fn </span>rotate_left&lt;T: Copy&gt;(x: T, y: T) -&gt; T;
+    </span><span class="kw">pub fn </span>rotate_left&lt;T: Copy&gt;(x: T, shift: u32) -&gt; T;
 
     <span class="doccomment">/// Performs rotate right.
     ///
@@ -5408,7 +5474,7 @@
     </span><span class="attr">#[rustc_const_stable(feature = <span class="string">"const_int_rotate"</span>, since = <span class="string">"1.40.0"</span>)]
     #[rustc_safe_intrinsic]
     #[rustc_nounwind]
-    </span><span class="kw">pub fn </span>rotate_right&lt;T: Copy&gt;(x: T, y: T) -&gt; T;
+    </span><span class="kw">pub fn </span>rotate_right&lt;T: Copy&gt;(x: T, shift: u32) -&gt; T;
 
     <span class="doccomment">/// Returns (a + b) mod 2&lt;sup&gt;N&lt;/sup&gt;, where N is the width of T in bits.
     ///
@@ -5562,12 +5628,6 @@
     </span><span class="attr">#[rustc_const_unstable(feature = <span class="string">"const_ptr_sub_ptr"</span>, issue = <span class="string">"95892"</span>)]
     #[rustc_nounwind]
     </span><span class="kw">pub fn </span>ptr_offset_from_unsigned&lt;T&gt;(ptr: <span class="kw-2">*const </span>T, base: <span class="kw-2">*const </span>T) -&gt; usize;
-
-    <span class="attr">#[rustc_const_unstable(feature = <span class="string">"const_raw_ptr_comparison"</span>, issue = <span class="string">"53020"</span>)]
-    #[rustc_safe_intrinsic]
-    #[rustc_nounwind]
-    #[cfg(bootstrap)]
-    </span><span class="kw">pub fn </span>ptr_guaranteed_cmp&lt;T&gt;(ptr: <span class="kw-2">*const </span>T, other: <span class="kw-2">*const </span>T) -&gt; u8;
 }
 
 <span class="doccomment">/// See documentation of `&lt;*const T&gt;::guaranteed_eq` for details.
@@ -5577,10 +5637,10 @@
 </span><span class="attr">#[rustc_const_unstable(feature = <span class="string">"const_raw_ptr_comparison"</span>, issue = <span class="string">"53020"</span>)]
 #[unstable(feature = <span class="string">"core_intrinsics"</span>, issue = <span class="string">"none"</span>)]
 #[rustc_intrinsic]
-#[cfg(not(bootstrap))]
 #[rustc_nounwind]
 #[rustc_do_not_const_check]
 #[inline]
+#[cfg_attr(not(bootstrap), miri::intrinsic_fallback_is_spec)]
 </span><span class="kw">pub const fn </span>ptr_guaranteed_cmp&lt;T&gt;(ptr: <span class="kw-2">*const </span>T, other: <span class="kw-2">*const </span>T) -&gt; u8 {
     (ptr == other) <span class="kw">as </span>u8
 }
@@ -5636,28 +5696,6 @@
     #[rustc_safe_intrinsic]
     #[rustc_nounwind]
     </span><span class="kw">pub fn </span>black_box&lt;T&gt;(dummy: T) -&gt; T;
-
-    <span class="attr">#[rustc_nounwind]
-    #[cfg(bootstrap)]
-    </span><span class="kw">pub fn </span>vtable_size(ptr: <span class="kw-2">*const </span>()) -&gt; usize;
-
-    <span class="doccomment">/// `ptr` must point to a vtable.
-    /// The intrinsic will return the alignment stored in that vtable.
-    </span><span class="attr">#[rustc_nounwind]
-    #[cfg(bootstrap)]
-    </span><span class="kw">pub fn </span>vtable_align(ptr: <span class="kw-2">*const </span>()) -&gt; usize;
-
-    <span class="attr">#[rustc_const_unstable(feature = <span class="string">"const_eval_select"</span>, issue = <span class="string">"none"</span>)]
-    #[rustc_safe_intrinsic]
-    #[cfg(bootstrap)]
-    </span><span class="kw">pub fn </span>const_eval_select&lt;ARG: Tuple, F, G, RET&gt;(
-        arg: ARG,
-        called_in_const: F,
-        called_at_rt: G,
-    ) -&gt; RET
-    <span class="kw">where
-        </span>G: FnOnce&lt;ARG, Output = RET&gt;,
-        F: FnOnce&lt;ARG, Output = RET&gt;;
 }
 
 <span class="doccomment">/// Selects which function to call depending on the context.
@@ -5692,11 +5730,9 @@
 /// #![feature(const_eval_select)]
 /// #![feature(core_intrinsics)]
 /// # #![allow(internal_features)]
-/// # #![cfg_attr(bootstrap, allow(unused))]
 /// use std::intrinsics::const_eval_select;
 ///
 /// // Standard library
-/// # #[cfg(not(bootstrap))]
 /// pub const fn inconsistent() -&gt; i32 {
 ///     fn runtime() -&gt; i32 { 1 }
 ///     const fn compiletime() -&gt; i32 { 2 }
@@ -5705,8 +5741,6 @@
 </span><span class="doccomment">///     // and `runtime`.
 ///     const_eval_select((), compiletime, runtime)
 /// }
-/// # #[cfg(bootstrap)]
-/// # pub const fn inconsistent() -&gt; i32 { 0 }
 ///
 /// // User Crate
 /// const X: i32 = inconsistent();
@@ -5716,9 +5750,7 @@
 ///
 /// Currently such an assertion would always succeed; until Rust decides
 /// otherwise, that principle should not be violated.
-</span><span class="attr">#[rustc_const_unstable(feature = <span class="string">"const_eval_select"</span>, issue = <span class="string">"none"</span>)]
-#[unstable(feature = <span class="string">"core_intrinsics"</span>, issue = <span class="string">"none"</span>)]
-#[cfg(not(bootstrap))]
+</span><span class="attr">#[rustc_const_unstable(feature = <span class="string">"const_eval_select"</span>, issue = <span class="string">"124625"</span>)]
 #[rustc_intrinsic]
 #[rustc_intrinsic_must_be_overridden]
 </span><span class="kw">pub const fn </span>const_eval_select&lt;ARG: Tuple, F, G, RET&gt;(
@@ -5772,10 +5804,45 @@
 /// particular value, ever. However, the compiler will generally make it
 /// return `true` only if the value of the argument is actually known.
 ///
-/// When calling this in a `const fn`, both paths must be semantically
-/// equivalent, that is, the result of the `true` branch and the `false`
-/// branch must return the same value and have the same side-effects *no
-/// matter what*.
+/// # Stability concerns
+///
+/// While it is safe to call, this intrinsic may behave differently in
+/// a `const` context than otherwise. See the [`const_eval_select`]
+/// documentation for an explanation of the issues this can cause. Unlike
+/// `const_eval_select`, this intrinsic isn't guaranteed to behave
+/// deterministically even in a `const` context.
+///
+/// # Type Requirements
+///
+/// `T` must be either a `bool`, a `char`, a primitive numeric type (e.g. `f32`,
+/// but not `NonZeroISize`), or any thin pointer (e.g. `*mut String`).
+/// Any other argument types *may* cause a compiler error.
+///
+/// ## Pointers
+///
+/// When the input is a pointer, only the pointer itself is
+/// ever considered. The pointee has no effect. Currently, these functions
+/// behave identically:
+///
+/// ```
+/// #![feature(is_val_statically_known)]
+/// #![feature(core_intrinsics)]
+/// # #![allow(internal_features)]
+/// #![feature(strict_provenance)]
+/// use std::intrinsics::is_val_statically_known;
+///
+/// fn foo(x: &amp;i32) -&gt; bool {
+///     is_val_statically_known(x)
+/// }
+///
+/// fn bar(x: &amp;i32) -&gt; bool {
+///     is_val_statically_known(
+///         (x as *const i32).addr()
+///     )
+/// }
+/// # _ = foo(&amp;5_i32);
+/// # _ = bar(&amp;5_i32);
+/// ```
 </span><span class="attr">#[rustc_const_unstable(feature = <span class="string">"is_val_statically_known"</span>, issue = <span class="string">"none"</span>)]
 #[rustc_nounwind]
 #[unstable(feature = <span class="string">"core_intrinsics"</span>, issue = <span class="string">"none"</span>)]
@@ -5796,7 +5863,7 @@
 /// `x` and `y` are readable and writable as `T`, and non-overlapping.
 </span><span class="attr">#[rustc_nounwind]
 #[inline]
-#[cfg_attr(not(bootstrap), rustc_intrinsic)]
+#[rustc_intrinsic]
 </span><span class="comment">// This has fallback `const fn` MIR, so shouldn't need stability, see #122652
 </span><span class="attr">#[rustc_const_unstable(feature = <span class="string">"const_typed_swap"</span>, issue = <span class="string">"none"</span>)]
 </span><span class="kw">pub const unsafe fn </span>typed_swap&lt;T&gt;(x: <span class="kw-2">*mut </span>T, y: <span class="kw-2">*mut </span>T) {
@@ -5821,8 +5888,8 @@
 </span><span class="attr">#[rustc_const_unstable(feature = <span class="string">"const_ub_checks"</span>, issue = <span class="string">"none"</span>)]
 #[unstable(feature = <span class="string">"core_intrinsics"</span>, issue = <span class="string">"none"</span>)]
 #[inline(always)]
-#[cfg_attr(not(bootstrap), rustc_intrinsic)] </span><span class="comment">// just make it a regular fn in bootstrap
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const fn </span>ub_checks() -&gt; bool {
+#[rustc_intrinsic]
+</span><span class="kw">pub const fn </span>ub_checks() -&gt; bool {
     <span class="macro">cfg!</span>(debug_assertions)
 }
 
@@ -5838,8 +5905,10 @@
 #[unstable(feature = <span class="string">"core_intrinsics"</span>, issue = <span class="string">"none"</span>)]
 #[rustc_nounwind]
 #[rustc_intrinsic]
+#[cfg_attr(not(bootstrap), miri::intrinsic_fallback_is_spec)]
 </span><span class="kw">pub const unsafe fn </span>const_allocate(_size: usize, _align: usize) -&gt; <span class="kw-2">*mut </span>u8 {
-    <span class="comment">// const eval overrides this function, but runtime code should always just return null pointers.
+    <span class="comment">// const eval overrides this function, but runtime code for now just returns null pointers.
+    // See &lt;https://github.com/rust-lang/rust/issues/93935&gt;.
     </span><span class="kw">crate</span>::ptr::null_mut()
 }
 
@@ -5857,7 +5926,10 @@
 #[unstable(feature = <span class="string">"core_intrinsics"</span>, issue = <span class="string">"none"</span>)]
 #[rustc_nounwind]
 #[rustc_intrinsic]
-</span><span class="kw">pub const unsafe fn </span>const_deallocate(_ptr: <span class="kw-2">*mut </span>u8, _size: usize, _align: usize) {}
+#[cfg_attr(not(bootstrap), miri::intrinsic_fallback_is_spec)]
+</span><span class="kw">pub const unsafe fn </span>const_deallocate(_ptr: <span class="kw-2">*mut </span>u8, _size: usize, _align: usize) {
+    <span class="comment">// Runtime NOP
+</span>}
 
 <span class="doccomment">/// `ptr` must point to a vtable.
 /// The intrinsic will return the size stored in that vtable.
@@ -5865,7 +5937,6 @@
 #[unstable(feature = <span class="string">"core_intrinsics"</span>, issue = <span class="string">"none"</span>)]
 #[rustc_intrinsic]
 #[rustc_intrinsic_must_be_overridden]
-#[cfg(not(bootstrap))]
 </span><span class="kw">pub unsafe fn </span>vtable_size(_ptr: <span class="kw-2">*const </span>()) -&gt; usize {
     <span class="macro">unreachable!</span>()
 }
@@ -5876,9 +5947,50 @@
 #[unstable(feature = <span class="string">"core_intrinsics"</span>, issue = <span class="string">"none"</span>)]
 #[rustc_intrinsic]
 #[rustc_intrinsic_must_be_overridden]
-#[cfg(not(bootstrap))]
 </span><span class="kw">pub unsafe fn </span>vtable_align(_ptr: <span class="kw-2">*const </span>()) -&gt; usize {
     <span class="macro">unreachable!</span>()
+}
+
+<span class="doccomment">/// Lowers in MIR to `Rvalue::Aggregate` with `AggregateKind::RawPtr`.
+///
+/// This is used to implement functions like `slice::from_raw_parts_mut` and
+/// `ptr::from_raw_parts` in a way compatible with the compiler being able to
+/// change the possible layouts of pointers.
+</span><span class="attr">#[rustc_nounwind]
+#[unstable(feature = <span class="string">"core_intrinsics"</span>, issue = <span class="string">"none"</span>)]
+#[rustc_const_unstable(feature = <span class="string">"ptr_metadata"</span>, issue = <span class="string">"81513"</span>)]
+#[rustc_intrinsic]
+#[rustc_intrinsic_must_be_overridden]
+</span><span class="kw">pub const fn </span>aggregate_raw_ptr&lt;P: AggregateRawPtr&lt;D, Metadata = M&gt;, D, M&gt;(_data: D, _meta: M) -&gt; P {
+    <span class="comment">// To implement a fallback we'd have to assume the layout of the pointer,
+    // but the whole point of this intrinsic is that we shouldn't do that.
+    </span><span class="macro">unreachable!</span>()
+}
+
+<span class="attr">#[unstable(feature = <span class="string">"core_intrinsics"</span>, issue = <span class="string">"none"</span>)]
+</span><span class="kw">pub trait </span>AggregateRawPtr&lt;D&gt; {
+    <span class="kw">type </span>Metadata: Copy;
+}
+<span class="kw">impl</span>&lt;P: <span class="question-mark">?</span>Sized, T: ptr::Thin&gt; AggregateRawPtr&lt;<span class="kw-2">*const </span>T&gt; <span class="kw">for </span><span class="kw-2">*const </span>P {
+    <span class="kw">type </span>Metadata = &lt;P <span class="kw">as </span>ptr::Pointee&gt;::Metadata;
+}
+<span class="kw">impl</span>&lt;P: <span class="question-mark">?</span>Sized, T: ptr::Thin&gt; AggregateRawPtr&lt;<span class="kw-2">*mut </span>T&gt; <span class="kw">for </span><span class="kw-2">*mut </span>P {
+    <span class="kw">type </span>Metadata = &lt;P <span class="kw">as </span>ptr::Pointee&gt;::Metadata;
+}
+
+<span class="doccomment">/// Lowers in MIR to `Rvalue::UnaryOp` with `UnOp::PtrMetadata`.
+///
+/// This is used to implement functions like `ptr::metadata`.
+</span><span class="attr">#[rustc_nounwind]
+#[unstable(feature = <span class="string">"core_intrinsics"</span>, issue = <span class="string">"none"</span>)]
+#[rustc_const_unstable(feature = <span class="string">"ptr_metadata"</span>, issue = <span class="string">"81513"</span>)]
+#[rustc_intrinsic]
+#[rustc_intrinsic_must_be_overridden]
+#[cfg(not(bootstrap))]
+</span><span class="kw">pub const fn </span>ptr_metadata&lt;P: ptr::Pointee&lt;Metadata = M&gt; + <span class="question-mark">?</span>Sized, M&gt;(_ptr: <span class="kw-2">*const </span>P) -&gt; M {
+    <span class="comment">// To implement a fallback we'd have to assume the layout of the pointer,
+    // but the whole point of this intrinsic is that we shouldn't do that.
+    </span><span class="macro">unreachable!</span>()
 }
 
 <span class="comment">// Some functions are defined here because they accidentally got made

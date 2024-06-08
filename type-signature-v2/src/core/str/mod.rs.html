@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/str/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.79.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/str/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2777,43 +2777,6 @@
 <a href="#2777" id="2777">2777</a>
 <a href="#2778" id="2778">2778</a>
 <a href="#2779" id="2779">2779</a>
-<a href="#2780" id="2780">2780</a>
-<a href="#2781" id="2781">2781</a>
-<a href="#2782" id="2782">2782</a>
-<a href="#2783" id="2783">2783</a>
-<a href="#2784" id="2784">2784</a>
-<a href="#2785" id="2785">2785</a>
-<a href="#2786" id="2786">2786</a>
-<a href="#2787" id="2787">2787</a>
-<a href="#2788" id="2788">2788</a>
-<a href="#2789" id="2789">2789</a>
-<a href="#2790" id="2790">2790</a>
-<a href="#2791" id="2791">2791</a>
-<a href="#2792" id="2792">2792</a>
-<a href="#2793" id="2793">2793</a>
-<a href="#2794" id="2794">2794</a>
-<a href="#2795" id="2795">2795</a>
-<a href="#2796" id="2796">2796</a>
-<a href="#2797" id="2797">2797</a>
-<a href="#2798" id="2798">2798</a>
-<a href="#2799" id="2799">2799</a>
-<a href="#2800" id="2800">2800</a>
-<a href="#2801" id="2801">2801</a>
-<a href="#2802" id="2802">2802</a>
-<a href="#2803" id="2803">2803</a>
-<a href="#2804" id="2804">2804</a>
-<a href="#2805" id="2805">2805</a>
-<a href="#2806" id="2806">2806</a>
-<a href="#2807" id="2807">2807</a>
-<a href="#2808" id="2808">2808</a>
-<a href="#2809" id="2809">2809</a>
-<a href="#2810" id="2810">2810</a>
-<a href="#2811" id="2811">2811</a>
-<a href="#2812" id="2812">2812</a>
-<a href="#2813" id="2813">2813</a>
-<a href="#2814" id="2814">2814</a>
-<a href="#2815" id="2815">2815</a>
-<a href="#2816" id="2816">2816</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! String manipulation.
 //!
 //! For more details, see the [`std::str`] module.
@@ -2840,7 +2803,7 @@
 <span class="kw">pub mod </span>pattern;
 
 <span class="kw">mod </span>lossy;
-<span class="attr">#[unstable(feature = <span class="string">"utf8_chunks"</span>, issue = <span class="string">"99543"</span>)]
+<span class="attr">#[stable(feature = <span class="string">"utf8_chunks"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub use </span>lossy::{Utf8Chunk, Utf8Chunks};
 
 <span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
@@ -3537,8 +3500,6 @@
     /// # Examples
     ///
     /// ```
-    /// #![feature(split_at_checked)]
-    ///
     /// let s = "Per Martin-Löf";
     ///
     /// let (first, last) = s.split_at_checked(3).unwrap();
@@ -3550,7 +3511,7 @@
     /// ```
     </span><span class="attr">#[inline]
     #[must_use]
-    #[unstable(feature = <span class="string">"split_at_checked"</span>, reason = <span class="string">"new API"</span>, issue = <span class="string">"119128"</span>)]
+    #[stable(feature = <span class="string">"split_at_checked"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
     </span><span class="kw">pub fn </span>split_at_checked(<span class="kw-2">&amp;</span><span class="self">self</span>, mid: usize) -&gt; <span class="prelude-ty">Option</span>&lt;(<span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str)&gt; {
         <span class="comment">// is_char_boundary checks that the index is in [0, .len()]
         </span><span class="kw">if </span><span class="self">self</span>.is_char_boundary(mid) {
@@ -3577,8 +3538,6 @@
     /// # Examples
     ///
     /// ```
-    /// #![feature(split_at_checked)]
-    ///
     /// let mut s = "Per Martin-Löf".to_string();
     /// if let Some((first, last)) = s.split_at_mut_checked(3) {
     ///     first.make_ascii_uppercase();
@@ -3592,7 +3551,7 @@
     /// ```
     </span><span class="attr">#[inline]
     #[must_use]
-    #[unstable(feature = <span class="string">"split_at_checked"</span>, reason = <span class="string">"new API"</span>, issue = <span class="string">"119128"</span>)]
+    #[stable(feature = <span class="string">"split_at_checked"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
     </span><span class="kw">pub fn </span>split_at_mut_checked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, mid: usize) -&gt; <span class="prelude-ty">Option</span>&lt;(<span class="kw-2">&amp;mut </span>str, <span class="kw-2">&amp;mut </span>str)&gt; {
         <span class="comment">// is_char_boundary checks that the index is in [0, .len()]
         </span><span class="kw">if </span><span class="self">self</span>.is_char_boundary(mid) {
@@ -3803,7 +3762,7 @@
     #[cfg_attr(not(test), rustc_diagnostic_item = <span class="string">"str_split_whitespace"</span>)]
     #[inline]
     </span><span class="kw">pub fn </span>split_whitespace(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SplitWhitespace&lt;<span class="lifetime">'_</span>&gt; {
-        SplitWhitespace { inner: <span class="self">self</span>.split(IsWhitespace).filter(IsNotEmpty) }
+        SplitWhitespace { inner: <span class="self">self</span>.split(char::is_whitespace).filter(|s| !s.is_empty()) }
     }
 
     <span class="doccomment">/// Splits a string slice by ASCII whitespace.
@@ -3852,8 +3811,13 @@
     #[stable(feature = <span class="string">"split_ascii_whitespace"</span>, since = <span class="string">"1.34.0"</span>)]
     #[inline]
     </span><span class="kw">pub fn </span>split_ascii_whitespace(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SplitAsciiWhitespace&lt;<span class="lifetime">'_</span>&gt; {
-        <span class="kw">let </span>inner =
-            <span class="self">self</span>.as_bytes().split(IsAsciiWhitespace).filter(BytesIsNotEmpty).map(UnsafeBytesToStr);
+        <span class="kw">let </span>inner = <span class="self">self
+            </span>.as_bytes()
+            .split(u8::is_ascii_whitespace)
+            .filter(|s| !s.is_empty())
+            <span class="comment">// SAFETY: the byte slice came from a string and was only split
+            // along character boundaries, so the resulting slices are strings.
+            </span>.map(|bytes| <span class="kw">unsafe </span>{ from_utf8_unchecked(bytes) });
         SplitAsciiWhitespace { inner }
     }
 
@@ -3905,7 +3869,11 @@
     </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
     #[inline]
     </span><span class="kw">pub fn </span>lines(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Lines&lt;<span class="lifetime">'_</span>&gt; {
-        Lines(<span class="self">self</span>.split_inclusive(<span class="string">'\n'</span>).map(LinesMap))
+        Lines(<span class="self">self</span>.split_inclusive(<span class="string">'\n'</span>).map(|line| {
+            <span class="kw">let </span><span class="prelude-val">Some</span>(line) = line.strip_suffix(<span class="string">'\n'</span>) <span class="kw">else </span>{ <span class="kw">return </span>line };
+            <span class="kw">let </span><span class="prelude-val">Some</span>(line) = line.strip_suffix(<span class="string">'\r'</span>) <span class="kw">else </span>{ <span class="kw">return </span>line };
+            line
+        }))
     }
 
     <span class="doccomment">/// An iterator over the lines of a string.
@@ -5351,15 +5319,14 @@
     /// # Examples
     ///
     /// ```
-    /// #![feature(byte_slice_trim_ascii)]
-    ///
     /// assert_eq!(" \t \u{3000}hello world\n".trim_ascii_start(), "\u{3000}hello world\n");
     /// assert_eq!("  ".trim_ascii_start(), "");
     /// assert_eq!("".trim_ascii_start(), "");
     /// ```
-    </span><span class="attr">#[unstable(feature = <span class="string">"byte_slice_trim_ascii"</span>, issue = <span class="string">"94035"</span>)]
-    #[must_use = <span class="string">"this returns the trimmed string as a new slice, \
+    </span><span class="attr">#[must_use = <span class="string">"this returns the trimmed string as a new slice, \
                   without modifying the original"</span>]
+    #[stable(feature = <span class="string">"byte_slice_trim_ascii"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    #[rustc_const_stable(feature = <span class="string">"byte_slice_trim_ascii"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
     #[inline]
     </span><span class="kw">pub const fn </span>trim_ascii_start(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
         <span class="comment">// SAFETY: Removing ASCII characters from a `&amp;str` does not invalidate
@@ -5377,15 +5344,14 @@
     /// # Examples
     ///
     /// ```
-    /// #![feature(byte_slice_trim_ascii)]
-    ///
     /// assert_eq!("\r hello world\u{3000}\n ".trim_ascii_end(), "\r hello world\u{3000}");
     /// assert_eq!("  ".trim_ascii_end(), "");
     /// assert_eq!("".trim_ascii_end(), "");
     /// ```
-    </span><span class="attr">#[unstable(feature = <span class="string">"byte_slice_trim_ascii"</span>, issue = <span class="string">"94035"</span>)]
-    #[must_use = <span class="string">"this returns the trimmed string as a new slice, \
+    </span><span class="attr">#[must_use = <span class="string">"this returns the trimmed string as a new slice, \
                   without modifying the original"</span>]
+    #[stable(feature = <span class="string">"byte_slice_trim_ascii"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    #[rustc_const_stable(feature = <span class="string">"byte_slice_trim_ascii"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
     #[inline]
     </span><span class="kw">pub const fn </span>trim_ascii_end(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
         <span class="comment">// SAFETY: Removing ASCII characters from a `&amp;str` does not invalidate
@@ -5404,15 +5370,14 @@
     /// # Examples
     ///
     /// ```
-    /// #![feature(byte_slice_trim_ascii)]
-    ///
     /// assert_eq!("\r hello world\n ".trim_ascii(), "hello world");
     /// assert_eq!("  ".trim_ascii(), "");
     /// assert_eq!("".trim_ascii(), "");
     /// ```
-    </span><span class="attr">#[unstable(feature = <span class="string">"byte_slice_trim_ascii"</span>, issue = <span class="string">"94035"</span>)]
-    #[must_use = <span class="string">"this returns the trimmed string as a new slice, \
+    </span><span class="attr">#[must_use = <span class="string">"this returns the trimmed string as a new slice, \
                   without modifying the original"</span>]
+    #[stable(feature = <span class="string">"byte_slice_trim_ascii"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    #[rustc_const_stable(feature = <span class="string">"byte_slice_trim_ascii"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
     #[inline]
     </span><span class="kw">pub const fn </span>trim_ascii(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
         <span class="comment">// SAFETY: Removing ASCII characters from a `&amp;str` does not invalidate
@@ -5459,14 +5424,19 @@
     #[stable(feature = <span class="string">"str_escape"</span>, since = <span class="string">"1.34.0"</span>)]
     </span><span class="kw">pub fn </span>escape_debug(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; EscapeDebug&lt;<span class="lifetime">'_</span>&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>chars = <span class="self">self</span>.chars();
-        EscapeDebug {
-            inner: chars
-                .next()
-                .map(|first| first.escape_debug_ext(EscapeDebugExtArgs::ESCAPE_ALL))
-                .into_iter()
-                .flatten()
-                .chain(chars.flat_map(CharEscapeDebugContinue)),
-        }
+        <span class="kw">let </span>first = chars
+            .next()
+            .map(|first| first.escape_debug_ext(EscapeDebugExtArgs::ESCAPE_ALL))
+            .into_iter()
+            .flatten();
+        <span class="kw">let </span>inner = first.chain(chars.flat_map(|c| {
+            c.escape_debug_ext(EscapeDebugExtArgs {
+                escape_grapheme_extended: <span class="bool-val">false</span>,
+                escape_single_quote: <span class="bool-val">true</span>,
+                escape_double_quote: <span class="bool-val">true</span>,
+            })
+        }));
+        EscapeDebug { inner }
     }
 
     <span class="doccomment">/// Return an iterator that escapes each char in `self` with [`char::escape_default`].
@@ -5504,7 +5474,7 @@
                   without modifying the original"</span>]
     #[stable(feature = <span class="string">"str_escape"</span>, since = <span class="string">"1.34.0"</span>)]
     </span><span class="kw">pub fn </span>escape_default(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; EscapeDefault&lt;<span class="lifetime">'_</span>&gt; {
-        EscapeDefault { inner: <span class="self">self</span>.chars().flat_map(CharEscapeDefault) }
+        EscapeDefault { inner: <span class="self">self</span>.chars().flat_map(char::escape_default) }
     }
 
     <span class="doccomment">/// Return an iterator that escapes each char in `self` with [`char::escape_unicode`].
@@ -5542,7 +5512,7 @@
                   without modifying the original"</span>]
     #[stable(feature = <span class="string">"str_escape"</span>, since = <span class="string">"1.34.0"</span>)]
     </span><span class="kw">pub fn </span>escape_unicode(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; EscapeUnicode&lt;<span class="lifetime">'_</span>&gt; {
-        EscapeUnicode { inner: <span class="self">self</span>.chars().flat_map(CharEscapeUnicode) }
+        EscapeUnicode { inner: <span class="self">self</span>.chars().flat_map(char::escape_unicode) }
     }
 }
 
@@ -5573,59 +5543,15 @@
     }
 }
 
-<span class="macro">impl_fn_for_zst!</span> {
-    <span class="doccomment">/// A nameable, cloneable fn type
-    </span><span class="attr">#[derive(Clone)]
-    </span><span class="kw">struct </span>LinesMap <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Fn = |line: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str| -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str {
-        <span class="kw">let </span><span class="prelude-val">Some</span>(line) = line.strip_suffix(<span class="string">'\n'</span>) <span class="kw">else </span>{ <span class="kw">return </span>line };
-        <span class="kw">let </span><span class="prelude-val">Some</span>(line) = line.strip_suffix(<span class="string">'\r'</span>) <span class="kw">else </span>{ <span class="kw">return </span>line };
-        line
-    };
-
-    <span class="attr">#[derive(Clone)]
-    </span><span class="kw">struct </span>CharEscapeDebugContinue <span class="kw">impl </span>Fn = |c: char| -&gt; char::EscapeDebug {
-        c.escape_debug_ext(EscapeDebugExtArgs {
-            escape_grapheme_extended: <span class="bool-val">false</span>,
-            escape_single_quote: <span class="bool-val">true</span>,
-            escape_double_quote: <span class="bool-val">true
-        </span>})
-    };
-
-    <span class="attr">#[derive(Clone)]
-    </span><span class="kw">struct </span>CharEscapeUnicode <span class="kw">impl </span>Fn = |c: char| -&gt; char::EscapeUnicode {
-        c.escape_unicode()
-    };
-    <span class="attr">#[derive(Clone)]
-    </span><span class="kw">struct </span>CharEscapeDefault <span class="kw">impl </span>Fn = |c: char| -&gt; char::EscapeDefault {
-        c.escape_default()
-    };
-
-    <span class="attr">#[derive(Clone)]
-    </span><span class="kw">struct </span>IsWhitespace <span class="kw">impl </span>Fn = |c: char| -&gt; bool {
-        c.is_whitespace()
-    };
-
-    <span class="attr">#[derive(Clone)]
-    </span><span class="kw">struct </span>IsAsciiWhitespace <span class="kw">impl </span>Fn = |byte: <span class="kw-2">&amp;</span>u8| -&gt; bool {
-        byte.is_ascii_whitespace()
-    };
-
-    <span class="attr">#[derive(Clone)]
-    </span><span class="kw">struct </span>IsNotEmpty <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>&gt; Fn = |s: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">&amp;</span><span class="lifetime">'b </span>str| -&gt; bool {
-        !s.is_empty()
-    };
-
-    <span class="attr">#[derive(Clone)]
-    </span><span class="kw">struct </span>BytesIsNotEmpty <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, <span class="lifetime">'b</span>&gt; Fn = |s: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">&amp;</span><span class="lifetime">'b </span>[u8]| -&gt; bool {
-        !s.is_empty()
-    };
-
-    <span class="attr">#[derive(Clone)]
-    </span><span class="kw">struct </span>UnsafeBytesToStr <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Fn = |bytes: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8]| -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str {
-        <span class="comment">// SAFETY: not safe
-        </span><span class="kw">unsafe </span>{ from_utf8_unchecked(bytes) }
-    };
-}
+<span class="kw">type </span>LinesMap = <span class="kw">impl </span>(Fn(<span class="kw-2">&amp;</span>str) -&gt; <span class="kw-2">&amp;</span>str) + Copy;
+<span class="kw">type </span>CharEscapeDebugContinue = <span class="kw">impl </span>(FnMut(char) -&gt; char::EscapeDebug) + Copy;
+<span class="kw">type </span>CharEscapeUnicode = <span class="kw">impl </span>(Fn(char) -&gt; char::EscapeUnicode) + Copy;
+<span class="kw">type </span>CharEscapeDefault = <span class="kw">impl </span>(Fn(char) -&gt; char::EscapeDefault) + Copy;
+<span class="kw">type </span>IsWhitespace = <span class="kw">impl </span>(Fn(char) -&gt; bool) + Copy;
+<span class="kw">type </span>IsAsciiWhitespace = <span class="kw">impl </span>(Fn(<span class="kw-2">&amp;</span>u8) -&gt; bool) + Copy;
+<span class="kw">type </span>IsNotEmpty = <span class="kw">impl </span>(Fn(&amp;&amp;str) -&gt; bool) + Copy;
+<span class="kw">type </span>BytesIsNotEmpty&lt;<span class="lifetime">'a</span>&gt; = <span class="kw">impl </span>(FnMut(&amp;&amp;<span class="lifetime">'a </span>[u8]) -&gt; bool) + Copy;
+<span class="kw">type </span>UnsafeBytesToStr&lt;<span class="lifetime">'a</span>&gt; = <span class="kw">impl </span>(FnMut(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8]) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str) + Copy;
 
 <span class="comment">// This is required to make `impl From&lt;&amp;str&gt; for Box&lt;dyn Error&gt;` and `impl&lt;E&gt; From&lt;E&gt; for Box&lt;dyn Error&gt;` not overlap.
 </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]

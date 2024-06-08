@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/path.rs`."><title>path.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.79.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../std/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/path.rs`."><title>path.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -3391,6 +3391,14 @@
 <a href="#3391" id="3391">3391</a>
 <a href="#3392" id="3392">3392</a>
 <a href="#3393" id="3393">3393</a>
+<a href="#3394" id="3394">3394</a>
+<a href="#3395" id="3395">3395</a>
+<a href="#3396" id="3396">3396</a>
+<a href="#3397" id="3397">3397</a>
+<a href="#3398" id="3398">3398</a>
+<a href="#3399" id="3399">3399</a>
+<a href="#3400" id="3400">3400</a>
+<a href="#3401" id="3401">3401</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Cross-platform path manipulation.
 //!
 //! This module provides two types, [`PathBuf`] and [`Path`] (akin to [`String`]
@@ -4551,12 +4559,6 @@
 /// Which method works best depends on what kind of situation you're in.
 </span><span class="attr">#[cfg_attr(not(test), rustc_diagnostic_item = <span class="string">"PathBuf"</span>)]
 #[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
-</span><span class="comment">// `PathBuf::as_mut_vec` current implementation relies
-// on `PathBuf` being layout-compatible with `Vec&lt;u8&gt;`.
-// However, `PathBuf` layout is considered an implementation detail and must not be relied upon. We
-// want `repr(transparent)` but we don't want it to show up in rustdoc, so we hide it under
-// `cfg(doc)`. This is an ad-hoc implementation of attribute privacy.
-</span><span class="attr">#[cfg_attr(not(doc), repr(transparent))]
 </span><span class="kw">pub struct </span>PathBuf {
     inner: OsString,
 }
@@ -4564,7 +4566,7 @@
 <span class="kw">impl </span>PathBuf {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_mut_vec(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>Vec&lt;u8&gt; {
-        <span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>(<span class="self">self </span><span class="kw">as </span><span class="kw-2">*mut </span>PathBuf <span class="kw">as </span><span class="kw-2">*mut </span>Vec&lt;u8&gt;) }
+        <span class="self">self</span>.inner.as_mut_vec_for_path_buf()
     }
 
     <span class="doccomment">/// Allocates an empty `PathBuf`.
@@ -4824,6 +4826,11 @@
     /// If `extension` is the empty string, [`self.extension`] will be [`None`]
     /// afterwards, not `Some("")`.
     ///
+    /// # Panics
+    ///
+    /// Panics if the passed extension contains a path separator (see
+    /// [`is_separator`]).
+    ///
     /// # Caveats
     ///
     /// The new `extension` may contain dots and will be used in its entirety,
@@ -4869,6 +4876,14 @@
     }
 
     <span class="kw">fn </span>_set_extension(<span class="kw-2">&amp;mut </span><span class="self">self</span>, extension: <span class="kw-2">&amp;</span>OsStr) -&gt; bool {
+        <span class="kw">for </span><span class="kw-2">&amp;</span>b <span class="kw">in </span>extension.as_encoded_bytes() {
+            <span class="kw">if </span>b &lt; <span class="number">128 </span>{
+                <span class="kw">if </span>is_separator(b <span class="kw">as </span>char) {
+                    <span class="macro">panic!</span>(<span class="string">"extension cannot contain path separators: {:?}"</span>, extension);
+                }
+            }
+        }
+
         <span class="kw">let </span>file_stem = <span class="kw">match </span><span class="self">self</span>.file_stem() {
             <span class="prelude-val">None </span>=&gt; <span class="kw">return </span><span class="bool-val">false</span>,
             <span class="prelude-val">Some</span>(f) =&gt; f.as_encoded_bytes(),
@@ -6722,10 +6737,9 @@
 ///
 /// # Examples
 ///
-/// ## Posix paths
+/// ## POSIX paths
 ///
 /// ```
-/// #![feature(absolute_path)]
 /// # #[cfg(unix)]
 /// fn main() -&gt; std::io::Result&lt;()&gt; {
 ///   use std::path::{self, Path};
@@ -6750,7 +6764,6 @@
 /// ## Windows paths
 ///
 /// ```
-/// #![feature(absolute_path)]
 /// # #[cfg(windows)]
 /// fn main() -&gt; std::io::Result&lt;()&gt; {
 ///   use std::path::{self, Path};
@@ -6770,12 +6783,15 @@
 /// ```
 ///
 /// For verbatim paths this will simply return the path as given. For other
-/// paths this is currently equivalent to calling [`GetFullPathNameW`][windows-path]
-/// This may change in the future.
+/// paths this is currently equivalent to calling
+/// [`GetFullPathNameW`][windows-path].
 ///
+/// Note that this [may change in the future][changes].
+///
+/// [changes]: io#platform-specific-behavior
 /// [posix-semantics]: https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_13
 /// [windows-path]: https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfullpathnamew
-</span><span class="attr">#[unstable(feature = <span class="string">"absolute_path"</span>, issue = <span class="string">"92750"</span>)]
+</span><span class="attr">#[stable(feature = <span class="string">"absolute_path"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub fn </span>absolute&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;PathBuf&gt; {
     <span class="kw">let </span>path = path.as_ref();
     <span class="kw">if </span>path.as_os_str().is_empty() {

@@ -31,6 +31,8 @@
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="ferris.css">
         <link rel="stylesheet" href="theme/2018-edition.css">
+        <link rel="stylesheet" href="theme/semantic-notes.css">
+        <link rel="stylesheet" href="theme/listing.css">
 
     </head>
     <body class="sidebar-visible no-js">
@@ -212,7 +214,7 @@ syntax and how to interact with values stored within a <code>Box&lt;T&gt;</code>
 <p><span class="filename">Filename: src/main.rs</span></p>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let b = Box::new(5);
-    println!("b = {}", b);
+    println!("b = {b}");
 }</code></pre></pre>
 <p><span class="caption">Listing 15-1: Storing an <code>i32</code> value on the heap using a
 box</span></p>
@@ -274,12 +276,12 @@ we’ll demonstrate.</p>
 </span><span class="boring">fn main() {}</span></code></pre>
 <p><span class="caption">Listing 15-2: The first attempt at defining an enum to
 represent a cons list data structure of <code>i32</code> values</span></p>
-<blockquote>
+<section class="note" aria-role="note">
 <p>Note: We’re implementing a cons list that holds only <code>i32</code> values for the
 purposes of this example. We could have implemented it using generics, as we
 discussed in Chapter 10, to define a cons list type that could store values of
 any type.</p>
-</blockquote>
+</section>
 <p>Using the <code>List</code> type to store the list <code>1, 2, 3</code> would look like the code in
 Listing 15-3:</p>
 <p><span class="filename">Filename: src/main.rs</span></p>
@@ -315,8 +317,19 @@ help: insert some indirection (e.g., a `Box`, `Rc`, or `&amp;`) to break the cyc
 2 |     Cons(i32, Box&lt;List&gt;),
   |               ++++    +
 
-For more information about this error, try `rustc --explain E0072`.
-error: could not compile `cons-list` (bin "cons-list") due to 1 previous error
+error[E0391]: cycle detected when computing when `List` needs drop
+ --&gt; src/main.rs:1:1
+  |
+1 | enum List {
+  | ^^^^^^^^^
+  |
+  = note: ...which immediately requires computing when `List` needs drop again
+  = note: cycle used when computing whether `List` needs drop
+  = note: see https://rustc-dev-guide.rust-lang.org/overview.html#queries and https://rustc-dev-guide.rust-lang.org/query.html for more information
+
+Some errors have detailed explanations: E0072, E0391.
+For more information about an error, try `rustc --explain E0072`.
+error: could not compile `cons-list` (bin "cons-list") due to 2 previous errors
 </code></pre>
 <p><span class="caption">Listing 15-4: The error we get when attempting to define
 a recursive enum</span></p>

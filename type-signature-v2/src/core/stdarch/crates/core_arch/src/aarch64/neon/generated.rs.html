@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/../../stdarch/crates/core_arch/src/aarch64/neon/generated.rs`."><title>generated.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../../../../../../" data-static-root-path="../../../../../../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../../../../src-files1.79.0.js"></script><script defer src="../../../../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../../../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/../../stdarch/crates/core_arch/src/aarch64/neon/generated.rs`."><title>generated.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../../../../../../" data-static-root-path="../../../../../../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../../../../src-files1.81.0.js"></script><script defer src="../../../../../../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../../../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -28675,7 +28675,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(eor3))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>veor3q_s8(a: int8x16_t, b: int8x16_t, c: int8x16_t) -&gt; int8x16_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -28691,7 +28691,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(eor3))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>veor3q_s16(a: int16x8_t, b: int16x8_t, c: int16x8_t) -&gt; int16x8_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -28707,7 +28707,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(eor3))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>veor3q_s32(a: int32x4_t, b: int32x4_t, c: int32x4_t) -&gt; int32x4_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -28723,7 +28723,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(eor3))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>veor3q_s64(a: int64x2_t, b: int64x2_t, c: int64x2_t) -&gt; int64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -28739,7 +28739,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(eor3))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>veor3q_u8(a: uint8x16_t, b: uint8x16_t, c: uint8x16_t) -&gt; uint8x16_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -28755,7 +28755,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(eor3))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>veor3q_u16(a: uint16x8_t, b: uint16x8_t, c: uint16x8_t) -&gt; uint16x8_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -28771,7 +28771,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(eor3))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>veor3q_u32(a: uint32x4_t, b: uint32x4_t, c: uint32x4_t) -&gt; uint32x4_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -28787,7 +28787,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(eor3))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>veor3q_u64(a: uint64x2_t, b: uint64x2_t, c: uint64x2_t) -&gt; uint64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -38637,7 +38637,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(bcax))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vbcaxq_s8(a: int8x16_t, b: int8x16_t, c: int8x16_t) -&gt; int8x16_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -38653,7 +38653,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(bcax))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vbcaxq_s16(a: int16x8_t, b: int16x8_t, c: int16x8_t) -&gt; int16x8_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -38669,7 +38669,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(bcax))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vbcaxq_s32(a: int32x4_t, b: int32x4_t, c: int32x4_t) -&gt; int32x4_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -38685,7 +38685,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(bcax))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vbcaxq_s64(a: int64x2_t, b: int64x2_t, c: int64x2_t) -&gt; int64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -38701,7 +38701,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(bcax))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vbcaxq_u8(a: uint8x16_t, b: uint8x16_t, c: uint8x16_t) -&gt; uint8x16_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -38717,7 +38717,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(bcax))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vbcaxq_u16(a: uint16x8_t, b: uint16x8_t, c: uint16x8_t) -&gt; uint16x8_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -38733,7 +38733,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(bcax))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vbcaxq_u32(a: uint32x4_t, b: uint32x4_t, c: uint32x4_t) -&gt; uint32x4_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -38749,7 +38749,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(bcax))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vbcaxq_u64(a: uint64x2_t, b: uint64x2_t, c: uint64x2_t) -&gt; uint64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -43921,7 +43921,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(rax1))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrax1q_u64(a: uint64x2_t, b: uint64x2_t) -&gt; uint64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -43937,7 +43937,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(sha512h))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vsha512hq_u64(a: uint64x2_t, b: uint64x2_t, c: uint64x2_t) -&gt; uint64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -43953,7 +43953,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(sha512h2))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vsha512h2q_u64(a: uint64x2_t, b: uint64x2_t, c: uint64x2_t) -&gt; uint64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -43969,7 +43969,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(sha512su0))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vsha512su0q_u64(a: uint64x2_t, b: uint64x2_t) -&gt; uint64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -43985,7 +43985,7 @@
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,sha3"</span>)]
 #[cfg_attr(test, assert_instr(sha512su1))]
-#[unstable(feature = <span class="string">"stdarch_neon_sha3"</span>, issue = <span class="string">"117225"</span>)]
+#[stable(feature = <span class="string">"stdarch_neon_sha3"</span>, since = <span class="string">"1.79.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vsha512su1q_u64(a: uint64x2_t, b: uint64x2_t, c: uint64x2_t) -&gt; uint64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
     </span><span class="kw">extern </span><span class="string">"unadjusted" </span>{
@@ -44000,7 +44000,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd32x_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint32x))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint32x))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd32x_f32(a: float32x2_t) -&gt; float32x2_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44016,7 +44016,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd32xq_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint32x))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint32x))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd32xq_f32(a: float32x4_t) -&gt; float32x4_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44032,7 +44032,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd32xq_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint32x))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint32x))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd32xq_f64(a: float64x2_t) -&gt; float64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44048,7 +44048,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd32x_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint32x))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint32x))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd32x_f64(a: float64x1_t) -&gt; float64x1_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44064,7 +44064,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd32z_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint32z))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint32z))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd32z_f32(a: float32x2_t) -&gt; float32x2_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44080,7 +44080,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd32zq_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint32z))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint32z))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd32zq_f32(a: float32x4_t) -&gt; float32x4_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44096,7 +44096,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd32zq_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint32z))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint32z))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd32zq_f64(a: float64x2_t) -&gt; float64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44112,7 +44112,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd32z_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint32z))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint32z))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd32z_f64(a: float64x1_t) -&gt; float64x1_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44128,7 +44128,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd64x_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint64x))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint64x))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd64x_f32(a: float32x2_t) -&gt; float32x2_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44144,7 +44144,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd64xq_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint64x))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint64x))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd64xq_f32(a: float32x4_t) -&gt; float32x4_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44160,7 +44160,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd64xq_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint64x))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint64x))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd64xq_f64(a: float64x2_t) -&gt; float64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44176,7 +44176,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd64x_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint64x))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint64x))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd64x_f64(a: float64x1_t) -&gt; float64x1_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44192,7 +44192,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd64z_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint64z))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint64z))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd64z_f32(a: float32x2_t) -&gt; float32x2_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44208,7 +44208,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd64zq_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint64z))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint64z))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd64zq_f32(a: float32x4_t) -&gt; float32x4_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44224,7 +44224,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd64zq_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint64z))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint64z))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd64zq_f64(a: float64x2_t) -&gt; float64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44240,7 +44240,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vrnd64z_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon,frintts"</span>)]
-#[cfg_attr(test, assert_instr(frint64z))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(frint64z))]
 #[unstable(feature = <span class="string">"stdarch_neon_ftts"</span>, issue = <span class="string">"117227"</span>)]
 </span><span class="kw">pub unsafe fn </span>vrnd64z_f64(a: float64x1_t) -&gt; float64x1_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -44256,7 +44256,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1_s8(a: int8x8_t, b: int8x8_t) -&gt; int8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">8</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">4</span>, <span class="number">12</span>, <span class="number">6</span>, <span class="number">14</span>])
@@ -44267,7 +44267,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1q_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1q_s8(a: int8x16_t, b: int8x16_t) -&gt; int8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">16</span>, <span class="number">2</span>, <span class="number">18</span>, <span class="number">4</span>, <span class="number">20</span>, <span class="number">6</span>, <span class="number">22</span>, <span class="number">8</span>, <span class="number">24</span>, <span class="number">10</span>, <span class="number">26</span>, <span class="number">12</span>, <span class="number">28</span>, <span class="number">14</span>, <span class="number">30</span>])
@@ -44278,7 +44278,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1_s16(a: int16x4_t, b: int16x4_t) -&gt; int16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">6</span>])
@@ -44289,7 +44289,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1q_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1q_s16(a: int16x8_t, b: int16x8_t) -&gt; int16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">8</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">4</span>, <span class="number">12</span>, <span class="number">6</span>, <span class="number">14</span>])
@@ -44300,7 +44300,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1q_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1q_s32(a: int32x4_t, b: int32x4_t) -&gt; int32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">6</span>])
@@ -44311,7 +44311,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1_u8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1_u8(a: uint8x8_t, b: uint8x8_t) -&gt; uint8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">8</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">4</span>, <span class="number">12</span>, <span class="number">6</span>, <span class="number">14</span>])
@@ -44322,7 +44322,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1q_u8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1q_u8(a: uint8x16_t, b: uint8x16_t) -&gt; uint8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">16</span>, <span class="number">2</span>, <span class="number">18</span>, <span class="number">4</span>, <span class="number">20</span>, <span class="number">6</span>, <span class="number">22</span>, <span class="number">8</span>, <span class="number">24</span>, <span class="number">10</span>, <span class="number">26</span>, <span class="number">12</span>, <span class="number">28</span>, <span class="number">14</span>, <span class="number">30</span>])
@@ -44333,7 +44333,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1_u16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1_u16(a: uint16x4_t, b: uint16x4_t) -&gt; uint16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">6</span>])
@@ -44344,7 +44344,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1q_u16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1q_u16(a: uint16x8_t, b: uint16x8_t) -&gt; uint16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">8</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">4</span>, <span class="number">12</span>, <span class="number">6</span>, <span class="number">14</span>])
@@ -44355,7 +44355,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1q_u32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1q_u32(a: uint32x4_t, b: uint32x4_t) -&gt; uint32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">6</span>])
@@ -44366,7 +44366,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1_p8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1_p8(a: poly8x8_t, b: poly8x8_t) -&gt; poly8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">8</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">4</span>, <span class="number">12</span>, <span class="number">6</span>, <span class="number">14</span>])
@@ -44377,7 +44377,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1q_p8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1q_p8(a: poly8x16_t, b: poly8x16_t) -&gt; poly8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">16</span>, <span class="number">2</span>, <span class="number">18</span>, <span class="number">4</span>, <span class="number">20</span>, <span class="number">6</span>, <span class="number">22</span>, <span class="number">8</span>, <span class="number">24</span>, <span class="number">10</span>, <span class="number">26</span>, <span class="number">12</span>, <span class="number">28</span>, <span class="number">14</span>, <span class="number">30</span>])
@@ -44388,7 +44388,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1_p16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1_p16(a: poly16x4_t, b: poly16x4_t) -&gt; poly16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">6</span>])
@@ -44399,7 +44399,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1q_p16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1q_p16(a: poly16x8_t, b: poly16x8_t) -&gt; poly16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">8</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">4</span>, <span class="number">12</span>, <span class="number">6</span>, <span class="number">14</span>])
@@ -44410,7 +44410,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1_s32(a: int32x2_t, b: int32x2_t) -&gt; int32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44421,7 +44421,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1q_s64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1q_s64(a: int64x2_t, b: int64x2_t) -&gt; int64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44432,7 +44432,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1_u32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1_u32(a: uint32x2_t, b: uint32x2_t) -&gt; uint32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44443,7 +44443,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1q_u64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1q_u64(a: uint64x2_t, b: uint64x2_t) -&gt; uint64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44454,7 +44454,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1q_p64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1q_p64(a: poly64x2_t, b: poly64x2_t) -&gt; poly64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44465,7 +44465,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1q_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1q_f32(a: float32x4_t, b: float32x4_t) -&gt; float32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">6</span>])
@@ -44476,7 +44476,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1_f32(a: float32x2_t, b: float32x2_t) -&gt; float32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44487,7 +44487,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn1q_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn1q_f64(a: float64x2_t, b: float64x2_t) -&gt; float64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44498,7 +44498,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2_s8(a: int8x8_t, b: int8x8_t) -&gt; int8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">9</span>, <span class="number">3</span>, <span class="number">11</span>, <span class="number">5</span>, <span class="number">13</span>, <span class="number">7</span>, <span class="number">15</span>])
@@ -44509,7 +44509,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2q_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2q_s8(a: int8x16_t, b: int8x16_t) -&gt; int8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">17</span>, <span class="number">3</span>, <span class="number">19</span>, <span class="number">5</span>, <span class="number">21</span>, <span class="number">7</span>, <span class="number">23</span>, <span class="number">9</span>, <span class="number">25</span>, <span class="number">11</span>, <span class="number">27</span>, <span class="number">13</span>, <span class="number">29</span>, <span class="number">15</span>, <span class="number">31</span>])
@@ -44520,7 +44520,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2_s16(a: int16x4_t, b: int16x4_t) -&gt; int16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">7</span>])
@@ -44531,7 +44531,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2q_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2q_s16(a: int16x8_t, b: int16x8_t) -&gt; int16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">9</span>, <span class="number">3</span>, <span class="number">11</span>, <span class="number">5</span>, <span class="number">13</span>, <span class="number">7</span>, <span class="number">15</span>])
@@ -44542,7 +44542,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2q_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2q_s32(a: int32x4_t, b: int32x4_t) -&gt; int32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">7</span>])
@@ -44553,7 +44553,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2_u8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2_u8(a: uint8x8_t, b: uint8x8_t) -&gt; uint8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">9</span>, <span class="number">3</span>, <span class="number">11</span>, <span class="number">5</span>, <span class="number">13</span>, <span class="number">7</span>, <span class="number">15</span>])
@@ -44564,7 +44564,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2q_u8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2q_u8(a: uint8x16_t, b: uint8x16_t) -&gt; uint8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">17</span>, <span class="number">3</span>, <span class="number">19</span>, <span class="number">5</span>, <span class="number">21</span>, <span class="number">7</span>, <span class="number">23</span>, <span class="number">9</span>, <span class="number">25</span>, <span class="number">11</span>, <span class="number">27</span>, <span class="number">13</span>, <span class="number">29</span>, <span class="number">15</span>, <span class="number">31</span>])
@@ -44575,7 +44575,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2_u16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2_u16(a: uint16x4_t, b: uint16x4_t) -&gt; uint16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">7</span>])
@@ -44586,7 +44586,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2q_u16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2q_u16(a: uint16x8_t, b: uint16x8_t) -&gt; uint16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">9</span>, <span class="number">3</span>, <span class="number">11</span>, <span class="number">5</span>, <span class="number">13</span>, <span class="number">7</span>, <span class="number">15</span>])
@@ -44597,7 +44597,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2q_u32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2q_u32(a: uint32x4_t, b: uint32x4_t) -&gt; uint32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">7</span>])
@@ -44608,7 +44608,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2_p8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2_p8(a: poly8x8_t, b: poly8x8_t) -&gt; poly8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">9</span>, <span class="number">3</span>, <span class="number">11</span>, <span class="number">5</span>, <span class="number">13</span>, <span class="number">7</span>, <span class="number">15</span>])
@@ -44619,7 +44619,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2q_p8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2q_p8(a: poly8x16_t, b: poly8x16_t) -&gt; poly8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">17</span>, <span class="number">3</span>, <span class="number">19</span>, <span class="number">5</span>, <span class="number">21</span>, <span class="number">7</span>, <span class="number">23</span>, <span class="number">9</span>, <span class="number">25</span>, <span class="number">11</span>, <span class="number">27</span>, <span class="number">13</span>, <span class="number">29</span>, <span class="number">15</span>, <span class="number">31</span>])
@@ -44630,7 +44630,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2_p16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2_p16(a: poly16x4_t, b: poly16x4_t) -&gt; poly16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">7</span>])
@@ -44641,7 +44641,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2q_p16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2q_p16(a: poly16x8_t, b: poly16x8_t) -&gt; poly16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">9</span>, <span class="number">3</span>, <span class="number">11</span>, <span class="number">5</span>, <span class="number">13</span>, <span class="number">7</span>, <span class="number">15</span>])
@@ -44652,7 +44652,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2_s32(a: int32x2_t, b: int32x2_t) -&gt; int32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -44663,7 +44663,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2q_s64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2q_s64(a: int64x2_t, b: int64x2_t) -&gt; int64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -44674,7 +44674,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2_u32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2_u32(a: uint32x2_t, b: uint32x2_t) -&gt; uint32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -44685,7 +44685,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2q_u64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2q_u64(a: uint64x2_t, b: uint64x2_t) -&gt; uint64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -44696,7 +44696,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2q_p64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2q_p64(a: poly64x2_t, b: poly64x2_t) -&gt; poly64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -44707,7 +44707,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2q_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(trn2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(trn2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2q_f32(a: float32x4_t, b: float32x4_t) -&gt; float32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">7</span>])
@@ -44718,7 +44718,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2_f32(a: float32x2_t, b: float32x2_t) -&gt; float32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -44729,7 +44729,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vtrn2q_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vtrn2q_f64(a: float64x2_t, b: float64x2_t) -&gt; float64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -44740,7 +44740,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1_s8(a: int8x8_t, b: int8x8_t) -&gt; int8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">3</span>, <span class="number">11</span>])
@@ -44751,7 +44751,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1q_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1q_s8(a: int8x16_t, b: int8x16_t) -&gt; int8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">16</span>, <span class="number">1</span>, <span class="number">17</span>, <span class="number">2</span>, <span class="number">18</span>, <span class="number">3</span>, <span class="number">19</span>, <span class="number">4</span>, <span class="number">20</span>, <span class="number">5</span>, <span class="number">21</span>, <span class="number">6</span>, <span class="number">22</span>, <span class="number">7</span>, <span class="number">23</span>])
@@ -44762,7 +44762,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1_s16(a: int16x4_t, b: int16x4_t) -&gt; int16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>])
@@ -44773,7 +44773,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1q_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1q_s16(a: int16x8_t, b: int16x8_t) -&gt; int16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">3</span>, <span class="number">11</span>])
@@ -44784,7 +44784,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1_s32(a: int32x2_t, b: int32x2_t) -&gt; int32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44795,7 +44795,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1q_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1q_s32(a: int32x4_t, b: int32x4_t) -&gt; int32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>])
@@ -44806,7 +44806,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1q_s64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1q_s64(a: int64x2_t, b: int64x2_t) -&gt; int64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44817,7 +44817,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1_u8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1_u8(a: uint8x8_t, b: uint8x8_t) -&gt; uint8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">3</span>, <span class="number">11</span>])
@@ -44828,7 +44828,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1q_u8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1q_u8(a: uint8x16_t, b: uint8x16_t) -&gt; uint8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">16</span>, <span class="number">1</span>, <span class="number">17</span>, <span class="number">2</span>, <span class="number">18</span>, <span class="number">3</span>, <span class="number">19</span>, <span class="number">4</span>, <span class="number">20</span>, <span class="number">5</span>, <span class="number">21</span>, <span class="number">6</span>, <span class="number">22</span>, <span class="number">7</span>, <span class="number">23</span>])
@@ -44839,7 +44839,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1_u16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1_u16(a: uint16x4_t, b: uint16x4_t) -&gt; uint16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>])
@@ -44850,7 +44850,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1q_u16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1q_u16(a: uint16x8_t, b: uint16x8_t) -&gt; uint16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">3</span>, <span class="number">11</span>])
@@ -44861,7 +44861,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1_u32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1_u32(a: uint32x2_t, b: uint32x2_t) -&gt; uint32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44872,7 +44872,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1q_u32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1q_u32(a: uint32x4_t, b: uint32x4_t) -&gt; uint32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>])
@@ -44883,7 +44883,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1q_u64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1q_u64(a: uint64x2_t, b: uint64x2_t) -&gt; uint64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44894,7 +44894,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1_p8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1_p8(a: poly8x8_t, b: poly8x8_t) -&gt; poly8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">3</span>, <span class="number">11</span>])
@@ -44905,7 +44905,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1q_p8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1q_p8(a: poly8x16_t, b: poly8x16_t) -&gt; poly8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">16</span>, <span class="number">1</span>, <span class="number">17</span>, <span class="number">2</span>, <span class="number">18</span>, <span class="number">3</span>, <span class="number">19</span>, <span class="number">4</span>, <span class="number">20</span>, <span class="number">5</span>, <span class="number">21</span>, <span class="number">6</span>, <span class="number">22</span>, <span class="number">7</span>, <span class="number">23</span>])
@@ -44916,7 +44916,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1_p16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1_p16(a: poly16x4_t, b: poly16x4_t) -&gt; poly16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>])
@@ -44927,7 +44927,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1q_p16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1q_p16(a: poly16x8_t, b: poly16x8_t) -&gt; poly16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">8</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">3</span>, <span class="number">11</span>])
@@ -44938,7 +44938,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1q_p64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1q_p64(a: poly64x2_t, b: poly64x2_t) -&gt; poly64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44949,7 +44949,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1_f32(a: float32x2_t, b: float32x2_t) -&gt; float32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44960,7 +44960,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1q_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1q_f32(a: float32x4_t, b: float32x4_t) -&gt; float32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>])
@@ -44971,7 +44971,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip1q_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip1q_f64(a: float64x2_t, b: float64x2_t) -&gt; float64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -44982,7 +44982,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2_s8(a: int8x8_t, b: int8x8_t) -&gt; int8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">4</span>, <span class="number">12</span>, <span class="number">5</span>, <span class="number">13</span>, <span class="number">6</span>, <span class="number">14</span>, <span class="number">7</span>, <span class="number">15</span>])
@@ -44993,7 +44993,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2q_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2q_s8(a: int8x16_t, b: int8x16_t) -&gt; int8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">8</span>, <span class="number">24</span>, <span class="number">9</span>, <span class="number">25</span>, <span class="number">10</span>, <span class="number">26</span>, <span class="number">11</span>, <span class="number">27</span>, <span class="number">12</span>, <span class="number">28</span>, <span class="number">13</span>, <span class="number">29</span>, <span class="number">14</span>, <span class="number">30</span>, <span class="number">15</span>, <span class="number">31</span>])
@@ -45004,7 +45004,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2_s16(a: int16x4_t, b: int16x4_t) -&gt; int16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">2</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">7</span>])
@@ -45015,7 +45015,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2q_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2q_s16(a: int16x8_t, b: int16x8_t) -&gt; int16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">4</span>, <span class="number">12</span>, <span class="number">5</span>, <span class="number">13</span>, <span class="number">6</span>, <span class="number">14</span>, <span class="number">7</span>, <span class="number">15</span>])
@@ -45026,7 +45026,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2_s32(a: int32x2_t, b: int32x2_t) -&gt; int32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45037,7 +45037,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2q_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2q_s32(a: int32x4_t, b: int32x4_t) -&gt; int32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">2</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">7</span>])
@@ -45048,7 +45048,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2q_s64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2q_s64(a: int64x2_t, b: int64x2_t) -&gt; int64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45059,7 +45059,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2_u8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2_u8(a: uint8x8_t, b: uint8x8_t) -&gt; uint8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">4</span>, <span class="number">12</span>, <span class="number">5</span>, <span class="number">13</span>, <span class="number">6</span>, <span class="number">14</span>, <span class="number">7</span>, <span class="number">15</span>])
@@ -45070,7 +45070,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2q_u8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2q_u8(a: uint8x16_t, b: uint8x16_t) -&gt; uint8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">8</span>, <span class="number">24</span>, <span class="number">9</span>, <span class="number">25</span>, <span class="number">10</span>, <span class="number">26</span>, <span class="number">11</span>, <span class="number">27</span>, <span class="number">12</span>, <span class="number">28</span>, <span class="number">13</span>, <span class="number">29</span>, <span class="number">14</span>, <span class="number">30</span>, <span class="number">15</span>, <span class="number">31</span>])
@@ -45081,7 +45081,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2_u16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2_u16(a: uint16x4_t, b: uint16x4_t) -&gt; uint16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">2</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">7</span>])
@@ -45092,7 +45092,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2q_u16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2q_u16(a: uint16x8_t, b: uint16x8_t) -&gt; uint16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">4</span>, <span class="number">12</span>, <span class="number">5</span>, <span class="number">13</span>, <span class="number">6</span>, <span class="number">14</span>, <span class="number">7</span>, <span class="number">15</span>])
@@ -45103,7 +45103,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2_u32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2_u32(a: uint32x2_t, b: uint32x2_t) -&gt; uint32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45114,7 +45114,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2q_u32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2q_u32(a: uint32x4_t, b: uint32x4_t) -&gt; uint32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">2</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">7</span>])
@@ -45125,7 +45125,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2q_u64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2q_u64(a: uint64x2_t, b: uint64x2_t) -&gt; uint64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45136,7 +45136,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2_p8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2_p8(a: poly8x8_t, b: poly8x8_t) -&gt; poly8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">4</span>, <span class="number">12</span>, <span class="number">5</span>, <span class="number">13</span>, <span class="number">6</span>, <span class="number">14</span>, <span class="number">7</span>, <span class="number">15</span>])
@@ -45147,7 +45147,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2q_p8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2q_p8(a: poly8x16_t, b: poly8x16_t) -&gt; poly8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">8</span>, <span class="number">24</span>, <span class="number">9</span>, <span class="number">25</span>, <span class="number">10</span>, <span class="number">26</span>, <span class="number">11</span>, <span class="number">27</span>, <span class="number">12</span>, <span class="number">28</span>, <span class="number">13</span>, <span class="number">29</span>, <span class="number">14</span>, <span class="number">30</span>, <span class="number">15</span>, <span class="number">31</span>])
@@ -45158,7 +45158,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2_p16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2_p16(a: poly16x4_t, b: poly16x4_t) -&gt; poly16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">2</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">7</span>])
@@ -45169,7 +45169,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2q_p16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2q_p16(a: poly16x8_t, b: poly16x8_t) -&gt; poly16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">4</span>, <span class="number">12</span>, <span class="number">5</span>, <span class="number">13</span>, <span class="number">6</span>, <span class="number">14</span>, <span class="number">7</span>, <span class="number">15</span>])
@@ -45180,7 +45180,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2q_p64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2q_p64(a: poly64x2_t, b: poly64x2_t) -&gt; poly64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45191,7 +45191,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2_f32(a: float32x2_t, b: float32x2_t) -&gt; float32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45202,7 +45202,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2q_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2q_f32(a: float32x4_t, b: float32x4_t) -&gt; float32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">2</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">7</span>])
@@ -45213,7 +45213,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vzip2q_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vzip2q_f64(a: float64x2_t, b: float64x2_t) -&gt; float64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45224,7 +45224,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1_s8(a: int8x8_t, b: int8x8_t) -&gt; int8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>])
@@ -45235,7 +45235,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1q_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1q_s8(a: int8x16_t, b: int8x16_t) -&gt; int8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">20</span>, <span class="number">22</span>, <span class="number">24</span>, <span class="number">26</span>, <span class="number">28</span>, <span class="number">30</span>])
@@ -45246,7 +45246,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1_s16(a: int16x4_t, b: int16x4_t) -&gt; int16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>])
@@ -45257,7 +45257,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1q_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1q_s16(a: int16x8_t, b: int16x8_t) -&gt; int16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>])
@@ -45268,7 +45268,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1q_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1q_s32(a: int32x4_t, b: int32x4_t) -&gt; int32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>])
@@ -45279,7 +45279,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1_u8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1_u8(a: uint8x8_t, b: uint8x8_t) -&gt; uint8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>])
@@ -45290,7 +45290,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1q_u8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1q_u8(a: uint8x16_t, b: uint8x16_t) -&gt; uint8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">20</span>, <span class="number">22</span>, <span class="number">24</span>, <span class="number">26</span>, <span class="number">28</span>, <span class="number">30</span>])
@@ -45301,7 +45301,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1_u16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1_u16(a: uint16x4_t, b: uint16x4_t) -&gt; uint16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>])
@@ -45312,7 +45312,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1q_u16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1q_u16(a: uint16x8_t, b: uint16x8_t) -&gt; uint16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>])
@@ -45323,7 +45323,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1q_u32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1q_u32(a: uint32x4_t, b: uint32x4_t) -&gt; uint32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>])
@@ -45334,7 +45334,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1_p8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1_p8(a: poly8x8_t, b: poly8x8_t) -&gt; poly8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>])
@@ -45345,7 +45345,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1q_p8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1q_p8(a: poly8x16_t, b: poly8x16_t) -&gt; poly8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">20</span>, <span class="number">22</span>, <span class="number">24</span>, <span class="number">26</span>, <span class="number">28</span>, <span class="number">30</span>])
@@ -45356,7 +45356,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1_p16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1_p16(a: poly16x4_t, b: poly16x4_t) -&gt; poly16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>])
@@ -45367,7 +45367,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1q_p16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1q_p16(a: poly16x8_t, b: poly16x8_t) -&gt; poly16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">14</span>])
@@ -45378,7 +45378,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1_s32(a: int32x2_t, b: int32x2_t) -&gt; int32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -45389,7 +45389,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1q_s64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1q_s64(a: int64x2_t, b: int64x2_t) -&gt; int64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -45400,7 +45400,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1_u32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1_u32(a: uint32x2_t, b: uint32x2_t) -&gt; uint32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -45411,7 +45411,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1q_u64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1q_u64(a: uint64x2_t, b: uint64x2_t) -&gt; uint64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -45422,7 +45422,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1q_p64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1q_p64(a: poly64x2_t, b: poly64x2_t) -&gt; poly64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -45433,7 +45433,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1q_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1q_f32(a: float32x4_t, b: float32x4_t) -&gt; float32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>])
@@ -45444,7 +45444,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1_f32(a: float32x2_t, b: float32x2_t) -&gt; float32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -45455,7 +45455,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp1q_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip1))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip1))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp1q_f64(a: float64x2_t, b: float64x2_t) -&gt; float64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">0</span>, <span class="number">2</span>])
@@ -45466,7 +45466,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2_s8(a: int8x8_t, b: int8x8_t) -&gt; int8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">15</span>])
@@ -45477,7 +45477,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2q_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2q_s8(a: int8x16_t, b: int8x16_t) -&gt; int8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">15</span>, <span class="number">17</span>, <span class="number">19</span>, <span class="number">21</span>, <span class="number">23</span>, <span class="number">25</span>, <span class="number">27</span>, <span class="number">29</span>, <span class="number">31</span>])
@@ -45488,7 +45488,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2_s16(a: int16x4_t, b: int16x4_t) -&gt; int16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>])
@@ -45499,7 +45499,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2q_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2q_s16(a: int16x8_t, b: int16x8_t) -&gt; int16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">15</span>])
@@ -45510,7 +45510,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2q_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2q_s32(a: int32x4_t, b: int32x4_t) -&gt; int32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>])
@@ -45521,7 +45521,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2_u8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2_u8(a: uint8x8_t, b: uint8x8_t) -&gt; uint8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">15</span>])
@@ -45532,7 +45532,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2q_u8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2q_u8(a: uint8x16_t, b: uint8x16_t) -&gt; uint8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">15</span>, <span class="number">17</span>, <span class="number">19</span>, <span class="number">21</span>, <span class="number">23</span>, <span class="number">25</span>, <span class="number">27</span>, <span class="number">29</span>, <span class="number">31</span>])
@@ -45543,7 +45543,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2_u16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2_u16(a: uint16x4_t, b: uint16x4_t) -&gt; uint16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>])
@@ -45554,7 +45554,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2q_u16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2q_u16(a: uint16x8_t, b: uint16x8_t) -&gt; uint16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">15</span>])
@@ -45565,7 +45565,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2q_u32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2q_u32(a: uint32x4_t, b: uint32x4_t) -&gt; uint32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>])
@@ -45576,7 +45576,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2_p8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2_p8(a: poly8x8_t, b: poly8x8_t) -&gt; poly8x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">15</span>])
@@ -45587,7 +45587,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2q_p8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2q_p8(a: poly8x16_t, b: poly8x16_t) -&gt; poly8x16_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">15</span>, <span class="number">17</span>, <span class="number">19</span>, <span class="number">21</span>, <span class="number">23</span>, <span class="number">25</span>, <span class="number">27</span>, <span class="number">29</span>, <span class="number">31</span>])
@@ -45598,7 +45598,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2_p16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2_p16(a: poly16x4_t, b: poly16x4_t) -&gt; poly16x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>])
@@ -45609,7 +45609,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2q_p16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2q_p16(a: poly16x8_t, b: poly16x8_t) -&gt; poly16x8_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">15</span>])
@@ -45620,7 +45620,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2_s32(a: int32x2_t, b: int32x2_t) -&gt; int32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45631,7 +45631,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2q_s64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2q_s64(a: int64x2_t, b: int64x2_t) -&gt; int64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45642,7 +45642,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2_u32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2_u32(a: uint32x2_t, b: uint32x2_t) -&gt; uint32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45653,7 +45653,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2q_u64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2q_u64(a: uint64x2_t, b: uint64x2_t) -&gt; uint64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45664,7 +45664,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2q_p64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2q_p64(a: poly64x2_t, b: poly64x2_t) -&gt; poly64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45675,7 +45675,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2q_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uzp2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uzp2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2q_f32(a: float32x4_t, b: float32x4_t) -&gt; float32x4_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>])
@@ -45686,7 +45686,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2_f32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2_f32(a: float32x2_t, b: float32x2_t) -&gt; float32x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45697,7 +45697,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vuzp2q_f64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(zip2))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(zip2))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vuzp2q_f64(a: float64x2_t, b: float64x2_t) -&gt; float64x2_t {
     <span class="macro">simd_shuffle!</span>(a, b, [<span class="number">1</span>, <span class="number">3</span>])
@@ -45708,7 +45708,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vabal_high_u8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uabal))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uabal))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vabal_high_u8(a: uint16x8_t, b: uint8x16_t, c: uint8x16_t) -&gt; uint16x8_t {
     <span class="kw">let </span>d: uint8x8_t = <span class="macro">simd_shuffle!</span>(b, b, [<span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>]);
@@ -45722,7 +45722,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vabal_high_u16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uabal))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uabal))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vabal_high_u16(a: uint32x4_t, b: uint16x8_t, c: uint16x8_t) -&gt; uint32x4_t {
     <span class="kw">let </span>d: uint16x4_t = <span class="macro">simd_shuffle!</span>(b, b, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]);
@@ -45736,7 +45736,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vabal_high_u32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(uabal))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(uabal))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vabal_high_u32(a: uint64x2_t, b: uint32x4_t, c: uint32x4_t) -&gt; uint64x2_t {
     <span class="kw">let </span>d: uint32x2_t = <span class="macro">simd_shuffle!</span>(b, b, [<span class="number">2</span>, <span class="number">3</span>]);
@@ -45750,7 +45750,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vabal_high_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(sabal))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(sabal))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vabal_high_s8(a: int16x8_t, b: int8x16_t, c: int8x16_t) -&gt; int16x8_t {
     <span class="kw">let </span>d: int8x8_t = <span class="macro">simd_shuffle!</span>(b, b, [<span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>]);
@@ -45765,7 +45765,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vabal_high_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(sabal))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(sabal))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vabal_high_s16(a: int32x4_t, b: int16x8_t, c: int16x8_t) -&gt; int32x4_t {
     <span class="kw">let </span>d: int16x4_t = <span class="macro">simd_shuffle!</span>(b, b, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]);
@@ -45780,7 +45780,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vabal_high_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(sabal))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(sabal))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vabal_high_s32(a: int64x2_t, b: int32x4_t, c: int32x4_t) -&gt; int64x2_t {
     <span class="kw">let </span>d: int32x2_t = <span class="macro">simd_shuffle!</span>(b, b, [<span class="number">2</span>, <span class="number">3</span>]);
@@ -45795,7 +45795,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqabs_s64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(sqabs))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(sqabs))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vqabs_s64(a: int64x1_t) -&gt; int64x1_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -45811,7 +45811,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqabsq_s64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(sqabs))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(sqabs))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vqabsq_s64(a: int64x2_t) -&gt; int64x2_t {
     <span class="attr">#[allow(improper_ctypes)]
@@ -45827,7 +45827,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqabsb_s8)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(sqabs))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(sqabs))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vqabsb_s8(a: i8) -&gt; i8 {
     <span class="macro">simd_extract!</span>(vqabs_s8(vdup_n_s8(a)), <span class="number">0</span>)
@@ -45838,7 +45838,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqabsh_s16)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(sqabs))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(sqabs))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vqabsh_s16(a: i16) -&gt; i16 {
     <span class="macro">simd_extract!</span>(vqabs_s16(vdup_n_s16(a)), <span class="number">0</span>)
@@ -45849,7 +45849,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqabss_s32)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(sqabs))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(sqabs))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vqabss_s32(a: i32) -&gt; i32 {
     <span class="attr">#[allow(improper_ctypes)]
@@ -45865,7 +45865,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vqabsd_s64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(sqabs))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(sqabs))]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vqabsd_s64(a: i64) -&gt; i64 {
     <span class="attr">#[allow(improper_ctypes)]
@@ -45881,7 +45881,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vslid_n_s64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(sli, N = <span class="number">2</span>))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(sli, N = <span class="number">2</span>))]
 #[rustc_legacy_const_generics(<span class="number">2</span>)]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vslid_n_s64&lt;<span class="kw">const </span>N: i32&gt;(a: i64, b: i64) -&gt; i64 {
@@ -45894,7 +45894,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vslid_n_u64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(sli, N = <span class="number">2</span>))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(sli, N = <span class="number">2</span>))]
 #[rustc_legacy_const_generics(<span class="number">2</span>)]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vslid_n_u64&lt;<span class="kw">const </span>N: i32&gt;(a: u64, b: u64) -&gt; u64 {
@@ -45907,7 +45907,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vsrid_n_s64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(sri, N = <span class="number">2</span>))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(sri, N = <span class="number">2</span>))]
 #[rustc_legacy_const_generics(<span class="number">2</span>)]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vsrid_n_s64&lt;<span class="kw">const </span>N: i32&gt;(a: i64, b: i64) -&gt; i64 {
@@ -45920,7 +45920,7 @@
 /// [Arm's documentation](https://developer.arm.com/architectures/instruction-sets/intrinsics/vsrid_n_u64)
 </span><span class="attr">#[inline]
 #[target_feature(enable = <span class="string">"neon"</span>)]
-#[cfg_attr(test, assert_instr(sri, N = <span class="number">2</span>))]
+#[cfg_attr(all(test, not(target_env = <span class="string">"msvc"</span>)), assert_instr(sri, N = <span class="number">2</span>))]
 #[rustc_legacy_const_generics(<span class="number">2</span>)]
 #[stable(feature = <span class="string">"neon_intrinsics"</span>, since = <span class="string">"1.59.0"</span>)]
 </span><span class="kw">pub unsafe fn </span>vsrid_n_u64&lt;<span class="kw">const </span>N: i32&gt;(a: u64, b: u64) -&gt; u64 {

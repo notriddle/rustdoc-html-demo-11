@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/fmt/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-c9eac7f0f9808014.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.79.0" data-rustdoc-version="1.79.0-dev" data-channel="nightly" data-search-js="search-58ff4c612d326a7f.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.79.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../core/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Type ‘S’ or ‘/’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings">Settings</a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/fmt/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-188f761abe8efcb7.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-9d56bd044e17026e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2636,6 +2636,40 @@
 <a href="#2636" id="2636">2636</a>
 <a href="#2637" id="2637">2637</a>
 <a href="#2638" id="2638">2638</a>
+<a href="#2639" id="2639">2639</a>
+<a href="#2640" id="2640">2640</a>
+<a href="#2641" id="2641">2641</a>
+<a href="#2642" id="2642">2642</a>
+<a href="#2643" id="2643">2643</a>
+<a href="#2644" id="2644">2644</a>
+<a href="#2645" id="2645">2645</a>
+<a href="#2646" id="2646">2646</a>
+<a href="#2647" id="2647">2647</a>
+<a href="#2648" id="2648">2648</a>
+<a href="#2649" id="2649">2649</a>
+<a href="#2650" id="2650">2650</a>
+<a href="#2651" id="2651">2651</a>
+<a href="#2652" id="2652">2652</a>
+<a href="#2653" id="2653">2653</a>
+<a href="#2654" id="2654">2654</a>
+<a href="#2655" id="2655">2655</a>
+<a href="#2656" id="2656">2656</a>
+<a href="#2657" id="2657">2657</a>
+<a href="#2658" id="2658">2658</a>
+<a href="#2659" id="2659">2659</a>
+<a href="#2660" id="2660">2660</a>
+<a href="#2661" id="2661">2661</a>
+<a href="#2662" id="2662">2662</a>
+<a href="#2663" id="2663">2663</a>
+<a href="#2664" id="2664">2664</a>
+<a href="#2665" id="2665">2665</a>
+<a href="#2666" id="2666">2666</a>
+<a href="#2667" id="2667">2667</a>
+<a href="#2668" id="2668">2668</a>
+<a href="#2669" id="2669">2669</a>
+<a href="#2670" id="2670">2670</a>
+<a href="#2671" id="2671">2671</a>
+<a href="#2672" id="2672">2672</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Utilities for formatting and printing strings.
 
 </span><span class="attr">#![stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
@@ -2710,14 +2744,24 @@
 <span class="doccomment">/// The error type which is returned from formatting a message into a stream.
 ///
 /// This type does not support transmission of an error other than that an error
-/// occurred. Any extra information must be arranged to be transmitted through
-/// some other means.
+/// occurred. This is because, despite the existence of this error,
+/// string formatting is considered an infallible operation.
+/// `fmt()` implementors should not return this `Error` unless they received it from their
+/// [`Formatter`]. The only time your code should create a new instance of this
+/// error is when implementing `fmt::Write`, in order to cancel the formatting operation when
+/// writing to the underlying stream fails.
 ///
-/// An important thing to remember is that the type `fmt::Error` should not be
+/// Any extra information must be arranged to be transmitted through some other means,
+/// such as storing it in a field to be consulted after the formatting operation has been
+/// cancelled. (For example, this is how [`std::io::Write::write_fmt()`] propagates IO errors
+/// during writing.)
+///
+/// This type, `fmt::Error`, should not be
 /// confused with [`std::io::Error`] or [`std::error::Error`], which you may also
 /// have in scope.
 ///
 /// [`std::io::Error`]: ../../std/io/struct.Error.html
+/// [`std::io::Write::write_fmt()`]: ../../std/io/trait.Write.html#method.write_fmt
 /// [`std::error::Error`]: ../../std/error/trait.Error.html
 ///
 /// # Examples
@@ -2756,8 +2800,10 @@
     /// This function will return an instance of [`std::fmt::Error`][Error] on error.
     ///
     /// The purpose of that error is to abort the formatting operation when the underlying
-    /// destination encounters some error preventing it from accepting more text; it should
-    /// generally be propagated rather than handled, at least when implementing formatting traits.
+    /// destination encounters some error preventing it from accepting more text;
+    /// in particular, it does not communicate any information about *what* error occurred.
+    /// It should generally be propagated rather than handled, at least when implementing
+    /// formatting traits.
     ///
     /// # Examples
     ///
@@ -2964,20 +3010,19 @@
 </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Arguments&lt;<span class="lifetime">'a</span>&gt; {
     <span class="attr">#[inline]
     #[rustc_const_unstable(feature = <span class="string">"const_fmt_arguments_new"</span>, issue = <span class="string">"none"</span>)]
-    </span><span class="kw">pub const fn </span>new_const(pieces: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str]) -&gt; <span class="self">Self </span>{
-        <span class="kw">if </span>pieces.len() &gt; <span class="number">1 </span>{
-            <span class="macro">panic!</span>(<span class="string">"invalid args"</span>);
-        }
+    </span><span class="kw">pub const fn </span>new_const&lt;<span class="kw">const </span>N: usize&gt;(pieces: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; N]) -&gt; <span class="self">Self </span>{
+        <span class="kw">const </span>{ <span class="macro">assert!</span>(N &lt;= <span class="number">1</span>) };
         Arguments { pieces, fmt: <span class="prelude-val">None</span>, args: <span class="kw-2">&amp;</span>[] }
     }
 
     <span class="doccomment">/// When using the format_args!() macro, this function is used to generate the
     /// Arguments structure.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>new_v1(pieces: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str], args: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[rt::Argument&lt;<span class="lifetime">'a</span>&gt;]) -&gt; Arguments&lt;<span class="lifetime">'a</span>&gt; {
-        <span class="kw">if </span>pieces.len() &lt; args.len() || pieces.len() &gt; args.len() + <span class="number">1 </span>{
-            <span class="macro">panic!</span>(<span class="string">"invalid args"</span>);
-        }
+    </span><span class="kw">pub fn </span>new_v1&lt;<span class="kw">const </span>P: usize, <span class="kw">const </span>A: usize&gt;(
+        pieces: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str; P],
+        args: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[rt::Argument&lt;<span class="lifetime">'a</span>&gt;; A],
+    ) -&gt; Arguments&lt;<span class="lifetime">'a</span>&gt; {
+        <span class="kw">const </span>{ <span class="macro">assert!</span>(P &gt;= A &amp;&amp; P &lt;= A + <span class="number">1</span>, <span class="string">"invalid args"</span>) }
         Arguments { pieces, fmt: <span class="prelude-val">None</span>, args }
     }
 
@@ -3224,8 +3269,8 @@
 #[rustc_diagnostic_item = <span class="string">"Debug"</span>]
 #[rustc_trivial_field_reads]
 </span><span class="kw">pub trait </span>Debug {
-    <span class="doccomment">/// Formats the value using the given formatter.
-    ///
+    <span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">"fmt_trait_method_doc.md"</span>)]
+    </span><span class="doccomment">///
     /// # Examples
     ///
     /// ```
@@ -3341,8 +3386,8 @@
 #[rustc_diagnostic_item = <span class="string">"Display"</span>]
 #[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
 </span><span class="kw">pub trait </span>Display {
-    <span class="doccomment">/// Formats the value using the given formatter.
-    ///
+    <span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">"fmt_trait_method_doc.md"</span>)]
+    </span><span class="doccomment">///
     /// # Examples
     ///
     /// ```
@@ -3415,8 +3460,8 @@
 /// ```
 </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
 </span><span class="kw">pub trait </span>Octal {
-    <span class="doccomment">/// Formats the value using the given formatter.
-    </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
+    <span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">"fmt_trait_method_doc.md"</span>)]
+    #[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
     </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>;
 }
 
@@ -3474,8 +3519,8 @@
 /// ```
 </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
 </span><span class="kw">pub trait </span>Binary {
-    <span class="doccomment">/// Formats the value using the given formatter.
-    </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
+    <span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">"fmt_trait_method_doc.md"</span>)]
+    #[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
     </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>;
 }
 
@@ -3529,8 +3574,8 @@
 /// ```
 </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
 </span><span class="kw">pub trait </span>LowerHex {
-    <span class="doccomment">/// Formats the value using the given formatter.
-    </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
+    <span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">"fmt_trait_method_doc.md"</span>)]
+    #[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
     </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>;
 }
 
@@ -3584,8 +3629,8 @@
 /// ```
 </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
 </span><span class="kw">pub trait </span>UpperHex {
-    <span class="doccomment">/// Formats the value using the given formatter.
-    </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
+    <span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">"fmt_trait_method_doc.md"</span>)]
+    #[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
     </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>;
 }
 
@@ -3635,8 +3680,8 @@
 </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
 #[rustc_diagnostic_item = <span class="string">"Pointer"</span>]
 </span><span class="kw">pub trait </span>Pointer {
-    <span class="doccomment">/// Formats the value using the given formatter.
-    </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
+    <span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">"fmt_trait_method_doc.md"</span>)]
+    #[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
     </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>;
 }
 
@@ -3686,8 +3731,8 @@
 /// ```
 </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
 </span><span class="kw">pub trait </span>LowerExp {
-    <span class="doccomment">/// Formats the value using the given formatter.
-    </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
+    <span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">"fmt_trait_method_doc.md"</span>)]
+    #[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
     </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>;
 }
 
@@ -3737,8 +3782,8 @@
 /// ```
 </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
 </span><span class="kw">pub trait </span>UpperExp {
-    <span class="doccomment">/// Formats the value using the given formatter.
-    </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
+    <span class="attr">#[doc = <span class="macro">include_str!</span>(<span class="string">"fmt_trait_method_doc.md"</span>)]
+    #[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
     </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>;
 }
 
@@ -5025,23 +5070,47 @@
 </span><span class="kw">impl </span>Debug <span class="kw">for </span>str {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result </span>{
         f.write_char(<span class="string">'"'</span>)<span class="question-mark">?</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>from = <span class="number">0</span>;
-        <span class="kw">for </span>(i, c) <span class="kw">in </span><span class="self">self</span>.char_indices() {
-            <span class="kw">let </span>esc = c.escape_debug_ext(EscapeDebugExtArgs {
-                escape_grapheme_extended: <span class="bool-val">true</span>,
-                escape_single_quote: <span class="bool-val">false</span>,
-                escape_double_quote: <span class="bool-val">true</span>,
-            });
-            <span class="comment">// If char needs escaping, flush backlog so far and write, else skip
-            </span><span class="kw">if </span>esc.len() != <span class="number">1 </span>{
-                f.write_str(<span class="kw-2">&amp;</span><span class="self">self</span>[from..i])<span class="question-mark">?</span>;
-                <span class="kw">for </span>c <span class="kw">in </span>esc {
-                    f.write_char(c)<span class="question-mark">?</span>;
+
+        <span class="comment">// substring we know is printable
+        </span><span class="kw">let </span><span class="kw-2">mut </span>printable_range = <span class="number">0</span>..<span class="number">0</span>;
+
+        <span class="kw">fn </span>needs_escape(b: u8) -&gt; bool {
+            b &gt; <span class="number">0x7E </span>|| b &lt; <span class="number">0x20 </span>|| b == <span class="string">b'\\' </span>|| b == <span class="string">b'"'
+        </span>}
+
+        <span class="comment">// the loop here first skips over runs of printable ASCII as a fast path.
+        // other chars (unicode, or ASCII that needs escaping) are then handled per-`char`.
+        </span><span class="kw">let </span><span class="kw-2">mut </span>rest = <span class="self">self</span>;
+        <span class="kw">while </span>rest.len() &gt; <span class="number">0 </span>{
+            <span class="kw">let </span><span class="prelude-val">Some</span>(non_printable_start) = rest.as_bytes().iter().position(|<span class="kw-2">&amp;</span>b| needs_escape(b))
+            <span class="kw">else </span>{
+                printable_range.end += rest.len();
+                <span class="kw">break</span>;
+            };
+
+            printable_range.end += non_printable_start;
+            <span class="comment">// SAFETY: the position was derived from an iterator, so is known to be within bounds, and at a char boundary
+            </span>rest = <span class="kw">unsafe </span>{ rest.get_unchecked(non_printable_start..) };
+
+            <span class="kw">let </span><span class="kw-2">mut </span>chars = rest.chars();
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(c) = chars.next() {
+                <span class="kw">let </span>esc = c.escape_debug_ext(EscapeDebugExtArgs {
+                    escape_grapheme_extended: <span class="bool-val">true</span>,
+                    escape_single_quote: <span class="bool-val">false</span>,
+                    escape_double_quote: <span class="bool-val">true</span>,
+                });
+                <span class="kw">if </span>esc.len() != <span class="number">1 </span>{
+                    f.write_str(<span class="kw-2">&amp;</span><span class="self">self</span>[printable_range.clone()])<span class="question-mark">?</span>;
+                    Display::fmt(<span class="kw-2">&amp;</span>esc, f)<span class="question-mark">?</span>;
+                    printable_range.start = printable_range.end + c.len_utf8();
                 }
-                from = i + c.len_utf8();
+                printable_range.end += c.len_utf8();
             }
+            rest = chars.as_str();
         }
-        f.write_str(<span class="kw-2">&amp;</span><span class="self">self</span>[from..])<span class="question-mark">?</span>;
+
+        f.write_str(<span class="kw-2">&amp;</span><span class="self">self</span>[printable_range])<span class="question-mark">?</span>;
+
         f.write_char(<span class="string">'"'</span>)
     }
 }
@@ -5057,13 +5126,12 @@
 </span><span class="kw">impl </span>Debug <span class="kw">for </span>char {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result </span>{
         f.write_char(<span class="string">'\''</span>)<span class="question-mark">?</span>;
-        <span class="kw">for </span>c <span class="kw">in </span><span class="self">self</span>.escape_debug_ext(EscapeDebugExtArgs {
+        <span class="kw">let </span>esc = <span class="self">self</span>.escape_debug_ext(EscapeDebugExtArgs {
             escape_grapheme_extended: <span class="bool-val">true</span>,
             escape_single_quote: <span class="bool-val">true</span>,
             escape_double_quote: <span class="bool-val">false</span>,
-        }) {
-            f.write_char(c)<span class="question-mark">?
-        </span>}
+        });
+        Display::fmt(<span class="kw-2">&amp;</span>esc, f)<span class="question-mark">?</span>;
         f.write_char(<span class="string">'\''</span>)
     }
 }
