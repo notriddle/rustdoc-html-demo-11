@@ -883,7 +883,8 @@ the next one.</p>
 that input, and check that the input is in the expected form. To start, we’ll
 allow the player to input a guess. Enter the code in Listing 2-1 into
 <em>src/main.rs</em>.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">use std::io;
 
 fn main() {
@@ -899,8 +900,8 @@ fn main() {
 
     println!("You guessed: {}", guess);
 }</code></pre>
-<p><span class="caption">Listing 2-1: Code that gets a guess from the user and
-prints it</span></p>
+<figcaption>Listing 2-1: Code that gets a guess from the user and prints it</figcaption>
+</figure> 
 <p>This code contains a lot of information, so let’s go over it line by line. To
 obtain user input and then print the result as output, we need to bring the
 <code>io</code> input/output library into scope. The <code>io</code> library comes from the standard
@@ -1225,6 +1226,7 @@ cd listings/ch02-guessing-game-tutorial/listing-02-02/
 rm Cargo.lock
 cargo clean
 cargo build -->
+<figure class="listing">
 <pre><code class="language-console">$ cargo build
     Updating crates.io index
   Downloaded rand v0.8.5
@@ -1244,8 +1246,8 @@ cargo build -->
    Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
     Finished dev [unoptimized + debuginfo] target(s) in 2.53s
 </code></pre>
-<p><span class="caption">Listing 2-2: The output from running <code>cargo build</code> after
-adding the rand crate as a dependency</span></p>
+<figcaption>Listing 2-2: The output from running <code>cargo build</code> after adding the rand crate as a dependency</figcaption>
+</figure>
 <p>You may see different version numbers (but they will all be compatible with the
 code, thanks to SemVer!) and different lines (depending on the operating
 system), and the lines may be in a different order.</p>
@@ -1330,7 +1332,8 @@ from a number of packages.</p>
 <h3 id="generating-a-random-number"><a class="header" href="#generating-a-random-number">Generating a Random Number</a></h3>
 <p>Let’s start using <code>rand</code> to generate a number to guess. The next step is to
 update <em>src/main.rs</em>, as shown in Listing 2-3.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">use std::io;
 use rand::Rng;
 
@@ -1351,8 +1354,8 @@ fn main() {
 
     println!("You guessed: {guess}");
 }</code></pre>
-<p><span class="caption">Listing 2-3: Adding code to generate a random
-number</span></p>
+<figcaption>Listing 2-3: Adding code to generate a random number</figcaption>
+</figure>
 <p>First we add the line <code>use rand::Rng;</code>. The <code>Rng</code> trait defines methods that
 random number generators implement, and this trait must be in scope for us to
 use those methods. Chapter 10 will cover traits in detail.</p>
@@ -1411,7 +1414,8 @@ You guessed: 5
 <p>Now that we have user input and a random number, we can compare them. That step
 is shown in Listing 2-4. Note that this code won’t compile just yet, as we will
 explain.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile">use rand::Rng;
 use std::cmp::Ordering;
 use std::io;
@@ -1440,8 +1444,8 @@ fn main() {
         Ordering::Equal =&gt; println!("You win!"),
     }
 }</code></pre>
-<p><span class="caption">Listing 2-4: Handling the possible return values of
-comparing two numbers</span></p>
+<figcaption>Listing 2-4: Handling the possible return values of comparing two numbers</figcaption>
+</figure>
 <p>First we add another <code>use</code> statement, bringing a type called
 <code>std::cmp::Ordering</code> into scope from the standard library. The <code>Ordering</code> type
 is another enum and has the variants <code>Less</code>, <code>Greater</code>, and <code>Equal</code>. These are
@@ -1746,7 +1750,8 @@ exiting the program, because the loop is the last part of <code>main</code>.</p>
 the user inputs a non-number, let’s make the game ignore a non-number so the
 user can continue guessing. We can do that by altering the line where <code>guess</code>
 is converted from a <code>String</code> to a <code>u32</code>, as shown in Listing 2-5.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore"><span class="boring">use rand::Rng;
 </span><span class="boring">use std::cmp::Ordering;
 </span><span class="boring">use std::io;
@@ -1788,8 +1793,8 @@ is converted from a <code>String</code> to a <code>u32</code>, as shown in Listi
 </span><span class="boring">        }
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 2-5: Ignoring a non-number guess and asking for
-another guess instead of crashing the program</span></p>
+<figcaption>Listing 2-5: Ignoring a non-number guess and asking for another guess instead of crashing the program</figcaption>
+</figure>
 <p>We switch from an <code>expect</code> call to a <code>match</code> expression to move from crashing
 on an error to handling the error. Remember that <code>parse</code> returns a <code>Result</code>
 type and <code>Result</code> is an enum that has the variants <code>Ok</code> and <code>Err</code>. We’re using
@@ -1843,7 +1848,8 @@ You win!
 that the program is still printing the secret number. That worked well for
 testing, but it ruins the game. Let’s delete the <code>println!</code> that outputs the
 secret number. Listing 2-6 shows the final code.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">use rand::Rng;
 use std::cmp::Ordering;
 use std::io;
@@ -1879,7 +1885,8 @@ fn main() {
         }
     }
 }</code></pre>
-<p><span class="caption">Listing 2-6: Complete guessing game code</span></p>
+<figcaption>Listing 2-6: Complete guessing game code</figcaption>
+</figure>
 <p>At this point, you’ve successfully built the guessing game. Congratulations!</p>
 <h2 id="summary-1"><a class="header" href="#summary-1">Summary</a></h2>
 <p>This project was a hands-on way to introduce you to many new Rust concepts:
@@ -2573,11 +2580,13 @@ a value.</li>
 <p>We’ve actually already used statements and expressions. Creating a variable and
 assigning a value to it with the <code>let</code> keyword is a statement. In Listing 3-1,
 <code>let y = 6;</code> is a statement.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let y = 6;
 }</code></pre></pre>
-<p><span class="caption">Listing 3-1: A <code>main</code> function declaration containing one statement</span></p>
+<figcaption>Listing 3-1: A <code>main</code> function declaration containing one statement</figcaption>
+</figure>
 <p>Function definitions are also statements; the entire preceding example is a
 statement in itself.</p>
 <p>Statements do not return values. Therefore, you can’t assign a <code>let</code> statement
@@ -2902,15 +2911,16 @@ Rust branching construct called <code>match</code> for these cases.</p>
 <h4 id="using-if-in-a-let-statement"><a class="header" href="#using-if-in-a-let-statement">Using <code>if</code> in a <code>let</code> Statement</a></h4>
 <p>Because <code>if</code> is an expression, we can use it on the right side of a <code>let</code>
 statement to assign the outcome to a variable, as in Listing 3-2.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let condition = true;
     let number = if condition { 5 } else { 6 };
 
     println!("The value of number is: {number}");
 }</code></pre></pre>
-<p><span class="caption">Listing 3-2: Assigning the result of an <code>if</code> expression
-to a variable</span></p>
+<figcaption>Listing 3-2: Assigning the result of an <code>if</code> expression to a variable</figcaption>
+</figure>
 <p>The <code>number</code> variable will be bound to a value based on the outcome of the <code>if</code>
 expression. Run this code to see what happens:</p>
 <pre><code class="language-console">$ cargo run
@@ -3088,7 +3098,8 @@ try that now in a program, if you’d like. However, this pattern is so common
 that Rust has a built-in language construct for it, called a <code>while</code> loop. In
 Listing 3-3, we use <code>while</code> to loop the program three times, counting down each
 time, and then, after the loop, print a message and exit.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let mut number = 3;
 
@@ -3100,8 +3111,8 @@ time, and then, after the loop, print a message and exit.</p>
 
     println!("LIFTOFF!!!");
 }</code></pre></pre>
-<p><span class="caption">Listing 3-3: Using a <code>while</code> loop to run code while a
-condition holds true</span></p>
+<figcaption>Listing 3-3: Using a <code>while</code> loop to run code while a condition holds true</figcaption>
+</figure>
 <p>This construct eliminates a lot of nesting that would be necessary if you used
 <code>loop</code>, <code>if</code>, <code>else</code>, and <code>break</code>, and it’s clearer. While a condition
 evaluates to <code>true</code>, the code runs; otherwise, it exits the loop.</p>
@@ -3109,7 +3120,8 @@ evaluates to <code>true</code>, the code runs; otherwise, it exits the loop.</p>
 <p>You can also use the <code>while</code> construct to loop over the elements of a
 collection, such as an array. For example, the loop in Listing 3-4 prints each
 element in the array <code>a</code>.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let a = [10, 20, 30, 40, 50];
     let mut index = 0;
@@ -3120,8 +3132,8 @@ element in the array <code>a</code>.</p>
         index += 1;
     }
 }</code></pre></pre>
-<p><span class="caption">Listing 3-4: Looping through each element of a collection
-using a <code>while</code> loop</span></p>
+<figcaption>Listing 3-4: Looping through each element of a collection using a <code>while</code> loop</figcaption>
+</figure>
 <p>Here, the code counts up through the elements in the array. It starts at index
 <code>0</code>, and then loops until it reaches the final index in the array (that is,
 when <code>index &lt; 5</code> is no longer <code>true</code>). Running this code will print every
@@ -3147,7 +3159,8 @@ the compiler adds runtime code to perform the conditional check of whether the
 index is within the bounds of the array on every iteration through the loop.</p>
 <p>As a more concise alternative, you can use a <code>for</code> loop and execute some code
 for each item in a collection. A <code>for</code> loop looks like the code in Listing 3-5.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let a = [10, 20, 30, 40, 50];
 
@@ -3155,8 +3168,8 @@ for each item in a collection. A <code>for</code> loop looks like the code in Li
         println!("the value is: {element}");
     }
 }</code></pre></pre>
-<p><span class="caption">Listing 3-5: Looping through each element of a collection
-using a <code>for</code> loop</span></p>
+<figcaption>Listing 3-5: Looping through each element of a collection using a <code>for</code> loop</figcaption>
+</figure>
 <p>When we run this code, we’ll see the same output as in Listing 3-4. More
 importantly, we’ve now increased the safety of the code and eliminated the
 chance of bugs that might result from going beyond the end of the array or not
@@ -11081,7 +11094,8 @@ $ cd adder
 </code></pre>
 <p>The contents of the <em>src/lib.rs</em> file in your <code>adder</code> library should look like
 Listing 11-1.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <!-- manual-regeneration
 cd listings/ch11-writing-automated-tests
 rm -rf listing-11-01
@@ -11105,8 +11119,8 @@ mod tests {
         assert_eq!(result, 4);
     }
 }</code></pre>
-<p><span class="caption">Listing 11-1: The test module and function generated
-automatically by <code>cargo new</code></span></p>
+<figcaption>Listing 11-1: The test module and function generated automatically by <code>cargo new</code></figcaption>
+</figure>
 <p>For now, let’s focus solely on the <code>it_works()</code> function. Note the
 <code>#[test]</code> annotation: this attribute indicates this is a test function, so the
 test runner knows to treat this function as a test. We might also have non-test
@@ -11118,6 +11132,7 @@ an example of the format for a typical test. Let’s run it to see that this tes
 passes.</p>
 <p>The <code>cargo test</code> command runs all tests in our project, as shown in Listing
 11-2.</p>
+<figure class="listing">
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.57s
@@ -11135,8 +11150,8 @@ running 0 tests
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
 </code></pre>
-<p><span class="caption">Listing 11-2: The output from running the automatically
-generated test</span></p>
+<figcaption>Listing 11-2: The output from running the automatically generated test</figcaption>
+</figure>
 <p>Cargo compiled and ran the test. We see the line <code>running 1 test</code>. The next
 line shows the name of the generated test function, called <code>it_works</code>, and that
 the result of running that test is <code>ok</code>. The overall summary <code>test result: ok.</code>
@@ -11201,7 +11216,8 @@ thread, and when the main thread sees that a test thread has died, the test is
 marked as failed. In Chapter 9, we talked about how the simplest way to panic
 is to call the <code>panic!</code> macro. Enter the new test as a function named
 <code>another</code>, so your <em>src/lib.rs</em> file looks like Listing 11-3.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust panics noplayground">pub fn add(left: usize, right: usize) -&gt; usize {
     left + right
 }
@@ -11221,10 +11237,11 @@ mod tests {
         panic!("Make this test fail");
     }
 }</code></pre>
-<p><span class="caption">Listing 11-3: Adding a second test that will fail because
-we call the <code>panic!</code> macro</span></p>
+<figcaption>Listing 11-3: Adding a second test that will fail because we call the <code>panic!</code> macro</figcaption>
+</figure>
 <p>Run the tests again using <code>cargo test</code>. The output should look like Listing
 11-4, which shows that our <code>exploration</code> test passed and <code>another</code> failed.</p>
+<figure class="listing">
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.72s
@@ -11249,8 +11266,8 @@ test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; 
 
 error: test failed, to rerun pass `--lib`
 </code></pre>
-<p><span class="caption">Listing 11-4: Test results when one test passes and one
-test fails</span></p>
+<figcaption>Listing 11-4: Test results when one test passes and one test fails</figcaption>
+</figure>
 <p>Instead of <code>ok</code>, the line <code>test tests::another</code> shows <code>FAILED</code>. Two new
 sections appear between the individual results and the summary: the first
 displays the detailed reason for each test failure. In this case, we get the
@@ -11275,7 +11292,8 @@ macro helps us check that our code is functioning in the way we intend.</p>
 <p>In Chapter 5, Listing 5-15, we used a <code>Rectangle</code> struct and a <code>can_hold</code>
 method, which are repeated here in Listing 11-5. Let’s put this code in the
 <em>src/lib.rs</em> file, then write some tests for it using the <code>assert!</code> macro.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">#[derive(Debug)]
 struct Rectangle {
     width: u32,
@@ -11287,14 +11305,15 @@ impl Rectangle {
         self.width &gt; other.width &amp;&amp; self.height &gt; other.height
     }
 }</code></pre>
-<p><span class="caption">Listing 11-5: Using the <code>Rectangle</code> struct and its
-<code>can_hold</code> method from Chapter 5</span></p>
+<figcaption>Listing 11-5: The <code>Rectangle</code> struct and its <code>can_hold</code> method from Chapter 5</figcaption>
+</figure>
 <p>The <code>can_hold</code> method returns a Boolean, which means it’s a perfect use case
 for the <code>assert!</code> macro. In Listing 11-6, we write a test that exercises the
 <code>can_hold</code> method by creating a <code>Rectangle</code> instance that has a width of 8 and
 a height of 7 and asserting that it can hold another <code>Rectangle</code> instance that
 has a width of 5 and a height of 1.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground"><span class="boring">#[derive(Debug)]
 </span><span class="boring">struct Rectangle {
 </span><span class="boring">    width: u32,
@@ -11325,8 +11344,8 @@ mod tests {
         assert!(larger.can_hold(&amp;smaller));
     }
 }</code></pre>
-<p><span class="caption">Listing 11-6: A test for <code>can_hold</code> that checks whether a
-larger rectangle can indeed hold a smaller rectangle</span></p>
+<figcaption>Listing 11-6: A test for <code>can_hold</code> that checks whether a larger rectangle can indeed hold a smaller rectangle</figcaption>
+</figure>
 <p>Note that we’ve added a new line inside the <code>tests</code> module: <code>use super::*;</code>.
 The <code>tests</code> module is a regular module that follows the usual visibility rules
 we covered in Chapter 7 in the <a href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html">“Paths for Referring to an Item in the Module
@@ -11515,7 +11534,8 @@ fails, which makes it easier to see <em>why</em> the test failed; conversely, th
 expression, without printing the values that led to the <code>false</code> value.</p>
 <p>In Listing 11-7, we write a function named <code>add_two</code> that adds <code>2</code> to its
 parameter, then we test this function using the <code>assert_eq!</code> macro.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">pub fn add_two(a: i32) -&gt; i32 {
     a + 2
 }
@@ -11529,8 +11549,8 @@ mod tests {
         assert_eq!(4, add_two(2));
     }
 }</code></pre>
-<p><span class="caption">Listing 11-7: Testing the function <code>add_two</code> using the
-<code>assert_eq!</code> macro</span></p>
+<figcaption>Listing 11-7: Testing the function <code>add_two</code> using the <code>assert_eq!</code> macro</figcaption>
+</figure>
 <p>Let’s check that it passes!</p>
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
@@ -11563,7 +11583,7 @@ fails. Change the implementation of the <code>add_two</code> function to instead
 </span><span class="boring">
 </span><span class="boring">    #[test]
 </span><span class="boring">    fn it_adds_two() {
-</span><span class="boring">        assert_eq!(4, add_two(2));
+</span><span class="boring">        assert_eq!(add_two(2), 4);
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
 <p>Run the tests again:</p>
@@ -11578,10 +11598,9 @@ test tests::it_adds_two ... FAILED
 failures:
 
 ---- tests::it_adds_two stdout ----
-thread 'tests::it_adds_two' panicked at src/lib.rs:11:9:
 assertion `left == right` failed
-  left: 4
- right: 5
+  left: 5
+ right: 4
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 
 
@@ -11603,7 +11622,7 @@ assertion functions are called <code>expected</code> and <code>actual</code>, an
 we specify the arguments matters. However, in Rust, they’re called <code>left</code> and
 <code>right</code>, and the order in which we specify the value we expect and the value
 the code produces doesn’t matter. We could write the assertion in this test as
-<code>assert_eq!(add_two(2), 4)</code>, which would result in the same failure message
+<code>assert_eq!(4, add_two(2))</code>, which would result in the same failure message
 that displays <code>assertion failed: `(left == right)`</code>.</p>
 <p>The <code>assert_ne!</code> macro will pass if the two values we give it are not equal and
 fail if they’re equal. This macro is most useful for cases when we’re not sure
@@ -11759,7 +11778,8 @@ test passes if the code inside the function panics; the test fails if the code
 inside the function doesn’t panic.</p>
 <p>Listing 11-8 shows a test that checks that the error conditions of <code>Guess::new</code>
 happen when we expect them to.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">pub struct Guess {
     value: i32,
 }
@@ -11784,8 +11804,8 @@ mod tests {
         Guess::new(200);
     }
 }</code></pre>
-<p><span class="caption">Listing 11-8: Testing that a condition will cause a
-<code>panic!</code></span></p>
+<figcaption>Listing 11-8: Testing that a condition will cause a <code>panic!</code></figcaption>
+</figure>
 <p>We place the <code>#[should_panic]</code> attribute after the <code>#[test]</code> attribute and
 before the test function it applies to. Let’s look at the result when this test
 passes:</p>
@@ -11865,7 +11885,8 @@ make sure that the failure message contains the provided text. For example,
 consider the modified code for <code>Guess</code> in Listing 11-9 where the <code>new</code> function
 panics with different messages depending on whether the value is too small or
 too large.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground"><span class="boring">pub struct Guess {
 </span><span class="boring">    value: i32,
 </span><span class="boring">}
@@ -11898,8 +11919,8 @@ mod tests {
         Guess::new(200);
     }
 }</code></pre>
-<p><span class="caption">Listing 11-9: Testing for a <code>panic!</code> with a panic message
-containing a specified substring</span></p>
+<figcaption>Listing 11-9: Testing for a <code>panic!</code> with a panic message containing a specified substring</figcaption>
+</figure>
 <p>This test will pass because the value we put in the <code>should_panic</code> attribute’s
 <code>expected</code> parameter is a substring of the message that the <code>Guess::new</code>
 function panics with. We could have specified the entire panic message that we
@@ -12042,7 +12063,8 @@ line that indicates the test passed. If a test fails, we’ll see whatever was
 printed to standard output with the rest of the failure message.</p>
 <p>As an example, Listing 11-10 has a silly function that prints the value of its
 parameter and returns 10, as well as a test that passes and a test that fails.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust panics noplayground">fn prints_and_returns_10(a: i32) -&gt; i32 {
     println!("I got the value {a}");
     10
@@ -12064,8 +12086,8 @@ mod tests {
         assert_eq!(5, value);
     }
 }</code></pre>
-<p><span class="caption">Listing 11-10: Tests for a function that calls
-<code>println!</code></span></p>
+<figcaption>Listing 11-10: Tests for a function that calls <code>println!</code></figcaption>
+</figure>
 <p>When we run these tests with <code>cargo test</code>, we’ll see the following output:</p>
 <pre><code class="language-console">$ cargo test
    Compiling silly-function v0.1.0 (file:///projects/silly-function)
@@ -12147,7 +12169,8 @@ that code. You can choose which tests to run by passing <code>cargo test</code> 
 or names of the test(s) you want to run as an argument.</p>
 <p>To demonstrate how to run a subset of tests, we’ll first create three tests for
 our <code>add_two</code> function, as shown in Listing 11-11, and choose which ones to run.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">pub fn add_two(a: i32) -&gt; i32 {
     a + 2
 }
@@ -12171,8 +12194,8 @@ mod tests {
         assert_eq!(102, add_two(100));
     }
 }</code></pre>
-<p><span class="caption">Listing 11-11: Three tests with three different
-names</span></p>
+<figcaption>Listing 11-11: Three tests with three different names</figcaption>
+</figure>
 <p>If we run the tests without passing any arguments, as we saw earlier, all the
 tests will run in parallel:</p>
 <pre><code class="language-console">$ cargo test
@@ -12351,7 +12374,8 @@ functions should be tested directly, and other languages make it difficult or
 impossible to test private functions. Regardless of which testing ideology you
 adhere to, Rust’s privacy rules do allow you to test private functions.
 Consider the code in Listing 11-12 with the private function <code>internal_adder</code>.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">pub fn add_two(a: i32) -&gt; i32 {
     internal_adder(a, 2)
 }
@@ -12369,7 +12393,8 @@ mod tests {
         assert_eq!(4, internal_adder(2, 2));
     }
 }</code></pre>
-<p><span class="caption">Listing 11-12: Testing a private function</span></p>
+<figcaption>Listing 11-12: Testing a private function</figcaption>
+</figure>
 <p>Note that the <code>internal_adder</code> function is not marked as <code>pub</code>. Tests are just
 Rust code, and the <code>tests</code> module is just another module. As we discussed in
 the <a href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html">“Paths for Referring to an Item in the Module Tree”</a><!-- ignore -->
@@ -12403,15 +12428,16 @@ files as an individual crate.</p>
     └── integration_test.rs
 </code></pre>
 <p>Enter the code in Listing 11-13 into the <em>tests/integration_test.rs</em> file:</p>
-<p><span class="filename">Filename: tests/integration_test.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: tests/integration_test.rs</span>
 <pre><code class="language-rust ignore">use adder::add_two;
 
 #[test]
 fn it_adds_two() {
     assert_eq!(4, add_two(2));
 }</code></pre>
-<p><span class="caption">Listing 11-13: An integration test of a function in the
-<code>adder</code> crate</span></p>
+<figcaption>Listing 11-13: An integration test of a function in the <code>adder</code> crate</figcaption>
+</figure>
 <p>Each file in the <code>tests</code> directory is a separate crate, so we need to bring our
 library into each test crate’s scope. For that reason we add <code>use adder::add_two</code> at the top of the code, which we didn’t need in the unit
 tests.</p>
@@ -12654,15 +12680,16 @@ to turn it into a collection, such as a vector, that contains all the elements
 the iterator produces.</p>
 <p>The code in Listing 12-1 allows your <code>minigrep</code> program to read any command
 line arguments passed to it and then collect the values into a vector.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">use std::env;
 
 fn main() {
     let args: Vec&lt;String&gt; = env::args().collect();
     dbg!(args);
 }</code></pre></pre>
-<p><span class="caption">Listing 12-1: Collecting the command line arguments into
-a vector and printing them</span></p>
+<figcaption>Listing 12-1: Collecting the command line arguments into a vector and printing them</figcaption>
+</figure>
 <p>First, we bring the <code>std::env</code> module into scope with a <code>use</code> statement so we
 can use its <code>args</code> function. Notice that the <code>std::env::args</code> function is
 nested in two levels of modules. As we discussed in <a href="ch07-04-bringing-paths-into-scope-with-the-use-keyword.html#creating-idiomatic-use-paths">Chapter
@@ -12720,7 +12747,8 @@ chapter, we’ll ignore it and save only the two arguments we need.</p>
 arguments. Now we need to save the values of the two arguments in variables so
 we can use the values throughout the rest of the program. We do that in Listing
 12-2.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust should_panic noplayground">use std::env;
 
 fn main() {
@@ -12732,8 +12760,8 @@ fn main() {
     println!("Searching for {query}");
     println!("In file {file_path}");
 }</code></pre>
-<p><span class="caption">Listing 12-2: Creating variables to hold the query
-argument and file path argument</span></p>
+<figcaption>Listing 12-2: Creating variables to hold the query argument and file path argument</figcaption>
+</figure>
 <p>As we saw when we printed the vector, the program’s name takes up the first
 value in the vector at <code>args[0]</code>, so we’re starting arguments at index <code>1</code>. The
 first argument <code>minigrep</code> takes is the string we’re searching for, so we put a
@@ -12762,7 +12790,8 @@ small amount of text over multiple lines with some repeated words. Listing 12-3
 has an Emily Dickinson poem that will work well! Create a file called
 <em>poem.txt</em> at the root level of your project, and enter the poem “I’m Nobody!
 Who are you?”</p>
-<p><span class="filename">Filename: poem.txt</span></p>
+<figure class="listing">
+<span class="file-name">Filename: poem.txt</span>
 <pre><code class="language-text">I'm nobody! Who are you?
 Are you nobody, too?
 Then there's a pair of us - don't tell!
@@ -12773,11 +12802,12 @@ How public, like a frog
 To tell your name the livelong day
 To an admiring bog!
 </code></pre>
-<p><span class="caption">Listing 12-3: A poem by Emily Dickinson makes a good test
-case</span></p>
+<figcaption>Listing 12-3: A poem by Emily Dickinson makes a good test case</figcaption>
+</figure>
 <p>With the text in place, edit <em>src/main.rs</em> and add code to read the file, as
 shown in Listing 12-4.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust should_panic noplayground">use std::env;
 use std::fs;
 
@@ -12796,8 +12826,8 @@ fn main() {
 
     println!("With text:\n{contents}");
 }</code></pre>
-<p><span class="caption">Listing 12-4: Reading the contents of the file specified
-by the second argument</span></p>
+<figcaption>Listing 12-4: Reading the contents of the file specified by the second argument</figcaption>
+</figure>
 <p>First, we bring in a relevant part of the standard library with a <code>use</code>
 statement: we need <code>std::fs</code> to handle files.</p>
 <p>In <code>main</code>, the new statement <code>fs::read_to_string</code> takes the <code>file_path</code>, opens
@@ -12896,7 +12926,8 @@ it. Let’s rework our program by following this process.</p>
 <code>main</code> will call to prepare for moving the command line parsing logic to
 <em>src/lib.rs</em>. Listing 12-5 shows the new start of <code>main</code> that calls a new
 function <code>parse_config</code>, which we’ll define in <em>src/main.rs</em> for the moment.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore"><span class="boring">use std::env;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -12922,8 +12953,8 @@ fn parse_config(args: &amp;[String]) -&gt; (&amp;str, &amp;str) {
 
     (query, file_path)
 }</code></pre>
-<p><span class="caption">Listing 12-5: Extracting a <code>parse_config</code> function from
-<code>main</code></span></p>
+<figcaption>Listing 12-5: Extracting a <code>parse_config</code> function from <code>main</code></figcaption>
+</figure>
 <p>We’re still collecting the command line arguments into a vector, but instead of
 assigning the argument value at index 1 to the variable <code>query</code> and the
 argument value at index 2 to the variable <code>file_path</code> within the <code>main</code>
@@ -12951,7 +12982,8 @@ struct fields a meaningful name. Doing so will make it easier for future
 maintainers of this code to understand how the different values relate to each
 other and what their purpose is.</p>
 <p>Listing 12-6 shows the improvements to the <code>parse_config</code> function.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust should_panic noplayground"><span class="boring">use std::env;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -12982,8 +13014,8 @@ fn parse_config(args: &amp;[String]) -&gt; Config {
 
     Config { query, file_path }
 }</code></pre>
-<p><span class="caption">Listing 12-6: Refactoring <code>parse_config</code> to return an
-instance of a <code>Config</code> struct</span></p>
+<figcaption>Listing 12-6: Refactoring <code>parse_config</code> to return an instance of a <code>Config</code> struct</figcaption>
+</figure>
 <p>We’ve added a struct named <code>Config</code> defined to have fields named <code>query</code> and
 <code>file_path</code>. The signature of <code>parse_config</code> now indicates that it returns a
 <code>Config</code> value. In the body of <code>parse_config</code>, where we used to return
@@ -13035,7 +13067,8 @@ standard library, such as <code>String</code>, by calling <code>String::new</cod
 changing <code>parse_config</code> into a <code>new</code> function associated with <code>Config</code>, we’ll
 be able to create instances of <code>Config</code> by calling <code>Config::new</code>. Listing 12-7
 shows the changes we need to make.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust should_panic noplayground"><span class="boring">use std::env;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -13070,8 +13103,8 @@ shows the changes we need to make.</p>
         Config { query, file_path }
     }
 }</code></pre>
-<p><span class="caption">Listing 12-7: Changing <code>parse_config</code> into
-<code>Config::new</code></span></p>
+<figcaption>Listing 12-7: Changing <code>parse_config</code> into <code>Config::new</code></figcaption>
+</figure>
 <p>We’ve updated <code>main</code> where we were calling <code>parse_config</code> to instead call
 <code>Config::new</code>. We’ve changed the name of <code>parse_config</code> to <code>new</code> and moved it
 within an <code>impl</code> block, which associates the <code>new</code> function with <code>Config</code>. Try
@@ -13096,7 +13129,8 @@ they should do instead. Let’s fix that now.</p>
 <p>In Listing 12-8, we add a check in the <code>new</code> function that will verify that the
 slice is long enough before accessing index 1 and 2. If the slice isn’t long
 enough, the program panics and displays a better error message.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore"><span class="boring">use std::env;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -13133,8 +13167,8 @@ enough, the program panics and displays a better error message.</p>
 </span><span class="boring">        Config { query, file_path }
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 12-8: Adding a check for the number of
-arguments</span></p>
+<figcaption>Listing 12-8: Adding a check for the number of arguments</figcaption>
+</figure>
 <p>This code is similar to <a href="ch09-03-to-panic-or-not-to-panic.html#creating-custom-types-for-validation">the <code>Guess::new</code> function we wrote in Listing
 9-13</a><!-- ignore -->, where we called <code>panic!</code> when the
 <code>value</code> argument was out of the range of valid values. Instead of checking for
@@ -13173,7 +13207,8 @@ practical error for our users without the surrounding text about <code>thread 'm
 function we’re now calling <code>Config::build</code> and the body of the function needed
 to return a <code>Result</code>. Note that this won’t compile until we update <code>main</code> as
 well, which we’ll do in the next listing.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile"><span class="boring">use std::env;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -13208,8 +13243,8 @@ well, which we’ll do in the next listing.</p>
         Ok(Config { query, file_path })
     }
 }</code></pre>
-<p><span class="caption">Listing 12-9: Returning a <code>Result</code> from
-<code>Config::build</code></span></p>
+<figcaption>Listing 12-9: Returning a <code>Result</code> from <code>Config::build</code></figcaption>
+</figure>
 <p>Our <code>build</code> function returns a <code>Result</code> with a <code>Config</code> instance in the success
 case and a <code>&amp;'static str</code> in the error case. Our error values will always be
 string literals that have the <code>'static</code> lifetime.</p>
@@ -13229,7 +13264,8 @@ Listing 12-10. We’ll also take the responsibility of exiting the command line
 tool with a nonzero error code away from <code>panic!</code> and instead implement it by
 hand. A nonzero exit status is a convention to signal to the process that
 called our program that the program exited with an error state.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore"><span class="boring">use std::env;
 </span><span class="boring">use std::fs;
 </span>use std::process;
@@ -13270,8 +13306,8 @@ fn main() {
 </span><span class="boring">        Ok(Config { query, file_path })
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 12-10: Exiting with an error code if building a
-<code>Config</code> fails</span></p>
+<figcaption>Listing 12-10: Exiting with an error code if building a <code>Config</code> fails</figcaption>
+</figure>
 <p>In this listing, we’ve used a method we haven’t covered in detail yet:
 <code>unwrap_or_else</code>, which is defined on <code>Result&lt;T, E&gt;</code> by the standard library.
 Using <code>unwrap_or_else</code> allows us to define some custom, non-<code>panic!</code> error
@@ -13310,7 +13346,8 @@ inspection, and we’ll be able to write tests for all the other logic.</p>
 <p>Listing 12-11 shows the extracted <code>run</code> function. For now, we’re just making
 the small, incremental improvement of extracting the function. We’re still
 defining the function in <em>src/main.rs</em>.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore"><span class="boring">use std::env;
 </span><span class="boring">use std::fs;
 </span><span class="boring">use std::process;
@@ -13357,8 +13394,8 @@ fn run(config: Config) {
 </span><span class="boring">        Ok(Config { query, file_path })
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 12-11: Extracting a <code>run</code> function containing the
-rest of the program logic</span></p>
+<figcaption>Listing 12-11: Extracting a <code>run</code> function containing the rest of the program logic</figcaption>
+</figure>
 <p>The <code>run</code> function now contains all the remaining logic from <code>main</code>, starting
 from reading the file. The <code>run</code> function takes the <code>Config</code> instance as an
 argument.</p>
@@ -13370,7 +13407,8 @@ function will return a <code>Result&lt;T, E&gt;</code> when something goes wrong
 us further consolidate the logic around handling errors into <code>main</code> in a
 user-friendly way. Listing 12-12 shows the changes we need to make to the
 signature and body of <code>run</code>.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore"><span class="boring">use std::env;
 </span><span class="boring">use std::fs;
 </span><span class="boring">use std::process;
@@ -13418,8 +13456,8 @@ signature and body of <code>run</code>.</p>
 </span><span class="boring">        Ok(Config { query, file_path })
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 12-12: Changing the <code>run</code> function to return
-<code>Result</code></span></p>
+<figcaption>Listing 12-12: Changing the <code>run</code> function to return <code>Result</code></figcaption>
+</figure>
 <p>We’ve made three significant changes here. First, we changed the return type of
 the <code>run</code> function to <code>Result&lt;(), Box&lt;dyn Error&gt;&gt;</code>. This function previously
 returned the unit type, <code>()</code>, and we keep that as the value returned in the
@@ -13555,7 +13593,8 @@ can test the code and have a <em>src/main.rs</em> file with fewer responsibiliti
 <p>The contents of <em>src/lib.rs</em> should have the signatures shown in Listing 12-13
 (we’ve omitted the bodies of the functions for brevity). Note that this won’t
 compile until we modify <em>src/main.rs</em> in Listing 12-14.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore does_not_compile">use std::error::Error;
 use std::fs;
 
@@ -13586,14 +13625,15 @@ pub fn run(config: Config) -&gt; Result&lt;(), Box&lt;dyn Error&gt;&gt; {
 </span><span class="boring">
 </span><span class="boring">    Ok(())
 </span>}</code></pre>
-<p><span class="caption">Listing 12-13: Moving <code>Config</code> and <code>run</code> into
-<em>src/lib.rs</em></span></p>
+<figcaption>Listing 12-13: Moving <code>Config</code> and <code>run</code> into <em>src/lib.rs</em></figcaption>
+</figure>
 <p>We’ve made liberal use of the <code>pub</code> keyword: on <code>Config</code>, on its fields and its
 <code>build</code> method, and on the <code>run</code> function. We now have a library crate that has
 a public API we can test!</p>
 <p>Now we need to bring the code we moved to <em>src/lib.rs</em> into the scope of the
 binary crate in <em>src/main.rs</em>, as shown in Listing 12-14.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">use std::env;
 use std::process;
 
@@ -13617,8 +13657,8 @@ fn main() {
 </span><span class="boring">        process::exit(1);
 </span>    }
 }</code></pre>
-<p><span class="caption">Listing 12-14: Using the <code>minigrep</code> library crate in
-<em>src/main.rs</em></span></p>
+<figcaption>Listing 12-14: Using the <code>minigrep</code> library crate in <em>src/main.rs</em></figcaption>
+</figure>
 <p>We add a <code>use minigrep::Config</code> line to bring the <code>Config</code> type from the
 library crate into the binary crate’s scope, and we prefix the <code>run</code> function
 with our crate name. Now all the functionality should be connected and should
@@ -13661,7 +13701,8 @@ Then, in <em>src/lib.rs</em>, add a <code>tests</code> module with a test functi
 behavior we want the <code>search</code> function to have: it will take a query and the
 text to search, and it will return only the lines from the text that contain
 the query. Listing 12-15 shows this test, which won’t compile yet.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore does_not_compile"><span class="boring">use std::error::Error;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -13704,8 +13745,8 @@ Pick three.";
         assert_eq!(vec!["safe, fast, productive."], search(query, contents));
     }
 }</code></pre>
-<p><span class="caption">Listing 12-15: Creating a failing test for the <code>search</code>
-function we wish we had</span></p>
+<figcaption>Listing 12-15: Creating a failing test for the <code>search</code> function we wish we had</figcaption>
+</figure>
 <p>This test searches for the string <code>"duct"</code>. The text we’re searching is three
 lines, only one of which contains <code>"duct"</code> (Note that the backslash after the
 opening double quote tells Rust not to put a newline character at the beginning
@@ -13717,7 +13758,8 @@ principles, we’ll add just enough code to get the test to compile and run by
 adding a definition of the <code>search</code> function that always returns an empty
 vector, as shown in Listing 12-16. Then the test should compile and fail
 because an empty vector doesn’t match a vector containing the line <code>"safe, fast, productive."</code></p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground"><span class="boring">use std::error::Error;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -13764,8 +13806,8 @@ because an empty vector doesn’t match a vector containing the line <code>"safe
 </span><span class="boring">        assert_eq!(vec!["safe, fast, productive."], search(query, contents));
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 12-16: Defining just enough of the <code>search</code>
-function so our test will compile</span></p>
+<figcaption>Listing 12-16: Defining just enough of the <code>search</code> function so our test will compile</figcaption>
+</figure>
 <p>Notice that we need to define an explicit lifetime <code>'a</code> in the signature of
 <code>search</code> and use that lifetime with the <code>contents</code> argument and the return
 value. Recall in <a href="ch10-03-lifetime-syntax.html">Chapter 10</a><!-- ignore --> that the lifetime
@@ -13850,7 +13892,8 @@ that and implement <code>search</code>, our program needs to follow these steps:
 <p>Rust has a helpful method to handle line-by-line iteration of strings,
 conveniently named <code>lines</code>, that works as shown in Listing 12-17. Note this
 won’t compile yet.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore does_not_compile"><span class="boring">use std::error::Error;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -13899,8 +13942,8 @@ won’t compile yet.</p>
 </span><span class="boring">        assert_eq!(vec!["safe, fast, productive."], search(query, contents));
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 12-17: Iterating through each line in <code>contents</code>
-</span></p>
+<figcaption>Listing 12-17: Iterating through each line in <code>contents</code></figcaption>
+</figure>
 <p>The <code>lines</code> method returns an iterator. We’ll talk about iterators in depth in
 <a href="ch13-02-iterators.html">Chapter 13</a><!-- ignore -->, but recall that you saw this way
 of using an iterator in <a href="ch03-05-control-flow.html#looping-through-a-collection-with-for">Listing 3-5</a><!-- ignore -->, where we used a
@@ -13910,7 +13953,8 @@ of using an iterator in <a href="ch03-05-control-flow.html#looping-through-a-col
 Fortunately, strings have a helpful method named <code>contains</code> that does this for
 us! Add a call to the <code>contains</code> method in the <code>search</code> function, as shown in
 Listing 12-18. Note this still won’t compile yet.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore does_not_compile"><span class="boring">use std::error::Error;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -13961,8 +14005,8 @@ Listing 12-18. Note this still won’t compile yet.</p>
 </span><span class="boring">        assert_eq!(vec!["safe, fast, productive."], search(query, contents));
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 12-18: Adding functionality to see whether the
-line contains the string in <code>query</code></span></p>
+<figcaption>Listing 12-18: Adding functionality to see whether the line contains the string in <code>query</code></figcaption>
+</figure>
 <p>At the moment, we’re building up functionality. To get it to compile, we need
 to return a value from the body as we indicated we would in the function
 signature.</p>
@@ -13971,7 +14015,8 @@ signature.</p>
 to return. For that, we can make a mutable vector before the <code>for</code> loop and
 call the <code>push</code> method to store a <code>line</code> in the vector. After the <code>for</code> loop,
 we return the vector, as shown in Listing 12-19.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore"><span class="boring">use std::error::Error;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -14026,8 +14071,8 @@ we return the vector, as shown in Listing 12-19.</p>
 </span><span class="boring">        assert_eq!(vec!["safe, fast, productive."], search(query, contents));
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 12-19: Storing the lines that match so we can
-return them</span></p>
+<figcaption>Listing 12-19: Storing the lines that match so we can return them</figcaption>
+</figure>
 <p>Now the <code>search</code> function should return only the lines that contain <code>query</code>,
 and our test should pass. Let’s run the test:</p>
 <pre><code class="language-console">$ cargo test
@@ -14169,7 +14214,8 @@ so the first step is again to write a failing test. We’ll add a new test for
 the new <code>search_case_insensitive</code> function and rename our old test from
 <code>one_result</code> to <code>case_sensitive</code> to clarify the differences between the two
 tests, as shown in Listing 12-20.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore does_not_compile"><span class="boring">use std::error::Error;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -14244,8 +14290,8 @@ Trust me.";
         );
     }
 }</code></pre>
-<p><span class="caption">Listing 12-20: Adding a new failing test for the
-case-insensitive function we’re about to add</span></p>
+<figcaption>Listing 12-20: Adding a new failing test for the case-insensitive function we’re about to add</figcaption>
+</figure>
 <p>Note that we’ve edited the old test’s <code>contents</code> too. We’ve added a new line
 with the text <code>"Duct tape."</code> using a capital D that shouldn’t match the query
 <code>"duct"</code> when we’re searching in a case-sensitive manner. Changing the old test
@@ -14265,7 +14311,8 @@ for the <code>search</code> function in Listing 12-16 to see the test compile an
 the same as the <code>search</code> function. The only difference is that we’ll lowercase
 the <code>query</code> and each <code>line</code> so whatever the case of the input arguments,
 they’ll be the same case when we check whether the line contains the query.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground"><span class="boring">use std::error::Error;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -14356,8 +14403,8 @@ they’ll be the same case when we check whether the line contains the query.</p
 </span><span class="boring">        );
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 12-21: Defining the <code>search_case_insensitive</code>
-function to lowercase the query and the line before comparing them</span></p>
+<figcaption>Listing 12-21: Defining the <code>search_case_insensitive</code> function to lowercase the query and the line before comparing them</figcaption>
+</figure>
 <p>First, we lowercase the <code>query</code> string and store it in a shadowed variable with
 the same name. Calling <code>to_lowercase</code> on the query is necessary so no
 matter whether the user’s query is <code>"rust"</code>, <code>"RUST"</code>, <code>"Rust"</code>, or <code>"rUsT"</code>,
@@ -14508,7 +14555,8 @@ this field anywhere yet:</p>
 function to check the <code>ignore_case</code> field’s value and use that to decide
 whether to call the <code>search</code> function or the <code>search_case_insensitive</code>
 function, as shown in Listing 12-22. This still won’t compile yet.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore does_not_compile"><span class="boring">use std::error::Error;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -14606,15 +14654,16 @@ function, as shown in Listing 12-22. This still won’t compile yet.</p>
 </span><span class="boring">        );
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 12-22: Calling either <code>search</code> or
-<code>search_case_insensitive</code> based on the value in <code>config.ignore_case</code></span></p>
+<figcaption>Listing 12-22: Calling either <code>search</code> or <code>search_case_insensitive</code> based on the value in <code>config.ignore_case</code></figcaption>
+</figure>
 <p>Finally, we need to check for the environment variable. The functions for
 working with environment variables are in the <code>env</code> module in the standard
 library, so we bring that module into scope at the top of <em>src/lib.rs</em>. Then
 we’ll use the <code>var</code> function from the <code>env</code> module to check if any value
 has been set for an environment variable named <code>IGNORE_CASE</code>, as shown in
 Listing 12-23.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">use std::env;
 // --snip--
 
@@ -14721,8 +14770,8 @@ Listing 12-23.</p>
 </span><span class="boring">        );
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 12-23: Checking for any value in an environment
-variable named <code>IGNORE_CASE</code></span></p>
+<figcaption>Listing 12-23: Checking for any value in an environment variable named <code>IGNORE_CASE</code></figcaption>
+</figure>
 <p>Here, we create a new variable <code>ignore_case</code>. To set its value, we call the
 <code>env::var</code> function and pass it the name of the <code>IGNORE_CASE</code> environment
 variable. The <code>env::var</code> function returns a <code>Result</code> that will be the
@@ -14826,7 +14875,8 @@ prints error messages is in one function, <code>main</code>. The standard librar
 the <code>eprintln!</code> macro that prints to the standard error stream, so let’s change
 the two places we were calling <code>println!</code> to print errors to use <code>eprintln!</code>
 instead.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore"><span class="boring">use std::env;
 </span><span class="boring">use std::process;
 </span><span class="boring">
@@ -14845,8 +14895,8 @@ instead.</p>
         process::exit(1);
     }
 }</code></pre>
-<p><span class="caption">Listing 12-24: Writing error messages to standard error
-instead of standard output using <code>eprintln!</code></span></p>
+<figcaption>Listing 12-24: Writing error messages to standard error instead of standard output using <code>eprintln!</code></figcaption>
+</figure>
 <p>Let’s now run the program again in the same way, without any arguments and
 redirecting standard output with <code>&gt;</code>:</p>
 <pre><code class="language-console">$ cargo run &gt; output.txt
@@ -14927,7 +14977,8 @@ contains a <code>Vec&lt;ShirtColor&gt;</code> representing the shirt colors curr
 The method <code>giveaway</code> defined on <code>Inventory</code> gets the optional shirt
 color preference of the free shirt winner, and returns the shirt color the
 person will get. This setup is shown in Listing 13-1:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust noplayground">#[derive(Debug, PartialEq, Copy, Clone)]
 enum ShirtColor {
     Red,
@@ -14980,7 +15031,8 @@ fn main() {
         user_pref2, giveaway2
     );
 }</code></pre>
-<p><span class="caption">Listing 13-1: Shirt company giveaway situation</span></p>
+<figcaption>Listing 13-1: Shirt company giveaway situation</figcaption>
+</figure>
 <p>The <code>store</code> defined in <code>main</code> has two blue shirts and one red shirt remaining
 to distribute for this limited-edition promotion. We call the <code>giveaway</code> method
 for a user with a preference for a red shirt and a user without any preference.</p>
@@ -15037,7 +15089,8 @@ necessary. Annotating the types for a closure would look like the definition
 shown in Listing 13-2. In this example, we’re defining a closure and storing it
 in a variable rather than defining the closure in the spot we pass it as an
 argument as we did in Listing 13-1.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">use std::thread;
 </span><span class="boring">use std::time::Duration;
 </span><span class="boring">
@@ -15069,8 +15122,8 @@ argument as we did in Listing 13-1.</p>
 </span><span class="boring">
 </span><span class="boring">    generate_workout(simulated_user_specified_value, simulated_random_number);
 </span><span class="boring">}</span></code></pre></pre>
-<p><span class="caption">Listing 13-2: Adding optional type annotations of the
-parameter and return value types in the closure</span></p>
+<figcaption>Listing 13-2: Adding optional type annotations of the parameter and return value types in the closure</figcaption>
+</figure>
 <p>With type annotations added, the syntax of closures looks more similar to the
 syntax of functions. Here we define a function that adds 1 to its parameter and
 a closure that has the same behavior, for comparison. We’ve added some spaces
@@ -15098,15 +15151,16 @@ example. Note that we haven’t added any type annotations to the definition.
 Because there are no type annotations, we can call the closure with any type,
 which we’ve done here with <code>String</code> the first time. If we then try to call
 <code>example_closure</code> with an integer, we’ll get an error.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile"><span class="boring">fn main() {
 </span>    let example_closure = |x| x;
 
     let s = example_closure(String::from("hello"));
     let n = example_closure(5);
 <span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 13-3: Attempting to call a closure whose types
-are inferred with two different types</span></p>
+<figcaption>Listing 13-3: Attempting to call a closure whose types are inferred with two different types</figcaption>
+</figure>
 <p>The compiler gives us this error:</p>
 <pre><code class="language-console">$ cargo run
    Compiling closure-example v0.1.0 (file:///projects/closure-example)
@@ -15148,7 +15202,8 @@ captured values.</p>
 <p>In Listing 13-4, we define a closure that captures an immutable reference to
 the vector named <code>list</code> because it only needs an immutable reference to print
 the value:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let list = vec![1, 2, 3];
     println!("Before defining closure: {list:?}");
@@ -15159,8 +15214,8 @@ the value:</p>
     only_borrows();
     println!("After calling closure: {list:?}");
 }</code></pre></pre>
-<p><span class="caption">Listing 13-4: Defining and calling a closure that
-captures an immutable reference</span></p>
+<figcaption>Listing 13-4: Defining and calling a closure that captures an immutable reference</figcaption>
+</figure>
 <p>This example also illustrates that a variable can bind to a closure definition,
 and we can later call the closure by using the variable name and parentheses as
 if the variable name were a function name.</p>
@@ -15179,7 +15234,8 @@ After calling closure: [1, 2, 3]
 </code></pre>
 <p>Next, in Listing 13-5, we change the closure body so that it adds an element to
 the <code>list</code> vector. The closure now captures a mutable reference:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let mut list = vec![1, 2, 3];
     println!("Before defining closure: {list:?}");
@@ -15189,8 +15245,8 @@ the <code>list</code> vector. The closure now captures a mutable reference:</p>
     borrows_mutably();
     println!("After calling closure: {list:?}");
 }</code></pre></pre>
-<p><span class="caption">Listing 13-5: Defining and calling a closure that
-captures a mutable reference</span></p>
+<figcaption>Listing 13-5: Defining and calling a closure that captures a mutable reference</figcaption>
+</figure>
 <p>This code compiles, runs, and prints:</p>
 <pre><code class="language-console">$ cargo run
    Compiling closure-example v0.1.0 (file:///projects/closure-example)
@@ -15215,7 +15271,8 @@ you would want to use them in detail in Chapter 16 when we talk about
 concurrency, but for now, let’s briefly explore spawning a new thread using a
 closure that needs the <code>move</code> keyword. Listing 13-6 shows Listing 13-4 modified
 to print the vector in a new thread rather than in the main thread:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">use std::thread;
 
 fn main() {
@@ -15226,8 +15283,8 @@ fn main() {
         .join()
         .unwrap();
 }</code></pre></pre>
-<p><span class="caption">Listing 13-6: Using <code>move</code> to force the closure for the
-thread to take ownership of <code>list</code></span></p>
+<figcaption>Listing 13-6: Using <code>move</code> to force the closure for the thread to take ownership of <code>list</code></figcaption>
+</figure>
 <p>We spawn a new thread, giving the thread a closure to run as an argument. The
 closure body prints out the list. In Listing 13-4, the closure only captured
 <code>list</code> using an immutable reference because that’s the least amount of access
@@ -15318,7 +15375,8 @@ and returns a value of type <code>K</code> that can be ordered. This function is
 when you want to sort a slice by a particular attribute of each item. In
 Listing 13-7, we have a list of <code>Rectangle</code> instances and we use <code>sort_by_key</code>
 to order them by their <code>width</code> attribute from low to high:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">#[derive(Debug)]
 struct Rectangle {
     width: u32,
@@ -15335,8 +15393,8 @@ fn main() {
     list.sort_by_key(|r| r.width);
     println!("{list:#?}");
 }</code></pre></pre>
-<p><span class="caption">Listing 13-7: Using <code>sort_by_key</code> to order rectangles by
-width</span></p>
+<figcaption>Listing 13-7: Using <code>sort_by_key</code> to order rectangles by width</figcaption>
+</figure>
 <p>This code prints:</p>
 <pre><code class="language-console">$ cargo run
    Compiling rectangles v0.1.0 (file:///projects/rectangles)
@@ -15363,7 +15421,8 @@ it meets the trait bound requirements.</p>
 <p>In contrast, Listing 13-8 shows an example of a closure that implements just
 the <code>FnOnce</code> trait, because it moves a value out of the environment. The
 compiler won’t let us use this closure with <code>sort_by_key</code>:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile">#[derive(Debug)]
 struct Rectangle {
     width: u32,
@@ -15386,8 +15445,8 @@ fn main() {
     });
     println!("{list:#?}");
 }</code></pre>
-<p><span class="caption">Listing 13-8: Attempting to use an <code>FnOnce</code> closure with
-<code>sort_by_key</code></span></p>
+<figcaption>Listing 13-8: Attempting to use an <code>FnOnce</code> closure with <code>sort_by_key</code></figcaption>
+</figure>
 <p>This is a contrived, convoluted way (that doesn’t work) to try and count the
 number of times <code>sort_by_key</code> calls the closure when sorting <code>list</code>. This code
 attempts to do this counting by pushing <code>value</code>—a <code>String</code> from the closure’s
@@ -15423,7 +15482,8 @@ the closure body is a more straightforward way to calculate that. The closure
 in Listing 13-9 works with <code>sort_by_key</code> because it is only capturing a mutable
 reference to the <code>num_sort_operations</code> counter and can therefore be called more
 than once:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">#[derive(Debug)]
 struct Rectangle {
     width: u32,
@@ -15444,8 +15504,8 @@ fn main() {
     });
     println!("{list:#?}, sorted in {num_sort_operations} operations");
 }</code></pre></pre>
-<p><span class="caption">Listing 13-9: Using an <code>FnMut</code> closure with <code>sort_by_key</code>
-is allowed</span></p>
+<figcaption>Listing 13-9: Using an <code>FnMut</code> closure with <code>sort_by_key</code> is allowed</figcaption>
+</figure>
 <p>The <code>Fn</code> traits are important when defining or using functions or types that
 make use of closures. In the next section, we’ll discuss iterators. Many
 iterator methods take closure arguments, so keep these closure details in mind
@@ -15460,12 +15520,15 @@ methods that consume the iterator to use it up. For example, the code in
 Listing 13-10 creates an iterator over the items in the vector <code>v1</code> by calling
 the <code>iter</code> method defined on <code>Vec&lt;T&gt;</code>. This code by itself doesn’t do anything
 useful.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">fn main() {
 </span>    let v1 = vec![1, 2, 3];
 
     let v1_iter = v1.iter();
 <span class="boring">}</span></code></pre></pre>
-<p><span class="caption">Listing 13-10: Creating an iterator</span></p>
+<figcaption>Listing 13-10: Creating an iterator</figcaption>
+</figure>
 <p>The iterator is stored in the <code>v1_iter</code> variable. Once we’ve created an
 iterator, we can use it in a variety of ways. In Listing 3-5 in Chapter 3, we
 iterated over an array using a <code>for</code> loop to execute some code on each of its
@@ -15475,6 +15538,8 @@ but we glossed over how exactly that works until now.</p>
 the use of the iterator in the <code>for</code> loop. When the <code>for</code> loop is called using
 the iterator in <code>v1_iter</code>, each element in the iterator is used in one
 iteration of the loop, which prints out each value.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">fn main() {
 </span>    let v1 = vec![1, 2, 3];
 
@@ -15484,7 +15549,8 @@ iteration of the loop, which prints out each value.</p>
         println!("Got: {val}");
     }
 <span class="boring">}</span></code></pre></pre>
-<p><span class="caption">Listing 13-11: Using an iterator in a <code>for</code> loop</span></p>
+<figcaption>Listing 13-11: Using an iterator in a <code>for</code> loop</figcaption>
+</figure>
 <p>In languages that don’t have iterators provided by their standard libraries,
 you would likely write this same functionality by starting a variable at index
 0, using that variable to index into the vector to get a value, and
@@ -15520,7 +15586,8 @@ iterator.</p>
 <p>We can call the <code>next</code> method on iterators directly; Listing 13-12 demonstrates
 what values are returned from repeated calls to <code>next</code> on the iterator created
 from the vector.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground"><span class="boring">#[cfg(test)]
 </span><span class="boring">mod tests {
 </span>    #[test]
@@ -15535,8 +15602,8 @@ from the vector.</p>
         assert_eq!(v1_iter.next(), None);
     }
 <span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 13-12: Calling the <code>next</code> method on an
-iterator</span></p>
+<figcaption>Listing 13-12: Calling the <code>next</code> method on an iterator</figcaption>
+</figure>
 <p>Note that we needed to make <code>v1_iter</code> mutable: calling the <code>next</code> method on an
 iterator changes internal state that the iterator uses to keep track of where
 it is in the sequence. In other words, this code <em>consumes</em>, or uses up, the
@@ -15562,7 +15629,8 @@ the iterator and iterates through the items by repeatedly calling <code>next</co
 consuming the iterator. As it iterates through, it adds each item to a running
 total and returns the total when iteration is complete. Listing 13-13 has a
 test illustrating a use of the <code>sum</code> method:</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground"><span class="boring">#[cfg(test)]
 </span><span class="boring">mod tests {
 </span>    #[test]
@@ -15576,8 +15644,8 @@ test illustrating a use of the <code>sum</code> method:</p>
         assert_eq!(total, 6);
     }
 <span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 13-13: Calling the <code>sum</code> method to get the total
-of all items in the iterator</span></p>
+<figcaption>Listing 13-13: Calling the <code>sum</code> method to get the total of all items in the iterator</figcaption>
+</figure>
 <p>We aren’t allowed to use <code>v1_iter</code> after the call to <code>sum</code> because <code>sum</code> takes
 ownership of the iterator we call it on.</p>
 <h3 id="methods-that-produce-other-iterators"><a class="header" href="#methods-that-produce-other-iterators">Methods that Produce Other Iterators</a></h3>
@@ -15589,14 +15657,15 @@ which takes a closure to call on each item as the items are iterated through.
 The <code>map</code> method returns a new iterator that produces the modified items. The
 closure here creates a new iterator in which each item from the vector will be
 incremented by 1:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust not_desired_behavior"><span class="boring">fn main() {
 </span>    let v1: Vec&lt;i32&gt; = vec![1, 2, 3];
 
     v1.iter().map(|x| x + 1);
 <span class="boring">}</span></code></pre></pre>
-<p><span class="caption">Listing 13-14: Calling the iterator adaptor <code>map</code> to
-create a new iterator</span></p>
+<figcaption>Listing 13-14: Calling the iterator adaptor <code>map</code> to create a new iterator</figcaption>
+</figure>
 <p>However, this code produces a warning:</p>
 <pre><code class="language-console">$ cargo run
    Compiling iterators v0.1.0 (file:///projects/iterators)
@@ -15627,7 +15696,8 @@ type.</p>
 <p>In Listing 13-15, we collect the results of iterating over the iterator that’s
 returned from the call to <code>map</code> into a vector. This vector will end up
 containing each item from the original vector incremented by 1.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">fn main() {
 </span>    let v1: Vec&lt;i32&gt; = vec![1, 2, 3];
 
@@ -15635,9 +15705,8 @@ containing each item from the original vector incremented by 1.</p>
 
     assert_eq!(v2, vec![2, 3, 4]);
 <span class="boring">}</span></code></pre></pre>
-<p><span class="caption">Listing 13-15: Calling the <code>map</code> method to create a new
-iterator and then calling the <code>collect</code> method to consume the new iterator and
-create a vector</span></p>
+<figcaption>Listing 13-15: Calling the <code>map</code> method to create a new iterator and then calling the <code>collect</code> method to consume the new iterator and create a vector</figcaption>
+</figure>
 <p>Because <code>map</code> takes a closure, we can specify any operation we want to perform
 on each item. This is a great example of how closures let you customize some
 behavior while reusing the iteration behavior that the <code>Iterator</code> trait
@@ -15656,7 +15725,8 @@ returns <code>true</code>, the value will be included in the iteration produced 
 <p>In Listing 13-16, we use <code>filter</code> with a closure that captures the <code>shoe_size</code>
 variable from its environment to iterate over a collection of <code>Shoe</code> struct
 instances. It will return only shoes that are the specified size.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">#[derive(PartialEq, Debug)]
 struct Shoe {
     size: u32,
@@ -15705,8 +15775,8 @@ mod tests {
         );
     }
 }</code></pre>
-<p><span class="caption">Listing 13-16: Using the <code>filter</code> method with a closure
-that captures <code>shoe_size</code></span></p>
+<figcaption>Listing 13-16: Using the <code>filter</code> method with a closure that captures <code>shoe_size</code></figcaption>
+</figure>
 <p>The <code>shoes_in_size</code> function takes ownership of a vector of shoes and a shoe
 size as parameters. It returns a vector containing only shoes of the specified
 size.</p>
@@ -15731,7 +15801,8 @@ an instance of the <code>Config</code> struct by indexing into the slice and clo
 values, allowing the <code>Config</code> struct to own those values. In Listing 13-17,
 we’ve reproduced the implementation of the <code>Config::build</code> function as it was
 in Listing 12-23:</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore"><span class="boring">use std::env;
 </span><span class="boring">use std::error::Error;
 </span><span class="boring">use std::fs;
@@ -15836,8 +15907,8 @@ in Listing 12-23:</p>
 </span><span class="boring">        );
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 13-17: Reproduction of the <code>Config::build</code>
-function from Listing 12-23</span></p>
+<figcaption>Listing 13-17: Reproduction of the <code>Config::build</code> function from Listing 12-23</figcaption>
+</figure>
 <p>At the time, we said not to worry about the inefficient <code>clone</code> calls because
 we would remove them in the future. Well, that time is now!</p>
 <p>We needed <code>clone</code> here because we have a slice with <code>String</code> elements in the
@@ -15878,7 +15949,8 @@ operations that borrow, we can move the <code>String</code> values from the iter
 <p>We’ll first change the start of the <code>main</code> function that we had in Listing
 12-24 to the code in Listing 13-18, which this time uses an iterator. This
 won’t compile until we update <code>Config::build</code> as well.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile"><span class="boring">use std::env;
 </span><span class="boring">use std::process;
 </span><span class="boring">
@@ -15897,8 +15969,8 @@ won’t compile until we update <code>Config::build</code> as well.</p>
 </span><span class="boring">        process::exit(1);
 </span><span class="boring">    }
 </span>}</code></pre>
-<p><span class="caption">Listing 13-18: Passing the return value of <code>env::args</code> to
-<code>Config::build</code></span></p>
+<figcaption>Listing 13-18: Passing the return value of <code>env::args</code> to <code>Config::build</code></figcaption>
+</figure>
 <p>The <code>env::args</code> function returns an iterator! Rather than collecting the
 iterator values into a vector and then passing a slice to <code>Config::build</code>, now
 we’re passing ownership of the iterator returned from <code>env::args</code> to
@@ -15907,7 +15979,8 @@ we’re passing ownership of the iterator returned from <code>env::args</code> t
 project’s <em>src/lib.rs</em> file, let’s change the signature of <code>Config::build</code> to
 look like Listing 13-19. This still won’t compile because we need to update the
 function body.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore does_not_compile"><span class="boring">use std::env;
 </span><span class="boring">use std::error::Error;
 </span><span class="boring">use std::fs;
@@ -16015,8 +16088,8 @@ function body.</p>
 </span><span class="boring">        );
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 13-19: Updating the signature of <code>Config::build</code>
-to expect an iterator</span></p>
+<figcaption>Listing 13-19: Updating the signature of <code>Config::build</code> to expect an iterator</figcaption>
+</figure>
 <p>The standard library documentation for the <code>env::args</code> function shows that the
 type of the iterator it returns is <code>std::env::Args</code>, and that type implements
 the <code>Iterator</code> trait and returns <code>String</code> values.</p>
@@ -16033,7 +16106,8 @@ iterating over it, we can add the <code>mut</code> keyword into the specificatio
 <p>Next, we’ll fix the body of <code>Config::build</code>. Because <code>args</code> implements the
 <code>Iterator</code> trait, we know we can call the <code>next</code> method on it! Listing 13-20
 updates the code from Listing 12-23 to use the <code>next</code> method:</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground"><span class="boring">use std::env;
 </span><span class="boring">use std::error::Error;
 </span><span class="boring">use std::fs;
@@ -16145,8 +16219,8 @@ updates the code from Listing 12-23 to use the <code>next</code> method:</p>
 </span><span class="boring">        );
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 13-20: Changing the body of <code>Config::build</code> to use
-iterator methods</span></p>
+<figcaption>Listing 13-20: Changing the body of <code>Config::build</code> to use iterator methods</figcaption>
+</figure>
 <p>Remember that the first value in the return value of <code>env::args</code> is the name of
 the program. We want to ignore that and get to the next value, so first we call
 <code>next</code> and do nothing with the return value. Second, we call <code>next</code> to get the
@@ -16157,7 +16231,8 @@ the same thing for the <code>file_path</code> value.</p>
 <h3 id="making-code-clearer-with-iterator-adaptors"><a class="header" href="#making-code-clearer-with-iterator-adaptors">Making Code Clearer with Iterator Adaptors</a></h3>
 <p>We can also take advantage of iterators in the <code>search</code> function in our I/O
 project, which is reproduced here in Listing 13-21 as it was in Listing 12-19:</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore"><span class="boring">use std::error::Error;
 </span><span class="boring">use std::fs;
 </span><span class="boring">
@@ -16212,15 +16287,16 @@ project, which is reproduced here in Listing 13-21 as it was in Listing 12-19:</
 </span><span class="boring">        assert_eq!(vec!["safe, fast, productive."], search(query, contents));
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 13-21: The implementation of the <code>search</code>
-function from Listing 12-19</span></p>
+<figcaption>Listing 13-21: The implementation of the <code>search</code> function from Listing 12-19</figcaption>
+</figure>
 <p>We can write this code in a more concise way using iterator adaptor methods.
 Doing so also lets us avoid having a mutable intermediate <code>results</code> vector. The
 functional programming style prefers to minimize the amount of mutable state to
 make code clearer. Removing the mutable state might enable a future enhancement
 to make searching happen in parallel, because we wouldn’t have to manage
 concurrent access to the <code>results</code> vector. Listing 13-22 shows this change:</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore"><span class="boring">use std::env;
 </span><span class="boring">use std::error::Error;
 </span><span class="boring">use std::fs;
@@ -16327,8 +16403,8 @@ concurrent access to the <code>results</code> vector. Listing 13-22 shows this c
 </span><span class="boring">        );
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 13-22: Using iterator adaptor methods in the
-implementation of the <code>search</code> function</span></p>
+<figcaption>Listing 13-22: Using iterator adaptor methods in the implementation of the <code>search</code> function</figcaption>
+</figure>
 <p>Recall that the purpose of the <code>search</code> function is to return all lines in
 <code>contents</code> that contain the <code>query</code>. Similar to the <code>filter</code> example in Listing
 13-16, this code uses the <code>filter</code> adaptor to keep only the lines that
@@ -16520,7 +16596,8 @@ your crate is <em>implemented</em>.</p>
 Markdown notation for formatting the text. Place documentation comments just
 before the item they’re documenting. Listing 14-1 shows documentation comments
 for an <code>add_one</code> function in a crate named <code>my_crate</code>.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore">/// Adds one to the number given.
 ///
 /// # Examples
@@ -16534,8 +16611,8 @@ for an <code>add_one</code> function in a crate named <code>my_crate</code>.</p>
 pub fn add_one(x: i32) -&gt; i32 {
     x + 1
 }</code></pre>
-<p><span class="caption">Listing 14-1: A documentation comment for a
-function</span></p>
+<figcaption>Listing 14-1: A documentation comment for a function</figcaption>
+</figure>
 <p>Here, we give a description of what the <code>add_one</code> function does, start a
 section with the heading <code>Examples</code>, and then provide code that demonstrates
 how to use the <code>add_one</code> function. We can generate the HTML documentation from
@@ -16600,7 +16677,8 @@ inside a module to document the crate or the module as a whole.</p>
 crate that contains the <code>add_one</code> function, we add documentation comments that
 start with <code>//!</code> to the beginning of the <em>src/lib.rs</em> file, as shown in Listing
 14-2:</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore">//! # My Crate
 //!
 //! `my_crate` is a collection of utilities to make performing certain
@@ -16620,8 +16698,8 @@ start with <code>//!</code> to the beginning of the <em>src/lib.rs</em> file, as
 </span><span class="boring">pub fn add_one(x: i32) -&gt; i32 {
 </span><span class="boring">    x + 1
 </span><span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 14-2: Documentation for the <code>my_crate</code> crate as a
-whole</span></p>
+<figcaption>Listing 14-2: Documentation for the <code>my_crate</code> crate as a whole</figcaption>
+</figure>
 <p>Notice there isn’t any code after the last line that begins with <code>//!</code>. Because
 we started the comments with <code>//!</code> instead of <code>///</code>, we’re documenting the item
 that contains this comment rather than an item that follows this comment. In
@@ -16660,7 +16738,8 @@ defined in the other location instead.</p>
 Within this library are two modules: a <code>kinds</code> module containing two enums
 named <code>PrimaryColor</code> and <code>SecondaryColor</code> and a <code>utils</code> module containing a
 function named <code>mix</code>, as shown in Listing 14-3:</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground test_harness">//! # Art
 //!
 //! A library for modeling artistic concepts.
@@ -16691,8 +16770,8 @@ pub mod utils {
 <span class="boring">        unimplemented!();
 </span>    }
 }</code></pre>
-<p><span class="caption">Listing 14-3: An <code>art</code> library with items organized into
-<code>kinds</code> and <code>utils</code> modules</span></p>
+<figcaption>Listing 14-3: An <code>art</code> library with items organized into <code>kinds</code> and <code>utils</code> modules</figcaption>
+</figure>
 <p>Figure 14-3 shows what the front page of the documentation for this crate
 generated by <code>cargo doc</code> would look like:</p>
 <img alt="Rendered documentation for the `art` crate that lists the `kinds` and `utils` modules" src="img/trpl14-03.png" class="center" />
@@ -16705,7 +16784,8 @@ see them.</p>
 bring the items from <code>art</code> into scope, specifying the module structure that’s
 currently defined. Listing 14-4 shows an example of a crate that uses the
 <code>PrimaryColor</code> and <code>mix</code> items from the <code>art</code> crate:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">use art::kinds::PrimaryColor;
 use art::utils::mix;
 
@@ -16714,8 +16794,8 @@ fn main() {
     let yellow = PrimaryColor::Yellow;
     mix(red, yellow);
 }</code></pre>
-<p><span class="caption">Listing 14-4: A crate using the <code>art</code> crate’s items with
-its internal structure exported</span></p>
+<figcaption>Listing 14-4: A crate using the <code>art</code> crate’s items with its internal structure exported</figcaption>
+</figure>
 <p>The author of the code in Listing 14-4, which uses the <code>art</code> crate, had to
 figure out that <code>PrimaryColor</code> is in the <code>kinds</code> module and <code>mix</code> is in the
 <code>utils</code> module. The module structure of the <code>art</code> crate is more relevant to
@@ -16727,7 +16807,8 @@ module names in the <code>use</code> statements.</p>
 <p>To remove the internal organization from the public API, we can modify the
 <code>art</code> crate code in Listing 14-3 to add <code>pub use</code> statements to re-export the
 items at the top level, as shown in Listing 14-5:</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust ignore">//! # Art
 //!
 //! A library for modeling artistic concepts.
@@ -16763,8 +16844,8 @@ pub mod utils {
 </span><span class="boring">        SecondaryColor::Orange
 </span><span class="boring">    }
 </span>}</code></pre>
-<p><span class="caption">Listing 14-5: Adding <code>pub use</code> statements to re-export
-items</span></p>
+<figcaption>Listing 14-5: Adding <code>pub use</code> statements to re-export items</figcaption>
+</figure>
 <p>The API documentation that <code>cargo doc</code> generates for this crate will now list
 and link re-exports on the front page, as shown in Figure 14-4, making the
 <code>PrimaryColor</code> and <code>SecondaryColor</code> types and the <code>mix</code> function easier to find.</p>
@@ -16774,7 +16855,8 @@ that lists the re-exports</span></p>
 <p>The <code>art</code> crate users can still see and use the internal structure from Listing
 14-3 as demonstrated in Listing 14-4, or they can use the more convenient
 structure in Listing 14-5, as shown in Listing 14-6:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore">use art::mix;
 use art::PrimaryColor;
 
@@ -16784,8 +16866,8 @@ fn main() {
 </span><span class="boring">    let yellow = PrimaryColor::Yellow;
 </span><span class="boring">    mix(red, yellow);
 </span>}</code></pre>
-<p><span class="caption">Listing 14-6: A program using the re-exported items from
-the <code>art</code> crate</span></p>
+<figcaption>Listing 14-6: A program using the re-exported items from the <code>art</code> crate</figcaption>
+</figure>
 <p>In cases where there are many nested modules, re-exporting the types at the top
 level with <code>pub use</code> can make a significant difference in the experience of
 people who use the crate. Another common use of <code>pub use</code> is to re-export
@@ -17065,15 +17147,16 @@ we need to be explicit about the dependency relationships.</p>
 <code>adder</code> crate. Open the <em>adder/src/main.rs</em> file and add a <code>use</code> line at the
 top to bring the new <code>add_one</code> library crate into scope. Then change the <code>main</code>
 function to call the <code>add_one</code> function, as in Listing 14-7.</p>
-<p><span class="filename">Filename: adder/src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: adder/src/main.rs</span>
 <pre><code class="language-rust ignore">use add_one;
 
 fn main() {
     let num = 10;
     println!("Hello, world! {num} plus one is {}!", add_one::add_one(num));
 }</code></pre>
-<p><span class="caption">Listing 14-7: Using the <code>add_one</code> library crate from the
-<code>adder</code> crate</span></p>
+<figcaption>Listing 14-7: Using the <code>add_one</code> library crate from the <code>adder</code> crate</figcaption>
+</figure>
 <p>Let’s build the workspace by running <code>cargo build</code> in the top-level <em>add</em>
 directory!</p>
 <!-- manual-regeneration

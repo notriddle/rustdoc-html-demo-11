@@ -190,12 +190,15 @@ methods that consume the iterator to use it up. For example, the code in
 Listing 13-10 creates an iterator over the items in the vector <code>v1</code> by calling
 the <code>iter</code> method defined on <code>Vec&lt;T&gt;</code>. This code by itself doesn’t do anything
 useful.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">fn main() {
 </span>    let v1 = vec![1, 2, 3];
 
     let v1_iter = v1.iter();
 <span class="boring">}</span></code></pre></pre>
-<p><span class="caption">Listing 13-10: Creating an iterator</span></p>
+<figcaption>Listing 13-10: Creating an iterator</figcaption>
+</figure>
 <p>The iterator is stored in the <code>v1_iter</code> variable. Once we’ve created an
 iterator, we can use it in a variety of ways. In Listing 3-5 in Chapter 3, we
 iterated over an array using a <code>for</code> loop to execute some code on each of its
@@ -205,6 +208,8 @@ but we glossed over how exactly that works until now.</p>
 the use of the iterator in the <code>for</code> loop. When the <code>for</code> loop is called using
 the iterator in <code>v1_iter</code>, each element in the iterator is used in one
 iteration of the loop, which prints out each value.</p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">fn main() {
 </span>    let v1 = vec![1, 2, 3];
 
@@ -214,7 +219,8 @@ iteration of the loop, which prints out each value.</p>
         println!("Got: {val}");
     }
 <span class="boring">}</span></code></pre></pre>
-<p><span class="caption">Listing 13-11: Using an iterator in a <code>for</code> loop</span></p>
+<figcaption>Listing 13-11: Using an iterator in a <code>for</code> loop</figcaption>
+</figure>
 <p>In languages that don’t have iterators provided by their standard libraries,
 you would likely write this same functionality by starting a variable at index
 0, using that variable to index into the vector to get a value, and
@@ -250,7 +256,8 @@ iterator.</p>
 <p>We can call the <code>next</code> method on iterators directly; Listing 13-12 demonstrates
 what values are returned from repeated calls to <code>next</code> on the iterator created
 from the vector.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground"><span class="boring">#[cfg(test)]
 </span><span class="boring">mod tests {
 </span>    #[test]
@@ -265,8 +272,8 @@ from the vector.</p>
         assert_eq!(v1_iter.next(), None);
     }
 <span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 13-12: Calling the <code>next</code> method on an
-iterator</span></p>
+<figcaption>Listing 13-12: Calling the <code>next</code> method on an iterator</figcaption>
+</figure>
 <p>Note that we needed to make <code>v1_iter</code> mutable: calling the <code>next</code> method on an
 iterator changes internal state that the iterator uses to keep track of where
 it is in the sequence. In other words, this code <em>consumes</em>, or uses up, the
@@ -292,7 +299,8 @@ the iterator and iterates through the items by repeatedly calling <code>next</co
 consuming the iterator. As it iterates through, it adds each item to a running
 total and returns the total when iteration is complete. Listing 13-13 has a
 test illustrating a use of the <code>sum</code> method:</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground"><span class="boring">#[cfg(test)]
 </span><span class="boring">mod tests {
 </span>    #[test]
@@ -306,8 +314,8 @@ test illustrating a use of the <code>sum</code> method:</p>
         assert_eq!(total, 6);
     }
 <span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 13-13: Calling the <code>sum</code> method to get the total
-of all items in the iterator</span></p>
+<figcaption>Listing 13-13: Calling the <code>sum</code> method to get the total of all items in the iterator</figcaption>
+</figure>
 <p>We aren’t allowed to use <code>v1_iter</code> after the call to <code>sum</code> because <code>sum</code> takes
 ownership of the iterator we call it on.</p>
 <h3 id="methods-that-produce-other-iterators"><a class="header" href="#methods-that-produce-other-iterators">Methods that Produce Other Iterators</a></h3>
@@ -319,14 +327,15 @@ which takes a closure to call on each item as the items are iterated through.
 The <code>map</code> method returns a new iterator that produces the modified items. The
 closure here creates a new iterator in which each item from the vector will be
 incremented by 1:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust not_desired_behavior"><span class="boring">fn main() {
 </span>    let v1: Vec&lt;i32&gt; = vec![1, 2, 3];
 
     v1.iter().map(|x| x + 1);
 <span class="boring">}</span></code></pre></pre>
-<p><span class="caption">Listing 13-14: Calling the iterator adaptor <code>map</code> to
-create a new iterator</span></p>
+<figcaption>Listing 13-14: Calling the iterator adaptor <code>map</code> to create a new iterator</figcaption>
+</figure>
 <p>However, this code produces a warning:</p>
 <pre><code class="language-console">$ cargo run
    Compiling iterators v0.1.0 (file:///projects/iterators)
@@ -357,7 +366,8 @@ type.</p>
 <p>In Listing 13-15, we collect the results of iterating over the iterator that’s
 returned from the call to <code>map</code> into a vector. This vector will end up
 containing each item from the original vector incremented by 1.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">fn main() {
 </span>    let v1: Vec&lt;i32&gt; = vec![1, 2, 3];
 
@@ -365,9 +375,8 @@ containing each item from the original vector incremented by 1.</p>
 
     assert_eq!(v2, vec![2, 3, 4]);
 <span class="boring">}</span></code></pre></pre>
-<p><span class="caption">Listing 13-15: Calling the <code>map</code> method to create a new
-iterator and then calling the <code>collect</code> method to consume the new iterator and
-create a vector</span></p>
+<figcaption>Listing 13-15: Calling the <code>map</code> method to create a new iterator and then calling the <code>collect</code> method to consume the new iterator and create a vector</figcaption>
+</figure>
 <p>Because <code>map</code> takes a closure, we can specify any operation we want to perform
 on each item. This is a great example of how closures let you customize some
 behavior while reusing the iteration behavior that the <code>Iterator</code> trait
@@ -386,7 +395,8 @@ returns <code>true</code>, the value will be included in the iteration produced 
 <p>In Listing 13-16, we use <code>filter</code> with a closure that captures the <code>shoe_size</code>
 variable from its environment to iterate over a collection of <code>Shoe</code> struct
 instances. It will return only shoes that are the specified size.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">#[derive(PartialEq, Debug)]
 struct Shoe {
     size: u32,
@@ -435,8 +445,8 @@ mod tests {
         );
     }
 }</code></pre>
-<p><span class="caption">Listing 13-16: Using the <code>filter</code> method with a closure
-that captures <code>shoe_size</code></span></p>
+<figcaption>Listing 13-16: Using the <code>filter</code> method with a closure that captures <code>shoe_size</code></figcaption>
+</figure>
 <p>The <code>shoes_in_size</code> function takes ownership of a vector of shoes and a shoe
 size as parameters. It returns a vector containing only shoes of the specified
 size.</p>

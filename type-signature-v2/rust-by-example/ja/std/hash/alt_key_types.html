@@ -217,17 +217,17 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="キー型の変種"><a class="header" href="#キー型の変種">キー型の変種</a></h1>
-<p>Any type that implements the <code>Eq</code> and <code>Hash</code> traits can be a key in <code>HashMap</code>. This includes:</p>
+<p><code>Eq</code>と<code>Hash</code>トレイトを実装している型ならば、なんでも<code>HashMap</code>のキーになることができます。例えば以下です。</p>
 <ul>
 <li><code>bool</code> （キーになりうる値が2つしかないので実用的ではないですが…）</li>
 <li><code>int</code>、<code>uint</code>、あるいは他の整数型</li>
 <li><code>String</code>と<code>&amp;str</code>（Tips：<code>String</code>をキーにしたハッシュマップを作製した場合、<code>.get()</code>メソッドの引数に<code>&amp;str</code>を与えて値を取得することができます。）</li>
 </ul>
 <p><code>f32</code>と<code>f64</code>は<code>Hash</code>を実装して <strong>いない</strong> ことに注意しましょう。おそらくこれは<a href="https://en.wikipedia.org/wiki/Floating_point#Accuracy_problems">浮動小数点演算時に誤差が発生する</a>ため、キーとして使用すると、恐ろしいほどエラーの元となるためです。</p>
-<p>All collection classes implement <code>Eq</code> and <code>Hash</code> if their contained type also respectively implements <code>Eq</code> and <code>Hash</code>. For example, <code>Vec&lt;T&gt;</code> will implement <code>Hash</code> if <code>T</code> implements <code>Hash</code>.</p>
-<p>You can easily implement <code>Eq</code> and <code>Hash</code> for a custom type with just one line: <code>#[derive(PartialEq, Eq, Hash)]</code></p>
-<p>The compiler will do the rest. If you want more control over the details, you can implement <code>Eq</code> and/or <code>Hash</code> yourself. This guide will not cover the specifics of implementing <code>Hash</code>.</p>
-<p>To play around with using a <code>struct</code> in <code>HashMap</code>, let's try making a very simple user logon system:</p>
+<p>集合型は、その要素となっている全ての型が<code>Eq</code>を、あるいは<code>Hash</code>を実装している場合、必ず同じトレイトを実装しています。例えば、<code>Vec&lt;T&gt;</code>は<code>T</code>が<code>Hash</code>を実装している場合、<code>Hash</code>を実装します。</p>
+<p>独自の型に<code>Eq</code>あるいは<code>Hash</code>を実装するのは簡単です。以下の一行で済みます。<code>#[derive(PartialEq, Eq, Hash)]</code></p>
+<p>後はコンパイラがよしなにしてくれます。これらのトレイトの詳細をコントロールしたい場合、<code>Eq</code>や<code>Hash</code>を自分で実装することもできます。この文書では<code>Hash</code>トレイトを実装する方法の詳細については触れません。</p>
+<p><code>struct</code>を<code>HashMap</code>で扱う際の例として、とてもシンプルなユーザーログインシステムを作成してみましょう。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">use std::collections::HashMap;
 
 // Eqトレイトを使用する時は、PartialEqをderiveする必要があります。

@@ -218,8 +218,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="rust-by-example"><a class="header" href="#rust-by-example">Rust by Example</a></h1>
-<p><a href="https://www.rust-lang.org/">Rust</a> is a modern systems programming language focusing on safety, speed, and concurrency. It accomplishes these goals by being memory safe without using garbage collection.</p>
-<p>Rust by Example (RBE) is a collection of runnable examples that illustrate various Rust concepts and standard libraries. To get even more out of these examples, don't forget to <a href="https://www.rust-lang.org/tools/install">install Rust locally</a> and check out the <a href="https://doc.rust-lang.org/std/">official docs</a>. Additionally for the curious, you can also <a href="https://github.com/rust-lang/rust-by-example">check out the source code for this site</a>.</p>
+<p><a href="https://www.rust-lang.org/">Rust</a> は安全性、速度、並列性にフォーカスした現代的なシステムプログラミング用のプログラミング言語です。ガベージコレクション無しでメモリ安全であることが、これを可能にしています。</p>
+<p>Rust by Example(RBE)はRustの実行可能なサンプルスクリプト集で、ここではRustの様々なコンセプトと標準ライブラリを紹介していきます。この例をより活用するためには<a href="https://www.rust-lang.org/tools/install">Rustをローカルにインストール</a>し、<a href="https://doc.rust-lang.org/std/">公式ドキュメント</a>をチェックすることをおすすめします。興味がある方は<a href="https://github.com/rust-lang/rust-by-example">このサイト自体のソース</a>のチェックもどうぞ。</p>
 <p>それでははじめましょう!</p>
 <ul>
 <li>
@@ -992,8 +992,8 @@ fn main() {
     // 新たなpointを生成。
     let bottom_right = Point { x: 5.2, ..another_point };
 
-    // `bottom_right.y`の値は`point.y`と同一ですが、
-    // これは`point`のフィールドの値を用いて生成したためです。
+    // `bottom_right.y`の値は`another_point.y`と同一ですが、
+    // これは`another_point`のフィールドの値を用いて生成したためです。
     println!("second point: ({}, {})", bottom_right.x, bottom_right.y);
 
     // `let`を使用してpointをデストラクトします。
@@ -1144,7 +1144,7 @@ fn main() {
     }
 }</code></pre></pre>
 <h3 id="参照-9"><a class="header" href="#参照-9">参照</a></h3>
-<p><a href="custom_types/enum/../../flow_control/match.html"><code>match</code></a> and <a href="custom_types/enum/../../mod/use.html"><code>use</code></a></p>
+<p><a href="custom_types/enum/../../flow_control/match.html"><code>match</code></a>, <a href="custom_types/enum/../../mod/use.html"><code>use</code></a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="c言語ライクな列挙型"><a class="header" href="#c言語ライクな列挙型">C言語ライクな列挙型</a></h1>
 <p>列挙型はC言語の列挙型のような使い方をする事もできます。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">// 使用されていないコードよる警告を隠すアトリビュート
@@ -1317,7 +1317,7 @@ fn main() {
 }</code></pre></pre>
 <p>コンパイラはミュータビリティに関するエラーの詳細を出してくれます。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="スコープとシャドーイング"><a class="header" href="#スコープとシャドーイング">スコープとシャドーイング</a></h1>
-<p>Variable bindings have a scope, and are constrained to live in a <em>block</em>. A block is a collection of statements enclosed by braces <code>{}</code>.</p>
+<p>変数はスコープを持つため、 <strong>ブロック</strong> の中に閉じ込められています。ブロックとは<code>{}</code>で囲まれた領域のことです。</p>
 <pre><pre class="playground"><code class="language-rust editable ignore mdbook-runnable edition2021">fn main() {
     // この変数はmain関数の間、生存しています。
     let long_lived_binding = 1;
@@ -1382,7 +1382,7 @@ fn main() {
 }</code></pre></pre>
 <p>未初期化の変数があると予期せぬ動作をする場合があるため、コンパイラは変数を初期化してから使用するよう強制します。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="値の凍結"><a class="header" href="#値の凍結">値の凍結</a></h1>
-<p>When data is bound by the same name immutably, it also <em>freezes</em>. <em>Frozen</em> data can't be modified until the immutable binding goes out of scope:</p>
+<p>データを同じ名前のイミュータブルな変数に束縛しなおすと、データは_凍結_されます。_凍結_したデータは、イミュータブルな束縛がスコープ外になるまで変更できません。</p>
 <pre><pre class="playground"><code class="language-rust editable ignore mdbook-runnable edition2021">fn main() {
     let mut _mutable_integer = 7i32;
 
@@ -1489,7 +1489,7 @@ fn main() {
     }
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="リテラル"><a class="header" href="#リテラル">リテラル</a></h1>
-<p>Numeric literals can be type annotated by adding the type as a suffix. As an example, to specify that the literal <code>42</code> should have the type <code>i32</code>, write <code>42i32</code>.</p>
+<p>数値型リテラルはサフィックスにより型を指定することが可能です。例えば、<code>42</code>というリテラルに対して<code>i32</code>型を指定するには<code>42i32</code>とします。</p>
 <p>サフィックスを指定しない数値型リテラルの場合、その型がどのように使用されるかに依存して決められます。デフォルトでは整数型の場合<code>i32</code>が、浮動小数点数型には<code>f64</code>が使われます。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">fn main() {
     // サフィックスを指定したリテラル。型は初期化とともに確定します。
@@ -1513,7 +1513,7 @@ fn main() {
 <li><code>std::mem::size_of_val</code>は関数ですが、 <em>絶対パス</em> で呼び出されています。ソースコードは論理的に区切られた <em>モジュール</em> と呼ばれるものにわけられることができます。今回の場合は<code>size_of_val</code>関数は<code>mem</code>モジュール内で定義されており、<code>mem</code>モジュールは<code>std</code> <em>クレート</em> 内で定義されています。より詳しくは<a href="types/../mod.html">モジュール</a>と<a href="types/../crates.html">クレート</a>を参照してください。</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="型推論"><a class="header" href="#型推論">型推論</a></h1>
-<p>The type inference engine is pretty smart. It does more than looking at the type of the value expression during an initialization. It also looks at how the variable is used afterwards to infer its type. Here's an advanced example of type inference:</p>
+<p>Rustの型推論エンジンはなかなか賢くできています。初期化の際に評価値の型をチェックするだけでなく、その後にどのような使われ方をしているかを見て推論します。以下がその例です。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">fn main() {
     // アノテーションのおかげで、コンパイラは`elem`がu8型であることがわかります。
     let elem = 5u8;
@@ -1586,8 +1586,8 @@ fn main() {
     println!("My number is {:?}", num);
 }</code></pre></pre>
 <h2 id="into"><a class="header" href="#into"><code>Into</code></a></h2>
-<p>The <a href="https://doc.rust-lang.org/std/convert/trait.Into.html"><code>Into</code></a> trait is simply the reciprocal of the <code>From</code> trait. It defines how to convert a type into another type.</p>
-<p>Calling <code>into()</code> typically requires us to specify the result type as the compiler is unable to determine this most of the time.</p>
+<p><a href="https://doc.rust-lang.org/std/convert/trait.Into.html"><code>Into</code></a>トレイトは、単に<code>From</code>トレイトの逆の働きをし、ある型を他の型に変換する方法を定義します。</p>
+<p><code>into()</code> の呼び出し時にはほとんどの場合戻り値の型をコンパイラが決定できません。そのため戻り値の型は明示的に指定する必要があります。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">use std::convert::Into;
 
 #[derive(Debug)]
@@ -1607,8 +1607,8 @@ fn main() {
     let num: Number = int.into();
     println!("My number is {:?}", num);
 }</code></pre></pre>
-<h2 id="from-and-into-are-interchangable"><a class="header" href="#from-and-into-are-interchangable"><code>From</code> and <code>Into</code> are interchangable</a></h2>
-<p><code>From</code> and <code>Into</code> are designed to be complementary. We do not need to provide an implementation for both traits. If you have implemented the <code>From</code> trait for your type, <code>Into</code> will call it when necessary. Note, however, that the converse is not true: implementing <code>Into</code> for your type will not automatically provide it with an implementation of <code>From</code>.</p>
+<h2 id="fromとinto-は交換可能"><a class="header" href="#fromとinto-は交換可能"><code>From</code>と<code>Into</code> は交換可能</a></h2>
+<p><code>From</code> と <code>Into</code> は相補的にデザインされているので両方のトレイトを実装する必要はありません。<code>From</code> トレイトを実装すれば、 <code>Into</code> は必要なときに呼ばれます。ただし、逆は真ではない点に注意してください。 <code>Into</code> が実装されていても、 <code>From</code> が自動的に提供されるわけではありません。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">use std::convert::From;
 
 #[derive(Debug)]
@@ -2940,7 +2940,7 @@ fn main() {
 <h3 id="参照-30"><a class="header" href="#参照-30">参照</a></h3>
 <p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.any"><code>std::iter::Iterator::any</code></a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="イテレータによる検索"><a class="header" href="#イテレータによる検索">イテレータによる検索</a></h1>
-<p><code>Iterator::find</code> is a function which iterates over an iterator and searches for the first value which satisfies some condition. If none of the values satisfy the condition, it returns <code>None</code>. Its signature:</p>
+<p><code>Iterator::find</code>はイテレータを辿る関数で、条件を満たす最初の値を探します。もし条件を満たす値がなければ<code>None</code>を返します。型シグネチャは以下のようになります。</p>
 <pre><code class="language-rust ignore">pub trait Iterator {
     // イテレートされる値の型
     type Item;
@@ -3203,7 +3203,7 @@ fn main() {
     // TODO ^ 試しにこの行をアンコメントしてみましょう。
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="構造体の場合"><a class="header" href="#構造体の場合">構造体の場合</a></h1>
-<p>Structs have an extra level of visibility with their fields. The visibility defaults to private, and can be overridden with the <code>pub</code> modifier. This visibility only matters when a struct is accessed from outside the module where it is defined, and has the goal of hiding information (encapsulation).</p>
+<p>構造体はそれ自身に加え、フィールドごとにもパブリック・プライベートを設定することができます。デフォルトではプライベートですが、<code>pub</code>宣言をすることで、フィールドをパブリックにすることができます。これは、構造体がモジュールの外から参照される時に限り意味のあるもので、情報の隠蔽（カプセル化）を達成するための機能です。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">mod my {
     // パブリックなフィールド`T`（ジェネリック型）を持つパブリックな構造体
     pub struct OpenBox&lt;T&gt; {
@@ -3444,7 +3444,7 @@ library.rlib
 </code></pre>
 <p>ライブラリは「lib」が頭につき、デフォルトでは、その後ろに元となったクレートファイル名をつけます。（訳注: ここでは<code>lib</code> + <code>rary</code>）この振る舞いは<a href="crates/../attribute/crate.html"><code>crate_name</code>アトリビュート</a>を用いてオーバーライドできます。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ライブラリの利用"><a class="header" href="#ライブラリの利用">ライブラリの利用</a></h1>
-<p>To link a crate to this new library you may use <code>rustc</code>'s <code>--extern</code> flag. All of its items will then be imported under a module named the same as the library. This module generally behaves the same way as any other module.</p>
+<p>クレートをこの新しいライブラリにリンクするには、<code>rustc</code>の<code>--extern</code>フラグを利用します。クレートの要素を全てライブラリと同じ名前のモジュールにインポートします。一般に、このモジュールは他のモジュールと同じように振る舞います。</p>
 <pre><code class="language-rust ignore">// extern crate rary; // Rust 2015以前で必要。
 
 fn main() {
@@ -3549,8 +3549,8 @@ bar = { path = "../bar" } # from a path in the local filesystem
     ├── my_test.rs
     └── my_other_test.rs
 </code></pre>
-<p>Each file in <code>tests</code> is a separate <a href="https://doc.rust-lang.org/book/ch11-03-test-organization.html#integration-tests">integration test</a>, i.e. a test that is meant to test your library as if it were being called from a dependent crate.</p>
-<p>The <a href="cargo/../testing.html">Testing</a> chapter elaborates on the three different testing styles: <a href="cargo/../testing/unit_testing.html">Unit</a>, <a href="cargo/../testing/doc_testing.html">Doc</a>, and <a href="cargo/../testing/integration_testing.html">Integration</a>.</p>
+<p><code>tests</code>内の各ファイルは個別の<a href="https://doc.rust-lang.org/book/ch11-03-test-organization.html#integration-tests">統合テスト</a>です。これはライブラリを依存クレートから呼ばれたかのようにテストできます。</p>
+<p><a href="cargo/../testing.html">テスト</a>の章は3つの異なるテストスタイルについて解説しています。<a href="cargo/../testing/unit_testing.html">単体テスト</a>、<a href="cargo/../testing/doc_testing.html">ドキュメンテーションテスト</a>、そして<a href="cargo/../testing/integration_testing.html">結合テスト</a>です。</p>
 <p><code>cargo</code>は、全てのテストを簡単に実行する方法を提供します。</p>
 <pre><code class="language-shell">$ cargo test
 </code></pre>
@@ -3582,7 +3582,7 @@ test test_foo_bar ... ok
 
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out
 </code></pre>
-<p>One word of caution: Cargo may run multiple tests concurrently, so make sure that they don't race with each other.</p>
+<p>注意：Cargoは複数のテストを並列で実行することがありますので、それらが互いに競合しないようにしてください。</p>
 <p>並行性が問題を引き起こす一例として、以下のように、2つのテストが1つのファイルに出力するケースがあります。</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -3802,11 +3802,11 @@ fn main() {
 condition met!
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ジェネリクス"><a class="header" href="#ジェネリクス">ジェネリクス</a></h1>
-<p><em>Generics</em> is the topic of generalizing types and functionalities to broader cases. This is extremely useful for reducing code duplication in many ways, but can call for rather involved syntax. Namely, being generic requires taking great care to specify over which types a generic type is actually considered valid. The simplest and most common use of generics is for type parameters.</p>
-<p>A type parameter is specified as generic by the use of angle brackets and upper <a href="https://en.wikipedia.org/wiki/CamelCase">camel case</a>: <code>&lt;Aaa, Bbb, ...&gt;</code>. "Generic type parameters" are typically represented as <code>&lt;T&gt;</code>. In Rust, "generic" also describes anything that accepts one or more generic type parameters <code>&lt;T&gt;</code>. Any type specified as a generic type parameter is generic, and everything else is concrete (non-generic).</p>
+<p>ジェネリクスとは、型と関数の機能をより汎用的に使えるようにするための機能です。これはあらゆる局面でコードの重複を避けるために非常に役立ちますが、多少構文が複雑になります。すなわち、ジェネリック型を使いこなすには、どのようなジェネリック型がきちんと機能するかに細心の注意を払う必要があります。最もシンプルで一般的なジェネリクスの利用法は型パラメータです。</p>
+<p>ジェネリック型の型パラメータにはかぎ括弧とアッパー<a href="https://en.wikipedia.org/wiki/CamelCase">キャメルケース</a>（<code>&lt;Aaa, Bbb, ...&gt;</code>）が使われます。ジェネリックな型パラメータはたいていの場合<code>&lt;T&gt;</code>で示されます。Rustの場合、「ジェネリクス」には「１つ以上のジェネリックな型パラメータ<code>&lt;T&gt;</code>を受け付けるもの」という意味もあります。ジェネリックな型パラメータを指定された場合、それは必ずジェネリック型になり、そうでなければ必ず非ジェネリック型、すなわち具象型になります。</p>
 <p>例として、あらゆる型の引数<code>T</code>をとる <em>ジェネリック関数</em> <code>foo</code>を定義すると</p>
 <pre><code class="language-rust ignore">fn foo&lt;T&gt;(arg: T) { ... }</code></pre>
-<p>Because <code>T</code> has been specified as a generic type parameter using <code>&lt;T&gt;</code>, it is considered generic when used here as <code>(arg: T)</code>. This is the case even if <code>T</code> has previously been defined as a <code>struct</code>.</p>
+<p>となります。<code>T</code>はジェネリックな型パラメータに指定されているので、この場所で<code>(arg: T)</code>のように使用するとジェネリック型として扱われます。これは<code>T</code>という構造体がそれ以前に定義されていても同様です。</p>
 <p>では、手を動かしながらジェネリック型の構文を体験していきましょう。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">// `A`という具象型
 struct A;
@@ -3840,7 +3840,7 @@ fn main() {
 <p><a href="custom_types/structs.html">構造体</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="関数-1"><a class="header" href="#関数-1">関数</a></h1>
 <p>「型<code>T</code>はその前に<code>&lt;T&gt;</code>があるとジェネリック型になる」というルールは関数に対しても当てはまります。</p>
-<p>Using generic functions sometimes requires explicitly specifying type parameters. This may be the case if the function is called where the return type is generic, or if the compiler doesn't have enough information to infer the necessary type parameters.</p>
+<p>ジェネリック関数を使用する際、型パラメータを明示する必要がある場合があります。返り値がジェネリック型である場合や、コンパイラが型パラメータを推論するのに十分な情報がない場合です。</p>
 <p>型パラメータを明示したうえでの関数呼び出しの構文は<code>fun::&lt;A, B, ...&gt;()</code>のようになります。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">struct A;          // 具象型`A`
 struct S(A);       // 具象型`S`
@@ -3974,7 +3974,7 @@ fn printer&lt;T: Display&gt;(t: T) {
 // エラー！`Vec&lt;T&gt;`は`Display`を実装していないため、この特殊化
 // は失敗します。
 let s = S(vec![1]);</code></pre>
-<p>Another effect of bounding is that generic instances are allowed to access the <a href="generics/../fn/methods.html">methods</a> of traits specified in the bounds. For example:</p>
+<p>境界のもう一つの効果は、ジェネリック型のインスタンスが、境界条件となるトレイトの<a href="generics/../fn/methods.html">メソッド</a>にアクセスすることができるようになる点です。以下がその例です。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">// 出力時のマーカー`{:?}`を実装するトレイト
 use std::fmt::Debug;
 
@@ -4075,7 +4075,7 @@ fn main() {
 <h3 id="参照-40"><a class="header" href="#参照-40">参照</a></h3>
 <p><a href="generics/../hello/print.html"><code>std::fmt</code></a>, <a href="generics/../trait.html">トレイト</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="where句"><a class="header" href="#where句">Where句</a></h1>
-<p>A bound can also be expressed using a <code>where</code> clause immediately before the opening <code>{</code>, rather than at the type's first mention. Additionally, <code>where</code> clauses can apply bounds to arbitrary types, rather than just to type parameters.</p>
+<p>トレイト境界は、<code>{</code>の直前に<code>where</code>句を導入することでも設けることができます。<code>where</code>はさらに、型パラメータだけでなく任意の型に対して適用できます。</p>
 <p><code>where</code>句のほうが有効なケースには例えば以下のようなものがあります。</p>
 <ul>
 <li>ジェネリック型とジェネリック境界に別々に制限を加えたほうが明瞭になる場合</li>
@@ -4087,7 +4087,7 @@ impl &lt;A, D&gt; MyTrait&lt;A, D&gt; for YourType where
     A: TraitB + TraitC,
     D: TraitE + TraitF {}</code></pre>
 <ul>
-<li>When using a <code>where</code> clause is more expressive than using normal syntax. The <code>impl</code> in this example cannot be directly expressed without a <code>where</code> clause:</li>
+<li><code>where</code>句の方が通常の構文より表現力が高い場合。この例では<code>where</code>句を使わずに書くことはできません。</li>
 </ul>
 <pre><pre class="playground"><code class="language-rust editable edition2021">use std::fmt::Debug;
 
@@ -4158,14 +4158,14 @@ fn main() {
 <h3 id="参照-42"><a class="header" href="#参照-42">参照</a></h3>
 <p><a href="generics/../custom_types/structs.html">構造体</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="関連要素"><a class="header" href="#関連要素">関連要素</a></h1>
-<p>"Associated Items" refers to a set of rules pertaining to <a href="https://doc.rust-lang.org/reference/items.html"><code>item</code></a>s of various types. It is an extension to <code>trait</code> generics, and allows <code>trait</code>s to internally define new items.</p>
-<p>One such item is called an <em>associated type</em>, providing simpler usage patterns when the <code>trait</code> is generic over its container type.</p>
+<p>関連要素とは複数の型の<a href="https://doc.rust-lang.org/reference/items.html">要素</a>に関係のある規則の総称です。トレイトの拡張機能であり、トレイトの中で新しい要素を定義することを可能にします。</p>
+<p>そのように定義する要素の一つに <strong>関連型</strong> があります。これにより、ジェネリックなコンテナ型に対するトレイトを使用する際に、よりシンプルな書き方ができるようになります。</p>
 <h3 id="参照-43"><a class="header" href="#参照-43">参照</a></h3>
 <p><a href="https://github.com/rust-lang/rfcs/blob/master/text/0195-associated-items.md">RFC</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="関連要素が必要になる状況"><a class="header" href="#関連要素が必要になる状況">関連要素が必要になる状況</a></h1>
 <p>コンテナ型に、その要素に対してジェネリックなトレイトを実装した場合、そのトレイトを使用する者は全てのジェネリック型を明記 <em>しなくてはなりません</em> 。</p>
-<p>In the example below, the <code>Contains</code> <code>trait</code> allows the use of the generic types <code>A</code> and <code>B</code>. The trait is then implemented for the <code>Container</code> type, specifying <code>i32</code> for <code>A</code> and <code>B</code> so that it can be used with <code>fn difference()</code>.</p>
-<p>Because <code>Contains</code> is generic, we are forced to explicitly state <em>all</em> of the generic types for <code>fn difference()</code>. In practice, we want a way to express that <code>A</code> and <code>B</code> are determined by the <em>input</em> <code>C</code>. As you will see in the next section, associated types provide exactly that capability.</p>
+<p>以下の例では<code>Contains</code>トレイトはジェネリック型<code>A</code>と<code>B</code>の使用を許しています。その後、<code>Container</code>型に対して<code>Contains</code>を実装していますが、その際後に<code>fn difference()</code>が使用できるように、<code>A</code>、<code>B</code>はそれぞれ<code>i32</code>と明記されています。</p>
+<p><code>Contains</code>はジェネリックトレイトなので、<code>fn difference()</code>では <strong>全ての</strong> ジェネリック型を宣言しなくてはなりません。実際のところ、<code>A</code>と<code>B</code>は <strong>引数</strong> である<code>C</code>によって決定されていて欲しいにも関わらず、です。これは次のページで紹介する関連型と呼ばれる機能によって可能です。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">struct Container(i32, i32);
 
 // ２つの要素がコンテナ型の中にあることをチェックするトレイト
@@ -4213,7 +4213,7 @@ fn main() {
 <h3 id="参照-44"><a class="header" href="#参照-44">参照</a></h3>
 <p><a href="generics/assoc_items/../../custom_types/structs.html">構造体</a>, <a href="generics/assoc_items/../../trait.html">トレイト</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="関連型"><a class="header" href="#関連型">関連型</a></h1>
-<p>The use of "Associated types" improves the overall readability of code by moving inner types locally into a trait as <em>output</em> types. Syntax for the <code>trait</code> definition is as follows:</p>
+<p>関連型を使用すると、コンテナ型の中の要素をトレイトの中に <em>出力型</em> として書くことで、全体の可読性を上げることができます。トレイトを定義する際の構文は以下のようになります。</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// `A`と`B`は`type`キーワードを用いてトレイト内で宣言されています。
@@ -4400,7 +4400,7 @@ fn main() {
 <h3 id="参照-46"><a class="header" href="#参照-46">参照</a></h3>
 <p><a href="generics/phantom/../../scope/borrow.html">借用 (<code>&amp;</code>)</a>, <a href="generics/phantom/../../generics/bounds.html">境界 (<code>X: Y</code>)</a>, <a href="generics/phantom/../../custom_types/enum.html">列挙型</a>, <a href="generics/phantom/../../fn/methods.html">impl &amp; self</a>, <a href="generics/phantom/../../trait/ops.html">演算子のオーバーロード</a>, <a href="generics/phantom/../../scope/borrow/ref.html">ref</a>, <a href="generics/phantom/../../trait.html">トレイト (<code>X for Y</code>)</a>, <a href="generics/phantom/../../custom_types/structs.html">タプル構造体</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="スコープの規則"><a class="header" href="#スコープの規則">スコープの規則</a></h1>
-<p>Scopes play an important part in ownership, borrowing, and lifetimes. That is, they indicate to the compiler when borrows are valid, when resources can be freed, and when variables are created or destroyed.</p>
+<p>所有権、借用、ライフタイムといったRustに特有の概念において、変数のスコープは重要な役割を果たします。すなわち、スコープの存在によってコンパイラは借用は可能か否か、メモリ上の資源は解放可能か、変数はいつ作成され、いつ破棄されるか。といったことを知るのです。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="raii"><a class="header" href="#raii">RAII</a></h1>
 <p>Rustの変数は単にデータをスタック上に保持するだけのものではありません。例えばヒープメモリを確保する<code>Box&lt;T&gt;</code>のように、変数はメモリ上の資源を <em>保有</em> する場合もあるのです。Rustは<a href="https://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization">RAII</a>(Resource Acquisition Is Initialization)を強制するので、オブジェクトがスコープを抜けると、必ずデストラクタが呼び出されてそのオブジェクトが保持していた資源が解放されます。</p>
 <p>この振る舞いは <em>リソースリーク</em> バグを防ぐのに役立ちます。手動でメモリを解放したり、メモリリークバグにわずらわされたりすることはなくなるのです！簡単な例で説明しましょう。</p>
@@ -4471,8 +4471,8 @@ fn main() {
 <h3 id="参照-47"><a class="header" href="#参照-47">参照</a></h3>
 <p><a href="scope/../std/box.html">Box</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="所有権とムーブ"><a class="header" href="#所有権とムーブ">所有権とムーブ</a></h1>
-<p>Because variables are in charge of freeing their own resources, <strong>resources can only have one owner</strong>. This prevents resources from being freed more than once. Note that not all variables own resources (e.g. <a href="scope/../flow_control/match/destructuring/destructure_pointers.html">references</a>).</p>
-<p>When doing assignments (<code>let x = y</code>) or passing function arguments by value (<code>foo(x)</code>), the <em>ownership</em> of the resources is transferred. In Rust-speak, this is known as a <em>move</em>.</p>
+<p>変数には自身の保持する資源を開放する責任があるため、<strong>資源は一度に一つの所有者</strong> しか持つことができません。これはまた、資源を2度以上開放することができないということでもあります。ここで、全ての変数が資源を所有するわけではないということに注意しましょう。（e.g. <a href="scope/../flow_control/match/destructuring/destructure_pointers.html">参照</a>）</p>
+<p>変数を代入する（<code>let x = y</code>）際や、関数に引数を値渡しする（<code>foo(x)</code>）際は、資源の <em>所有権</em> が移動します。Rustっぽく言うと、「 <em>ムーブ</em> 」です。</p>
 <p>資源を移動すると、それまでの所有者（訳注：変数などのこと）を使用することはできなくなります。これによりダングリングポインタの発生を防げます。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">// この関数はヒープメモリ上の資源の所有権を取ります。
 fn destroy_box(c: Box&lt;i32&gt;) {
@@ -4537,7 +4537,7 @@ fn main() {
     println!("mutable_box now contains {}", mutable_box);
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="部分的ムーブ"><a class="header" href="#部分的ムーブ">部分的ムーブ</a></h1>
-<p>Within the <a href="scope/move/../../flow_control/match/destructuring.html">destructuring</a> of a single variable, both <code>by-move</code> and <code>by-reference</code> pattern bindings can be used at the same time. Doing this will result in a <em>partial move</em> of the variable, which means that parts of the variable will be moved while other parts stay. In such a case, the parent variable cannot be used afterwards as a whole, however the parts that are only referenced (and not moved) can still be used.</p>
+<p>1つの変数の <a href="scope/move/../../flow_control/match/destructuring.html">デストラクト</a> の中で、<code>ムーブ</code> と <code>参照</code> の両方のパターン束縛を同時に使用することができます。両方を使用すると、変数の一部がムーブされ、他の部分が参照として残るという変数の部分的ムーブが発生した状態になります。変数の部分的ムーブが発生すると親変数はその後使用できませんが、参照されているだけの部分（ムーブされていない部分）は使用することができます。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">fn main() {
     #[derive(Debug)]
     struct Person {
@@ -4564,12 +4564,12 @@ fn main() {
     // `person.age` はムーブしていないので使用できます。
     println!("The person's age from person struct is {}", person.age);
 }</code></pre></pre>
-<p>(In this example, we store the <code>age</code> variable on the heap to illustrate the partial move: deleting <code>ref</code> in the above code would give an error as the ownership of <code>person.age</code> would be moved to the variable <code>age</code>. If <code>Person.age</code> were stored on the stack, <code>ref</code> would not be required as the definition of <code>age</code> would copy the data from <code>person.age</code> without moving it.)</p>
+<p>この例では、<code>age</code>変数をヒープ上に保持し、部分的ムーブを説明しています。上記コードで<code>ref</code>を削除すると、<code>person.age</code>の所有権が<code>age</code>変数にムーブされるため、エラーになります。もしも<code>Person.age</code>がスタック上に保持されていたら、<code>age</code>の定義が<code>person.age</code>をムーブすることなくデータをコピーするので、<code>ref</code>は必須ではないのですが、実際にはヒープ上に保持されているため<code>ref</code>は必須です。</p>
 <h3 id="参照-48"><a class="header" href="#参照-48">参照</a></h3>
 <p><a href="scope/move/../../flow_control/match/destructuring.html">デストラクト</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="借用"><a class="header" href="#借用">借用</a></h1>
 <p>実際には、データの所有権を完全に受け渡すことなく一時的にアクセスしたいという場合がほとんどです。そのために、Rustでは <em>借用</em> という仕組みを用います。値そのもの（<code>T</code>）を受け渡すのではなく、その参照（<code>&amp;T</code>）を渡すのです。</p>
-<p>The compiler statically guarantees (via its borrow checker) that references <em>always</em> point to valid objects. That is, while references to an object exist, the object cannot be destroyed.</p>
+<p>コンパイラは借用チェッカを用いて参照が <em>常に</em> 有効なオブジェクトへの参照であることを、コンパイル時に保証します。つまり、あるオブジェクトへの参照が存在しているならば、そのオブジェクトを破壊することはできないということです。</p>
 <pre><pre class="playground"><code class="language-rust editable ignore mdbook-runnable edition2021">// この関数はボックスの所有権を奪い、破棄します。
 fn eat_box_i32(boxed_i32: Box&lt;i32&gt;) {
     println!("Destroying box that contains {}", boxed_i32);
@@ -4607,11 +4607,11 @@ fn main() {
         // ここで`_ref_to_i32`はスコープを抜け、借用もなくなります。
     }
 
-    // ここでようやく、`boxed_i32`は所有権を`eat_box_32`に移譲し、破棄することができます。
+    // `boxed_i32` can now give up ownership to `eat_box_i32` and be destroyed
     eat_box_i32(boxed_i32);
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ミュータビリティ-2"><a class="header" href="#ミュータビリティ-2">ミュータビリティ</a></h1>
-<p>Mutable data can be mutably borrowed using <code>&amp;mut T</code>. This is called a <em>mutable reference</em> and gives read/write access to the borrower. In contrast, <code>&amp;T</code> borrows the data via an immutable reference, and the borrower can read the data but not modify it:</p>
+<p>ミュータブルなデータは<code>&amp;mut T</code>でミュータブルに（変更可能な形で）借用することができます。これは <em>ミュータブルな参照</em> と呼ばれ、読み込み・書き込みの権限を借用者に与えます。対照的に<code>&amp;T</code>はデータをイミュータブルな参照を介して借用し、借用した側はデータを読み込みはできますが書き込みはできません。</p>
 <pre><pre class="playground"><code class="language-rust editable ignore mdbook-runnable edition2021">#[allow(dead_code)]
 #[derive(Clone, Copy)]
 struct Book {
@@ -4711,7 +4711,7 @@ fn main() {
              new_borrowed_point.x, new_borrowed_point.y, new_borrowed_point.z);
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="refパターン"><a class="header" href="#refパターン">refパターン</a></h1>
-<p>When doing pattern matching or destructuring via the <code>let</code> binding, the <code>ref</code> keyword can be used to take references to the fields of a struct/tuple. The example below shows a few instances where this can be useful:</p>
+<p><code>let</code>を介してデストラクトやパターンマッチングを行う場合、<code>ref</code>キーワードを用いて構造体・タプルのフィールドへの参照を取得することができます。以下の例ではこれが有用になる例を幾つかお見せします。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">#[derive(Clone, Copy)]
 struct Point { x: i32, y: i32 }
 
@@ -4787,10 +4787,10 @@ fn main() {
 }   // ライフタイム終了 ───────────────────────────────────┘</code></pre></pre>
 <p>ここで、一切の名前や型がライフタイムに代入されていないことに注意しましょう。これにより、ライフタイムの使われ方がこれから見ていくようなやり方に制限されます。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="明示的アノテーション"><a class="header" href="#明示的アノテーション">明示的アノテーション</a></h1>
-<p>The borrow checker uses explicit lifetime annotations to determine how long references should be valid. In cases where lifetimes are not elided<sup class="footnote-reference"><a href="#1">1</a></sup>, Rust requires explicit annotations to determine what the lifetime of a reference should be. The syntax for explicitly annotating a lifetime uses an apostrophe character as follows:</p>
+<p>借用チェッカーは参照がどれだけの間有効かを決定するために、明示的なアノテーションを使用します。ライフタイムが省略<sup class="footnote-reference"><a href="#1">1</a></sup>されなかった場合、Rustは参照のライフタイムがどのようなものであるか、明示的なアノテーションを必要とします。</p>
 <pre><code class="language-rust ignore">foo&lt;'a&gt;
 // `foo`は`'a`というライフタイムパラメータを持ちます。</code></pre>
-<p>Similar to <a href="scope/lifetime/../../fn/closures/anonymity.html">closures</a>, using lifetimes requires generics. Additionally, this lifetime syntax indicates that the lifetime of <code>foo</code> may not exceed that of <code>'a</code>. Explicit annotation of a type has the form <code>&amp;'a T</code> where <code>'a</code> has already been introduced.</p>
+<p><a href="scope/lifetime/../../fn/closures/anonymity.html">クロージャ</a>と同様、ライフタイムの使用はジェネリクスを必要とします。もう少し詳しく言うと、この書き方は「<code>foo</code>のライフタイムは<code>'a</code>のそれを超えることはない。」ということを示しており、型を明示した場合<code>'a</code>は<code>&amp;'a T</code>となるということです。</p>
 <p>ライフタイムが複数ある場合も、同じような構文になります。</p>
 <pre><code class="language-rust ignore">foo&lt;'a, 'b&gt;
 // `foo`は`'a`と`'b`というライフタイムパラメータを持ちます。</code></pre>
@@ -4835,7 +4835,7 @@ fn main() {
 <h3 id="参照-50"><a class="header" href="#参照-50">参照</a></h3>
 <p><a href="scope/lifetime/../../generics.html">ジェネリクス</a>, <a href="scope/lifetime/../../fn/closures.html">クロージャ</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="関数-2"><a class="header" href="#関数-2">関数</a></h1>
-<p>Ignoring <a href="scope/lifetime/elision.html">elision</a>, function signatures with lifetimes have a few constraints:</p>
+<p><a href="scope/lifetime/elision.html">省略</a>をしない場合、ライフタイムのシグネチャ（e.g. <code>&lt;'a&gt;</code>）を持つ関数にはいくつかの制限があります。</p>
 <ul>
 <li>全ての参照においてライフタイムを明示しなくてはなりません。</li>
 <li>返り値となる参照はすべて引数と同じライフタイムか、<code>static</code>ライフタイムを持たなくてはなりません</li>
@@ -4965,7 +4965,7 @@ fn main() {
 <h3 id="参照-54"><a class="header" href="#参照-54">参照</a></h3>
 <p><a href="scope/lifetime/../../trait.html">トレイト</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="境界-1"><a class="header" href="#境界-1">境界</a></h1>
-<p>Just like generic types can be bounded, lifetimes (themselves generic) use bounds as well. The <code>:</code> character has a slightly different meaning here, but <code>+</code> is the same. Note how the following read:</p>
+<p>ジェネリック型に境界を与え、特定のトレイトを実装していることを保証できるのと同様、ライフタイム（それ自身ジェネリック型）にも境界を与えることができます。<code>:</code>は、ここでは多少異なる意味を持ちますが<code>+</code>は同じです。以下の構文の意味をチェックしてください。</p>
 <ol>
 <li><code>T: 'a</code>：<code>T</code>内の <em>全ての</em> 参照は<code>'a</code>よりも長生きでなくてはなりません。</li>
 <li><code>T: Trait + 'a</code>：上に加えて<code>T</code>は<code>Trait</code>という名のトレイトを実装してなくてはなりません。</li>
@@ -5001,9 +5001,9 @@ fn main() {
     print(ref_x);
 }</code></pre></pre>
 <h3 id="参照-55"><a class="header" href="#参照-55">参照</a></h3>
-<p><a href="scope/lifetime/../../generics.html">generics</a>, <a href="scope/lifetime/../../generics/bounds.html">bounds in generics</a>, and <a href="scope/lifetime/../../generics/multi_bounds.html">multiple bounds in generics</a></p>
+<p><a href="scope/lifetime/../../generics.html">ジェネリクス</a>, <a href="scope/lifetime/../../generics/bounds.html">ジェネリック境界</a>, <a href="scope/lifetime/../../generics/multi_bounds.html">複数の境界</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="強制"><a class="header" href="#強制">強制</a></h1>
-<p>A longer lifetime can be coerced into a shorter one so that it works inside a scope it normally wouldn't work in. This comes in the form of inferred coercion by the Rust compiler, and also in the form of declaring a lifetime difference:</p>
+<p>長いライフタイムは、短いものに圧縮することで、そのままでは動作しないスコープの中でも使用できるようになります。これは、Rustコンパイラが推論の結果として圧縮する場合と、複数のライフタイムを比較して圧縮する場合があります。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">// ここではRustはライフタイムを出来る限り短く見積もり、
 // 2つの参照をそのライフタイムに押し込めます。
 fn multiply&lt;'a&gt;(first: &amp;'a i32, second: &amp;'a i32) -&gt; i32 {
@@ -5152,7 +5152,7 @@ fn main() {
 <p><a href="https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html#lifetime-elision">省略</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="トレイト-2"><a class="header" href="#トレイト-2">トレイト</a></h1>
 <p>トレイトとは任意の型となりうる<code>Self</code>に対して定義されたメソッドの集合のことです。同じトレイト内で宣言されたメソッド同士はお互いにアクセスすることができます。</p>
-<p>Traits can be implemented for any data type. In the example below, we define <code>Animal</code>, a group of methods. The <code>Animal</code> <code>trait</code> is then implemented for the <code>Sheep</code> data type, allowing the use of methods from <code>Animal</code> with a <code>Sheep</code>.</p>
+<p>トレイトはあらゆるデータ型に実装することができます。以下の例ではまず<code>Animal</code>というメソッドの集合を定義し、その後<code>Animal</code>トレイトを<code>Sheep</code>というデータ型に対して実装します。これにより<code>Animal</code>のメソッドを<code>Sheep</code>が使用することが可能になります。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">struct Sheep { naked: bool, name: &amp;'static str }
 
 trait Animal {
@@ -5283,7 +5283,7 @@ fn main() {
 <h3 id="参照-58"><a class="header" href="#参照-58">参照</a></h3>
 <p><a href="https://doc.rust-lang.org/reference/attributes.html#derive">導出</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dynを利用してトレイトを返す"><a class="header" href="#dynを利用してトレイトを返す"><code>dyn</code>を利用してトレイトを返す</a></h1>
-<p>The Rust compiler needs to know how much space every function's return type requires. This means all your functions have to return a concrete type. Unlike other languages, if you have a trait like <code>Animal</code>, you can't write a function that returns <code>Animal</code>, because its different implementations will need different amounts of memory.</p>
+<p>Rustのコンパイラはあらゆる関数のリターン型に必要なスペースを知っておく必要があります。つまり、すべての関数は具体的な型を返す必要があるのです。他の言語と違って、<code>Animal</code>のようなトレイトがある場合に、<code>Animal</code>を返す関数を書くことはできません。なぜなら、そのトレイトの異なる実装はそれぞれ別の量のメモリを必要とするからです。</p>
 <p>しかし、簡単な回避策があります。直接トレイトオブジェクトを返す代わりに、<code>Animal</code>を <em>含む</em> <code>Box</code>を返すのです。<code>Box</code>はヒープ中のメモリへの単なる参照です。参照のサイズは静的に知ることができ、コンパイラは参照がヒープに割り当てられた<code>Animal</code>を指していると保証できるので、私たちは関数からトレイトを返すことができます。</p>
 <p>ヒープにメモリを割り当てる際、Rustは可能な限り明示的であろうとします。なので、もしあなたの関数がヒープ上のトレイトへのポインタを返す場合、例えば<code>Box&lt;dyn Animal&gt;</code>のように、リターン型に<code>dyn</code>キーワードをつける必要があります。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">struct Sheep {}
@@ -5373,7 +5373,7 @@ fn main() {
 <h3 id="参照-59"><a class="header" href="#参照-59">参照</a></h3>
 <p><a href="https://doc.rust-lang.org/core/ops/trait.Add.html">Add</a>, <a href="https://doc.rust-lang.org/book/appendix-02-operators.html">構文の索引</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ドロップ"><a class="header" href="#ドロップ">ドロップ</a></h1>
-<p>The <a href="https://doc.rust-lang.org/std/ops/trait.Drop.html"><code>Drop</code></a> trait only has one method: <code>drop</code>, which is called automatically when an object goes out of scope. The main use of the <code>Drop</code> trait is to free the resources that the implementor instance owns.</p>
+<p><a href="https://doc.rust-lang.org/std/ops/trait.Drop.html"><code>Drop</code></a>トレイトにはメソッドが一つだけしかありません。<code>drop</code>です。これは、オブジェクトがスコープから抜けた時に自動で呼ばれます。<code>Drop</code>トレイトの主な使用目的は、インスタンスが所有する資源を開放することです。</p>
 <p><code>Drop</code>トレイトを実装している型の例としては<code>Box</code>、<code>Vec</code>、<code>String</code>、<code>File</code>、<code>Process</code>等があげられます。<code>Drop</code>トレイトは任意の型に対して手動で実装することができます。</p>
 <p>以下の例では<code>drop</code>メソッドにコンソールへの出力を追加することで、<code>drop</code>が呼ばれたタイミングが分かるようにしています。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">struct Droppable {
@@ -5810,7 +5810,7 @@ fn main() {
 </ul>
 <p>完全なリストを見るには、<a href="https://doc.rust-lang.org/reference/macros-by-example.html">Rustリファレンス</a>を読んでください。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="オーバーロード"><a class="header" href="#オーバーロード">オーバーロード</a></h1>
-<p>Macros can be overloaded to accept different combinations of arguments. In that regard, <code>macro_rules!</code> can work similarly to a match block:</p>
+<p>マクロは異なる引数の組み合わせを取るようにオーバーロードすることができるため、<code>macro_rules!</code>はマッチと似たような使い方をすることができます。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">// `test!`は`$left`と`$right`を異なる呼び出し方に応じて
 // 比較します。
 macro_rules! test {
@@ -6140,8 +6140,8 @@ fn main() {
     assert_eq!(p.work_phone_area_code(), Some(61));
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="コンビネータmap"><a class="header" href="#コンビネータmap">コンビネータ：<code>map</code></a></h1>
-<p><code>match</code> is a valid method for handling <code>Option</code>s. However, you may eventually find heavy usage tedious, especially with operations only valid with an input. In these cases, <a href="https://doc.rust-lang.org/reference/glossary.html#combinator">combinators</a> can be used to manage control flow in a modular fashion.</p>
-<p><code>Option</code> has a built in method called <code>map()</code>, a combinator for the simple mapping of <code>Some -&gt; Some</code> and <code>None -&gt; None</code>. Multiple <code>map()</code> calls can be chained together for even more flexibility.</p>
+<p><code>match</code>は<code>Option</code>を扱うのに適したメソッドです。しかし、大量にこれを使用しているとじきに億劫になってくるでしょう。引数の値が有効である（訳注: この場合は<code>None</code>でない）必要がある関数を扱う際には特にそうです。そうした場合には、<a href="https://doc.rust-lang.org/reference/glossary.html#combinator">コンビネータ</a>を使うと、処理の流れをモジュール化されたやり方で管理できます。</p>
+<p><code>Some -&gt; Some</code>あるいは<code>None -&gt; None</code>の単純な操作を適用する必要がある場合には、<code>Option</code>は<code>map()</code>というビルトインのメソッドを提供していますので、これを使用しましょう。<code>map()</code>のフレキシビリティは、複数の<code>map()</code>をチェインしなければならない場合にさらに際立ちます。</p>
 <p>以下の例では、<code>process()</code>が直前の関数全てを用いた場合と同じ機能を、よりコンパクトに果たしているのがわかります。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">#![allow(dead_code)]
 
@@ -6205,9 +6205,9 @@ fn main() {
 <h3 id="参照-62"><a class="header" href="#参照-62">参照</a></h3>
 <p><a href="error/option_unwrap/../../fn/closures.html">クロージャ</a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.map"><code>Option::map()</code></a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="コンビネータand_then"><a class="header" href="#コンビネータand_then">コンビネータ：<code>and_then</code></a></h1>
-<p><code>map()</code> was described as a chainable way to simplify <code>match</code> statements. However, using <code>map()</code> on a function that returns an <code>Option&lt;T&gt;</code> results in the nested <code>Option&lt;Option&lt;T&gt;&gt;</code>. Chaining multiple calls together can then become confusing. That's where another combinator called <code>and_then()</code>, known in some languages as flatmap, comes in.</p>
+<p>先ほどは<code>map()</code>を、チェイン構文を用いて<code>match</code>文を単純化する物として説明しました。しかし<code>Option&lt;T&gt;</code>を返す関数に対しての<code>map()</code>の使用はネストした<code>Option&lt;Option&lt;T&gt;&gt;</code>を生じさせます。ですので、複数の関数呼び出しをチェインさせることは混乱を招く場合があります。そんな時こそ<code>and_then()</code>の出番です。他の言語ではflatmapと呼ばれることもあります。</p>
 <p><code>and_then()</code>は引数として与えられた関数にラップされた値を渡しますが、その値が<code>None</code>だった場合は<code>None</code>を返します。</p>
-<p>In the following example, <code>cookable_v3()</code> results in an <code>Option&lt;Food&gt;</code>. Using <code>map()</code> instead of <code>and_then()</code> would have given an <code>Option&lt;Option&lt;Food&gt;&gt;</code>, which is an invalid type for <code>eat()</code>.</p>
+<p>以下の例では<code>cookable_v3()</code>は<code>Option&lt;Food&gt;</code>を返すため、<code>and_then()</code>ではなく<code>map()</code>を使用すると最終的に<code>Option&lt;Option&lt;Food&gt;&gt;</code>になります。これは<code>eat()</code>には不適切な型です。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">#![allow(dead_code)]
 
 #[derive(Debug)] enum Food { CordonBleu, Steak, Sushi }
@@ -6988,7 +6988,7 @@ fn main() {
 <p><a href="primitives.html">基本データ型</a>, <a href="https://doc.rust-lang.org/std/"><code>std</code> ライブラリ</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="boxスタックとヒープ"><a class="header" href="#boxスタックとヒープ">Box、スタックとヒープ</a></h1>
 <p>Rustにおいて、すべての値はデフォルトでスタックに割り当てられます。<code>Box&lt;T&gt;</code>を作成することで、値を <em>ボックス化</em> 、すなわちヒープ上に割り当てることができます。ボックスとは正確にはヒープ上におかれた<code>T</code>の値へのスマートポインタです。ボックスがスコープを抜けると、デストラクタが呼ばれて内包するオブジェクトが破棄され、ヒープメモリが解放されます。</p>
-<p>Boxed values can be dereferenced using the <code>*</code> operator; this removes one layer of indirection.</p>
+<p>ボックス化された値は<code>*</code>演算子を用いてデリファレンスすることができます。これにより一段と直接的な操作が可能になります。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">use std::mem;
 
 #[allow(dead_code)]
@@ -7054,13 +7054,13 @@ fn main() {
              mem::size_of_val(&amp;unboxed_point));
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ベクタ型"><a class="header" href="#ベクタ型">ベクタ型</a></h1>
-<p>Vectors are re-sizable arrays. Like slices, their size is not known at compile time, but they can grow or shrink at any time. A vector is represented using 3 parameters:</p>
+<p>「ベクタ」はサイズを変更可能な配列です。スライスと同様、そのサイズはコンパイル時には不定ですが、いつでも要素を追加したり削除したりすることができます。ベクタは3つの要素で、その特徴が完全に決まります。</p>
 <ul>
 <li>データへのポインタ</li>
 <li>長さ</li>
-<li>capacity</li>
+<li>容量</li>
 </ul>
-<p>The capacity indicates how much memory is reserved for the vector. The vector can grow as long as the length is smaller than the capacity. When this threshold needs to be surpassed, the vector is reallocated with a larger capacity.</p>
+<p>ベクタはその容量を超えない限りにおいて長くしていくことができます。超えた場合には、より大きな容量を持つように割り当てなおされます。</p>
 <pre><pre class="playground"><code class="language-rust editable ignore mdbook-runnable edition2021">fn main() {
     // イテレータは要素を収集してベクタにすることができます。
     let collected_iterator: Vec&lt;i32&gt; = (0..10).collect();
@@ -7281,7 +7281,7 @@ fn main() {
     println!("{:?} unwraps to {:?}", none, none.unwrap());
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="result-1"><a class="header" href="#result-1"><code>Result</code></a></h1>
-<p>We've seen that the <code>Option</code> enum can be used as a return value from functions that may fail, where <code>None</code> can be returned to indicate failure. However, sometimes it is important to express <em>why</em> an operation failed. To do this we have the <code>Result</code> enum.</p>
+<p>これまでの例で、失敗する可能性のある関数の返り値として、列挙型<code>Option</code>が使用でき、失敗時の返り値には<code>None</code>を用いることを見てきました。しかし、時には <strong>なぜ</strong> そのオペレーションが失敗したのかを明示することが重要な場合があります。そのためには<code>Result</code>列挙型を使用します。</p>
 <p>列挙型<code>Result&lt;T, E&gt;</code>は2つの値をとりえます。</p>
 <ul>
 <li><code>Ok(value)</code> ... これはオペレーションが成功したことを意味し、返り値<code>value</code>をラップします。（<code>value</code>は型<code>T</code>を持ちます。）</li>
@@ -7347,7 +7347,7 @@ fn main() {
     println!("{}", op(1.0, 10.0));
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id=""><a class="header" href="#"><code>?</code></a></h1>
-<p>Chaining results using match can get pretty untidy; luckily, the <code>?</code> operator can be used to make things pretty again. <code>?</code> is used at the end of an expression returning a <code>Result</code>, and is equivalent to a match expression, where the <code>Err(err)</code> branch expands to an early <code>return Err(From::from(err))</code>, and the <code>Ok(ok)</code> branch expands to an <code>ok</code> expression.</p>
+<p>マッチを利用して結果をチェインするのは中々面倒です。幸いなことに、<code>?</code>マクロを使用すればイケてるコードに戻すことができます。<code>?</code>は<code>Result</code>を返す式の末尾で使います。<code>Err(err)</code>の分岐が<code>return Err(From::from(err))</code>という早期リターンに展開され、<code>Ok(ok)</code>の分岐が<code>ok</code>の式に展開されるようなマッチ式と等価です。</p>
 <pre><pre class="playground"><code class="language-rust editable ignore mdbook-runnable edition2021">mod checked {
     #[derive(Debug)]
     enum MathError {
@@ -7459,8 +7459,8 @@ thread '&lt;main&gt;' panicked at 'division by zero', panic.rs:5
 </code></pre>
 <!-- REUSE-IgnoreEnd -->
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ハッシュマップ"><a class="header" href="#ハッシュマップ">ハッシュマップ</a></h1>
-<p>Where vectors store values by an integer index, <code>HashMap</code>s store values by key. <code>HashMap</code> keys can be booleans, integers, strings, or any other type that implements the <code>Eq</code> and <code>Hash</code> traits. More on this in the next section.</p>
-<p>Like vectors, <code>HashMap</code>s are growable, but HashMaps can also shrink themselves when they have excess space. You can create a HashMap with a certain starting capacity using <code>HashMap::with_capacity(uint)</code>, or use <code>HashMap::new()</code> to get a HashMap with a default initial capacity (recommended).</p>
+<p>ベクタ型が値を整数のインデックスで保持するのに対し、<code>HashMap</code>ではキーで保持します。<code>HashMap</code>のキーはブーリアン、整数、文字列等の<code>Eq</code>と<code>Hash</code>トレイトを保持する型なら何でもOKです。次のセクションでより詳しく見ていきます。</p>
+<p>ベクタ型と同様、伸長可能ですが、<code>HashMap</code>の場合さらに、スペースが余っているときには小さくすることも可能です。<code>HashMap</code>を一定の容量のエリアに作成するときは<code>HashMap::with_capacity(uint)</code>を、デフォルトの容量で作成するときは<code>HashMap::new()</code>を用います。後者が推奨されています。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">use std::collections::HashMap;
 
 fn call(number: &amp;str) -&gt; &amp;str {
@@ -7505,19 +7505,19 @@ fn main() {
         println!("Calling {}: {}", contact, call(number)); 
     }
 }</code></pre></pre>
-<p>For more information on how hashing and hash maps (sometimes called hash tables) work, have a look at <a href="https://en.wikipedia.org/wiki/Hash_table">Hash Table Wikipedia</a></p>
+<p>ハッシングやハッシュマップ（ハッシュテーブルと呼ばれることもあります）の仕組みについて、より詳しく知りたい場合は<a href="https://en.wikipedia.org/wiki/Hash_table">Wikipediaのハッシュテーブルのページ</a>を見てください。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="キー型の変種"><a class="header" href="#キー型の変種">キー型の変種</a></h1>
-<p>Any type that implements the <code>Eq</code> and <code>Hash</code> traits can be a key in <code>HashMap</code>. This includes:</p>
+<p><code>Eq</code>と<code>Hash</code>トレイトを実装している型ならば、なんでも<code>HashMap</code>のキーになることができます。例えば以下です。</p>
 <ul>
 <li><code>bool</code> （キーになりうる値が2つしかないので実用的ではないですが…）</li>
 <li><code>int</code>、<code>uint</code>、あるいは他の整数型</li>
 <li><code>String</code>と<code>&amp;str</code>（Tips：<code>String</code>をキーにしたハッシュマップを作製した場合、<code>.get()</code>メソッドの引数に<code>&amp;str</code>を与えて値を取得することができます。）</li>
 </ul>
 <p><code>f32</code>と<code>f64</code>は<code>Hash</code>を実装して <strong>いない</strong> ことに注意しましょう。おそらくこれは<a href="https://en.wikipedia.org/wiki/Floating_point#Accuracy_problems">浮動小数点演算時に誤差が発生する</a>ため、キーとして使用すると、恐ろしいほどエラーの元となるためです。</p>
-<p>All collection classes implement <code>Eq</code> and <code>Hash</code> if their contained type also respectively implements <code>Eq</code> and <code>Hash</code>. For example, <code>Vec&lt;T&gt;</code> will implement <code>Hash</code> if <code>T</code> implements <code>Hash</code>.</p>
-<p>You can easily implement <code>Eq</code> and <code>Hash</code> for a custom type with just one line: <code>#[derive(PartialEq, Eq, Hash)]</code></p>
-<p>The compiler will do the rest. If you want more control over the details, you can implement <code>Eq</code> and/or <code>Hash</code> yourself. This guide will not cover the specifics of implementing <code>Hash</code>.</p>
-<p>To play around with using a <code>struct</code> in <code>HashMap</code>, let's try making a very simple user logon system:</p>
+<p>集合型は、その要素となっている全ての型が<code>Eq</code>を、あるいは<code>Hash</code>を実装している場合、必ず同じトレイトを実装しています。例えば、<code>Vec&lt;T&gt;</code>は<code>T</code>が<code>Hash</code>を実装している場合、<code>Hash</code>を実装します。</p>
+<p>独自の型に<code>Eq</code>あるいは<code>Hash</code>を実装するのは簡単です。以下の一行で済みます。<code>#[derive(PartialEq, Eq, Hash)]</code></p>
+<p>後はコンパイラがよしなにしてくれます。これらのトレイトの詳細をコントロールしたい場合、<code>Eq</code>や<code>Hash</code>を自分で実装することもできます。この文書では<code>Hash</code>トレイトを実装する方法の詳細については触れません。</p>
+<p><code>struct</code>を<code>HashMap</code>で扱う際の例として、とてもシンプルなユーザーログインシステムを作成してみましょう。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">use std::collections::HashMap;
 
 // Eqトレイトを使用する時は、PartialEqをderiveする必要があります。
@@ -7577,10 +7577,10 @@ fn main(){
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ハッシュ集合"><a class="header" href="#ハッシュ集合">ハッシュ集合</a></h1>
 <p>値がなく、キーだけの<code>HashMap</code>を想像してみてください。これはハッシュ集合（<code>HashSet</code>）と呼ばれるものです。（<code>HashSet&lt;T&gt;</code>は、実際には<code>HashMap&lt;T, ()&gt;</code>のラッパーです。）</p>
 <p>「何の意味があるの？フツーにキーを<code>Vec</code>に入れればいいじゃん」そう思いましたね？</p>
-<p>A <code>HashSet</code>'s unique feature is that it is guaranteed to not have duplicate elements. That's the contract that any set collection fulfills. <code>HashSet</code> is just one implementation. (see also: <a href="https://doc.rust-lang.org/std/collections/struct.BTreeSet.html"><code>BTreeSet</code></a>)</p>
-<p>If you insert a value that is already present in the <code>HashSet</code>, (i.e. the new value is equal to the existing and they both have the same hash), then the new value will replace the old.</p>
-<p>This is great for when you never want more than one of something, or when you want to know if you've already got something.</p>
-<p>But sets can do more than that.</p>
+<p>それは、<code>HashSet</code>独自の機能として、要素に重複がないということが保証されるためです。これは全ての集合型がもつ機能です。<code>HashSet</code>はその実装の1つであり、他には<a href="https://doc.rust-lang.org/std/collections/struct.BTreeSet.html"><code>BTreeSet</code></a>等があります。</p>
+<p><code>HashSet</code>に、すでに存在する値を加えようとすると、（すなわち、加えようとしている値のハッシュ値と、要素中のいずれかの値のハッシュ値が等しい場合、）新しい値によって古い値が上書きされます。</p>
+<p>これは、同じ値を2つ以上欲しくない場合や、すでにある値を持っているか知りたい場合にとても有効です。</p>
+<p>しかし、集合型の機能はそれだけではありません。</p>
 <p>集合型には4つの主要なメソッドがあり、（すべてイテレータを返します。）</p>
 <ul>
 <li>
@@ -7593,7 +7593,7 @@ fn main(){
 <p><code>intersection</code>：両方の集合にある値のみを取得。</p>
 </li>
 <li>
-<p><code>symmetric_difference</code>: get all the elements that are in one set or the other, but <em>not</em> both.</p>
+<p><code>symmetric_difference</code>：どちらか一方の集合には存在するが、両方には <strong>ない</strong> 値を取得。</p>
 </li>
 </ul>
 <p>以下の例でこれらをすべて見ていきましょう。</p>
@@ -7899,8 +7899,8 @@ fn main() {
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ファイルパス"><a class="header" href="#ファイルパス">ファイルパス</a></h1>
 <p>構造体<code>Path</code>は、ファイルシステム中のパスを表します。<code>Path</code>には2つの変種があります。UNIXライクなファイルシステムのための<code>posix::Path</code>と、Windows用の<code>windows::Path</code>です。それぞれプラットフォームに対応した<code>Path</code>をエクスポートします。</p>
 <p><code>Path</code>は<code>OsStr</code>から作ることができます。そうすればそのパスが指すファイル・ディレクトリの情報を取得するためのメソッドがいくつか使えるようになります。</p>
-<p>A <code>Path</code> is immutable. The owned version of <code>Path</code> is <code>PathBuf</code>. The relation between <code>Path</code> and <code>PathBuf</code> is similar to that of <code>str</code> and <code>String</code>: a <code>PathBuf</code> can be mutated in-place, and can be dereferenced to a <code>Path</code>.</p>
-<p>Note that a <code>Path</code> is <em>not</em> internally represented as an UTF-8 string, but instead is stored as an <code>OsString</code>. Therefore, converting a <code>Path</code> to a <code>&amp;str</code> is <em>not</em> free and may fail (an <code>Option</code> is returned). However, a <code>Path</code> can be freely converted to an <code>OsString</code> or <code>&amp;OsStr</code> using <code>into_os_string</code> and <code>as_os_str</code>, respectively.</p>
+<p><code>Path</code>はイミュータブルです。<code>Path</code>の所有権ありのバージョンが<code>PathBuf</code>です。<code>Path</code>と<code>PathBuf</code>の関係は、<code>str</code>と<code>String</code>の関係に似ています。<code>PathBuf</code>はそのまま変更でき、<code>Path</code>にデリファレンスすることができます。</p>
+<p><code>Path</code>の実態はUTF-8の文字列 <strong>ではなく</strong> 、<code>OsString</code>であることに注意しましょう。したがって、<code>Path</code>を<code>&amp;str</code>に変換するのは無条件 <strong>ではなく</strong> 、失敗する可能性があります。それゆえ<code>Option</code>型が返されます。しかし<code>Path</code>から<code>OsString</code>あるいは<code>&amp;OsStr</code>への変換はそれぞれ<code>into_os_string</code>と<code>as_os_str</code>によって無条件でできます。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">use std::path::Path;
 
 fn main() {
@@ -8690,7 +8690,7 @@ running 0 tests
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ドキュメンテーションテスト"><a class="header" href="#ドキュメンテーションテスト">ドキュメンテーションテスト</a></h1>
-<p>The primary way of documenting a Rust project is through annotating the source code. Documentation comments are written in <a href="https://commonmark.org/">CommonMark Markdown specification</a> and support code blocks in them. Rust takes care about correctness, so these code blocks are compiled and used as documentation tests.</p>
+<p>Rustのプロジェクトでは、ソースコードに注釈する形でドキュメントを書くのが主流です。ドキュメンテーションコメントの記述は<a href="https://commonmark.org/">CommonMark Markdown specification</a>で行い、コードブロックも使えます。Rustは正確性を重視しているので、コードブロックもコンパイルされ、テストとして使われます。</p>
 <pre><code class="language-rust ignore">/// 最初の行には関数の機能の短い要約を書きます。
 ///
 /// 以降で詳細なドキュメンテーションを記述します。コードブロックは三重のバッククォートで始まり、
@@ -8851,7 +8851,7 @@ mod tests {
 <p>この章の内容を見る前に、<a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html">公式ドキュメント</a>から引用した次の文章をお読みください。「コードベース中の、アンセーフな操作をするコードの量は、可能な限り小さく無くてはならない。」この戒めを頭に叩き込んだ上で、さあはじめましょう！Rustにおいて、アンセーフなブロックはコンパイラのチェックをスルーするために使われます。具体的には以下の4つの主要なユースケースがあります。</p>
 <ul>
 <li>生ポインタのデリファレンス</li>
-<li>calling functions or methods which are <code>unsafe</code> (including calling a function over FFI, see <a href="std_misc/ffi.html">a previous chapter</a> of the book)</li>
+<li>安全でない関数やメソッドの呼び出し(FFI経由の関数の呼び出しを含む (詳細は <a href="std_misc/ffi.html">本書のFFIに関する説明</a> を参照ください))</li>
 <li>静的なミュータブル変数へのアクセスや変更</li>
 <li>安全でないトレイトの実装</li>
 </ul>
@@ -8880,7 +8880,7 @@ fn main() {
         assert_eq!(some_vector.as_slice(), my_slice);
     }
 }</code></pre></pre>
-<p>For <code>slice::from_raw_parts</code>, one of the assumptions which <em>must</em> be upheld is that the pointer passed in points to valid memory and that the memory pointed to is of the correct type. If these invariants aren't upheld then the program's behaviour is undefined and there is no knowing what will happen.</p>
+<p><code>slice::from_raw_parts</code> は、次のふたつの仮定に基づいて処理します。ひとつは渡されたポインタが有効なメモリ位置を指していること、もうひとつはそのメモリに格納された値が正しい型であることです。この仮定を満たさない場合、プログラムの動作は不定となり、何が起こるかわかりません。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="インラインアセンブリ"><a class="header" href="#インラインアセンブリ">インラインアセンブリ</a></h1>
 <p>Rustは<code>asm!</code>マクロによってインラインアセンブリをサポートしています。コンパイラが生成するアセンブリに、手書きのアセンブリを埋め込むことができます。一般的には必要ありませんが、要求されるパフォーマンスやタイミングを達成するために必要な場合があります。カーネルコードのような、低レベルなハードウェアの基本要素にアクセスする場合にも、この機能が必要でしょう。</p>
 <blockquote>
@@ -8974,7 +8974,7 @@ assert_eq!(y, 8);
 <span class="boring">}
 </span><span class="boring">}</span></code></pre></pre>
 <h2 id="遅延出力オペランド"><a class="header" href="#遅延出力オペランド">遅延出力オペランド</a></h2>
-<p>The Rust compiler is conservative with its allocation of operands. It is assumed that an <code>out</code> can be written at any time, and can therefore not share its location with any other argument. However, to guarantee optimal performance it is important to use as few registers as possible, so they won't have to be saved and reloaded around the inline assembly block. To achieve this Rust provides a <code>lateout</code> specifier. This can be used on any output that is written only after all inputs have been consumed. There is also an <code>inlateout</code> variant of this specifier.</p>
+<p>Rustコンパイラはオペランドの割り当てに保守的です。<code>out</code>はいつでも書き込めるので、他の引数とは場所を共有できません。しかし、最適なパフォーマンスを保証するためには、できるだけ少ないレジスタを使うことが重要です。そうすることで、インラインアセンブリブロックの前後でレジスタを保存したり再読み込みしたりする必要がありません。これを達成するために、Rustは<code>lateout</code>指定子を提供します。全ての入力が消費された後でのみ書き込まれる出力に利用できます。この指定子には<code>inlateout</code>という変化形もあります。</p>
 <p>以下は、<code>release</code>モードやその他の最適化された場合に、<code>inlateout</code>を利用 <em>できない</em> 例です。</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -8997,7 +8997,7 @@ assert_eq!(a, 12);
 <span class="boring">}
 </span><span class="boring">}</span></code></pre></pre>
 <p>In unoptimized cases (e.g. <code>Debug</code> mode), replacing <code>inout(reg) a</code> with <code>inlateout(reg) a</code> in the above example can continue to give the expected result. However, with <code>release</code> mode or other optimized cases, using <code>inlateout(reg) a</code> can instead lead to the final value <code>a = 16</code>, causing the assertion to fail.</p>
-<p>This is because in optimized cases, the compiler is free to allocate the same register for inputs <code>b</code> and <code>c</code> since it knows that they have the same value. Furthermore, when <code>inlateout</code> is used, <code>a</code> and <code>c</code> could be allocated to the same register, in which case the first <code>add</code> instruction would overwrite the initial load from variable <code>c</code>. This is in contrast to how using <code>inout(reg) a</code> ensures a separate register is allocated for <code>a</code>.</p>
+<p>というのも、最適化されている場合、コンパイラは<code>b</code>と<code>c</code>が同じ値だと知っているので、<code>b</code>と<code>c</code>の入力に同じレジスタを割り当てる場合があります。もし<code>inlateout</code>が使われていたら、<code>a</code>と<code>c</code>に同じレジスタが割り当てられ、最初の<code>add</code>命令によって<code>c</code>の値が上書きされるでしょう。<code>inout(reg) a</code>の使用により<code>a</code>に対する独立したレジスタ割り当てが保証されるのとは対照的です。</p>
 <p>しかし、次の例では、全ての入力レジスタが読み込まれた後でのみ出力が変更されるので、<code>inlateout</code>を利用できます。</p>
 <pre><pre class="playground"><code class="language-rust edition2021"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {

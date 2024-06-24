@@ -217,7 +217,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="ミュータビリティ"><a class="header" href="#ミュータビリティ">ミュータビリティ</a></h1>
-<p>Mutable data can be mutably borrowed using <code>&amp;mut T</code>. This is called a <em>mutable reference</em> and gives read/write access to the borrower. In contrast, <code>&amp;T</code> borrows the data via an immutable reference, and the borrower can read the data but not modify it:</p>
+<p>ミュータブルなデータは<code>&amp;mut T</code>でミュータブルに（変更可能な形で）借用することができます。これは <em>ミュータブルな参照</em> と呼ばれ、読み込み・書き込みの権限を借用者に与えます。対照的に<code>&amp;T</code>はデータをイミュータブルな参照を介して借用し、借用した側はデータを読み込みはできますが書き込みはできません。</p>
 <pre><pre class="playground"><code class="language-rust editable ignore mdbook-runnable edition2021">#[allow(dead_code)]
 #[derive(Clone, Copy)]
 struct Book {

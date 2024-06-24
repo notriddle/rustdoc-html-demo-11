@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/backtrace.rs`."><title>backtrace.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5e0f86de7732a179.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-24b68337f19ac127.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/backtrace.rs`."><title>backtrace.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0c9465bb72ad079c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-a53b05c6645b2154.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-ffff35d1e1849984.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -471,6 +471,10 @@
 <a href="#471" id="471">471</a>
 <a href="#472" id="472">472</a>
 <a href="#473" id="473">473</a>
+<a href="#474" id="474">474</a>
+<a href="#475" id="475">475</a>
+<a href="#476" id="476">476</a>
+<a href="#477" id="477">477</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Support for capturing a stack backtrace of an OS thread
 //!
 //! This module contains the support necessary to capture a stack backtrace of a
@@ -568,7 +572,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::panic::UnwindSafe;
 <span class="kw">use </span><span class="kw">crate</span>::sync::atomic::{AtomicU8, Ordering::Relaxed};
 <span class="kw">use </span><span class="kw">crate</span>::sync::LazyLock;
-<span class="kw">use </span><span class="kw">crate</span>::sys_common::backtrace::{lock, output_filename, set_image_base};
+<span class="kw">use </span><span class="kw">crate</span>::sys::backtrace::{lock, output_filename, set_image_base};
 
 <span class="doccomment">/// A captured OS thread stack backtrace.
 ///
@@ -901,39 +905,43 @@
     }
 }
 
-<span class="kw">type </span>LazyResolve = <span class="kw">impl </span>(FnOnce() -&gt; Capture) + Send + Sync + UnwindSafe;
+<span class="kw">mod </span>helper {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">type </span>LazyResolve = <span class="kw">impl </span>(FnOnce() -&gt; Capture) + Send + Sync + UnwindSafe;
 
-<span class="kw">fn </span>lazy_resolve(<span class="kw-2">mut </span>capture: Capture) -&gt; LazyResolve {
-    <span class="kw">move </span>|| {
-        <span class="comment">// Use the global backtrace lock to synchronize this as it's a
-        // requirement of the `backtrace` crate, and then actually resolve
-        // everything.
-        </span><span class="kw">let </span>_lock = lock();
-        <span class="kw">for </span>frame <span class="kw">in </span>capture.frames.iter_mut() {
-            <span class="kw">let </span>symbols = <span class="kw-2">&amp;mut </span>frame.symbols;
-            <span class="kw">let </span>frame = <span class="kw">match </span><span class="kw-2">&amp;</span>frame.frame {
-                RawFrame::Actual(frame) =&gt; frame,
-                <span class="attr">#[cfg(test)]
-                </span>RawFrame::Fake =&gt; <span class="macro">unimplemented!</span>(),
-            };
-            <span class="kw">unsafe </span>{
-                backtrace_rs::resolve_frame_unsynchronized(frame, |symbol| {
-                    symbols.push(BacktraceSymbol {
-                        name: symbol.name().map(|m| m.as_bytes().to_vec()),
-                        filename: symbol.filename_raw().map(|b| <span class="kw">match </span>b {
-                            BytesOrWideString::Bytes(b) =&gt; BytesOrWide::Bytes(b.to_owned()),
-                            BytesOrWideString::Wide(b) =&gt; BytesOrWide::Wide(b.to_owned()),
-                        }),
-                        lineno: symbol.lineno(),
-                        colno: symbol.colno(),
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>lazy_resolve(<span class="kw-2">mut </span>capture: Capture) -&gt; LazyResolve {
+        <span class="kw">move </span>|| {
+            <span class="comment">// Use the global backtrace lock to synchronize this as it's a
+            // requirement of the `backtrace` crate, and then actually resolve
+            // everything.
+            </span><span class="kw">let </span>_lock = lock();
+            <span class="kw">for </span>frame <span class="kw">in </span>capture.frames.iter_mut() {
+                <span class="kw">let </span>symbols = <span class="kw-2">&amp;mut </span>frame.symbols;
+                <span class="kw">let </span>frame = <span class="kw">match </span><span class="kw-2">&amp;</span>frame.frame {
+                    RawFrame::Actual(frame) =&gt; frame,
+                    <span class="attr">#[cfg(test)]
+                    </span>RawFrame::Fake =&gt; <span class="macro">unimplemented!</span>(),
+                };
+                <span class="kw">unsafe </span>{
+                    backtrace_rs::resolve_frame_unsynchronized(frame, |symbol| {
+                        symbols.push(BacktraceSymbol {
+                            name: symbol.name().map(|m| m.as_bytes().to_vec()),
+                            filename: symbol.filename_raw().map(|b| <span class="kw">match </span>b {
+                                BytesOrWideString::Bytes(b) =&gt; BytesOrWide::Bytes(b.to_owned()),
+                                BytesOrWideString::Wide(b) =&gt; BytesOrWide::Wide(b.to_owned()),
+                            }),
+                            lineno: symbol.lineno(),
+                            colno: symbol.colno(),
+                        });
                     });
-                });
+                }
             }
-        }
 
-        capture
+            capture
+        }
     }
 }
+<span class="kw">use </span>helper::<span class="kw-2">*</span>;
 
 <span class="kw">impl </span>RawFrame {
     <span class="kw">fn </span>ip(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>c_void {

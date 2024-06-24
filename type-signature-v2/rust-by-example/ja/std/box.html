@@ -218,7 +218,7 @@
                     <main>
                         <h1 id="boxスタックとヒープ"><a class="header" href="#boxスタックとヒープ">Box、スタックとヒープ</a></h1>
 <p>Rustにおいて、すべての値はデフォルトでスタックに割り当てられます。<code>Box&lt;T&gt;</code>を作成することで、値を <em>ボックス化</em> 、すなわちヒープ上に割り当てることができます。ボックスとは正確にはヒープ上におかれた<code>T</code>の値へのスマートポインタです。ボックスがスコープを抜けると、デストラクタが呼ばれて内包するオブジェクトが破棄され、ヒープメモリが解放されます。</p>
-<p>Boxed values can be dereferenced using the <code>*</code> operator; this removes one layer of indirection.</p>
+<p>ボックス化された値は<code>*</code>演算子を用いてデリファレンスすることができます。これにより一段と直接的な操作が可能になります。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">use std::mem;
 
 #[allow(dead_code)]

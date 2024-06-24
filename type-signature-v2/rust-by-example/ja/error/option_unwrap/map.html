@@ -217,8 +217,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="コンビネータmap"><a class="header" href="#コンビネータmap">コンビネータ：<code>map</code></a></h1>
-<p><code>match</code> is a valid method for handling <code>Option</code>s. However, you may eventually find heavy usage tedious, especially with operations only valid with an input. In these cases, <a href="https://doc.rust-lang.org/reference/glossary.html#combinator">combinators</a> can be used to manage control flow in a modular fashion.</p>
-<p><code>Option</code> has a built in method called <code>map()</code>, a combinator for the simple mapping of <code>Some -&gt; Some</code> and <code>None -&gt; None</code>. Multiple <code>map()</code> calls can be chained together for even more flexibility.</p>
+<p><code>match</code>は<code>Option</code>を扱うのに適したメソッドです。しかし、大量にこれを使用しているとじきに億劫になってくるでしょう。引数の値が有効である（訳注: この場合は<code>None</code>でない）必要がある関数を扱う際には特にそうです。そうした場合には、<a href="https://doc.rust-lang.org/reference/glossary.html#combinator">コンビネータ</a>を使うと、処理の流れをモジュール化されたやり方で管理できます。</p>
+<p><code>Some -&gt; Some</code>あるいは<code>None -&gt; None</code>の単純な操作を適用する必要がある場合には、<code>Option</code>は<code>map()</code>というビルトインのメソッドを提供していますので、これを使用しましょう。<code>map()</code>のフレキシビリティは、複数の<code>map()</code>をチェインしなければならない場合にさらに際立ちます。</p>
 <p>以下の例では、<code>process()</code>が直前の関数全てを用いた場合と同じ機能を、よりコンパクトに果たしているのがわかります。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">#![allow(dead_code)]
 

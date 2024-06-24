@@ -229,7 +229,7 @@ fn printer&lt;T: Display&gt;(t: T) {
 // エラー！`Vec&lt;T&gt;`は`Display`を実装していないため、この特殊化
 // は失敗します。
 let s = S(vec![1]);</code></pre>
-<p>Another effect of bounding is that generic instances are allowed to access the <a href="../fn/methods.html">methods</a> of traits specified in the bounds. For example:</p>
+<p>境界のもう一つの効果は、ジェネリック型のインスタンスが、境界条件となるトレイトの<a href="../fn/methods.html">メソッド</a>にアクセスすることができるようになる点です。以下がその例です。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">// 出力時のマーカー`{:?}`を実装するトレイト
 use std::fmt::Debug;
 

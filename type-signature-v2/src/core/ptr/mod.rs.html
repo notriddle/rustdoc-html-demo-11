@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/ptr/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5e0f86de7732a179.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-24b68337f19ac127.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/ptr/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0c9465bb72ad079c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-a53b05c6645b2154.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-ffff35d1e1849984.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2534,7 +2534,7 @@
 //! pointer. For code which *does* cast a usize to a pointer, the scope of the change depends
 //! on exactly what you're doing.
 //!
-//! In general you just need to make sure that if you want to convert a usize address to a
+//! In general, you just need to make sure that if you want to convert a usize address to a
 //! pointer and then use that pointer to read/write memory, you need to keep around a pointer
 //! that has sufficient provenance to perform that read/write itself. In this way all of your
 //! casts from an address to a pointer are essentially just applying offsets/indexing.
@@ -2606,7 +2606,7 @@
 //!   i.e. the usual "ZSTs are fake, do what you want" rules apply *but* this only applies
 //!   for actual forgery (integers cast to pointers). If you borrow some struct's field
 //!   that *happens* to be zero-sized, the resulting pointer will have provenance tied to
-//!   that allocation and it will still get invalidated if the allocation gets deallocated.
+//!   that allocation, and it will still get invalidated if the allocation gets deallocated.
 //!   In the future we may introduce an API to make such a forged allocation explicit.
 //!
 //! * [`wrapping_offset`][] a pointer outside its provenance. This includes pointers
@@ -2995,7 +2995,7 @@
 ///
 /// If there is no 'exposed' provenance that justifies the way this pointer will be used,
 /// the program has undefined behavior. In particular, the aliasing rules still apply: pointers
-/// and references that have been invalidated due to aliasing accesses cannot be used any more,
+/// and references that have been invalidated due to aliasing accesses cannot be used anymore,
 /// even if they have been exposed!
 ///
 /// Note that there is no algorithm that decides which provenance will be used. You can think of this
@@ -3394,7 +3394,7 @@
         <span class="comment">// If we end up here, it's because we're using a simple type -- like
         // a small power-of-two-sized thing -- or a special type with particularly
         // large alignment, particularly SIMD types.
-        // Thus we're fine just reading-and-writing it, as either it's small
+        // Thus, we're fine just reading-and-writing it, as either it's small
         // and that works well anyway or it's special and the type's author
         // presumably wanted things to be done in the larger chunk.
 
@@ -3587,7 +3587,7 @@
     // provides enough information to know that this is a typed operation.
 
     // However, as of March 2023 the compiler was not capable of taking advantage
-    // of that information.  Thus the implementation here switched to an intrinsic,
+    // of that information. Thus, the implementation here switched to an intrinsic,
     // which lowers to `_0 = *src` in MIR, to address a few issues:
     //
     // - Using `MaybeUninit::assume_init` after a `copy_nonoverlapping` was not
@@ -3867,7 +3867,7 @@
 /// As a result, using `&amp;packed.unaligned as *const FieldType` causes immediate
 /// *undefined behavior* in your program.
 ///
-/// Instead you must use the [`ptr::addr_of_mut!`](addr_of_mut)
+/// Instead, you must use the [`ptr::addr_of_mut!`](addr_of_mut)
 /// macro to create the pointer. You may use that returned pointer together with
 /// this function.
 ///

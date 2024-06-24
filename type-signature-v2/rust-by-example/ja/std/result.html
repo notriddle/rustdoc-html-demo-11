@@ -217,7 +217,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="result"><a class="header" href="#result"><code>Result</code></a></h1>
-<p>We've seen that the <code>Option</code> enum can be used as a return value from functions that may fail, where <code>None</code> can be returned to indicate failure. However, sometimes it is important to express <em>why</em> an operation failed. To do this we have the <code>Result</code> enum.</p>
+<p>これまでの例で、失敗する可能性のある関数の返り値として、列挙型<code>Option</code>が使用でき、失敗時の返り値には<code>None</code>を用いることを見てきました。しかし、時には <strong>なぜ</strong> そのオペレーションが失敗したのかを明示することが重要な場合があります。そのためには<code>Result</code>列挙型を使用します。</p>
 <p>列挙型<code>Result&lt;T, E&gt;</code>は2つの値をとりえます。</p>
 <ul>
 <li><code>Ok(value)</code> ... これはオペレーションが成功したことを意味し、返り値<code>value</code>をラップします。（<code>value</code>は型<code>T</code>を持ちます。）</li>

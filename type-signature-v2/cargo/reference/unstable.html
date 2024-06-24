@@ -552,16 +552,22 @@ It would not be possible to upgrade to <code>0.2.0-pre.0</code> from <code>0.1.1
 <ul>
 <li>Tracking Issue: <a href="https://github.com/rust-lang/cargo/issues/12425">#12425</a></li>
 </ul>
-<p>This feature allows upgrading dependencies to breaking versions with
-<code>update --breaking</code>.</p>
-<p>This is essentially migrating <code>cargo upgrade</code> from <code>cargo-edit</code> into Cargo itself,
-and involves making changes to the <code>Cargo.toml</code> manifests, not just the lock file.</p>
-<p>When doing a breaking update, Cargo will keep all non-breaking dependencies
-unchanged. It will also not change any dependencies that use a different version
-operator than the default caret. Also, it will not upgrade any renamed package
-dependencies. Example:</p>
-<pre><code class="language-sh">cargo +nightly update --breaking -Z unstable-options
+<p>Allow upgrading dependencies version requirements in <code>Cargo.toml</code> across SemVer
+incompatible versions using with the <code>--breaking</code> flag.</p>
+<p>This only applies to dependencies when</p>
+<ul>
+<li>The package is a dependency of a workspace member</li>
+<li>The dependency is not renamed</li>
+<li>A SemVer-incompatible version is available</li>
+<li>The “SemVer operator” is used (<code>^</code> which is the default)</li>
+</ul>
+<p>Users may further restrict which packages get upgraded by specifying them on
+the command line.</p>
+<p>Example:</p>
+<pre><code class="language-console">$ cargo +nightly -Zunstable-options update --breaking
+$ cargo +nightly -Zunstable-options update --breaking clap
 </code></pre>
+<p><em>This is meant to fill a similar role as <a href="https://github.com/killercup/cargo-edit/">cargo-upgrade</a></em></p>
 <h2 id="build-std"><a class="header" href="#build-std">build-std</a></h2>
 <ul>
 <li>Tracking Repository: <a href="https://github.com/rust-lang/wg-cargo-std-aware">https://github.com/rust-lang/wg-cargo-std-aware</a></li>
@@ -1699,7 +1705,7 @@ requirement that a credential-provider is configured.</p>
 <h2 id="check-cfg"><a class="header" href="#check-cfg">check-cfg</a></h2>
 <p>The <code>-Z check-cfg</code> feature has been stabilized in the 1.80 release by making it the
 default behavior.</p>
-<p>See the <a href="build-scripts.html#rustc-check-cfg">build script documentation</a> for informations
+<p>See the <a href="build-scripts.html#rustc-check-cfg">build script documentation</a> for information
 about specifying custom cfgs.</p>
 
                     </main>

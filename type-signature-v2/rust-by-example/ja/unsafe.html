@@ -220,7 +220,7 @@
 <p>この章の内容を見る前に、<a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html">公式ドキュメント</a>から引用した次の文章をお読みください。「コードベース中の、アンセーフな操作をするコードの量は、可能な限り小さく無くてはならない。」この戒めを頭に叩き込んだ上で、さあはじめましょう！Rustにおいて、アンセーフなブロックはコンパイラのチェックをスルーするために使われます。具体的には以下の4つの主要なユースケースがあります。</p>
 <ul>
 <li>生ポインタのデリファレンス</li>
-<li>calling functions or methods which are <code>unsafe</code> (including calling a function over FFI, see <a href="std_misc/ffi.html">a previous chapter</a> of the book)</li>
+<li>安全でない関数やメソッドの呼び出し(FFI経由の関数の呼び出しを含む (詳細は <a href="std_misc/ffi.html">本書のFFIに関する説明</a> を参照ください))</li>
 <li>静的なミュータブル変数へのアクセスや変更</li>
 <li>安全でないトレイトの実装</li>
 </ul>
@@ -249,7 +249,7 @@ fn main() {
         assert_eq!(some_vector.as_slice(), my_slice);
     }
 }</code></pre></pre>
-<p>For <code>slice::from_raw_parts</code>, one of the assumptions which <em>must</em> be upheld is that the pointer passed in points to valid memory and that the memory pointed to is of the correct type. If these invariants aren't upheld then the program's behaviour is undefined and there is no knowing what will happen.</p>
+<p><code>slice::from_raw_parts</code> は、次のふたつの仮定に基づいて処理します。ひとつは渡されたポインタが有効なメモリ位置を指していること、もうひとつはそのメモリに格納された値が正しい型であることです。この仮定を満たさない場合、プログラムの動作は不定となり、何が起こるかわかりません。</p>
 
                     </main>
 

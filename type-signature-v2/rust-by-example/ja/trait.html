@@ -218,7 +218,7 @@
                     <main>
                         <h1 id="トレイト"><a class="header" href="#トレイト">トレイト</a></h1>
 <p>トレイトとは任意の型となりうる<code>Self</code>に対して定義されたメソッドの集合のことです。同じトレイト内で宣言されたメソッド同士はお互いにアクセスすることができます。</p>
-<p>Traits can be implemented for any data type. In the example below, we define <code>Animal</code>, a group of methods. The <code>Animal</code> <code>trait</code> is then implemented for the <code>Sheep</code> data type, allowing the use of methods from <code>Animal</code> with a <code>Sheep</code>.</p>
+<p>トレイトはあらゆるデータ型に実装することができます。以下の例ではまず<code>Animal</code>というメソッドの集合を定義し、その後<code>Animal</code>トレイトを<code>Sheep</code>というデータ型に対して実装します。これにより<code>Animal</code>のメソッドを<code>Sheep</code>が使用することが可能になります。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">struct Sheep { naked: bool, name: &amp;'static str }
 
 trait Animal {

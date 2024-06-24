@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/panic/panic_info.rs`."><title>panic_info.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5e0f86de7732a179.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-24b68337f19ac127.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/panic/panic_info.rs`."><title>panic_info.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0c9465bb72ad079c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-a53b05c6645b2154.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-ffff35d1e1849984.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -176,102 +176,80 @@
 <a href="#176" id="176">176</a>
 <a href="#177" id="177">177</a>
 <a href="#178" id="178">178</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::any::Any;
-<span class="kw">use </span><span class="kw">crate</span>::fmt;
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::fmt::{<span class="self">self</span>, Display};
 <span class="kw">use </span><span class="kw">crate</span>::panic::Location;
 
 <span class="doccomment">/// A struct providing information about a panic.
 ///
-/// `PanicInfo` structure is passed to a panic hook set by the [`set_hook`]
-/// function.
+/// A `PanicInfo` structure is passed to the panic handler defined by `#[panic_handler]`.
 ///
-/// [`set_hook`]: ../../std/panic/fn.set_hook.html
+/// For the type used by the panic hook mechanism in `std`, see [`std::panic::PanicHookInfo`].
 ///
-/// # Examples
-///
-/// ```should_panic
-/// use std::panic;
-///
-/// panic::set_hook(Box::new(|panic_info| {
-///     println!("panic occurred: {panic_info}");
-/// }));
-///
-/// panic!("critical system failure");
-/// ```
+/// [`std::panic::PanicHookInfo`]: ../../std/panic/struct.PanicHookInfo.html
 </span><span class="attr">#[lang = <span class="string">"panic_info"</span>]
 #[stable(feature = <span class="string">"panic_hooks"</span>, since = <span class="string">"1.10.0"</span>)]
 #[derive(Debug)]
 </span><span class="kw">pub struct </span>PanicInfo&lt;<span class="lifetime">'a</span>&gt; {
-    payload: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>(<span class="kw">dyn </span>Any + Send),
-    message: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>fmt::Arguments&lt;<span class="lifetime">'a</span>&gt;&gt;,
+    message: fmt::Arguments&lt;<span class="lifetime">'a</span>&gt;,
     location: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Location&lt;<span class="lifetime">'a</span>&gt;,
     can_unwind: bool,
     force_no_backtrace: bool,
 }
 
+<span class="doccomment">/// A message that was given to the `panic!()` macro.
+///
+/// The [`Display`] implementation of this type will format the message with the arguments
+/// that were given to the `panic!()` macro.
+///
+/// See [`PanicInfo::message`].
+</span><span class="attr">#[unstable(feature = <span class="string">"panic_info_message"</span>, issue = <span class="string">"66745"</span>)]
+</span><span class="kw">pub struct </span>PanicMessage&lt;<span class="lifetime">'a</span>&gt; {
+    message: fmt::Arguments&lt;<span class="lifetime">'a</span>&gt;,
+}
+
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; PanicInfo&lt;<span class="lifetime">'a</span>&gt; {
-    <span class="attr">#[unstable(
-        feature = <span class="string">"panic_internals"</span>,
-        reason = <span class="string">"internal details of the implementation of the `panic!` and related macros"</span>,
-        issue = <span class="string">"none"
-    </span>)]
-    #[doc(hidden)]
-    #[inline]
-    </span><span class="kw">pub fn </span>internal_constructor(
-        message: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>fmt::Arguments&lt;<span class="lifetime">'a</span>&gt;&gt;,
+    <span class="attr">#[inline]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>new(
+        message: fmt::Arguments&lt;<span class="lifetime">'a</span>&gt;,
         location: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Location&lt;<span class="lifetime">'a</span>&gt;,
         can_unwind: bool,
         force_no_backtrace: bool,
     ) -&gt; <span class="self">Self </span>{
-        <span class="kw">struct </span>NoPayload;
-        PanicInfo { location, message, payload: <span class="kw-2">&amp;</span>NoPayload, can_unwind, force_no_backtrace }
+        PanicInfo { location, message, can_unwind, force_no_backtrace }
     }
 
-    <span class="attr">#[unstable(
-        feature = <span class="string">"panic_internals"</span>,
-        reason = <span class="string">"internal details of the implementation of the `panic!` and related macros"</span>,
-        issue = <span class="string">"none"
-    </span>)]
-    #[doc(hidden)]
-    #[inline]
-    </span><span class="kw">pub fn </span>set_payload(<span class="kw-2">&amp;mut </span><span class="self">self</span>, info: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>(<span class="kw">dyn </span>Any + Send)) {
-        <span class="self">self</span>.payload = info;
-    }
-
-    <span class="doccomment">/// Returns the payload associated with the panic.
+    <span class="doccomment">/// The message that was given to the `panic!` macro.
     ///
-    /// This will commonly, but not always, be a `&amp;'static str` or [`String`].
+    /// # Example
     ///
-    /// [`String`]: ../../std/string/struct.String.html
+    /// The type returned by this method implements `Display`, so it can
+    /// be passed directly to [`write!()`] and similar macros.
     ///
-    /// # Examples
+    /// [`write!()`]: core::write
     ///
-    /// ```should_panic
-    /// use std::panic;
-    ///
-    /// panic::set_hook(Box::new(|panic_info| {
-    ///     if let Some(s) = panic_info.payload().downcast_ref::&lt;&amp;str&gt;() {
-    ///         println!("panic occurred: {s:?}");
-    ///     } else {
-    ///         println!("panic occurred");
-    ///     }
-    /// }));
-    ///
-    /// panic!("Normal panic");
+    /// ```ignore (no_std)
+    /// #[panic_handler]
+    /// fn panic_handler(panic_info: &amp;PanicInfo&lt;'_&gt;) -&gt; ! {
+    ///     write!(DEBUG_OUTPUT, "panicked: {}", panic_info.message());
+    ///     loop {}
+    /// }
     /// ```
     </span><span class="attr">#[must_use]
-    #[stable(feature = <span class="string">"panic_hooks"</span>, since = <span class="string">"1.10.0"</span>)]
-    </span><span class="kw">pub fn </span>payload(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>(<span class="kw">dyn </span>Any + Send) {
-        <span class="self">self</span>.payload
-    }
-
-    <span class="doccomment">/// If the `panic!` macro from the `core` crate (not from `std`)
-    /// was used with a formatting string and some additional arguments,
-    /// returns that message ready to be used for example with [`fmt::write`]
-    </span><span class="attr">#[must_use]
     #[unstable(feature = <span class="string">"panic_info_message"</span>, issue = <span class="string">"66745"</span>)]
-    </span><span class="kw">pub fn </span>message(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>fmt::Arguments&lt;<span class="lifetime">'_</span>&gt;&gt; {
-        <span class="self">self</span>.message
+    </span><span class="kw">pub fn </span>message(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PanicMessage&lt;<span class="lifetime">'_</span>&gt; {
+        PanicMessage { message: <span class="self">self</span>.message }
     }
 
     <span class="doccomment">/// Returns information about the location from which the panic originated,
@@ -306,6 +284,24 @@
         </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.location)
     }
 
+    <span class="doccomment">/// Returns the payload associated with the panic.
+    ///
+    /// On this type, `core::panic::PanicInfo`, this method never returns anything useful.
+    /// It only exists because of compatibility with [`std::panic::PanicHookInfo`],
+    /// which used to be the same type.
+    ///
+    /// See [`std::panic::PanicHookInfo::payload`].
+    ///
+    /// [`std::panic::PanicHookInfo`]: ../../std/panic/struct.PanicHookInfo.html
+    /// [`std::panic::PanicHookInfo::payload`]: ../../std/panic/struct.PanicHookInfo.html#method.payload
+    </span><span class="attr">#[deprecated(since = <span class="string">"1.81.0"</span>, note = <span class="string">"this never returns anything useful"</span>)]
+    #[stable(feature = <span class="string">"panic_hooks"</span>, since = <span class="string">"1.10.0"</span>)]
+    #[allow(deprecated, deprecated_in_future)]
+    </span><span class="kw">pub fn </span>payload(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>(<span class="kw">dyn </span><span class="kw">crate</span>::any::Any + Send) {
+        <span class="kw">struct </span>NoPayload;
+        <span class="kw-2">&amp;</span>NoPayload
+    }
+
     <span class="doccomment">/// Returns whether the panic handler is allowed to unwind the stack from
     /// the point where the panic occurred.
     ///
@@ -335,23 +331,51 @@
 }
 
 <span class="attr">#[stable(feature = <span class="string">"panic_hook_display"</span>, since = <span class="string">"1.26.0"</span>)]
-</span><span class="kw">impl </span>fmt::Display <span class="kw">for </span>PanicInfo&lt;<span class="lifetime">'_</span>&gt; {
+</span><span class="kw">impl </span>Display <span class="kw">for </span>PanicInfo&lt;<span class="lifetime">'_</span>&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         formatter.write_str(<span class="string">"panicked at "</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.location.fmt(formatter)<span class="question-mark">?</span>;
-        formatter.write_str(<span class="string">":"</span>)<span class="question-mark">?</span>;
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(message) = <span class="self">self</span>.message {
-            formatter.write_str(<span class="string">"\n"</span>)<span class="question-mark">?</span>;
-            formatter.write_fmt(<span class="kw-2">*</span>message)<span class="question-mark">?</span>;
-        } <span class="kw">else if let </span><span class="prelude-val">Some</span>(payload) = <span class="self">self</span>.payload.downcast_ref::&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt;() {
-            formatter.write_str(<span class="string">"\n"</span>)<span class="question-mark">?</span>;
-            formatter.write_str(payload)<span class="question-mark">?</span>;
-        }
-        <span class="comment">// NOTE: we cannot use downcast_ref::&lt;String&gt;() here
-        // since String is not available in core!
-        // The payload is a String when `std::panic!` is called with multiple arguments,
-        // but in that case the message is also available.
-        </span><span class="prelude-val">Ok</span>(())
+        formatter.write_str(<span class="string">":\n"</span>)<span class="question-mark">?</span>;
+        formatter.write_fmt(<span class="self">self</span>.message)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; PanicMessage&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="doccomment">/// Get the formatted message, if it has no arguments to be formatted at runtime.
+    ///
+    /// This can be used to avoid allocations in some cases.
+    ///
+    /// # Guarantees
+    ///
+    /// For `panic!("just a literal")`, this function is guaranteed to
+    /// return `Some("just a literal")`.
+    ///
+    /// For most cases with placeholders, this function will return `None`.
+    ///
+    /// See [`fmt::Arguments::as_str`] for details.
+    </span><span class="attr">#[unstable(feature = <span class="string">"panic_info_message"</span>, issue = <span class="string">"66745"</span>)]
+    #[rustc_const_unstable(feature = <span class="string">"const_arguments_as_str"</span>, issue = <span class="string">"103900"</span>)]
+    #[must_use]
+    #[inline]
+    </span><span class="kw">pub const fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; {
+        <span class="self">self</span>.message.as_str()
+    }
+}
+
+<span class="attr">#[unstable(feature = <span class="string">"panic_info_message"</span>, issue = <span class="string">"66745"</span>)]
+</span><span class="kw">impl </span>Display <span class="kw">for </span>PanicMessage&lt;<span class="lifetime">'_</span>&gt; {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        formatter.write_fmt(<span class="self">self</span>.message)
+    }
+}
+
+<span class="attr">#[unstable(feature = <span class="string">"panic_info_message"</span>, issue = <span class="string">"66745"</span>)]
+</span><span class="kw">impl </span>fmt::Debug <span class="kw">for </span>PanicMessage&lt;<span class="lifetime">'_</span>&gt; {
+    <span class="attr">#[inline]
+    </span><span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, formatter: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        formatter.write_fmt(<span class="self">self</span>.message)
     }
 }
 </code></pre></div></section></main></body></html>

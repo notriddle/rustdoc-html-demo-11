@@ -217,13 +217,13 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="ベクタ型"><a class="header" href="#ベクタ型">ベクタ型</a></h1>
-<p>Vectors are re-sizable arrays. Like slices, their size is not known at compile time, but they can grow or shrink at any time. A vector is represented using 3 parameters:</p>
+<p>「ベクタ」はサイズを変更可能な配列です。スライスと同様、そのサイズはコンパイル時には不定ですが、いつでも要素を追加したり削除したりすることができます。ベクタは3つの要素で、その特徴が完全に決まります。</p>
 <ul>
 <li>データへのポインタ</li>
 <li>長さ</li>
-<li>capacity</li>
+<li>容量</li>
 </ul>
-<p>The capacity indicates how much memory is reserved for the vector. The vector can grow as long as the length is smaller than the capacity. When this threshold needs to be surpassed, the vector is reallocated with a larger capacity.</p>
+<p>ベクタはその容量を超えない限りにおいて長くしていくことができます。超えた場合には、より大きな容量を持つように割り当てなおされます。</p>
 <pre><pre class="playground"><code class="language-rust editable ignore mdbook-runnable edition2021">fn main() {
     // イテレータは要素を収集してベクタにすることができます。
     let collected_iterator: Vec&lt;i32&gt; = (0..10).collect();

@@ -238,7 +238,8 @@ functions should be tested directly, and other languages make it difficult or
 impossible to test private functions. Regardless of which testing ideology you
 adhere to, Rust’s privacy rules do allow you to test private functions.
 Consider the code in Listing 11-12 with the private function <code>internal_adder</code>.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">pub fn add_two(a: i32) -&gt; i32 {
     internal_adder(a, 2)
 }
@@ -256,7 +257,8 @@ mod tests {
         assert_eq!(4, internal_adder(2, 2));
     }
 }</code></pre>
-<p><span class="caption">Listing 11-12: Testing a private function</span></p>
+<figcaption>Listing 11-12: Testing a private function</figcaption>
+</figure>
 <p>Note that the <code>internal_adder</code> function is not marked as <code>pub</code>. Tests are just
 Rust code, and the <code>tests</code> module is just another module. As we discussed in
 the <a href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html">“Paths for Referring to an Item in the Module Tree”</a><!-- ignore -->
@@ -290,15 +292,16 @@ files as an individual crate.</p>
     └── integration_test.rs
 </code></pre>
 <p>Enter the code in Listing 11-13 into the <em>tests/integration_test.rs</em> file:</p>
-<p><span class="filename">Filename: tests/integration_test.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: tests/integration_test.rs</span>
 <pre><code class="language-rust ignore">use adder::add_two;
 
 #[test]
 fn it_adds_two() {
     assert_eq!(4, add_two(2));
 }</code></pre>
-<p><span class="caption">Listing 11-13: An integration test of a function in the
-<code>adder</code> crate</span></p>
+<figcaption>Listing 11-13: An integration test of a function in the <code>adder</code> crate</figcaption>
+</figure>
 <p>Each file in the <code>tests</code> directory is a separate crate, so we need to bring our
 library into each test crate’s scope. For that reason we add <code>use adder::add_two</code> at the top of the code, which we didn’t need in the unit
 tests.</p>

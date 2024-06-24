@@ -217,8 +217,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="所有権とムーブ"><a class="header" href="#所有権とムーブ">所有権とムーブ</a></h1>
-<p>Because variables are in charge of freeing their own resources, <strong>resources can only have one owner</strong>. This prevents resources from being freed more than once. Note that not all variables own resources (e.g. <a href="../flow_control/match/destructuring/destructure_pointers.html">references</a>).</p>
-<p>When doing assignments (<code>let x = y</code>) or passing function arguments by value (<code>foo(x)</code>), the <em>ownership</em> of the resources is transferred. In Rust-speak, this is known as a <em>move</em>.</p>
+<p>変数には自身の保持する資源を開放する責任があるため、<strong>資源は一度に一つの所有者</strong> しか持つことができません。これはまた、資源を2度以上開放することができないということでもあります。ここで、全ての変数が資源を所有するわけではないということに注意しましょう。（e.g. <a href="../flow_control/match/destructuring/destructure_pointers.html">参照</a>）</p>
+<p>変数を代入する（<code>let x = y</code>）際や、関数に引数を値渡しする（<code>foo(x)</code>）際は、資源の <em>所有権</em> が移動します。Rustっぽく言うと、「 <em>ムーブ</em> 」です。</p>
 <p>資源を移動すると、それまでの所有者（訳注：変数などのこと）を使用することはできなくなります。これによりダングリングポインタの発生を防げます。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">// この関数はヒープメモリ上の資源の所有権を取ります。
 fn destroy_box(c: Box&lt;i32&gt;) {

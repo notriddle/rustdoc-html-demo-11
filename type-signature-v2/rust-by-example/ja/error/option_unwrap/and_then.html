@@ -217,9 +217,9 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="コンビネータand_then"><a class="header" href="#コンビネータand_then">コンビネータ：<code>and_then</code></a></h1>
-<p><code>map()</code> was described as a chainable way to simplify <code>match</code> statements. However, using <code>map()</code> on a function that returns an <code>Option&lt;T&gt;</code> results in the nested <code>Option&lt;Option&lt;T&gt;&gt;</code>. Chaining multiple calls together can then become confusing. That's where another combinator called <code>and_then()</code>, known in some languages as flatmap, comes in.</p>
+<p>先ほどは<code>map()</code>を、チェイン構文を用いて<code>match</code>文を単純化する物として説明しました。しかし<code>Option&lt;T&gt;</code>を返す関数に対しての<code>map()</code>の使用はネストした<code>Option&lt;Option&lt;T&gt;&gt;</code>を生じさせます。ですので、複数の関数呼び出しをチェインさせることは混乱を招く場合があります。そんな時こそ<code>and_then()</code>の出番です。他の言語ではflatmapと呼ばれることもあります。</p>
 <p><code>and_then()</code>は引数として与えられた関数にラップされた値を渡しますが、その値が<code>None</code>だった場合は<code>None</code>を返します。</p>
-<p>In the following example, <code>cookable_v3()</code> results in an <code>Option&lt;Food&gt;</code>. Using <code>map()</code> instead of <code>and_then()</code> would have given an <code>Option&lt;Option&lt;Food&gt;&gt;</code>, which is an invalid type for <code>eat()</code>.</p>
+<p>以下の例では<code>cookable_v3()</code>は<code>Option&lt;Food&gt;</code>を返すため、<code>and_then()</code>ではなく<code>map()</code>を使用すると最終的に<code>Option&lt;Option&lt;Food&gt;&gt;</code>になります。これは<code>eat()</code>には不適切な型です。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">#![allow(dead_code)]
 
 #[derive(Debug)] enum Food { CordonBleu, Steak, Sushi }

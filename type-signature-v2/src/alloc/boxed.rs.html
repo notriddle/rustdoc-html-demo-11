@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/alloc/src/boxed.rs`."><title>boxed.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5e0f86de7732a179.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="alloc" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-24b68337f19ac127.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/alloc/src/boxed.rs`."><title>boxed.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0c9465bb72ad079c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="alloc" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-a53b05c6645b2154.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-ffff35d1e1849984.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2638,7 +2638,6 @@
 <a href="#2638" id="2638">2638</a>
 <a href="#2639" id="2639">2639</a>
 <a href="#2640" id="2640">2640</a>
-<a href="#2641" id="2641">2641</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! The `Box&lt;T&gt;` type for heap allocation.
 //!
 //! [`Box&lt;T&gt;`], casually referred to as a 'box', provides the simplest form of
@@ -2786,9 +2785,8 @@
 //! to `into_iter()` for boxed slices will defer to the slice implementation on editions before
 //! 2024:
 //!
-</span><span class="attr">#![cfg_attr(bootstrap, doc = <span class="string">"```rust,edition2021,ignore"</span>)]
-#![cfg_attr(not(bootstrap), doc = <span class="string">"```rust,edition2021"</span>)]
-</span><span class="doccomment">//! // Rust 2015, 2018, and 2021:
+//! ```rust,edition2021
+//! // Rust 2015, 2018, and 2021:
 //!
 //! # #![allow(boxed_slice_into_iter)] // override our `deny(warnings)`
 //! let boxed_slice: Box&lt;[i32]&gt; = vec![0; 3].into_boxed_slice();
@@ -4764,23 +4762,23 @@
 
 <span class="doccomment">/// This implementation is required to make sure that the `Box&lt;[I]&gt;: IntoIterator`
 /// implementation doesn't overlap with `IntoIterator for T where T: Iterator` blanket.
-</span><span class="attr">#[stable(feature = <span class="string">"boxed_slice_into_iter"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+</span><span class="attr">#[stable(feature = <span class="string">"boxed_slice_into_iter"</span>, since = <span class="string">"1.80.0"</span>)]
 </span><span class="kw">impl</span>&lt;I, A: Allocator&gt; !Iterator <span class="kw">for </span>Box&lt;[I], A&gt; {}
 
 <span class="doccomment">/// This implementation is required to make sure that the `&amp;Box&lt;[I]&gt;: IntoIterator`
 /// implementation doesn't overlap with `IntoIterator for T where T: Iterator` blanket.
-</span><span class="attr">#[stable(feature = <span class="string">"boxed_slice_into_iter"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+</span><span class="attr">#[stable(feature = <span class="string">"boxed_slice_into_iter"</span>, since = <span class="string">"1.80.0"</span>)]
 </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, I, A: Allocator&gt; !Iterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Box&lt;[I], A&gt; {}
 
 <span class="doccomment">/// This implementation is required to make sure that the `&amp;mut Box&lt;[I]&gt;: IntoIterator`
 /// implementation doesn't overlap with `IntoIterator for T where T: Iterator` blanket.
-</span><span class="attr">#[stable(feature = <span class="string">"boxed_slice_into_iter"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+</span><span class="attr">#[stable(feature = <span class="string">"boxed_slice_into_iter"</span>, since = <span class="string">"1.80.0"</span>)]
 </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, I, A: Allocator&gt; !Iterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Box&lt;[I], A&gt; {}
 
 <span class="comment">// Note: the `#[rustc_skip_during_method_dispatch(boxed_slice)]` on `trait IntoIterator`
 // hides this implementation from explicit `.into_iter()` calls on editions &lt; 2024,
 // so those calls will still resolve to the slice implementation, by reference.
-</span><span class="attr">#[stable(feature = <span class="string">"boxed_slice_into_iter"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+</span><span class="attr">#[stable(feature = <span class="string">"boxed_slice_into_iter"</span>, since = <span class="string">"1.80.0"</span>)]
 </span><span class="kw">impl</span>&lt;I, A: Allocator&gt; IntoIterator <span class="kw">for </span>Box&lt;[I], A&gt; {
     <span class="kw">type </span>IntoIter = vec::IntoIter&lt;I, A&gt;;
     <span class="kw">type </span>Item = I;
@@ -4789,7 +4787,7 @@
     }
 }
 
-<span class="attr">#[stable(feature = <span class="string">"boxed_slice_into_iter"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+<span class="attr">#[stable(feature = <span class="string">"boxed_slice_into_iter"</span>, since = <span class="string">"1.80.0"</span>)]
 </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, I, A: Allocator&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>Box&lt;[I], A&gt; {
     <span class="kw">type </span>IntoIter = slice::Iter&lt;<span class="lifetime">'a</span>, I&gt;;
     <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>I;
@@ -4798,7 +4796,7 @@
     }
 }
 
-<span class="attr">#[stable(feature = <span class="string">"boxed_slice_into_iter"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+<span class="attr">#[stable(feature = <span class="string">"boxed_slice_into_iter"</span>, since = <span class="string">"1.80.0"</span>)]
 </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, I, A: Allocator&gt; IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Box&lt;[I], A&gt; {
     <span class="kw">type </span>IntoIter = slice::IterMut&lt;<span class="lifetime">'a</span>, I&gt;;
     <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>I;
@@ -4808,7 +4806,7 @@
 }
 
 <span class="attr">#[cfg(not(no_global_oom_handling))]
-#[stable(feature = <span class="string">"boxed_str_from_iter"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+#[stable(feature = <span class="string">"boxed_str_from_iter"</span>, since = <span class="string">"1.80.0"</span>)]
 </span><span class="kw">impl </span>FromIterator&lt;char&gt; <span class="kw">for </span>Box&lt;str&gt; {
     <span class="kw">fn </span>from_iter&lt;T: IntoIterator&lt;Item = char&gt;&gt;(iter: T) -&gt; <span class="self">Self </span>{
         String::from_iter(iter).into_boxed_str()
@@ -4816,7 +4814,7 @@
 }
 
 <span class="attr">#[cfg(not(no_global_oom_handling))]
-#[stable(feature = <span class="string">"boxed_str_from_iter"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+#[stable(feature = <span class="string">"boxed_str_from_iter"</span>, since = <span class="string">"1.80.0"</span>)]
 </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; FromIterator&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>char&gt; <span class="kw">for </span>Box&lt;str&gt; {
     <span class="kw">fn </span>from_iter&lt;T: IntoIterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>char&gt;&gt;(iter: T) -&gt; <span class="self">Self </span>{
         String::from_iter(iter).into_boxed_str()
@@ -4824,7 +4822,7 @@
 }
 
 <span class="attr">#[cfg(not(no_global_oom_handling))]
-#[stable(feature = <span class="string">"boxed_str_from_iter"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+#[stable(feature = <span class="string">"boxed_str_from_iter"</span>, since = <span class="string">"1.80.0"</span>)]
 </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; FromIterator&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt; <span class="kw">for </span>Box&lt;str&gt; {
     <span class="kw">fn </span>from_iter&lt;T: IntoIterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt;&gt;(iter: T) -&gt; <span class="self">Self </span>{
         String::from_iter(iter).into_boxed_str()
@@ -4832,7 +4830,7 @@
 }
 
 <span class="attr">#[cfg(not(no_global_oom_handling))]
-#[stable(feature = <span class="string">"boxed_str_from_iter"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+#[stable(feature = <span class="string">"boxed_str_from_iter"</span>, since = <span class="string">"1.80.0"</span>)]
 </span><span class="kw">impl </span>FromIterator&lt;String&gt; <span class="kw">for </span>Box&lt;str&gt; {
     <span class="kw">fn </span>from_iter&lt;T: IntoIterator&lt;Item = String&gt;&gt;(iter: T) -&gt; <span class="self">Self </span>{
         String::from_iter(iter).into_boxed_str()
@@ -4840,7 +4838,7 @@
 }
 
 <span class="attr">#[cfg(not(no_global_oom_handling))]
-#[stable(feature = <span class="string">"boxed_str_from_iter"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+#[stable(feature = <span class="string">"boxed_str_from_iter"</span>, since = <span class="string">"1.80.0"</span>)]
 </span><span class="kw">impl</span>&lt;A: Allocator&gt; FromIterator&lt;Box&lt;str, A&gt;&gt; <span class="kw">for </span>Box&lt;str&gt; {
     <span class="kw">fn </span>from_iter&lt;T: IntoIterator&lt;Item = Box&lt;str, A&gt;&gt;&gt;(iter: T) -&gt; <span class="self">Self </span>{
         String::from_iter(iter).into_boxed_str()
@@ -4848,7 +4846,7 @@
 }
 
 <span class="attr">#[cfg(not(no_global_oom_handling))]
-#[stable(feature = <span class="string">"boxed_str_from_iter"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+#[stable(feature = <span class="string">"boxed_str_from_iter"</span>, since = <span class="string">"1.80.0"</span>)]
 </span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; FromIterator&lt;Cow&lt;<span class="lifetime">'a</span>, str&gt;&gt; <span class="kw">for </span>Box&lt;str&gt; {
     <span class="kw">fn </span>from_iter&lt;T: IntoIterator&lt;Item = Cow&lt;<span class="lifetime">'a</span>, str&gt;&gt;&gt;(iter: T) -&gt; <span class="self">Self </span>{
         String::from_iter(iter).into_boxed_str()

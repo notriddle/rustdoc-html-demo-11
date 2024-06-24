@@ -217,7 +217,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="強制"><a class="header" href="#強制">強制</a></h1>
-<p>A longer lifetime can be coerced into a shorter one so that it works inside a scope it normally wouldn't work in. This comes in the form of inferred coercion by the Rust compiler, and also in the form of declaring a lifetime difference:</p>
+<p>長いライフタイムは、短いものに圧縮することで、そのままでは動作しないスコープの中でも使用できるようになります。これは、Rustコンパイラが推論の結果として圧縮する場合と、複数のライフタイムを比較して圧縮する場合があります。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">// ここではRustはライフタイムを出来る限り短く見積もり、
 // 2つの参照をそのライフタイムに押し込めます。
 fn multiply&lt;'a&gt;(first: &amp;'a i32, second: &amp;'a i32) -&gt; i32 {

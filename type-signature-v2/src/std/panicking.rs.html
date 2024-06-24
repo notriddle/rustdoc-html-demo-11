@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/panicking.rs`."><title>panicking.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5e0f86de7732a179.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-24b68337f19ac127.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/panicking.rs`."><title>panicking.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0c9465bb72ad079c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-a53b05c6645b2154.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-ffff35d1e1849984.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -855,6 +855,16 @@
 <a href="#855" id="855">855</a>
 <a href="#856" id="856">856</a>
 <a href="#857" id="857">857</a>
+<a href="#858" id="858">858</a>
+<a href="#859" id="859">859</a>
+<a href="#860" id="860">860</a>
+<a href="#861" id="861">861</a>
+<a href="#862" id="862">862</a>
+<a href="#863" id="863">863</a>
+<a href="#864" id="864">864</a>
+<a href="#865" id="865">865</a>
+<a href="#866" id="866">866</a>
+<a href="#867" id="867">867</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Implementation of various bits and pieces of the `panic!` macro and
 //! associated runtime pieces.
 //!
@@ -866,8 +876,8 @@
 
 </span><span class="attr">#![deny(unsafe_op_in_unsafe_fn)]
 
-</span><span class="kw">use </span><span class="kw">crate</span>::panic::BacktraceStyle;
-<span class="kw">use </span>core::panic::{Location, PanicInfo, PanicPayload};
+</span><span class="kw">use </span><span class="kw">crate</span>::panic::{BacktraceStyle, PanicHookInfo};
+<span class="kw">use </span>core::panic::{Location, PanicPayload};
 
 <span class="kw">use </span><span class="kw">crate</span>::any::Any;
 <span class="kw">use </span><span class="kw">crate</span>::fmt;
@@ -876,8 +886,8 @@
 <span class="kw">use </span><span class="kw">crate</span>::process;
 <span class="kw">use </span><span class="kw">crate</span>::sync::atomic::{AtomicBool, Ordering};
 <span class="kw">use </span><span class="kw">crate</span>::sync::{PoisonError, RwLock};
+<span class="kw">use </span><span class="kw">crate</span>::sys::backtrace;
 <span class="kw">use </span><span class="kw">crate</span>::sys::stdio::panic_output;
-<span class="kw">use </span><span class="kw">crate</span>::sys_common::backtrace;
 <span class="kw">use </span><span class="kw">crate</span>::thread;
 
 <span class="attr">#[cfg(not(test))]
@@ -927,12 +937,12 @@
 
 <span class="kw">enum </span>Hook {
     Default,
-    Custom(Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;) + <span class="lifetime">'static </span>+ Sync + Send&gt;),
+    Custom(Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>PanicHookInfo&lt;<span class="lifetime">'_</span>&gt;) + <span class="lifetime">'static </span>+ Sync + Send&gt;),
 }
 
 <span class="kw">impl </span>Hook {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>into_box(<span class="self">self</span>) -&gt; Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;) + <span class="lifetime">'static </span>+ Sync + Send&gt; {
+    </span><span class="kw">fn </span>into_box(<span class="self">self</span>) -&gt; Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>PanicHookInfo&lt;<span class="lifetime">'_</span>&gt;) + <span class="lifetime">'static </span>+ Sync + Send&gt; {
         <span class="kw">match </span><span class="self">self </span>{
             Hook::Default =&gt; Box::new(default_hook),
             Hook::Custom(hook) =&gt; hook,
@@ -962,7 +972,7 @@
 ///
 /// [`take_hook`]: ./fn.take_hook.html
 ///
-/// The hook is provided with a `PanicInfo` struct which contains information
+/// The hook is provided with a `PanicHookInfo` struct which contains information
 /// about the origin of the panic, including the payload passed to `panic!` and
 /// the source code location from which the panic originated.
 ///
@@ -986,7 +996,7 @@
 /// panic!("Normal panic");
 /// ```
 </span><span class="attr">#[stable(feature = <span class="string">"panic_hooks"</span>, since = <span class="string">"1.10.0"</span>)]
-</span><span class="kw">pub fn </span>set_hook(hook: Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;) + <span class="lifetime">'static </span>+ Sync + Send&gt;) {
+</span><span class="kw">pub fn </span>set_hook(hook: Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>PanicHookInfo&lt;<span class="lifetime">'_</span>&gt;) + <span class="lifetime">'static </span>+ Sync + Send&gt;) {
     <span class="kw">if </span>thread::panicking() {
         <span class="macro">panic!</span>(<span class="string">"cannot modify the panic hook from a panicking thread"</span>);
     }
@@ -1030,7 +1040,7 @@
 /// ```
 </span><span class="attr">#[must_use]
 #[stable(feature = <span class="string">"panic_hooks"</span>, since = <span class="string">"1.10.0"</span>)]
-</span><span class="kw">pub fn </span>take_hook() -&gt; Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;) + <span class="lifetime">'static </span>+ Sync + Send&gt; {
+</span><span class="kw">pub fn </span>take_hook() -&gt; Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>PanicHookInfo&lt;<span class="lifetime">'_</span>&gt;) + <span class="lifetime">'static </span>+ Sync + Send&gt; {
     <span class="kw">if </span>thread::panicking() {
         <span class="macro">panic!</span>(<span class="string">"cannot modify the panic hook from a panicking thread"</span>);
     }
@@ -1076,7 +1086,7 @@
 </span><span class="attr">#[unstable(feature = <span class="string">"panic_update_hook"</span>, issue = <span class="string">"92649"</span>)]
 </span><span class="kw">pub fn </span>update_hook&lt;F&gt;(hook_fn: F)
 <span class="kw">where
-    </span>F: Fn(<span class="kw-2">&amp;</span>(<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;) + Send + Sync + <span class="lifetime">'static</span>), <span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;)
+    </span>F: Fn(<span class="kw-2">&amp;</span>(<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span>PanicHookInfo&lt;<span class="lifetime">'_</span>&gt;) + Send + Sync + <span class="lifetime">'static</span>), <span class="kw-2">&amp;</span>PanicHookInfo&lt;<span class="lifetime">'_</span>&gt;)
         + Sync
         + Send
         + <span class="lifetime">'static</span>,
@@ -1091,7 +1101,7 @@
 }
 
 <span class="doccomment">/// The default panic handler.
-</span><span class="kw">fn </span>default_hook(info: <span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;) {
+</span><span class="kw">fn </span>default_hook(info: <span class="kw-2">&amp;</span>PanicHookInfo&lt;<span class="lifetime">'_</span>&gt;) {
     <span class="comment">// If this is a double panic, make sure that we print a backtrace
     // for this panic. Otherwise only print it if logging is enabled.
     </span><span class="kw">let </span>backtrace = <span class="kw">if </span>info.force_no_backtrace() {
@@ -1105,13 +1115,7 @@
     <span class="comment">// The current implementation always returns `Some`.
     </span><span class="kw">let </span>location = info.location().unwrap();
 
-    <span class="kw">let </span>msg = <span class="kw">match </span>info.payload().downcast_ref::&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt;() {
-        <span class="prelude-val">Some</span>(s) =&gt; <span class="kw-2">*</span>s,
-        <span class="prelude-val">None </span>=&gt; <span class="kw">match </span>info.payload().downcast_ref::&lt;String&gt;() {
-            <span class="prelude-val">Some</span>(s) =&gt; <span class="kw-2">&amp;</span>s[..],
-            <span class="prelude-val">None </span>=&gt; <span class="string">"Box&lt;dyn Any&gt;"</span>,
-        },
-    };
+    <span class="kw">let </span>msg = payload_as_str(info.payload());
     <span class="kw">let </span>thread = thread::try_current();
     <span class="kw">let </span>name = thread.as_ref().and_then(|t| t.name()).unwrap_or(<span class="string">"&lt;unnamed&gt;"</span>);
 
@@ -1454,31 +1458,26 @@
 <span class="doccomment">/// Entry point of panics from the core crate (`panic_impl` lang item).
 </span><span class="attr">#[cfg(not(any(test, doctest)))]
 #[panic_handler]
-</span><span class="kw">pub fn </span>begin_panic_handler(info: <span class="kw-2">&amp;</span>PanicInfo&lt;<span class="lifetime">'_</span>&gt;) -&gt; ! {
+</span><span class="kw">pub fn </span>begin_panic_handler(info: <span class="kw-2">&amp;</span>core::panic::PanicInfo&lt;<span class="lifetime">'_</span>&gt;) -&gt; ! {
     <span class="kw">struct </span>FormatStringPayload&lt;<span class="lifetime">'a</span>&gt; {
-        inner: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>fmt::Arguments&lt;<span class="lifetime">'a</span>&gt;,
+        inner: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>core::panic::PanicMessage&lt;<span class="lifetime">'a</span>&gt;,
         string: <span class="prelude-ty">Option</span>&lt;String&gt;,
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; FormatStringPayload&lt;<span class="lifetime">'a</span>&gt; {
-        <span class="kw">fn </span>new(inner: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>fmt::Arguments&lt;<span class="lifetime">'a</span>&gt;) -&gt; <span class="self">Self </span>{
-            <span class="self">Self </span>{ inner, string: <span class="prelude-val">None </span>}
-        }
-
+    <span class="kw">impl </span>FormatStringPayload&lt;<span class="lifetime">'_</span>&gt; {
         <span class="kw">fn </span>fill(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>String {
-            <span class="kw">use </span><span class="kw">crate</span>::fmt::Write;
-
             <span class="kw">let </span>inner = <span class="self">self</span>.inner;
             <span class="comment">// Lazily, the first time this gets called, run the actual string formatting.
             </span><span class="self">self</span>.string.get_or_insert_with(|| {
                 <span class="kw">let </span><span class="kw-2">mut </span>s = String::new();
-                <span class="kw">let </span>_err = s.write_fmt(<span class="kw-2">*</span>inner);
+                <span class="kw">let </span><span class="kw-2">mut </span>fmt = fmt::Formatter::new(<span class="kw-2">&amp;mut </span>s);
+                <span class="kw">let </span>_err = fmt::Display::fmt(<span class="kw-2">&amp;</span>inner, <span class="kw-2">&amp;mut </span>fmt);
                 s
             })
         }
     }
 
-    <span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>&gt; PanicPayload <span class="kw">for </span>FormatStringPayload&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">unsafe impl </span>PanicPayload <span class="kw">for </span>FormatStringPayload&lt;<span class="lifetime">'_</span>&gt; {
         <span class="kw">fn </span>take_box(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>(<span class="kw">dyn </span>Any + Send) {
             <span class="comment">// We do two allocations here, unfortunately. But (a) they're required with the current
             // scheme, and (b) we don't handle panic + OOM properly anyway (see comment in
@@ -1492,6 +1491,16 @@
         }
     }
 
+    <span class="kw">impl </span>fmt::Display <span class="kw">for </span>FormatStringPayload&lt;<span class="lifetime">'_</span>&gt; {
+        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(s) = <span class="kw-2">&amp;</span><span class="self">self</span>.string {
+                f.write_str(s)
+            } <span class="kw">else </span>{
+                fmt::Display::fmt(<span class="kw-2">&amp;</span><span class="self">self</span>.inner, f)
+            }
+        }
+    }
+
     <span class="kw">struct </span>StaticStrPayload(<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str);
 
     <span class="kw">unsafe impl </span>PanicPayload <span class="kw">for </span>StaticStrPayload {
@@ -1502,25 +1511,31 @@
         <span class="kw">fn </span>get(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>(<span class="kw">dyn </span>Any + Send) {
             <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
         </span>}
+
+        <span class="kw">fn </span>as_str(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
+            <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="number">0</span>)
+        }
+    }
+
+    <span class="kw">impl </span>fmt::Display <span class="kw">for </span>StaticStrPayload {
+        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+            f.write_str(<span class="self">self</span>.<span class="number">0</span>)
+        }
     }
 
     <span class="kw">let </span>loc = info.location().unwrap(); <span class="comment">// The current implementation always returns Some
-    </span><span class="kw">let </span>msg = info.message().unwrap(); <span class="comment">// The current implementation always returns Some
-    </span><span class="kw">crate</span>::sys_common::backtrace::__rust_end_short_backtrace(<span class="kw">move </span>|| {
-        <span class="comment">// FIXME: can we just pass `info` along rather than taking it apart here, only to have
-        // `rust_panic_with_hook` construct a new `PanicInfo`?
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(msg) = msg.as_str() {
+    </span><span class="kw">let </span>msg = info.message();
+    <span class="kw">crate</span>::sys::backtrace::__rust_end_short_backtrace(<span class="kw">move </span>|| {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(s) = msg.as_str() {
             rust_panic_with_hook(
-                <span class="kw-2">&amp;mut </span>StaticStrPayload(msg),
-                info.message(),
+                <span class="kw-2">&amp;mut </span>StaticStrPayload(s),
                 loc,
                 info.can_unwind(),
                 info.force_no_backtrace(),
             );
         } <span class="kw">else </span>{
             rust_panic_with_hook(
-                <span class="kw-2">&amp;mut </span>FormatStringPayload::new(msg),
-                info.message(),
+                <span class="kw-2">&amp;mut </span>FormatStringPayload { inner: <span class="kw-2">&amp;</span>msg, string: <span class="prelude-val">None </span>},
                 loc,
                 info.can_unwind(),
                 info.force_no_backtrace(),
@@ -1546,25 +1561,8 @@
         intrinsics::abort()
     }
 
-    <span class="kw">let </span>loc = Location::caller();
-    <span class="kw">return </span><span class="kw">crate</span>::sys_common::backtrace::__rust_end_short_backtrace(<span class="kw">move </span>|| {
-        rust_panic_with_hook(
-            <span class="kw-2">&amp;mut </span>Payload::new(msg),
-            <span class="prelude-val">None</span>,
-            loc,
-            <span class="comment">/* can_unwind */ </span><span class="bool-val">true</span>,
-            <span class="comment">/* force_no_backtrace */ </span><span class="bool-val">false</span>,
-        )
-    });
-
     <span class="kw">struct </span>Payload&lt;A&gt; {
         inner: <span class="prelude-ty">Option</span>&lt;A&gt;,
-    }
-
-    <span class="kw">impl</span>&lt;A: Send + <span class="lifetime">'static</span>&gt; Payload&lt;A&gt; {
-        <span class="kw">fn </span>new(inner: A) -&gt; Payload&lt;A&gt; {
-            Payload { inner: <span class="prelude-val">Some</span>(inner) }
-        }
     }
 
     <span class="kw">unsafe impl</span>&lt;A: Send + <span class="lifetime">'static</span>&gt; PanicPayload <span class="kw">for </span>Payload&lt;A&gt; {
@@ -1588,6 +1586,35 @@
             }
         }
     }
+
+    <span class="kw">impl</span>&lt;A: <span class="lifetime">'static</span>&gt; fmt::Display <span class="kw">for </span>Payload&lt;A&gt; {
+        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+            <span class="kw">match </span><span class="kw-2">&amp;</span><span class="self">self</span>.inner {
+                <span class="prelude-val">Some</span>(a) =&gt; f.write_str(payload_as_str(a)),
+                <span class="prelude-val">None </span>=&gt; process::abort(),
+            }
+        }
+    }
+
+    <span class="kw">let </span>loc = Location::caller();
+    <span class="kw">crate</span>::sys::backtrace::__rust_end_short_backtrace(<span class="kw">move </span>|| {
+        rust_panic_with_hook(
+            <span class="kw-2">&amp;mut </span>Payload { inner: <span class="prelude-val">Some</span>(msg) },
+            loc,
+            <span class="comment">/* can_unwind */ </span><span class="bool-val">true</span>,
+            <span class="comment">/* force_no_backtrace */ </span><span class="bool-val">false</span>,
+        )
+    })
+}
+
+<span class="kw">fn </span>payload_as_str(payload: <span class="kw-2">&amp;</span><span class="kw">dyn </span>Any) -&gt; <span class="kw-2">&amp;</span>str {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>s) = payload.downcast_ref::&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt;() {
+        s
+    } <span class="kw">else if let </span><span class="prelude-val">Some</span>(s) = payload.downcast_ref::&lt;String&gt;() {
+        s.as_str()
+    } <span class="kw">else </span>{
+        <span class="string">"Box&lt;dyn Any&gt;"
+    </span>}
 }
 
 <span class="doccomment">/// Central point for dispatching panics.
@@ -1597,7 +1624,6 @@
 /// abort or unwind.
 </span><span class="kw">fn </span>rust_panic_with_hook(
     payload: <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>PanicPayload,
-    message: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>fmt::Arguments&lt;<span class="lifetime">'_</span>&gt;&gt;,
     location: <span class="kw-2">&amp;</span>Location&lt;<span class="lifetime">'_</span>&gt;,
     can_unwind: bool,
     force_no_backtrace: bool,
@@ -1611,35 +1637,21 @@
                 <span class="comment">// Don't try to format the message in this case, perhaps that is causing the
                 // recursive panics. However if the message is just a string, no user-defined
                 // code is involved in printing it, so that is risk-free.
-                </span><span class="kw">let </span>msg_str = message.and_then(|m| m.as_str()).map(|m| [m]);
-                <span class="kw">let </span>message = msg_str.as_ref().map(|m| fmt::Arguments::new_const(m));
-                <span class="kw">let </span>panicinfo = PanicInfo::internal_constructor(
-                    message.as_ref(),
-                    location,
-                    can_unwind,
-                    force_no_backtrace,
-                );
-                <span class="macro">rtprintpanic!</span>(<span class="string">"{panicinfo}\nthread panicked while processing panic. aborting.\n"</span>);
+                </span><span class="kw">let </span>message: <span class="kw-2">&amp;</span>str = payload.as_str().unwrap_or_default();
+                <span class="macro">rtprintpanic!</span>(
+                    <span class="string">"panicked at {location}:\n{message}\nthread panicked while processing panic. aborting.\n"
+                </span>);
             }
             panic_count::MustAbort::AlwaysAbort =&gt; {
                 <span class="comment">// Unfortunately, this does not print a backtrace, because creating
                 // a `Backtrace` will allocate, which we must avoid here.
-                </span><span class="kw">let </span>panicinfo = PanicInfo::internal_constructor(
-                    message,
-                    location,
-                    can_unwind,
-                    force_no_backtrace,
-                );
-                <span class="macro">rtprintpanic!</span>(<span class="string">"{panicinfo}\npanicked after panic::always_abort(), aborting.\n"</span>);
+                </span><span class="macro">rtprintpanic!</span>(<span class="string">"aborting due to panic at {location}:\n{payload}\n"</span>);
             }
         }
         <span class="kw">crate</span>::sys::abort_internal();
     }
 
-    <span class="kw">let </span><span class="kw-2">mut </span>info =
-        PanicInfo::internal_constructor(message, location, can_unwind, force_no_backtrace);
-    <span class="kw">let </span>hook = HOOK.read().unwrap_or_else(PoisonError::into_inner);
-    <span class="kw">match </span><span class="kw-2">*</span>hook {
+    <span class="kw">match </span><span class="kw-2">*</span>HOOK.read().unwrap_or_else(PoisonError::into_inner) {
         <span class="comment">// Some platforms (like wasm) know that printing to stderr won't ever actually
         // print anything, and if that's the case we can skip the default
         // hook. Since string formatting happens lazily when calling `payload`
@@ -1648,15 +1660,17 @@
         // formatting.)
         </span>Hook::Default <span class="kw">if </span>panic_output().is_none() =&gt; {}
         Hook::Default =&gt; {
-            info.set_payload(payload.get());
-            default_hook(<span class="kw-2">&amp;</span>info);
+            default_hook(<span class="kw-2">&amp;</span>PanicHookInfo::new(
+                location,
+                payload.get(),
+                can_unwind,
+                force_no_backtrace,
+            ));
         }
         Hook::Custom(<span class="kw-2">ref </span>hook) =&gt; {
-            info.set_payload(payload.get());
-            hook(<span class="kw-2">&amp;</span>info);
+            hook(<span class="kw-2">&amp;</span>PanicHookInfo::new(location, payload.get(), can_unwind, force_no_backtrace));
         }
-    };
-    drop(hook);
+    }
 
     <span class="comment">// Indicate that we have finished executing the panic hook. After this point
     // it is fine if there is a panic while executing destructors, as long as it
@@ -1690,6 +1704,12 @@
         <span class="kw">fn </span>get(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>(<span class="kw">dyn </span>Any + Send) {
             <span class="kw-2">&amp;*</span><span class="self">self</span>.<span class="number">0
         </span>}
+    }
+
+    <span class="kw">impl </span>fmt::Display <span class="kw">for </span>RewrapBox {
+        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+            f.write_str(payload_as_str(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>))
+        }
     }
 
     rust_panic(<span class="kw-2">&amp;mut </span>RewrapBox(payload))

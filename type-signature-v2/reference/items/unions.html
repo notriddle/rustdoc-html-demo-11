@@ -185,7 +185,7 @@
 <p><strong><sup>Syntax</sup></strong><br />
 <em>Union</em> :<br />
    <code>union</code> <a href="../identifiers.html">IDENTIFIER</a> <a href="generics.html"><em>GenericParams</em></a><sup>?</sup> <a href="generics.html#where-clauses"><em>WhereClause</em></a><sup>?</sup>
-<code>{</code><a href="structs.html"><em>StructFields</em></a> <code>}</code></p>
+<code>{</code><a href="structs.html"><em>StructFields</em></a><sup>?</sup> <code>}</code></p>
 </blockquote>
 <p>A union declaration uses the same syntax as a struct declaration, except with
 <code>union</code> in place of <code>struct</code>.</p>
@@ -210,6 +210,7 @@ size of a union is determined by the size of its largest field.</p>
 <p>This restriction ensures, in particular, that union fields never need to be
 dropped. Like for structs and enums, it is possible to <code>impl Drop</code> for a union
 to manually define what happens when it gets dropped.</p>
+<p>Unions without any fields are not accepted by the compiler, but can be accepted by macros.</p>
 <h2 id="initialization-of-a-union"><a class="header" href="#initialization-of-a-union">Initialization of a union</a></h2>
 <p>A value of a union type can be created using the same syntax that is used for
 struct types, except that it must specify exactly one field:</p>

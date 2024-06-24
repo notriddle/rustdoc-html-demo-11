@@ -330,7 +330,6 @@ test = true            # Is tested by default.
 doctest = true         # Documentation examples are tested by default.
 bench = true           # Is benchmarked by default.
 doc = true             # Is documented by default.
-plugin = false         # Used as a compiler plugin (deprecated).
 proc-macro = false     # Set to `true` for a proc-macro library.
 harness = true         # Use libtest harness.
 edition = "2015"       # The edition of the target.
@@ -377,7 +376,7 @@ libraries and binaries.</p>
 target.</p>
 </blockquote>
 <h3 id="the-plugin-field"><a class="header" href="#the-plugin-field">The <code>plugin</code> field</a></h3>
-<p>This field is used for <code>rustc</code> plugins, which are being deprecated.</p>
+<p>This option is deprecated and unused.</p>
 <h3 id="the-proc-macro-field"><a class="header" href="#the-proc-macro-field">The <code>proc-macro</code> field</a></h3>
 <p>The <code>proc-macro</code> field indicates that the library is a <a href="../../book/ch19-06-macros.html">procedural macro</a>
 (<a href="../../reference/procedural-macros.html">reference</a>). This is only valid for the <code>[lib]</code>

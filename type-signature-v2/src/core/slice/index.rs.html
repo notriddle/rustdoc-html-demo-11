@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/slice/index.rs`."><title>index.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5e0f86de7732a179.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-24b68337f19ac127.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/slice/index.rs`."><title>index.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0c9465bb72ad079c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-a53b05c6645b2154.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-ffff35d1e1849984.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -886,11 +886,64 @@
 <a href="#886" id="886">886</a>
 <a href="#887" id="887">887</a>
 <a href="#888" id="888">888</a>
+<a href="#889" id="889">889</a>
+<a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+<a href="#908" id="908">908</a>
+<a href="#909" id="909">909</a>
+<a href="#910" id="910">910</a>
+<a href="#911" id="911">911</a>
+<a href="#912" id="912">912</a>
+<a href="#913" id="913">913</a>
+<a href="#914" id="914">914</a>
+<a href="#915" id="915">915</a>
+<a href="#916" id="916">916</a>
+<a href="#917" id="917">917</a>
+<a href="#918" id="918">918</a>
+<a href="#919" id="919">919</a>
+<a href="#920" id="920">920</a>
+<a href="#921" id="921">921</a>
+<a href="#922" id="922">922</a>
+<a href="#923" id="923">923</a>
+<a href="#924" id="924">924</a>
+<a href="#925" id="925">925</a>
+<a href="#926" id="926">926</a>
+<a href="#927" id="927">927</a>
+<a href="#928" id="928">928</a>
+<a href="#929" id="929">929</a>
+<a href="#930" id="930">930</a>
+<a href="#931" id="931">931</a>
+<a href="#932" id="932">932</a>
+<a href="#933" id="933">933</a>
+<a href="#934" id="934">934</a>
+<a href="#935" id="935">935</a>
+<a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
+<a href="#942" id="942">942</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Indexing implementations for `[T]`.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::intrinsics::const_eval_select;
 <span class="kw">use </span><span class="kw">crate</span>::ops;
-<span class="kw">use </span><span class="kw">crate</span>::ptr;
 <span class="kw">use </span><span class="kw">crate</span>::ub_checks::assert_unsafe_precondition;
 
 <span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
@@ -994,6 +1047,47 @@
     <span class="macro">panic!</span>(<span class="string">"attempted to index slice up to maximum usize"</span>);
 }
 
+<span class="comment">// The UbChecks are great for catching bugs in the unsafe methods, but including
+// them in safe indexing is unnecessary and hurts inlining and debug runtime perf.
+// Both the safe and unsafe public methods share these helpers,
+// which use intrinsics directly to get *no* extra checks.
+
+</span><span class="attr">#[inline(always)]
+</span><span class="kw">const unsafe fn </span>get_noubcheck&lt;T&gt;(ptr: <span class="kw-2">*const </span>[T], index: usize) -&gt; <span class="kw-2">*const </span>T {
+    <span class="kw">let </span>ptr = ptr <span class="kw">as </span><span class="kw-2">*const </span>T;
+    <span class="comment">// SAFETY: The caller already checked these preconditions
+    </span><span class="kw">unsafe </span>{ <span class="kw">crate</span>::intrinsics::offset(ptr, index) }
+}
+
+<span class="attr">#[inline(always)]
+</span><span class="kw">const unsafe fn </span>get_mut_noubcheck&lt;T&gt;(ptr: <span class="kw-2">*mut </span>[T], index: usize) -&gt; <span class="kw-2">*mut </span>T {
+    <span class="kw">let </span>ptr = ptr <span class="kw">as </span><span class="kw-2">*mut </span>T;
+    <span class="comment">// SAFETY: The caller already checked these preconditions
+    </span><span class="kw">unsafe </span>{ <span class="kw">crate</span>::intrinsics::offset(ptr, index) }
+}
+
+<span class="attr">#[inline(always)]
+</span><span class="kw">const unsafe fn </span>get_offset_len_noubcheck&lt;T&gt;(
+    ptr: <span class="kw-2">*const </span>[T],
+    offset: usize,
+    len: usize,
+) -&gt; <span class="kw-2">*const </span>[T] {
+    <span class="comment">// SAFETY: The caller already checked these preconditions
+    </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ get_noubcheck(ptr, offset) };
+    <span class="kw">crate</span>::intrinsics::aggregate_raw_ptr(ptr, len)
+}
+
+<span class="attr">#[inline(always)]
+</span><span class="kw">const unsafe fn </span>get_offset_len_mut_noubcheck&lt;T&gt;(
+    ptr: <span class="kw-2">*mut </span>[T],
+    offset: usize,
+    len: usize,
+) -&gt; <span class="kw-2">*mut </span>[T] {
+    <span class="comment">// SAFETY: The caller already checked these preconditions
+    </span><span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ get_mut_noubcheck(ptr, offset) };
+    <span class="kw">crate</span>::intrinsics::aggregate_raw_ptr(ptr, len)
+}
+
 <span class="kw">mod </span>private_slice_index {
     <span class="kw">use </span><span class="kw">super</span>::ops;
     <span class="attr">#[stable(feature = <span class="string">"slice_get_slice"</span>, since = <span class="string">"1.28.0"</span>)]
@@ -1091,13 +1185,17 @@
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>get(<span class="self">self</span>, slice: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>T&gt; {
         <span class="comment">// SAFETY: `self` is checked to be in bounds.
-        </span><span class="kw">if </span><span class="self">self </span>&lt; slice.len() { <span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span><span class="self">self</span>.get_unchecked(slice)) } } <span class="kw">else </span>{ <span class="prelude-val">None </span>}
+        </span><span class="kw">if </span><span class="self">self </span>&lt; slice.len() { <span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>get_noubcheck(slice, <span class="self">self</span>)) } } <span class="kw">else </span>{ <span class="prelude-val">None </span>}
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>get_mut(<span class="self">self</span>, slice: <span class="kw-2">&amp;mut </span>[T]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>T&gt; {
-        <span class="comment">// SAFETY: `self` is checked to be in bounds.
-        </span><span class="kw">if </span><span class="self">self </span>&lt; slice.len() { <span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut *</span><span class="self">self</span>.get_unchecked_mut(slice)) } } <span class="kw">else </span>{ <span class="prelude-val">None </span>}
+        <span class="kw">if </span><span class="self">self </span>&lt; slice.len() {
+            <span class="comment">// SAFETY: `self` is checked to be in bounds.
+            </span><span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut *</span>get_mut_noubcheck(slice, <span class="self">self</span>)) }
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
     }
 
     <span class="attr">#[inline]
@@ -1115,7 +1213,7 @@
             <span class="comment">// Use intrinsics::assume instead of hint::assert_unchecked so that we don't check the
             // precondition of this function twice.
             </span><span class="kw">crate</span>::intrinsics::assume(<span class="self">self </span>&lt; slice.len());
-            slice.as_ptr().add(<span class="self">self</span>)
+            get_noubcheck(slice, <span class="self">self</span>)
         }
     }
 
@@ -1127,7 +1225,7 @@
             (this: usize = <span class="self">self</span>, len: usize = slice.len()) =&gt; this &lt; len
         );
         <span class="comment">// SAFETY: see comments for `get_unchecked` above.
-        </span><span class="kw">unsafe </span>{ slice.as_mut_ptr().add(<span class="self">self</span>) }
+        </span><span class="kw">unsafe </span>{ get_mut_noubcheck(slice, <span class="self">self</span>) }
     }
 
     <span class="attr">#[inline]
@@ -1153,7 +1251,7 @@
     </span><span class="kw">fn </span>get(<span class="self">self</span>, slice: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[T]&gt; {
         <span class="kw">if </span><span class="self">self</span>.end() &lt;= slice.len() {
             <span class="comment">// SAFETY: `self` is checked to be valid and in bounds above.
-            </span><span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span><span class="self">self</span>.get_unchecked(slice)) }
+            </span><span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>get_offset_len_noubcheck(slice, <span class="self">self</span>.start(), <span class="self">self</span>.len())) }
         } <span class="kw">else </span>{
             <span class="prelude-val">None
         </span>}
@@ -1163,7 +1261,7 @@
     </span><span class="kw">fn </span>get_mut(<span class="self">self</span>, slice: <span class="kw-2">&amp;mut </span>[T]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>[T]&gt; {
         <span class="kw">if </span><span class="self">self</span>.end() &lt;= slice.len() {
             <span class="comment">// SAFETY: `self` is checked to be valid and in bounds above.
-            </span><span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut *</span><span class="self">self</span>.get_unchecked_mut(slice)) }
+            </span><span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut *</span>get_offset_len_mut_noubcheck(slice, <span class="self">self</span>.start(), <span class="self">self</span>.len())) }
         } <span class="kw">else </span>{
             <span class="prelude-val">None
         </span>}
@@ -1180,7 +1278,7 @@
         // cannot be longer than `isize::MAX`. They also guarantee that
         // `self` is in bounds of `slice` so `self` cannot overflow an `isize`,
         // so the call to `add` is safe.
-        </span><span class="kw">unsafe </span>{ ptr::slice_from_raw_parts(slice.as_ptr().add(<span class="self">self</span>.start()), <span class="self">self</span>.len()) }
+        </span><span class="kw">unsafe </span>{ get_offset_len_noubcheck(slice, <span class="self">self</span>.start(), <span class="self">self</span>.len()) }
     }
 
     <span class="attr">#[inline]
@@ -1192,14 +1290,14 @@
         );
 
         <span class="comment">// SAFETY: see comments for `get_unchecked` above.
-        </span><span class="kw">unsafe </span>{ ptr::slice_from_raw_parts_mut(slice.as_mut_ptr().add(<span class="self">self</span>.start()), <span class="self">self</span>.len()) }
+        </span><span class="kw">unsafe </span>{ get_offset_len_mut_noubcheck(slice, <span class="self">self</span>.start(), <span class="self">self</span>.len()) }
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>index(<span class="self">self</span>, slice: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="kw-2">&amp;</span>[T] {
         <span class="kw">if </span><span class="self">self</span>.end() &lt;= slice.len() {
             <span class="comment">// SAFETY: `self` is checked to be valid and in bounds above.
-            </span><span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span><span class="self">self</span>.get_unchecked(slice) }
+            </span><span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>get_offset_len_noubcheck(slice, <span class="self">self</span>.start(), <span class="self">self</span>.len()) }
         } <span class="kw">else </span>{
             slice_end_index_len_fail(<span class="self">self</span>.end(), slice.len())
         }
@@ -1209,7 +1307,7 @@
     </span><span class="kw">fn </span>index_mut(<span class="self">self</span>, slice: <span class="kw-2">&amp;mut </span>[T]) -&gt; <span class="kw-2">&amp;mut </span>[T] {
         <span class="kw">if </span><span class="self">self</span>.end() &lt;= slice.len() {
             <span class="comment">// SAFETY: `self` is checked to be valid and in bounds above.
-            </span><span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span><span class="self">self</span>.get_unchecked_mut(slice) }
+            </span><span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>get_offset_len_mut_noubcheck(slice, <span class="self">self</span>.start(), <span class="self">self</span>.len()) }
         } <span class="kw">else </span>{
             slice_end_index_len_fail(<span class="self">self</span>.end(), slice.len())
         }
@@ -1226,22 +1324,27 @@
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>get(<span class="self">self</span>, slice: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>[T]&gt; {
-        <span class="kw">if </span><span class="self">self</span>.start &gt; <span class="self">self</span>.end || <span class="self">self</span>.end &gt; slice.len() {
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
+        <span class="comment">// Using checked_sub is a safe way to get `SubUnchecked` in MIR
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(new_len) = usize::checked_sub(<span class="self">self</span>.end, <span class="self">self</span>.start)
+            &amp;&amp; <span class="self">self</span>.end &lt;= slice.len()
+        {
             <span class="comment">// SAFETY: `self` is checked to be valid and in bounds above.
-            </span><span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span><span class="self">self</span>.get_unchecked(slice)) }
-        }
+            </span><span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>get_offset_len_noubcheck(slice, <span class="self">self</span>.start, new_len)) }
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>get_mut(<span class="self">self</span>, slice: <span class="kw-2">&amp;mut </span>[T]) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>[T]&gt; {
-        <span class="kw">if </span><span class="self">self</span>.start &gt; <span class="self">self</span>.end || <span class="self">self</span>.end &gt; slice.len() {
-            <span class="prelude-val">None
-        </span>} <span class="kw">else </span>{
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(new_len) = usize::checked_sub(<span class="self">self</span>.end, <span class="self">self</span>.start)
+            &amp;&amp; <span class="self">self</span>.end &lt;= slice.len()
+        {
             <span class="comment">// SAFETY: `self` is checked to be valid and in bounds above.
-            </span><span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut *</span><span class="self">self</span>.get_unchecked_mut(slice)) }
-        }
+            </span><span class="kw">unsafe </span>{ <span class="prelude-val">Some</span>(<span class="kw-2">&amp;mut *</span>get_offset_len_mut_noubcheck(slice, <span class="self">self</span>.start, new_len)) }
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
     }
 
     <span class="attr">#[inline]
@@ -1261,8 +1364,10 @@
         // `self` is in bounds of `slice` so `self` cannot overflow an `isize`,
         // so the call to `add` is safe and the length calculation cannot overflow.
         </span><span class="kw">unsafe </span>{
-            <span class="kw">let </span>new_len = <span class="self">self</span>.end.unchecked_sub(<span class="self">self</span>.start);
-            ptr::slice_from_raw_parts(slice.as_ptr().add(<span class="self">self</span>.start), new_len)
+            <span class="comment">// Using the intrinsic avoids a superfluous UB check,
+            // since the one on this method already checked `end &gt;= start`.
+            </span><span class="kw">let </span>new_len = <span class="kw">crate</span>::intrinsics::unchecked_sub(<span class="self">self</span>.end, <span class="self">self</span>.start);
+            get_offset_len_noubcheck(slice, <span class="self">self</span>.start, new_len)
         }
     }
 
@@ -1279,31 +1384,34 @@
         );
         <span class="comment">// SAFETY: see comments for `get_unchecked` above.
         </span><span class="kw">unsafe </span>{
-            <span class="kw">let </span>new_len = <span class="self">self</span>.end.unchecked_sub(<span class="self">self</span>.start);
-            ptr::slice_from_raw_parts_mut(slice.as_mut_ptr().add(<span class="self">self</span>.start), new_len)
+            <span class="kw">let </span>new_len = <span class="kw">crate</span>::intrinsics::unchecked_sub(<span class="self">self</span>.end, <span class="self">self</span>.start);
+            get_offset_len_mut_noubcheck(slice, <span class="self">self</span>.start, new_len)
         }
     }
 
     <span class="attr">#[inline(always)]
     </span><span class="kw">fn </span>index(<span class="self">self</span>, slice: <span class="kw-2">&amp;</span>[T]) -&gt; <span class="kw-2">&amp;</span>[T] {
-        <span class="kw">if </span><span class="self">self</span>.start &gt; <span class="self">self</span>.end {
-            slice_index_order_fail(<span class="self">self</span>.start, <span class="self">self</span>.end);
-        } <span class="kw">else if </span><span class="self">self</span>.end &gt; slice.len() {
+        <span class="comment">// Using checked_sub is a safe way to get `SubUnchecked` in MIR
+        </span><span class="kw">let </span><span class="prelude-val">Some</span>(new_len) = usize::checked_sub(<span class="self">self</span>.end, <span class="self">self</span>.start) <span class="kw">else </span>{
+            slice_index_order_fail(<span class="self">self</span>.start, <span class="self">self</span>.end)
+        };
+        <span class="kw">if </span><span class="self">self</span>.end &gt; slice.len() {
             slice_end_index_len_fail(<span class="self">self</span>.end, slice.len());
         }
         <span class="comment">// SAFETY: `self` is checked to be valid and in bounds above.
-        </span><span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span><span class="self">self</span>.get_unchecked(slice) }
+        </span><span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>get_offset_len_noubcheck(slice, <span class="self">self</span>.start, new_len) }
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>index_mut(<span class="self">self</span>, slice: <span class="kw-2">&amp;mut </span>[T]) -&gt; <span class="kw-2">&amp;mut </span>[T] {
-        <span class="kw">if </span><span class="self">self</span>.start &gt; <span class="self">self</span>.end {
-            slice_index_order_fail(<span class="self">self</span>.start, <span class="self">self</span>.end);
-        } <span class="kw">else if </span><span class="self">self</span>.end &gt; slice.len() {
+        <span class="kw">let </span><span class="prelude-val">Some</span>(new_len) = usize::checked_sub(<span class="self">self</span>.end, <span class="self">self</span>.start) <span class="kw">else </span>{
+            slice_index_order_fail(<span class="self">self</span>.start, <span class="self">self</span>.end)
+        };
+        <span class="kw">if </span><span class="self">self</span>.end &gt; slice.len() {
             slice_end_index_len_fail(<span class="self">self</span>.end, slice.len());
         }
         <span class="comment">// SAFETY: `self` is checked to be valid and in bounds above.
-        </span><span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span><span class="self">self</span>.get_unchecked_mut(slice) }
+        </span><span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>get_offset_len_mut_noubcheck(slice, <span class="self">self</span>.start, new_len) }
     }
 }
 

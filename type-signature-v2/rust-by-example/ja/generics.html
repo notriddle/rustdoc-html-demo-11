@@ -217,11 +217,11 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="ジェネリクス"><a class="header" href="#ジェネリクス">ジェネリクス</a></h1>
-<p><em>Generics</em> is the topic of generalizing types and functionalities to broader cases. This is extremely useful for reducing code duplication in many ways, but can call for rather involved syntax. Namely, being generic requires taking great care to specify over which types a generic type is actually considered valid. The simplest and most common use of generics is for type parameters.</p>
-<p>A type parameter is specified as generic by the use of angle brackets and upper <a href="https://en.wikipedia.org/wiki/CamelCase">camel case</a>: <code>&lt;Aaa, Bbb, ...&gt;</code>. "Generic type parameters" are typically represented as <code>&lt;T&gt;</code>. In Rust, "generic" also describes anything that accepts one or more generic type parameters <code>&lt;T&gt;</code>. Any type specified as a generic type parameter is generic, and everything else is concrete (non-generic).</p>
+<p>ジェネリクスとは、型と関数の機能をより汎用的に使えるようにするための機能です。これはあらゆる局面でコードの重複を避けるために非常に役立ちますが、多少構文が複雑になります。すなわち、ジェネリック型を使いこなすには、どのようなジェネリック型がきちんと機能するかに細心の注意を払う必要があります。最もシンプルで一般的なジェネリクスの利用法は型パラメータです。</p>
+<p>ジェネリック型の型パラメータにはかぎ括弧とアッパー<a href="https://en.wikipedia.org/wiki/CamelCase">キャメルケース</a>（<code>&lt;Aaa, Bbb, ...&gt;</code>）が使われます。ジェネリックな型パラメータはたいていの場合<code>&lt;T&gt;</code>で示されます。Rustの場合、「ジェネリクス」には「１つ以上のジェネリックな型パラメータ<code>&lt;T&gt;</code>を受け付けるもの」という意味もあります。ジェネリックな型パラメータを指定された場合、それは必ずジェネリック型になり、そうでなければ必ず非ジェネリック型、すなわち具象型になります。</p>
 <p>例として、あらゆる型の引数<code>T</code>をとる <em>ジェネリック関数</em> <code>foo</code>を定義すると</p>
 <pre><code class="language-rust ignore">fn foo&lt;T&gt;(arg: T) { ... }</code></pre>
-<p>Because <code>T</code> has been specified as a generic type parameter using <code>&lt;T&gt;</code>, it is considered generic when used here as <code>(arg: T)</code>. This is the case even if <code>T</code> has previously been defined as a <code>struct</code>.</p>
+<p>となります。<code>T</code>はジェネリックな型パラメータに指定されているので、この場所で<code>(arg: T)</code>のように使用するとジェネリック型として扱われます。これは<code>T</code>という構造体がそれ以前に定義されていても同様です。</p>
 <p>では、手を動かしながらジェネリック型の構文を体験していきましょう。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">// `A`という具象型
 struct A;

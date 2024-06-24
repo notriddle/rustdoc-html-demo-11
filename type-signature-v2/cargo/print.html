@@ -2510,7 +2510,6 @@ test = true            # Is tested by default.
 doctest = true         # Documentation examples are tested by default.
 bench = true           # Is benchmarked by default.
 doc = true             # Is documented by default.
-plugin = false         # Used as a compiler plugin (deprecated).
 proc-macro = false     # Set to `true` for a proc-macro library.
 harness = true         # Use libtest harness.
 edition = "2015"       # The edition of the target.
@@ -2557,7 +2556,7 @@ libraries and binaries.</p>
 target.</p>
 </blockquote>
 <h3 id="the-plugin-field"><a class="header" href="#the-plugin-field">The <code>plugin</code> field</a></h3>
-<p>This field is used for <code>rustc</code> plugins, which are being deprecated.</p>
+<p>This option is deprecated and unused.</p>
 <h3 id="the-proc-macro-field"><a class="header" href="#the-proc-macro-field">The <code>proc-macro</code> field</a></h3>
 <p>The <code>proc-macro</code> field indicates that the library is a <a href="reference/../../book/ch19-06-macros.html">procedural macro</a>
 (<a href="reference/../../reference/procedural-macros.html">reference</a>). This is only valid for the <code>[lib]</code>
@@ -5103,7 +5102,7 @@ instruction</a>. Paths outside of the
 Cargo to properly set the environment if additional libraries on the system
 are needed in the search path.</li>
 <li>The base output directory, such as <code>target/debug</code>, and the “deps” directory.
-This is mostly for legacy support of <code>rustc</code> compiler plugins.</li>
+This is mostly for support of proc-macros.</li>
 <li>The rustc sysroot library path. This generally is not important to most
 users.</li>
 </ul>
@@ -10645,16 +10644,22 @@ It would not be possible to upgrade to <code>0.2.0-pre.0</code> from <code>0.1.1
 <ul>
 <li>Tracking Issue: <a href="https://github.com/rust-lang/cargo/issues/12425">#12425</a></li>
 </ul>
-<p>This feature allows upgrading dependencies to breaking versions with
-<code>update --breaking</code>.</p>
-<p>This is essentially migrating <code>cargo upgrade</code> from <code>cargo-edit</code> into Cargo itself,
-and involves making changes to the <code>Cargo.toml</code> manifests, not just the lock file.</p>
-<p>When doing a breaking update, Cargo will keep all non-breaking dependencies
-unchanged. It will also not change any dependencies that use a different version
-operator than the default caret. Also, it will not upgrade any renamed package
-dependencies. Example:</p>
-<pre><code class="language-sh">cargo +nightly update --breaking -Z unstable-options
+<p>Allow upgrading dependencies version requirements in <code>Cargo.toml</code> across SemVer
+incompatible versions using with the <code>--breaking</code> flag.</p>
+<p>This only applies to dependencies when</p>
+<ul>
+<li>The package is a dependency of a workspace member</li>
+<li>The dependency is not renamed</li>
+<li>A SemVer-incompatible version is available</li>
+<li>The “SemVer operator” is used (<code>^</code> which is the default)</li>
+</ul>
+<p>Users may further restrict which packages get upgraded by specifying them on
+the command line.</p>
+<p>Example:</p>
+<pre><code class="language-console">$ cargo +nightly -Zunstable-options update --breaking
+$ cargo +nightly -Zunstable-options update --breaking clap
 </code></pre>
+<p><em>This is meant to fill a similar role as <a href="https://github.com/killercup/cargo-edit/">cargo-upgrade</a></em></p>
 <h2 id="build-std"><a class="header" href="#build-std">build-std</a></h2>
 <ul>
 <li>Tracking Repository: <a href="https://github.com/rust-lang/wg-cargo-std-aware">https://github.com/rust-lang/wg-cargo-std-aware</a></li>
@@ -11792,7 +11797,7 @@ requirement that a credential-provider is configured.</p>
 <h2 id="check-cfg"><a class="header" href="#check-cfg">check-cfg</a></h2>
 <p>The <code>-Z check-cfg</code> feature has been stabilized in the 1.80 release by making it the
 default behavior.</p>
-<p>See the <a href="reference/build-scripts.html#rustc-check-cfg">build script documentation</a> for informations
+<p>See the <a href="reference/build-scripts.html#rustc-check-cfg">build script documentation</a> for information
 about specifying custom cfgs.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cargo-commands"><a class="header" href="#cargo-commands">Cargo Commands</a></h1>
 <ul>
@@ -12222,7 +12227,7 @@ available)</li>
 in the manifest settings. Setting examples to <code>bench = true</code> will build and
 run the example as a benchmark, replacing the example’s <code>main</code> function with
 the libtest harness.</p>
-<p>Setting targets to <code>bench = false</code> will stop them from being bencharmked by
+<p>Setting targets to <code>bench = false</code> will stop them from being benchmarked by
 default. Target selection options that take a target by name (such as
 <code>--example foo</code>) ignore the <code>bench</code> flag and will always benchmark the given
 target.</p>
@@ -15734,7 +15739,7 @@ for a Rust API for reading the metadata.</p>
 <h3 id="compatibility"><a class="header" href="#compatibility">Compatibility</a></h3>
 <p>Within the same output format version, the compatibility is maintained, except
 some scenarios. The following is a non-exhaustive list of changes that are not
-considersed as incompatible:</p>
+considered as incompatible:</p>
 <ul>
 <li><strong>Adding new fields</strong> — New fields will be added when needed. Reserving this
 helps Cargo evolve without bumping the format version too often.</li>
@@ -16819,6 +16824,20 @@ When possible, try other non-yanked SemVer-compatible versions or seek help
 from the maintainers of the package.</p>
 <p>A compatible <code>pre-release</code> version can also be specified even when the version
 requirement in <code>Cargo.toml</code> doesn’t contain any pre-release identifier (nightly only).</dd>
+<dt class="option-term" id="option-cargo-update---breaking"><a class="option-anchor" href="commands/cargo-update.html#option-cargo-update---breaking"></a><code>--breaking</code> <em>directory</em></dt>
+<dd class="option-desc">Update <em>spec</em> to latest SemVer-breaking version.</p>
+<p>Version requirements will be modified to allow this update.</p>
+<p>This only applies to dependencies when</p>
+<ul>
+<li>The package is a dependency of a workspace member</li>
+<li>The dependency is not renamed</li>
+<li>A SemVer-incompatible version is available</li>
+<li>The “SemVer operator” is used (<code>^</code> which is the default)</li>
+</ul>
+<p>This option is unstable and available only on the
+<a href="https://doc.rust-lang.org/book/appendix-07-nightly-rust.html">nightly channel</a>
+and requires the <code>-Z unstable-options</code> flag to enable.
+See <a href="https://github.com/rust-lang/cargo/issues/12425">https://github.com/rust-lang/cargo/issues/12425</a> for more information.</dd>
 <dt class="option-term" id="option-cargo-update--w"><a class="option-anchor" href="commands/cargo-update.html#option-cargo-update--w"></a><code>-w</code></dt>
 <dt class="option-term" id="option-cargo-update---workspace"><a class="option-anchor" href="commands/cargo-update.html#option-cargo-update---workspace"></a><code>--workspace</code></dt>
 <dd class="option-desc">Attempt to update only packages defined in the workspace. Other packages
@@ -16957,7 +16976,7 @@ which is usually <code>.cargo/config.toml</code> locally for the current package
 If you intend to modify a crate from a remote source,
 use <code>[patch]</code> or a <code>path</code> dependency pointing to a local copy of that crate.
 Cargo will then correctly handle the crate on incremental rebuilds,
-as it knowns that it is no longer a read-only dependency.</p>
+as it knows that it is no longer a read-only dependency.</p>
 <h2 id="options-22"><a class="header" href="#options-22">OPTIONS</a></h2>
 <h3 id="vendor-options"><a class="header" href="#vendor-options">Vendor Options</a></h3>
 <dl>

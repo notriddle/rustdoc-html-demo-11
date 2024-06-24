@@ -295,15 +295,16 @@ we need to be explicit about the dependency relationships.</p>
 <code>adder</code> crate. Open the <em>adder/src/main.rs</em> file and add a <code>use</code> line at the
 top to bring the new <code>add_one</code> library crate into scope. Then change the <code>main</code>
 function to call the <code>add_one</code> function, as in Listing 14-7.</p>
-<p><span class="filename">Filename: adder/src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: adder/src/main.rs</span>
 <pre><code class="language-rust ignore">use add_one;
 
 fn main() {
     let num = 10;
     println!("Hello, world! {num} plus one is {}!", add_one::add_one(num));
 }</code></pre>
-<p><span class="caption">Listing 14-7: Using the <code>add_one</code> library crate from the
-<code>adder</code> crate</span></p>
+<figcaption>Listing 14-7: Using the <code>add_one</code> library crate from the <code>adder</code> crate</figcaption>
+</figure>
 <p>Let’s build the workspace by running <code>cargo build</code> in the top-level <em>add</em>
 directory!</p>
 <!-- manual-regeneration

@@ -210,7 +210,8 @@ contains a <code>Vec&lt;ShirtColor&gt;</code> representing the shirt colors curr
 The method <code>giveaway</code> defined on <code>Inventory</code> gets the optional shirt
 color preference of the free shirt winner, and returns the shirt color the
 person will get. This setup is shown in Listing 13-1:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust noplayground">#[derive(Debug, PartialEq, Copy, Clone)]
 enum ShirtColor {
     Red,
@@ -263,7 +264,8 @@ fn main() {
         user_pref2, giveaway2
     );
 }</code></pre>
-<p><span class="caption">Listing 13-1: Shirt company giveaway situation</span></p>
+<figcaption>Listing 13-1: Shirt company giveaway situation</figcaption>
+</figure>
 <p>The <code>store</code> defined in <code>main</code> has two blue shirts and one red shirt remaining
 to distribute for this limited-edition promotion. We call the <code>giveaway</code> method
 for a user with a preference for a red shirt and a user without any preference.</p>
@@ -320,7 +322,8 @@ necessary. Annotating the types for a closure would look like the definition
 shown in Listing 13-2. In this example, we’re defining a closure and storing it
 in a variable rather than defining the closure in the spot we pass it as an
 argument as we did in Listing 13-1.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">use std::thread;
 </span><span class="boring">use std::time::Duration;
 </span><span class="boring">
@@ -352,8 +355,8 @@ argument as we did in Listing 13-1.</p>
 </span><span class="boring">
 </span><span class="boring">    generate_workout(simulated_user_specified_value, simulated_random_number);
 </span><span class="boring">}</span></code></pre></pre>
-<p><span class="caption">Listing 13-2: Adding optional type annotations of the
-parameter and return value types in the closure</span></p>
+<figcaption>Listing 13-2: Adding optional type annotations of the parameter and return value types in the closure</figcaption>
+</figure>
 <p>With type annotations added, the syntax of closures looks more similar to the
 syntax of functions. Here we define a function that adds 1 to its parameter and
 a closure that has the same behavior, for comparison. We’ve added some spaces
@@ -381,15 +384,16 @@ example. Note that we haven’t added any type annotations to the definition.
 Because there are no type annotations, we can call the closure with any type,
 which we’ve done here with <code>String</code> the first time. If we then try to call
 <code>example_closure</code> with an integer, we’ll get an error.</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile"><span class="boring">fn main() {
 </span>    let example_closure = |x| x;
 
     let s = example_closure(String::from("hello"));
     let n = example_closure(5);
 <span class="boring">}</span></code></pre>
-<p><span class="caption">Listing 13-3: Attempting to call a closure whose types
-are inferred with two different types</span></p>
+<figcaption>Listing 13-3: Attempting to call a closure whose types are inferred with two different types</figcaption>
+</figure>
 <p>The compiler gives us this error:</p>
 <pre><code class="language-console">$ cargo run
    Compiling closure-example v0.1.0 (file:///projects/closure-example)
@@ -431,7 +435,8 @@ captured values.</p>
 <p>In Listing 13-4, we define a closure that captures an immutable reference to
 the vector named <code>list</code> because it only needs an immutable reference to print
 the value:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let list = vec![1, 2, 3];
     println!("Before defining closure: {list:?}");
@@ -442,8 +447,8 @@ the value:</p>
     only_borrows();
     println!("After calling closure: {list:?}");
 }</code></pre></pre>
-<p><span class="caption">Listing 13-4: Defining and calling a closure that
-captures an immutable reference</span></p>
+<figcaption>Listing 13-4: Defining and calling a closure that captures an immutable reference</figcaption>
+</figure>
 <p>This example also illustrates that a variable can bind to a closure definition,
 and we can later call the closure by using the variable name and parentheses as
 if the variable name were a function name.</p>
@@ -462,7 +467,8 @@ After calling closure: [1, 2, 3]
 </code></pre>
 <p>Next, in Listing 13-5, we change the closure body so that it adds an element to
 the <code>list</code> vector. The closure now captures a mutable reference:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">fn main() {
     let mut list = vec![1, 2, 3];
     println!("Before defining closure: {list:?}");
@@ -472,8 +478,8 @@ the <code>list</code> vector. The closure now captures a mutable reference:</p>
     borrows_mutably();
     println!("After calling closure: {list:?}");
 }</code></pre></pre>
-<p><span class="caption">Listing 13-5: Defining and calling a closure that
-captures a mutable reference</span></p>
+<figcaption>Listing 13-5: Defining and calling a closure that captures a mutable reference</figcaption>
+</figure>
 <p>This code compiles, runs, and prints:</p>
 <pre><code class="language-console">$ cargo run
    Compiling closure-example v0.1.0 (file:///projects/closure-example)
@@ -498,7 +504,8 @@ you would want to use them in detail in Chapter 16 when we talk about
 concurrency, but for now, let’s briefly explore spawning a new thread using a
 closure that needs the <code>move</code> keyword. Listing 13-6 shows Listing 13-4 modified
 to print the vector in a new thread rather than in the main thread:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">use std::thread;
 
 fn main() {
@@ -509,8 +516,8 @@ fn main() {
         .join()
         .unwrap();
 }</code></pre></pre>
-<p><span class="caption">Listing 13-6: Using <code>move</code> to force the closure for the
-thread to take ownership of <code>list</code></span></p>
+<figcaption>Listing 13-6: Using <code>move</code> to force the closure for the thread to take ownership of <code>list</code></figcaption>
+</figure>
 <p>We spawn a new thread, giving the thread a closure to run as an argument. The
 closure body prints out the list. In Listing 13-4, the closure only captured
 <code>list</code> using an immutable reference because that’s the least amount of access
@@ -601,7 +608,8 @@ and returns a value of type <code>K</code> that can be ordered. This function is
 when you want to sort a slice by a particular attribute of each item. In
 Listing 13-7, we have a list of <code>Rectangle</code> instances and we use <code>sort_by_key</code>
 to order them by their <code>width</code> attribute from low to high:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">#[derive(Debug)]
 struct Rectangle {
     width: u32,
@@ -618,8 +626,8 @@ fn main() {
     list.sort_by_key(|r| r.width);
     println!("{list:#?}");
 }</code></pre></pre>
-<p><span class="caption">Listing 13-7: Using <code>sort_by_key</code> to order rectangles by
-width</span></p>
+<figcaption>Listing 13-7: Using <code>sort_by_key</code> to order rectangles by width</figcaption>
+</figure>
 <p>This code prints:</p>
 <pre><code class="language-console">$ cargo run
    Compiling rectangles v0.1.0 (file:///projects/rectangles)
@@ -646,7 +654,8 @@ it meets the trait bound requirements.</p>
 <p>In contrast, Listing 13-8 shows an example of a closure that implements just
 the <code>FnOnce</code> trait, because it moves a value out of the environment. The
 compiler won’t let us use this closure with <code>sort_by_key</code>:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><code class="language-rust ignore does_not_compile">#[derive(Debug)]
 struct Rectangle {
     width: u32,
@@ -669,8 +678,8 @@ fn main() {
     });
     println!("{list:#?}");
 }</code></pre>
-<p><span class="caption">Listing 13-8: Attempting to use an <code>FnOnce</code> closure with
-<code>sort_by_key</code></span></p>
+<figcaption>Listing 13-8: Attempting to use an <code>FnOnce</code> closure with <code>sort_by_key</code></figcaption>
+</figure>
 <p>This is a contrived, convoluted way (that doesn’t work) to try and count the
 number of times <code>sort_by_key</code> calls the closure when sorting <code>list</code>. This code
 attempts to do this counting by pushing <code>value</code>—a <code>String</code> from the closure’s
@@ -706,7 +715,8 @@ the closure body is a more straightforward way to calculate that. The closure
 in Listing 13-9 works with <code>sort_by_key</code> because it is only capturing a mutable
 reference to the <code>num_sort_operations</code> counter and can therefore be called more
 than once:</p>
-<p><span class="filename">Filename: src/main.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/main.rs</span>
 <pre><pre class="playground"><code class="language-rust">#[derive(Debug)]
 struct Rectangle {
     width: u32,
@@ -727,8 +737,8 @@ fn main() {
     });
     println!("{list:#?}, sorted in {num_sort_operations} operations");
 }</code></pre></pre>
-<p><span class="caption">Listing 13-9: Using an <code>FnMut</code> closure with <code>sort_by_key</code>
-is allowed</span></p>
+<figcaption>Listing 13-9: Using an <code>FnMut</code> closure with <code>sort_by_key</code> is allowed</figcaption>
+</figure>
 <p>The <code>Fn</code> traits are important when defining or using functions or types that
 make use of closures. In the next section, we’ll discuss iterators. Many
 iterator methods take closure arguments, so keep these closure details in mind

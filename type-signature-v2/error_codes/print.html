@@ -15350,32 +15350,30 @@ fn main() {
     let x = Foo::&lt;&amp;'static mut String&gt;::default();
 }</code></pre></pre>
 <p>Instead you need to make the function generic:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span>#![feature(type_alias_impl_trait)]
+<pre><pre class="playground"><code class="language-rust">#![feature(type_alias_impl_trait)]
 
-<span class="boring">fn main() {
-</span>type Foo&lt;T&gt; = impl std::fmt::Debug;
+type Foo&lt;T&gt; = impl std::fmt::Debug;
 
 fn foo&lt;U&gt;() -&gt; Foo&lt;U&gt; {
     5u32
 }
-<span class="boring">}</span></code></pre></pre>
+
+fn main() {}</code></pre></pre>
 <p>This means that no matter the generic parameter to <code>foo</code>,
 the hidden type will always be <code>u32</code>.
 If you want to link the generic parameter to the hidden type,
 you can do that, too:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span>#![feature(type_alias_impl_trait)]
+<pre><pre class="playground"><code class="language-rust">#![feature(type_alias_impl_trait)]
 
-<span class="boring">fn main() {
-</span>use std::fmt::Debug;
+use std::fmt::Debug;
 
 type Foo&lt;T: Debug&gt; = impl Debug;
 
 fn foo&lt;U: Debug&gt;() -&gt; Foo&lt;U&gt; {
     Vec::&lt;U&gt;::new()
 }
-<span class="boring">}</span></code></pre></pre>
+
+fn main() {}</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="error-code-e0793"><a class="header" href="#error-code-e0793">Error code E0793</a></h1>
 <p>An unaligned references to a field of a <a href="https://doc.rust-lang.org/reference/type-layout.html#the-alignment-modifiers">packed</a> struct got created.</p>
 <p>Erroneous code example:</p>

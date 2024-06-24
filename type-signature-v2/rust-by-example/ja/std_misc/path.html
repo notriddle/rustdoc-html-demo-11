@@ -219,8 +219,8 @@
                         <h1 id="ファイルパス"><a class="header" href="#ファイルパス">ファイルパス</a></h1>
 <p>構造体<code>Path</code>は、ファイルシステム中のパスを表します。<code>Path</code>には2つの変種があります。UNIXライクなファイルシステムのための<code>posix::Path</code>と、Windows用の<code>windows::Path</code>です。それぞれプラットフォームに対応した<code>Path</code>をエクスポートします。</p>
 <p><code>Path</code>は<code>OsStr</code>から作ることができます。そうすればそのパスが指すファイル・ディレクトリの情報を取得するためのメソッドがいくつか使えるようになります。</p>
-<p>A <code>Path</code> is immutable. The owned version of <code>Path</code> is <code>PathBuf</code>. The relation between <code>Path</code> and <code>PathBuf</code> is similar to that of <code>str</code> and <code>String</code>: a <code>PathBuf</code> can be mutated in-place, and can be dereferenced to a <code>Path</code>.</p>
-<p>Note that a <code>Path</code> is <em>not</em> internally represented as an UTF-8 string, but instead is stored as an <code>OsString</code>. Therefore, converting a <code>Path</code> to a <code>&amp;str</code> is <em>not</em> free and may fail (an <code>Option</code> is returned). However, a <code>Path</code> can be freely converted to an <code>OsString</code> or <code>&amp;OsStr</code> using <code>into_os_string</code> and <code>as_os_str</code>, respectively.</p>
+<p><code>Path</code>はイミュータブルです。<code>Path</code>の所有権ありのバージョンが<code>PathBuf</code>です。<code>Path</code>と<code>PathBuf</code>の関係は、<code>str</code>と<code>String</code>の関係に似ています。<code>PathBuf</code>はそのまま変更でき、<code>Path</code>にデリファレンスすることができます。</p>
+<p><code>Path</code>の実態はUTF-8の文字列 <strong>ではなく</strong> 、<code>OsString</code>であることに注意しましょう。したがって、<code>Path</code>を<code>&amp;str</code>に変換するのは無条件 <strong>ではなく</strong> 、失敗する可能性があります。それゆえ<code>Option</code>型が返されます。しかし<code>Path</code>から<code>OsString</code>あるいは<code>&amp;OsStr</code>への変換はそれぞれ<code>into_os_string</code>と<code>as_os_str</code>によって無条件でできます。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">use std::path::Path;
 
 fn main() {

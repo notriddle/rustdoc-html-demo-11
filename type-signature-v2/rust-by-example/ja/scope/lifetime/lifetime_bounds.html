@@ -217,7 +217,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="境界"><a class="header" href="#境界">境界</a></h1>
-<p>Just like generic types can be bounded, lifetimes (themselves generic) use bounds as well. The <code>:</code> character has a slightly different meaning here, but <code>+</code> is the same. Note how the following read:</p>
+<p>ジェネリック型に境界を与え、特定のトレイトを実装していることを保証できるのと同様、ライフタイム（それ自身ジェネリック型）にも境界を与えることができます。<code>:</code>は、ここでは多少異なる意味を持ちますが<code>+</code>は同じです。以下の構文の意味をチェックしてください。</p>
 <ol>
 <li><code>T: 'a</code>：<code>T</code>内の <em>全ての</em> 参照は<code>'a</code>よりも長生きでなくてはなりません。</li>
 <li><code>T: Trait + 'a</code>：上に加えて<code>T</code>は<code>Trait</code>という名のトレイトを実装してなくてはなりません。</li>
@@ -253,7 +253,7 @@ fn main() {
     print(ref_x);
 }</code></pre></pre>
 <h3 id="参照"><a class="header" href="#参照">参照</a></h3>
-<p><a href="../../generics.html">generics</a>, <a href="../../generics/bounds.html">bounds in generics</a>, and <a href="../../generics/multi_bounds.html">multiple bounds in generics</a></p>
+<p><a href="../../generics.html">ジェネリクス</a>, <a href="../../generics/bounds.html">ジェネリック境界</a>, <a href="../../generics/multi_bounds.html">複数の境界</a></p>
 
                     </main>
 

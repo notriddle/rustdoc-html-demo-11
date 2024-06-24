@@ -217,7 +217,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="dynを利用してトレイトを返す"><a class="header" href="#dynを利用してトレイトを返す"><code>dyn</code>を利用してトレイトを返す</a></h1>
-<p>The Rust compiler needs to know how much space every function's return type requires. This means all your functions have to return a concrete type. Unlike other languages, if you have a trait like <code>Animal</code>, you can't write a function that returns <code>Animal</code>, because its different implementations will need different amounts of memory.</p>
+<p>Rustのコンパイラはあらゆる関数のリターン型に必要なスペースを知っておく必要があります。つまり、すべての関数は具体的な型を返す必要があるのです。他の言語と違って、<code>Animal</code>のようなトレイトがある場合に、<code>Animal</code>を返す関数を書くことはできません。なぜなら、そのトレイトの異なる実装はそれぞれ別の量のメモリを必要とするからです。</p>
 <p>しかし、簡単な回避策があります。直接トレイトオブジェクトを返す代わりに、<code>Animal</code>を <em>含む</em> <code>Box</code>を返すのです。<code>Box</code>はヒープ中のメモリへの単なる参照です。参照のサイズは静的に知ることができ、コンパイラは参照がヒープに割り当てられた<code>Animal</code>を指していると保証できるので、私たちは関数からトレイトを返すことができます。</p>
 <p>ヒープにメモリを割り当てる際、Rustは可能な限り明示的であろうとします。なので、もしあなたの関数がヒープ上のトレイトへのポインタを返す場合、例えば<code>Box&lt;dyn Animal&gt;</code>のように、リターン型に<code>dyn</code>キーワードをつける必要があります。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">struct Sheep {}

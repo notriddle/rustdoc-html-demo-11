@@ -215,7 +215,8 @@ $ cd adder
 </code></pre>
 <p>The contents of the <em>src/lib.rs</em> file in your <code>adder</code> library should look like
 Listing 11-1.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <!-- manual-regeneration
 cd listings/ch11-writing-automated-tests
 rm -rf listing-11-01
@@ -239,8 +240,8 @@ mod tests {
         assert_eq!(result, 4);
     }
 }</code></pre>
-<p><span class="caption">Listing 11-1: The test module and function generated
-automatically by <code>cargo new</code></span></p>
+<figcaption>Listing 11-1: The test module and function generated automatically by <code>cargo new</code></figcaption>
+</figure>
 <p>For now, let’s focus solely on the <code>it_works()</code> function. Note the
 <code>#[test]</code> annotation: this attribute indicates this is a test function, so the
 test runner knows to treat this function as a test. We might also have non-test
@@ -252,6 +253,7 @@ an example of the format for a typical test. Let’s run it to see that this tes
 passes.</p>
 <p>The <code>cargo test</code> command runs all tests in our project, as shown in Listing
 11-2.</p>
+<figure class="listing">
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.57s
@@ -269,8 +271,8 @@ running 0 tests
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
 </code></pre>
-<p><span class="caption">Listing 11-2: The output from running the automatically
-generated test</span></p>
+<figcaption>Listing 11-2: The output from running the automatically generated test</figcaption>
+</figure>
 <p>Cargo compiled and ran the test. We see the line <code>running 1 test</code>. The next
 line shows the name of the generated test function, called <code>it_works</code>, and that
 the result of running that test is <code>ok</code>. The overall summary <code>test result: ok.</code>
@@ -335,7 +337,8 @@ thread, and when the main thread sees that a test thread has died, the test is
 marked as failed. In Chapter 9, we talked about how the simplest way to panic
 is to call the <code>panic!</code> macro. Enter the new test as a function named
 <code>another</code>, so your <em>src/lib.rs</em> file looks like Listing 11-3.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust panics noplayground">pub fn add(left: usize, right: usize) -&gt; usize {
     left + right
 }
@@ -355,10 +358,11 @@ mod tests {
         panic!("Make this test fail");
     }
 }</code></pre>
-<p><span class="caption">Listing 11-3: Adding a second test that will fail because
-we call the <code>panic!</code> macro</span></p>
+<figcaption>Listing 11-3: Adding a second test that will fail because we call the <code>panic!</code> macro</figcaption>
+</figure>
 <p>Run the tests again using <code>cargo test</code>. The output should look like Listing
 11-4, which shows that our <code>exploration</code> test passed and <code>another</code> failed.</p>
+<figure class="listing">
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
     Finished `test` profile [unoptimized + debuginfo] target(s) in 0.72s
@@ -383,8 +387,8 @@ test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; 
 
 error: test failed, to rerun pass `--lib`
 </code></pre>
-<p><span class="caption">Listing 11-4: Test results when one test passes and one
-test fails</span></p>
+<figcaption>Listing 11-4: Test results when one test passes and one test fails</figcaption>
+</figure>
 <p>Instead of <code>ok</code>, the line <code>test tests::another</code> shows <code>FAILED</code>. Two new
 sections appear between the individual results and the summary: the first
 displays the detailed reason for each test failure. In this case, we get the
@@ -409,7 +413,8 @@ macro helps us check that our code is functioning in the way we intend.</p>
 <p>In Chapter 5, Listing 5-15, we used a <code>Rectangle</code> struct and a <code>can_hold</code>
 method, which are repeated here in Listing 11-5. Let’s put this code in the
 <em>src/lib.rs</em> file, then write some tests for it using the <code>assert!</code> macro.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">#[derive(Debug)]
 struct Rectangle {
     width: u32,
@@ -421,14 +426,15 @@ impl Rectangle {
         self.width &gt; other.width &amp;&amp; self.height &gt; other.height
     }
 }</code></pre>
-<p><span class="caption">Listing 11-5: Using the <code>Rectangle</code> struct and its
-<code>can_hold</code> method from Chapter 5</span></p>
+<figcaption>Listing 11-5: The <code>Rectangle</code> struct and its <code>can_hold</code> method from Chapter 5</figcaption>
+</figure>
 <p>The <code>can_hold</code> method returns a Boolean, which means it’s a perfect use case
 for the <code>assert!</code> macro. In Listing 11-6, we write a test that exercises the
 <code>can_hold</code> method by creating a <code>Rectangle</code> instance that has a width of 8 and
 a height of 7 and asserting that it can hold another <code>Rectangle</code> instance that
 has a width of 5 and a height of 1.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground"><span class="boring">#[derive(Debug)]
 </span><span class="boring">struct Rectangle {
 </span><span class="boring">    width: u32,
@@ -459,8 +465,8 @@ mod tests {
         assert!(larger.can_hold(&amp;smaller));
     }
 }</code></pre>
-<p><span class="caption">Listing 11-6: A test for <code>can_hold</code> that checks whether a
-larger rectangle can indeed hold a smaller rectangle</span></p>
+<figcaption>Listing 11-6: A test for <code>can_hold</code> that checks whether a larger rectangle can indeed hold a smaller rectangle</figcaption>
+</figure>
 <p>Note that we’ve added a new line inside the <code>tests</code> module: <code>use super::*;</code>.
 The <code>tests</code> module is a regular module that follows the usual visibility rules
 we covered in Chapter 7 in the <a href="ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html">“Paths for Referring to an Item in the Module
@@ -649,7 +655,8 @@ fails, which makes it easier to see <em>why</em> the test failed; conversely, th
 expression, without printing the values that led to the <code>false</code> value.</p>
 <p>In Listing 11-7, we write a function named <code>add_two</code> that adds <code>2</code> to its
 parameter, then we test this function using the <code>assert_eq!</code> macro.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">pub fn add_two(a: i32) -&gt; i32 {
     a + 2
 }
@@ -663,8 +670,8 @@ mod tests {
         assert_eq!(4, add_two(2));
     }
 }</code></pre>
-<p><span class="caption">Listing 11-7: Testing the function <code>add_two</code> using the
-<code>assert_eq!</code> macro</span></p>
+<figcaption>Listing 11-7: Testing the function <code>add_two</code> using the <code>assert_eq!</code> macro</figcaption>
+</figure>
 <p>Let’s check that it passes!</p>
 <pre><code class="language-console">$ cargo test
    Compiling adder v0.1.0 (file:///projects/adder)
@@ -697,7 +704,7 @@ fails. Change the implementation of the <code>add_two</code> function to instead
 </span><span class="boring">
 </span><span class="boring">    #[test]
 </span><span class="boring">    fn it_adds_two() {
-</span><span class="boring">        assert_eq!(4, add_two(2));
+</span><span class="boring">        assert_eq!(add_two(2), 4);
 </span><span class="boring">    }
 </span><span class="boring">}</span></code></pre>
 <p>Run the tests again:</p>
@@ -712,10 +719,9 @@ test tests::it_adds_two ... FAILED
 failures:
 
 ---- tests::it_adds_two stdout ----
-thread 'tests::it_adds_two' panicked at src/lib.rs:11:9:
 assertion `left == right` failed
-  left: 4
- right: 5
+  left: 5
+ right: 4
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 
 
@@ -737,7 +743,7 @@ assertion functions are called <code>expected</code> and <code>actual</code>, an
 we specify the arguments matters. However, in Rust, they’re called <code>left</code> and
 <code>right</code>, and the order in which we specify the value we expect and the value
 the code produces doesn’t matter. We could write the assertion in this test as
-<code>assert_eq!(add_two(2), 4)</code>, which would result in the same failure message
+<code>assert_eq!(4, add_two(2))</code>, which would result in the same failure message
 that displays <code>assertion failed: `(left == right)`</code>.</p>
 <p>The <code>assert_ne!</code> macro will pass if the two values we give it are not equal and
 fail if they’re equal. This macro is most useful for cases when we’re not sure
@@ -893,7 +899,8 @@ test passes if the code inside the function panics; the test fails if the code
 inside the function doesn’t panic.</p>
 <p>Listing 11-8 shows a test that checks that the error conditions of <code>Guess::new</code>
 happen when we expect them to.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">pub struct Guess {
     value: i32,
 }
@@ -918,8 +925,8 @@ mod tests {
         Guess::new(200);
     }
 }</code></pre>
-<p><span class="caption">Listing 11-8: Testing that a condition will cause a
-<code>panic!</code></span></p>
+<figcaption>Listing 11-8: Testing that a condition will cause a <code>panic!</code></figcaption>
+</figure>
 <p>We place the <code>#[should_panic]</code> attribute after the <code>#[test]</code> attribute and
 before the test function it applies to. Let’s look at the result when this test
 passes:</p>
@@ -999,7 +1006,8 @@ make sure that the failure message contains the provided text. For example,
 consider the modified code for <code>Guess</code> in Listing 11-9 where the <code>new</code> function
 panics with different messages depending on whether the value is too small or
 too large.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground"><span class="boring">pub struct Guess {
 </span><span class="boring">    value: i32,
 </span><span class="boring">}
@@ -1032,8 +1040,8 @@ mod tests {
         Guess::new(200);
     }
 }</code></pre>
-<p><span class="caption">Listing 11-9: Testing for a <code>panic!</code> with a panic message
-containing a specified substring</span></p>
+<figcaption>Listing 11-9: Testing for a <code>panic!</code> with a panic message containing a specified substring</figcaption>
+</figure>
 <p>This test will pass because the value we put in the <code>should_panic</code> attribute’s
 <code>expected</code> parameter is a substring of the message that the <code>Guess::new</code>
 function panics with. We could have specified the entire panic message that we

@@ -218,7 +218,7 @@
                     <main>
                         <h1 id="関数"><a class="header" href="#関数">関数</a></h1>
 <p>「型<code>T</code>はその前に<code>&lt;T&gt;</code>があるとジェネリック型になる」というルールは関数に対しても当てはまります。</p>
-<p>Using generic functions sometimes requires explicitly specifying type parameters. This may be the case if the function is called where the return type is generic, or if the compiler doesn't have enough information to infer the necessary type parameters.</p>
+<p>ジェネリック関数を使用する際、型パラメータを明示する必要がある場合があります。返り値がジェネリック型である場合や、コンパイラが型パラメータを推論するのに十分な情報がない場合です。</p>
 <p>型パラメータを明示したうえでの関数呼び出しの構文は<code>fun::&lt;A, B, ...&gt;()</code>のようになります。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">struct A;          // 具象型`A`
 struct S(A);       // 具象型`S`

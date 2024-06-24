@@ -218,7 +218,7 @@
                     <main>
                         <h1 id="借用"><a class="header" href="#借用">借用</a></h1>
 <p>実際には、データの所有権を完全に受け渡すことなく一時的にアクセスしたいという場合がほとんどです。そのために、Rustでは <em>借用</em> という仕組みを用います。値そのもの（<code>T</code>）を受け渡すのではなく、その参照（<code>&amp;T</code>）を渡すのです。</p>
-<p>The compiler statically guarantees (via its borrow checker) that references <em>always</em> point to valid objects. That is, while references to an object exist, the object cannot be destroyed.</p>
+<p>コンパイラは借用チェッカを用いて参照が <em>常に</em> 有効なオブジェクトへの参照であることを、コンパイル時に保証します。つまり、あるオブジェクトへの参照が存在しているならば、そのオブジェクトを破壊することはできないということです。</p>
 <pre><pre class="playground"><code class="language-rust editable ignore mdbook-runnable edition2021">// この関数はボックスの所有権を奪い、破棄します。
 fn eat_box_i32(boxed_i32: Box&lt;i32&gt;) {
     println!("Destroying box that contains {}", boxed_i32);
@@ -256,7 +256,7 @@ fn main() {
         // ここで`_ref_to_i32`はスコープを抜け、借用もなくなります。
     }
 
-    // ここでようやく、`boxed_i32`は所有権を`eat_box_32`に移譲し、破棄することができます。
+    // `boxed_i32` can now give up ownership to `eat_box_i32` and be destroyed
     eat_box_i32(boxed_i32);
 }</code></pre></pre>
 

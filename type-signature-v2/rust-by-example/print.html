@@ -1082,8 +1082,8 @@ fn main() {
     // other one
     let bottom_right = Point { x: 5.2, ..another_point };
 
-    // `bottom_right.y` will be the same as `point.y` because we used that field
-    // from `point`
+    // `bottom_right.y` will be the same as `another_point.y` because we used that field
+    // from `another_point`
     println!("second point: ({}, {})", bottom_right.x, bottom_right.y);
 
     // Destructure the point using a `let` binding
@@ -5057,7 +5057,7 @@ fn main() {
         // `_ref_to_i32` goes out of scope and is no longer borrowed.
     }
 
-    // `boxed_i32` can now give up ownership to `eat_box_32` and be destroyed
+    // `boxed_i32` can now give up ownership to `eat_box_i32` and be destroyed
     eat_box_i32(boxed_i32);
 }</code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mutability-2"><a class="header" href="#mutability-2">Mutability</a></h1>

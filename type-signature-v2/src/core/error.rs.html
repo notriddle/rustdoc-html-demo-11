@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/error.rs`."><title>error.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-5e0f86de7732a179.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-24b68337f19ac127.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/error.rs`."><title>error.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0c9465bb72ad079c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-a53b05c6645b2154.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.81.0.js"></script><script defer src="../../static.files/main-ffff35d1e1849984.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1071,9 +1071,6 @@
 <a href="#1071" id="1071">1071</a>
 <a href="#1072" id="1072">1072</a>
 <a href="#1073" id="1073">1073</a>
-<a href="#1074" id="1074">1074</a>
-<a href="#1075" id="1075">1075</a>
-<a href="#1076" id="1076">1076</a>
 </pre></div><pre class="rust"><code><span class="attr">#![doc = <span class="macro">include_str!</span>(<span class="string">"error.md"</span>)]
 #![stable(feature = <span class="string">"error_in_core"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
 
@@ -1480,9 +1477,9 @@
 <span class="kw">where
     </span>I: tags::Type&lt;<span class="lifetime">'a</span>&gt;,
 {
-    <span class="kw">let </span><span class="kw-2">mut </span>tagged = TaggedOption::&lt;<span class="lifetime">'a</span>, I&gt;(<span class="prelude-val">None</span>);
+    <span class="kw">let </span><span class="kw-2">mut </span>tagged = Tagged { tag_id: TypeId::of::&lt;I&gt;(), value: TaggedOption::&lt;<span class="lifetime">'a</span>, I&gt;(<span class="prelude-val">None</span>) };
     err.provide(tagged.as_request());
-    tagged.<span class="number">0
+    tagged.value.<span class="number">0
 </span>}
 
 <span class="comment">///////////////////////////////////////////////////////////////////////////////
@@ -1583,16 +1580,9 @@
 ///
 </span><span class="attr">#[unstable(feature = <span class="string">"error_generic_member_access"</span>, issue = <span class="string">"99301"</span>)]
 #[cfg_attr(not(doc), repr(transparent))] </span><span class="comment">// work around https://github.com/rust-lang/rust/issues/90435
-</span><span class="kw">pub struct </span>Request&lt;<span class="lifetime">'a</span>&gt;(<span class="kw">dyn </span>Erased&lt;<span class="lifetime">'a</span>&gt; + <span class="lifetime">'a</span>);
+</span><span class="kw">pub struct </span>Request&lt;<span class="lifetime">'a</span>&gt;(Tagged&lt;<span class="kw">dyn </span>Erased&lt;<span class="lifetime">'a</span>&gt; + <span class="lifetime">'a</span>&gt;);
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Request&lt;<span class="lifetime">'a</span>&gt; {
-    <span class="doccomment">/// Create a new `&amp;mut Request` from a `&amp;mut dyn Erased` trait object.
-    </span><span class="kw">fn </span>new&lt;<span class="lifetime">'b</span>&gt;(erased: <span class="kw-2">&amp;</span><span class="lifetime">'b </span><span class="kw-2">mut </span>(<span class="kw">dyn </span>Erased&lt;<span class="lifetime">'a</span>&gt; + <span class="lifetime">'a</span>)) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'b </span><span class="kw-2">mut </span>Request&lt;<span class="lifetime">'a</span>&gt; {
-        <span class="comment">// SAFETY: transmuting `&amp;mut (dyn Erased&lt;'a&gt; + 'a)` to `&amp;mut Request&lt;'a&gt;` is safe since
-        // `Request` is repr(transparent).
-        </span><span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>(erased <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">dyn </span>Erased&lt;<span class="lifetime">'a</span>&gt; <span class="kw">as </span><span class="kw-2">*mut </span>Request&lt;<span class="lifetime">'a</span>&gt;) }
-    }
-
     <span class="doccomment">/// Provide a value or other type with only static lifetimes.
     ///
     /// # Examples
@@ -2011,32 +2001,33 @@
 <span class="doccomment">/// An `Option` with a type tag `I`.
 ///
 /// Since this struct implements `Erased`, the type can be erased to make a dynamically typed
-/// option. The type can be checked dynamically using `Erased::tag_id` and since this is statically
+/// option. The type can be checked dynamically using `Tagged::tag_id` and since this is statically
 /// checked for the concrete type, there is some degree of type safety.
 </span><span class="attr">#[repr(transparent)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>TaggedOption&lt;<span class="lifetime">'a</span>, I: tags::Type&lt;<span class="lifetime">'a</span>&gt;&gt;(<span class="kw">pub </span><span class="prelude-ty">Option</span>&lt;I::Reified&gt;);
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, I: tags::Type&lt;<span class="lifetime">'a</span>&gt;&gt; TaggedOption&lt;<span class="lifetime">'a</span>, I&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, I: tags::Type&lt;<span class="lifetime">'a</span>&gt;&gt; Tagged&lt;TaggedOption&lt;<span class="lifetime">'a</span>, I&gt;&gt; {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>as_request(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>Request&lt;<span class="lifetime">'a</span>&gt; {
-        Request::new(<span class="self">self </span><span class="kw">as </span><span class="kw-2">&amp;mut </span>(<span class="kw">dyn </span>Erased&lt;<span class="lifetime">'a</span>&gt; + <span class="lifetime">'a</span>))
+        <span class="kw">let </span>erased = <span class="self">self </span><span class="kw">as </span><span class="kw-2">&amp;mut </span>Tagged&lt;<span class="kw">dyn </span>Erased&lt;<span class="lifetime">'a</span>&gt; + <span class="lifetime">'a</span>&gt;;
+        <span class="comment">// SAFETY: transmuting `&amp;mut Tagged&lt;dyn Erased&lt;'a&gt; + 'a&gt;` to `&amp;mut Request&lt;'a&gt;` is safe since
+        // `Request` is repr(transparent).
+        </span><span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>(erased <span class="kw">as </span><span class="kw-2">*mut </span>Tagged&lt;<span class="kw">dyn </span>Erased&lt;<span class="lifetime">'a</span>&gt;&gt; <span class="kw">as </span><span class="kw-2">*mut </span>Request&lt;<span class="lifetime">'a</span>&gt;) }
     }
 }
 
 <span class="doccomment">/// Represents a type-erased but identifiable object.
 ///
 /// This trait is exclusively implemented by the `TaggedOption` type.
-</span><span class="kw">unsafe trait </span>Erased&lt;<span class="lifetime">'a</span>&gt;: <span class="lifetime">'a </span>{
-    <span class="doccomment">/// The `TypeId` of the erased type.
-    </span><span class="kw">fn </span>tag_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TypeId;
+</span><span class="kw">unsafe trait </span>Erased&lt;<span class="lifetime">'a</span>&gt;: <span class="lifetime">'a </span>{}
+
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, I: tags::Type&lt;<span class="lifetime">'a</span>&gt;&gt; Erased&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span>TaggedOption&lt;<span class="lifetime">'a</span>, I&gt; {}
+
+<span class="kw">struct </span>Tagged&lt;E: <span class="question-mark">?</span>Sized&gt; {
+    tag_id: TypeId,
+    value: E,
 }
 
-<span class="kw">unsafe impl</span>&lt;<span class="lifetime">'a</span>, I: tags::Type&lt;<span class="lifetime">'a</span>&gt;&gt; Erased&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span>TaggedOption&lt;<span class="lifetime">'a</span>, I&gt; {
-    <span class="kw">fn </span>tag_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TypeId {
-        TypeId::of::&lt;I&gt;()
-    }
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; <span class="kw">dyn </span>Erased&lt;<span class="lifetime">'a</span>&gt; + <span class="lifetime">'a </span>{
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Tagged&lt;<span class="kw">dyn </span>Erased&lt;<span class="lifetime">'a</span>&gt; + <span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// Returns some reference to the dynamic value if it is tagged with `I`,
     /// or `None` otherwise.
     </span><span class="attr">#[inline]
@@ -2044,9 +2035,9 @@
     <span class="kw">where
         </span>I: tags::Type&lt;<span class="lifetime">'a</span>&gt;,
     {
-        <span class="kw">if </span><span class="self">self</span>.tag_id() == TypeId::of::&lt;I&gt;() {
+        <span class="kw">if </span><span class="self">self</span>.tag_id == TypeId::of::&lt;I&gt;() {
             <span class="comment">// SAFETY: Just checked whether we're pointing to an I.
-            </span><span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>(<span class="self">self </span><span class="kw">as </span><span class="kw-2">*const </span><span class="self">Self</span>).cast::&lt;TaggedOption&lt;<span class="lifetime">'a</span>, I&gt;&gt;() })
+            </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="kw">unsafe </span>{ <span class="kw-2">&amp;*</span>(<span class="self">self </span><span class="kw">as </span><span class="kw-2">*const </span><span class="self">Self</span>).cast::&lt;Tagged&lt;TaggedOption&lt;<span class="lifetime">'a</span>, I&gt;&gt;&gt;() }.value)
         } <span class="kw">else </span>{
             <span class="prelude-val">None
         </span>}
@@ -2059,9 +2050,12 @@
     <span class="kw">where
         </span>I: tags::Type&lt;<span class="lifetime">'a</span>&gt;,
     {
-        <span class="kw">if </span><span class="self">self</span>.tag_id() == TypeId::of::&lt;I&gt;() {
-            <span class="comment">// SAFETY: Just checked whether we're pointing to an I.
-            </span><span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>(<span class="self">self </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>).cast::&lt;TaggedOption&lt;<span class="lifetime">'a</span>, I&gt;&gt;() })
+        <span class="kw">if </span><span class="self">self</span>.tag_id == TypeId::of::&lt;I&gt;() {
+            <span class="prelude-val">Some</span>(
+                <span class="comment">// SAFETY: Just checked whether we're pointing to an I.
+                </span><span class="kw-2">&amp;mut </span><span class="kw">unsafe </span>{ <span class="kw-2">&amp;mut *</span>(<span class="self">self </span><span class="kw">as </span><span class="kw-2">*mut </span><span class="self">Self</span>).cast::&lt;Tagged&lt;TaggedOption&lt;<span class="lifetime">'a</span>, I&gt;&gt;&gt;() }
+                    .value,
+            )
         } <span class="kw">else </span>{
             <span class="prelude-val">None
         </span>}

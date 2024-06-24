@@ -227,7 +227,8 @@ line that indicates the test passed. If a test fails, we’ll see whatever was
 printed to standard output with the rest of the failure message.</p>
 <p>As an example, Listing 11-10 has a silly function that prints the value of its
 parameter and returns 10, as well as a test that passes and a test that fails.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust panics noplayground">fn prints_and_returns_10(a: i32) -&gt; i32 {
     println!("I got the value {a}");
     10
@@ -249,8 +250,8 @@ mod tests {
         assert_eq!(5, value);
     }
 }</code></pre>
-<p><span class="caption">Listing 11-10: Tests for a function that calls
-<code>println!</code></span></p>
+<figcaption>Listing 11-10: Tests for a function that calls <code>println!</code></figcaption>
+</figure>
 <p>When we run these tests with <code>cargo test</code>, we’ll see the following output:</p>
 <pre><code class="language-console">$ cargo test
    Compiling silly-function v0.1.0 (file:///projects/silly-function)
@@ -332,7 +333,8 @@ that code. You can choose which tests to run by passing <code>cargo test</code> 
 or names of the test(s) you want to run as an argument.</p>
 <p>To demonstrate how to run a subset of tests, we’ll first create three tests for
 our <code>add_two</code> function, as shown in Listing 11-11, and choose which ones to run.</p>
-<p><span class="filename">Filename: src/lib.rs</span></p>
+<figure class="listing">
+<span class="file-name">Filename: src/lib.rs</span>
 <pre><code class="language-rust noplayground">pub fn add_two(a: i32) -&gt; i32 {
     a + 2
 }
@@ -356,8 +358,8 @@ mod tests {
         assert_eq!(102, add_two(100));
     }
 }</code></pre>
-<p><span class="caption">Listing 11-11: Three tests with three different
-names</span></p>
+<figcaption>Listing 11-11: Three tests with three different names</figcaption>
+</figure>
 <p>If we run the tests without passing any arguments, as we saw earlier, all the
 tests will run in parallel:</p>
 <pre><code class="language-console">$ cargo test

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/future/async_drop.rs`."><title>async_drop.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-5e0f86de7732a179.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-24b68337f19ac127.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-f33a57b7ceece74a.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/future/async_drop.rs`."><title>async_drop.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0c9465bb72ad079c.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.81.0" data-rustdoc-version="1.81.0-dev" data-channel="nightly" data-search-js="search-a53b05c6645b2154.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.81.0.js"></script><script defer src="../../../static.files/main-ffff35d1e1849984.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -281,8 +281,7 @@
 <a href="#281" id="281">281</a>
 <a href="#282" id="282">282</a>
 <a href="#283" id="283">283</a>
-<a href="#284" id="284">284</a>
-</pre></div><pre class="rust"><code><span class="attr">#![unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"none"</span>)]
+</pre></div><pre class="rust"><code><span class="attr">#![unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"126482"</span>)]
 
 </span><span class="kw">use </span><span class="kw">crate</span>::fmt;
 <span class="kw">use </span><span class="kw">crate</span>::future::{Future, IntoFuture};
@@ -294,27 +293,27 @@
 
 <span class="doccomment">/// Asynchronously drops a value by running `AsyncDrop::async_drop`
 /// on a value and its fields recursively.
-</span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"none"</span>)]
+</span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"126482"</span>)]
 </span><span class="kw">pub fn </span>async_drop&lt;T&gt;(value: T) -&gt; AsyncDropOwning&lt;T&gt; {
     AsyncDropOwning { value: MaybeUninit::new(value), dtor: <span class="prelude-val">None</span>, _pinned: PhantomPinned }
 }
 
 <span class="doccomment">/// A future returned by the [`async_drop`].
-</span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"none"</span>)]
+</span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"126482"</span>)]
 </span><span class="kw">pub struct </span>AsyncDropOwning&lt;T&gt; {
     value: MaybeUninit&lt;T&gt;,
     dtor: <span class="prelude-ty">Option</span>&lt;AsyncDropInPlace&lt;T&gt;&gt;,
     _pinned: PhantomPinned,
 }
 
-<span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"none"</span>)]
+<span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"126482"</span>)]
 </span><span class="kw">impl</span>&lt;T&gt; fmt::Debug <span class="kw">for </span>AsyncDropOwning&lt;T&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         f.debug_struct(<span class="string">"AsyncDropOwning"</span>).finish_non_exhaustive()
     }
 }
 
-<span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"none"</span>)]
+<span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"126482"</span>)]
 </span><span class="kw">impl</span>&lt;T&gt; Future <span class="kw">for </span>AsyncDropOwning&lt;T&gt; {
     <span class="kw">type </span>Output = ();
 
@@ -370,24 +369,24 @@
 ///   returned future stores the `to_drop` pointer and user is required
 ///   to guarantee that dropped value doesn't move.
 ///
-</span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"none"</span>)]
+</span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"126482"</span>)]
 </span><span class="kw">pub unsafe fn </span>async_drop_in_place&lt;T: <span class="question-mark">?</span>Sized&gt;(to_drop: <span class="kw-2">*mut </span>T) -&gt; AsyncDropInPlace&lt;T&gt; {
     <span class="comment">// SAFETY: `async_drop_in_place_raw` has the same safety requirements
     </span><span class="kw">unsafe </span>{ AsyncDropInPlace(async_drop_in_place_raw(to_drop)) }
 }
 
 <span class="doccomment">/// A future returned by the [`async_drop_in_place`].
-</span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"none"</span>)]
+</span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"126482"</span>)]
 </span><span class="kw">pub struct </span>AsyncDropInPlace&lt;T: <span class="question-mark">?</span>Sized&gt;(&lt;T <span class="kw">as </span>AsyncDestruct&gt;::AsyncDestructor);
 
-<span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"none"</span>)]
+<span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"126482"</span>)]
 </span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; fmt::Debug <span class="kw">for </span>AsyncDropInPlace&lt;T&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         f.debug_struct(<span class="string">"AsyncDropInPlace"</span>).finish_non_exhaustive()
     }
 }
 
-<span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"none"</span>)]
+<span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"126482"</span>)]
 </span><span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized&gt; Future <span class="kw">for </span>AsyncDropInPlace&lt;T&gt; {
     <span class="kw">type </span>Output = ();
 
@@ -401,18 +400,18 @@
 <span class="comment">// FIXME(zetanumbers): Add same restrictions on AsyncDrop impls as
 //   with Drop impls
 </span><span class="doccomment">/// Custom code within the asynchronous destructor.
-</span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"none"</span>)]
+</span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"126482"</span>)]
 #[lang = <span class="string">"async_drop"</span>]
 </span><span class="kw">pub trait </span>AsyncDrop {
     <span class="doccomment">/// A future returned by the [`AsyncDrop::async_drop`] to be part
     /// of the async destructor.
-    </span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"none"</span>)]
+    </span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"126482"</span>)]
     </span><span class="kw">type </span>Dropper&lt;<span class="lifetime">'a</span>&gt;: Future&lt;Output = ()&gt;
     <span class="kw">where
         </span><span class="self">Self</span>: <span class="lifetime">'a</span>;
 
     <span class="doccomment">/// Constructs the asynchronous destructor for this type.
-    </span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"none"</span>)]
+    </span><span class="attr">#[unstable(feature = <span class="string">"async_drop"</span>, issue = <span class="string">"126482"</span>)]
     </span><span class="kw">fn </span>async_drop(<span class="self">self</span>: Pin&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;) -&gt; <span class="self">Self</span>::Dropper&lt;<span class="lifetime">'_</span>&gt;;
 }
 
@@ -540,8 +539,7 @@
     </span>}
 }
 
-<span class="attr">#[cfg(not(bootstrap))]
-#[lang = <span class="string">"async_drop_deferred_drop_in_place"</span>]
+<span class="attr">#[lang = <span class="string">"async_drop_deferred_drop_in_place"</span>]
 </span><span class="kw">async unsafe fn </span>deferred_drop_in_place&lt;T&gt;(to_drop: <span class="kw-2">*mut </span>T) {
     <span class="comment">// SAFETY: same safety requirements as with drop_in_place (implied by
     // function's name)

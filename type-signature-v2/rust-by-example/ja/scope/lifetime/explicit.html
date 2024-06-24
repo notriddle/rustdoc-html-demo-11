@@ -217,10 +217,10 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="明示的アノテーション"><a class="header" href="#明示的アノテーション">明示的アノテーション</a></h1>
-<p>The borrow checker uses explicit lifetime annotations to determine how long references should be valid. In cases where lifetimes are not elided<sup class="footnote-reference"><a href="#1">1</a></sup>, Rust requires explicit annotations to determine what the lifetime of a reference should be. The syntax for explicitly annotating a lifetime uses an apostrophe character as follows:</p>
+<p>借用チェッカーは参照がどれだけの間有効かを決定するために、明示的なアノテーションを使用します。ライフタイムが省略<sup class="footnote-reference"><a href="#1">1</a></sup>されなかった場合、Rustは参照のライフタイムがどのようなものであるか、明示的なアノテーションを必要とします。</p>
 <pre><code class="language-rust ignore">foo&lt;'a&gt;
 // `foo`は`'a`というライフタイムパラメータを持ちます。</code></pre>
-<p>Similar to <a href="../../fn/closures/anonymity.html">closures</a>, using lifetimes requires generics. Additionally, this lifetime syntax indicates that the lifetime of <code>foo</code> may not exceed that of <code>'a</code>. Explicit annotation of a type has the form <code>&amp;'a T</code> where <code>'a</code> has already been introduced.</p>
+<p><a href="../../fn/closures/anonymity.html">クロージャ</a>と同様、ライフタイムの使用はジェネリクスを必要とします。もう少し詳しく言うと、この書き方は「<code>foo</code>のライフタイムは<code>'a</code>のそれを超えることはない。」ということを示しており、型を明示した場合<code>'a</code>は<code>&amp;'a T</code>となるということです。</p>
 <p>ライフタイムが複数ある場合も、同じような構文になります。</p>
 <pre><code class="language-rust ignore">foo&lt;'a, 'b&gt;
 // `foo`は`'a`と`'b`というライフタイムパラメータを持ちます。</code></pre>

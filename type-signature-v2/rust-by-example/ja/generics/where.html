@@ -217,7 +217,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="where句"><a class="header" href="#where句">Where句</a></h1>
-<p>A bound can also be expressed using a <code>where</code> clause immediately before the opening <code>{</code>, rather than at the type's first mention. Additionally, <code>where</code> clauses can apply bounds to arbitrary types, rather than just to type parameters.</p>
+<p>トレイト境界は、<code>{</code>の直前に<code>where</code>句を導入することでも設けることができます。<code>where</code>はさらに、型パラメータだけでなく任意の型に対して適用できます。</p>
 <p><code>where</code>句のほうが有効なケースには例えば以下のようなものがあります。</p>
 <ul>
 <li>ジェネリック型とジェネリック境界に別々に制限を加えたほうが明瞭になる場合</li>
@@ -229,7 +229,7 @@ impl &lt;A, D&gt; MyTrait&lt;A, D&gt; for YourType where
     A: TraitB + TraitC,
     D: TraitE + TraitF {}</code></pre>
 <ul>
-<li>When using a <code>where</code> clause is more expressive than using normal syntax. The <code>impl</code> in this example cannot be directly expressed without a <code>where</code> clause:</li>
+<li><code>where</code>句の方が通常の構文より表現力が高い場合。この例では<code>where</code>句を使わずに書くことはできません。</li>
 </ul>
 <pre><pre class="playground"><code class="language-rust editable edition2021">use std::fmt::Debug;
 

@@ -217,7 +217,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="ドロップ"><a class="header" href="#ドロップ">ドロップ</a></h1>
-<p>The <a href="https://doc.rust-lang.org/std/ops/trait.Drop.html"><code>Drop</code></a> trait only has one method: <code>drop</code>, which is called automatically when an object goes out of scope. The main use of the <code>Drop</code> trait is to free the resources that the implementor instance owns.</p>
+<p><a href="https://doc.rust-lang.org/std/ops/trait.Drop.html"><code>Drop</code></a>トレイトにはメソッドが一つだけしかありません。<code>drop</code>です。これは、オブジェクトがスコープから抜けた時に自動で呼ばれます。<code>Drop</code>トレイトの主な使用目的は、インスタンスが所有する資源を開放することです。</p>
 <p><code>Drop</code>トレイトを実装している型の例としては<code>Box</code>、<code>Vec</code>、<code>String</code>、<code>File</code>、<code>Process</code>等があげられます。<code>Drop</code>トレイトは任意の型に対して手動で実装することができます。</p>
 <p>以下の例では<code>drop</code>メソッドにコンソールへの出力を追加することで、<code>drop</code>が呼ばれたタイミングが分かるようにしています。</p>
 <pre><pre class="playground"><code class="language-rust editable edition2021">struct Droppable {
