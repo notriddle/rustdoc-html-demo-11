@@ -1,0 +1,6 @@
+
+user: 005.690 s
+sys:  000.739 s
+wall: 004.827 s
+child_RSS_high:     604788 KiB
+group_mem_high:     580728 KiB
