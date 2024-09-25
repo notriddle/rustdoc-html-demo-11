@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/sys/pal/unix/fs.rs`."><title>fs.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-16837abbf58dc08a.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.82.0" data-rustdoc-version="1.82.0-dev" data-channel="nightly" data-search-js="search-9c9789d2efa3c8d1.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.82.0.js"></script><script defer src="../../../../../static.files/main-34fdfa47078c50a4.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `std/src/sys/pal/unix/fs.rs`."><title>fs.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-d33be337707cc2ad.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.83.0" data-rustdoc-version="1.83.0-dev" data-channel="nightly" data-search-js="search-e6d908e204358b5c.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files1.83.0.js"></script><script defer src="../../../../../static.files/main-54bc299d2a5e4e43.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">std/sys/pal/unix/</div>fs.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2150,34 +2151,11 @@
 <a href="#2150" id="2150">2150</a>
 <a href="#2151" id="2151">2151</a>
 <a href="#2152" id="2152">2152</a>
-</pre></div><pre class="rust"><code><span class="comment">// miri has some special hacks here that make things unused.
+<a href="#2153" id="2153">2153</a></pre></div><pre class="rust"><code><span class="comment">// miri has some special hacks here that make things unused.
 </span><span class="attr">#![cfg_attr(miri, allow(unused))]
 
 #[cfg(test)]
 </span><span class="kw">mod </span>tests;
-
-<span class="kw">use </span><span class="kw">crate</span>::os::unix::prelude::<span class="kw-2">*</span>;
-
-<span class="kw">use </span><span class="kw">crate</span>::ffi::{CStr, OsStr, OsString};
-<span class="kw">use </span><span class="kw">crate</span>::fmt::{<span class="self">self</span>, Write <span class="kw">as _</span>};
-<span class="kw">use </span><span class="kw">crate</span>::io::{<span class="self">self</span>, BorrowedCursor, Error, IoSlice, IoSliceMut, SeekFrom};
-<span class="kw">use </span><span class="kw">crate</span>::mem;
-<span class="kw">use </span><span class="kw">crate</span>::os::unix::io::{AsFd, AsRawFd, BorrowedFd, FromRawFd, IntoRawFd};
-<span class="kw">use </span><span class="kw">crate</span>::path::{Path, PathBuf};
-<span class="kw">use </span><span class="kw">crate</span>::ptr;
-<span class="kw">use </span><span class="kw">crate</span>::sync::Arc;
-<span class="kw">use </span><span class="kw">crate</span>::sys::common::small_c_string::run_path_with_cstr;
-<span class="kw">use </span><span class="kw">crate</span>::sys::fd::FileDesc;
-<span class="kw">use </span><span class="kw">crate</span>::sys::time::SystemTime;
-<span class="kw">use </span><span class="kw">crate</span>::sys::{cvt, cvt_r};
-<span class="kw">use </span><span class="kw">crate</span>::sys_common::{AsInner, AsInnerMut, FromInner, IntoInner};
-
-<span class="attr">#[cfg(all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"gnu"</span>))]
-</span><span class="kw">use </span><span class="kw">crate</span>::sys::weak::syscall;
-<span class="attr">#[cfg(target_os = <span class="string">"android"</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::sys::weak::weak;
-
-<span class="kw">use </span>libc::{c_int, mode_t};
 
 <span class="attr">#[cfg(all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"gnu"</span>))]
 </span><span class="kw">use </span>libc::c_char;
@@ -2206,10 +2184,6 @@
     all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"musl"</span>),
 ))]
 </span><span class="kw">use </span>libc::readdir <span class="kw">as </span>readdir64;
-<span class="attr">#[cfg(any(all(target_os = <span class="string">"linux"</span>, not(target_env = <span class="string">"musl"</span>)), target_os = <span class="string">"hurd"</span>))]
-</span><span class="kw">use </span>libc::readdir64;
-<span class="attr">#[cfg(any(target_os = <span class="string">"emscripten"</span>, target_os = <span class="string">"l4re"</span>))]
-</span><span class="kw">use </span>libc::readdir64_r;
 <span class="attr">#[cfg(not(any(
     target_os = <span class="string">"android"</span>,
     target_os = <span class="string">"linux"</span>,
@@ -2225,6 +2199,11 @@
     target_os = <span class="string">"hurd"</span>,
 )))]
 </span><span class="kw">use </span>libc::readdir_r <span class="kw">as </span>readdir64_r;
+<span class="attr">#[cfg(any(all(target_os = <span class="string">"linux"</span>, not(target_env = <span class="string">"musl"</span>)), target_os = <span class="string">"hurd"</span>))]
+</span><span class="kw">use </span>libc::readdir64;
+<span class="attr">#[cfg(any(target_os = <span class="string">"emscripten"</span>, target_os = <span class="string">"l4re"</span>))]
+</span><span class="kw">use </span>libc::readdir64_r;
+<span class="kw">use </span>libc::{c_int, mode_t};
 <span class="attr">#[cfg(target_os = <span class="string">"android"</span>)]
 </span><span class="kw">use </span>libc::{
     dirent <span class="kw">as </span>dirent64, fstat <span class="kw">as </span>fstat64, fstatat <span class="kw">as </span>fstatat64, ftruncate64, lseek64,
@@ -2249,7 +2228,24 @@
 </span>))]
 </span><span class="kw">use </span>libc::{dirent64, fstat64, ftruncate64, lseek64, lstat64, off64_t, open64, stat64};
 
+<span class="kw">use </span><span class="kw">crate</span>::ffi::{CStr, OsStr, OsString};
+<span class="kw">use </span><span class="kw">crate</span>::fmt::{<span class="self">self</span>, Write <span class="kw">as _</span>};
+<span class="kw">use </span><span class="kw">crate</span>::io::{<span class="self">self</span>, BorrowedCursor, Error, IoSlice, IoSliceMut, SeekFrom};
+<span class="kw">use </span><span class="kw">crate</span>::os::unix::io::{AsFd, AsRawFd, BorrowedFd, FromRawFd, IntoRawFd};
+<span class="kw">use </span><span class="kw">crate</span>::os::unix::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::path::{Path, PathBuf};
+<span class="kw">use </span><span class="kw">crate</span>::sync::Arc;
+<span class="kw">use </span><span class="kw">crate</span>::sys::common::small_c_string::run_path_with_cstr;
+<span class="kw">use </span><span class="kw">crate</span>::sys::fd::FileDesc;
+<span class="kw">use </span><span class="kw">crate</span>::sys::time::SystemTime;
+<span class="attr">#[cfg(all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"gnu"</span>))]
+</span><span class="kw">use </span><span class="kw">crate</span>::sys::weak::syscall;
+<span class="attr">#[cfg(target_os = <span class="string">"android"</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::sys::weak::weak;
+<span class="kw">use </span><span class="kw">crate</span>::sys::{cvt, cvt_r};
 <span class="kw">pub use </span><span class="kw">crate</span>::sys_common::fs::exists;
+<span class="kw">use </span><span class="kw">crate</span>::sys_common::{AsInner, AsInnerMut, FromInner, IntoInner};
+<span class="kw">use crate</span>::{mem, ptr};
 
 <span class="kw">pub struct </span>File(FileDesc);
 
@@ -2635,6 +2631,7 @@
         target_os = <span class="string">"horizon"</span>,
         target_os = <span class="string">"vita"</span>,
         target_os = <span class="string">"hurd"</span>,
+        target_os = <span class="string">"rtems"</span>,
     )))]
     </span><span class="kw">pub fn </span>modified(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;SystemTime&gt; {
         <span class="attr">#[cfg(target_pointer_width = <span class="string">"32"</span>)]
@@ -2647,7 +2644,12 @@
         SystemTime::new(<span class="self">self</span>.stat.st_mtime <span class="kw">as </span>i64, <span class="self">self</span>.stat.st_mtime_nsec <span class="kw">as </span>i64)
     }
 
-    <span class="attr">#[cfg(any(target_os = <span class="string">"vxworks"</span>, target_os = <span class="string">"espidf"</span>, target_os = <span class="string">"vita"</span>))]
+    <span class="attr">#[cfg(any(
+        target_os = <span class="string">"vxworks"</span>,
+        target_os = <span class="string">"espidf"</span>,
+        target_os = <span class="string">"vita"</span>,
+        target_os = <span class="string">"rtems"</span>,
+    ))]
     </span><span class="kw">pub fn </span>modified(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;SystemTime&gt; {
         SystemTime::new(<span class="self">self</span>.stat.st_mtime <span class="kw">as </span>i64, <span class="number">0</span>)
     }
@@ -2663,6 +2665,7 @@
         target_os = <span class="string">"horizon"</span>,
         target_os = <span class="string">"vita"</span>,
         target_os = <span class="string">"hurd"</span>,
+        target_os = <span class="string">"rtems"</span>,
     )))]
     </span><span class="kw">pub fn </span>accessed(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;SystemTime&gt; {
         <span class="attr">#[cfg(target_pointer_width = <span class="string">"32"</span>)]
@@ -2675,7 +2678,12 @@
         SystemTime::new(<span class="self">self</span>.stat.st_atime <span class="kw">as </span>i64, <span class="self">self</span>.stat.st_atime_nsec <span class="kw">as </span>i64)
     }
 
-    <span class="attr">#[cfg(any(target_os = <span class="string">"vxworks"</span>, target_os = <span class="string">"espidf"</span>, target_os = <span class="string">"vita"</span>))]
+    <span class="attr">#[cfg(any(
+        target_os = <span class="string">"vxworks"</span>,
+        target_os = <span class="string">"espidf"</span>,
+        target_os = <span class="string">"vita"</span>,
+        target_os = <span class="string">"rtems"
+    </span>))]
     </span><span class="kw">pub fn </span>accessed(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; io::Result&lt;SystemTime&gt; {
         SystemTime::new(<span class="self">self</span>.stat.st_atime <span class="kw">as </span>i64, <span class="number">0</span>)
     }
@@ -3010,6 +3018,7 @@
             target_os = <span class="string">"fuchsia"</span>,
             target_os = <span class="string">"horizon"</span>,
             target_os = <span class="string">"vxworks"</span>,
+            target_os = <span class="string">"rtems"</span>,
         )))]
         </span>{
             <span class="kw">let </span>fd = <span class="kw">unsafe </span>{ libc::dirfd(<span class="self">self</span>.<span class="number">0</span>) };
@@ -3127,6 +3136,7 @@
         target_os = <span class="string">"aix"</span>,
         target_os = <span class="string">"nto"</span>,
         target_os = <span class="string">"hurd"</span>,
+        target_os = <span class="string">"rtems"</span>,
         target_vendor = <span class="string">"apple"</span>,
     ))]
     </span><span class="kw">pub fn </span>ino(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u64 {
@@ -3709,18 +3719,7 @@
             </span><span class="prelude-val">None
         </span>}
 
-        <span class="attr">#[cfg(any(
-            target_os = <span class="string">"linux"</span>,
-            target_os = <span class="string">"freebsd"</span>,
-            target_os = <span class="string">"hurd"</span>,
-            target_os = <span class="string">"netbsd"</span>,
-            target_os = <span class="string">"openbsd"</span>,
-            target_os = <span class="string">"vxworks"</span>,
-            target_os = <span class="string">"solaris"</span>,
-            target_os = <span class="string">"illumos"</span>,
-            target_vendor = <span class="string">"apple"</span>,
-        ))]
-        </span><span class="kw">fn </span>get_mode(fd: c_int) -&gt; <span class="prelude-ty">Option</span>&lt;(bool, bool)&gt; {
+        <span class="kw">fn </span>get_mode(fd: c_int) -&gt; <span class="prelude-ty">Option</span>&lt;(bool, bool)&gt; {
             <span class="kw">let </span>mode = <span class="kw">unsafe </span>{ libc::fcntl(fd, libc::F_GETFL) };
             <span class="kw">if </span>mode == -<span class="number">1 </span>{
                 <span class="kw">return </span><span class="prelude-val">None</span>;
@@ -3732,22 +3731,6 @@
                 <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
             }
         }
-
-        <span class="attr">#[cfg(not(any(
-            target_os = <span class="string">"linux"</span>,
-            target_os = <span class="string">"freebsd"</span>,
-            target_os = <span class="string">"hurd"</span>,
-            target_os = <span class="string">"netbsd"</span>,
-            target_os = <span class="string">"openbsd"</span>,
-            target_os = <span class="string">"vxworks"</span>,
-            target_os = <span class="string">"solaris"</span>,
-            target_os = <span class="string">"illumos"</span>,
-            target_vendor = <span class="string">"apple"</span>,
-        )))]
-        </span><span class="kw">fn </span>get_mode(_fd: c_int) -&gt; <span class="prelude-ty">Option</span>&lt;(bool, bool)&gt; {
-            <span class="comment">// FIXME(#24570): implement this for other Unix platforms
-            </span><span class="prelude-val">None
-        </span>}
 
         <span class="kw">let </span>fd = <span class="self">self</span>.as_raw_fd();
         <span class="kw">let </span><span class="kw-2">mut </span>b = f.debug_struct(<span class="string">"File"</span>);
@@ -3901,7 +3884,7 @@
     run_path_with_cstr(original, <span class="kw-2">&amp;</span>|original| {
         run_path_with_cstr(link, <span class="kw-2">&amp;</span>|link| {
             <span class="macro">cfg_if::cfg_if!</span> {
-                <span class="kw">if </span><span class="attr">#[cfg(any(target_os = <span class="string">"vxworks"</span>, target_os = <span class="string">"redox"</span>, target_os = <span class="string">"android"</span>, target_os = <span class="string">"espidf"</span>, target_os = <span class="string">"horizon"</span>, target_os = <span class="string">"vita"</span>))] </span>{
+                <span class="kw">if </span><span class="attr">#[cfg(any(target_os = <span class="string">"vxworks"</span>, target_os = <span class="string">"redox"</span>, target_os = <span class="string">"android"</span>, target_os = <span class="string">"espidf"</span>, target_os = <span class="string">"horizon"</span>, target_os = <span class="string">"vita"</span>, target_env = <span class="string">"nto70"</span>))] </span>{
                     <span class="comment">// VxWorks, Redox and ESP-IDF lack `linkat`, so use `link` instead. POSIX leaves
                     // it implementation-defined whether `link` follows symlinks, so rely on the
                     // `symlink_hard_link` test in library/std/src/fs/tests.rs to check the behavior.
@@ -4036,7 +4019,7 @@
     <span class="kw">let </span>max_len = u64::MAX;
     <span class="kw">let </span>(<span class="kw-2">mut </span>writer, <span class="kw">_</span>) = open_to_and_set_permissions(to, reader_metadata)<span class="question-mark">?</span>;
 
-    <span class="kw">use </span><span class="kw">super</span>::kernel_copy::{copy_regular_files, CopyResult};
+    <span class="kw">use </span><span class="kw">super</span>::kernel_copy::{CopyResult, copy_regular_files};
 
     <span class="kw">match </span>copy_regular_files(reader.as_raw_fd(), writer.as_raw_fd(), max_len) {
         CopyResult::Ended(bytes) =&gt; <span class="prelude-val">Ok</span>(bytes),
@@ -4173,7 +4156,12 @@
     miri
 )))]
 </span><span class="kw">mod </span>remove_dir_impl {
-    <span class="kw">use super</span>::{lstat, Dir, DirEntry, InnerReadDir, ReadDir};
+    <span class="attr">#[cfg(not(all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"gnu"</span>)))]
+    </span><span class="kw">use </span>libc::{fdopendir, openat, unlinkat};
+    <span class="attr">#[cfg(all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"gnu"</span>))]
+    </span><span class="kw">use </span>libc::{fdopendir, openat64 <span class="kw">as </span>openat, unlinkat};
+
+    <span class="kw">use super</span>::{Dir, DirEntry, InnerReadDir, ReadDir, lstat};
     <span class="kw">use </span><span class="kw">crate</span>::ffi::CStr;
     <span class="kw">use </span><span class="kw">crate</span>::io;
     <span class="kw">use </span><span class="kw">crate</span>::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd};
@@ -4181,11 +4169,7 @@
     <span class="kw">use </span><span class="kw">crate</span>::path::{Path, PathBuf};
     <span class="kw">use </span><span class="kw">crate</span>::sys::common::small_c_string::run_path_with_cstr;
     <span class="kw">use </span><span class="kw">crate</span>::sys::{cvt, cvt_r};
-
-    <span class="attr">#[cfg(not(all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"gnu"</span>)))]
-    </span><span class="kw">use </span>libc::{fdopendir, openat, unlinkat};
-    <span class="attr">#[cfg(all(target_os = <span class="string">"linux"</span>, target_env = <span class="string">"gnu"</span>))]
-    </span><span class="kw">use </span>libc::{fdopendir, openat64 <span class="kw">as </span>openat, unlinkat};
+    <span class="kw">use </span><span class="kw">crate</span>::sys_common::ignore_notfound;
 
     <span class="kw">pub fn </span>openat_nofollow_dironly(parent_fd: <span class="prelude-ty">Option</span>&lt;RawFd&gt;, p: <span class="kw-2">&amp;</span>CStr) -&gt; io::Result&lt;OwnedFd&gt; {
         <span class="kw">let </span>fd = cvt_r(|| <span class="kw">unsafe </span>{
@@ -4239,6 +4223,16 @@
         }
     }
 
+    <span class="kw">fn </span>is_enoent(result: <span class="kw-2">&amp;</span>io::Result&lt;()&gt;) -&gt; bool {
+        <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = result
+            &amp;&amp; <span class="macro">matches!</span>(err.raw_os_error(), <span class="prelude-val">Some</span>(libc::ENOENT))
+        {
+            <span class="bool-val">true
+        </span>} <span class="kw">else </span>{
+            <span class="bool-val">false
+        </span>}
+    }
+
     <span class="kw">fn </span>remove_dir_all_recursive(parent_fd: <span class="prelude-ty">Option</span>&lt;RawFd&gt;, path: <span class="kw-2">&amp;</span>CStr) -&gt; io::Result&lt;()&gt; {
         <span class="comment">// try opening as directory
         </span><span class="kw">let </span>fd = <span class="kw">match </span>openat_nofollow_dironly(parent_fd, <span class="kw-2">&amp;</span>path) {
@@ -4262,27 +4256,35 @@
         <span class="kw">for </span>child <span class="kw">in </span>dir {
             <span class="kw">let </span>child = child<span class="question-mark">?</span>;
             <span class="kw">let </span>child_name = child.name_cstr();
-            <span class="kw">match </span>is_dir(<span class="kw-2">&amp;</span>child) {
-                <span class="prelude-val">Some</span>(<span class="bool-val">true</span>) =&gt; {
-                    remove_dir_all_recursive(<span class="prelude-val">Some</span>(fd), child_name)<span class="question-mark">?</span>;
+            <span class="comment">// we need an inner try block, because if one of these
+            // directories has already been deleted, then we need to
+            // continue the loop, not return ok.
+            </span><span class="kw">let </span>result: io::Result&lt;()&gt; = <span class="kw">try </span>{
+                <span class="kw">match </span>is_dir(<span class="kw-2">&amp;</span>child) {
+                    <span class="prelude-val">Some</span>(<span class="bool-val">true</span>) =&gt; {
+                        remove_dir_all_recursive(<span class="prelude-val">Some</span>(fd), child_name)<span class="question-mark">?</span>;
+                    }
+                    <span class="prelude-val">Some</span>(<span class="bool-val">false</span>) =&gt; {
+                        cvt(<span class="kw">unsafe </span>{ unlinkat(fd, child_name.as_ptr(), <span class="number">0</span>) })<span class="question-mark">?</span>;
+                    }
+                    <span class="prelude-val">None </span>=&gt; {
+                        <span class="comment">// POSIX specifies that calling unlink()/unlinkat(..., 0) on a directory can succeed
+                        // if the process has the appropriate privileges. This however can causing orphaned
+                        // directories requiring an fsck e.g. on Solaris and Illumos. So we try recursing
+                        // into it first instead of trying to unlink() it.
+                        </span>remove_dir_all_recursive(<span class="prelude-val">Some</span>(fd), child_name)<span class="question-mark">?</span>;
+                    }
                 }
-                <span class="prelude-val">Some</span>(<span class="bool-val">false</span>) =&gt; {
-                    cvt(<span class="kw">unsafe </span>{ unlinkat(fd, child_name.as_ptr(), <span class="number">0</span>) })<span class="question-mark">?</span>;
-                }
-                <span class="prelude-val">None </span>=&gt; {
-                    <span class="comment">// POSIX specifies that calling unlink()/unlinkat(..., 0) on a directory can succeed
-                    // if the process has the appropriate privileges. This however can causing orphaned
-                    // directories requiring an fsck e.g. on Solaris and Illumos. So we try recursing
-                    // into it first instead of trying to unlink() it.
-                    </span>remove_dir_all_recursive(<span class="prelude-val">Some</span>(fd), child_name)<span class="question-mark">?</span>;
-                }
+            };
+            <span class="kw">if </span>result.is_err() &amp;&amp; !is_enoent(<span class="kw-2">&amp;</span>result) {
+                <span class="kw">return </span>result;
             }
         }
 
         <span class="comment">// unlink the directory after removing its contents
-        </span>cvt(<span class="kw">unsafe </span>{
+        </span>ignore_notfound(cvt(<span class="kw">unsafe </span>{
             unlinkat(parent_fd.unwrap_or(libc::AT_FDCWD), path.as_ptr(), libc::AT_REMOVEDIR)
-        })<span class="question-mark">?</span>;
+        }))<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 

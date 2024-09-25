@@ -201,7 +201,7 @@ be used as the names of:</p>
 <li><a href="crates-and-source-files.html">Crates</a></li>
 </ul>
 <blockquote>
-<p><strong><sup>Lexer:<sup></strong><br />
+<p><strong><sup>Lexer:</sup></strong><br />
 KW_AS             : <code>as</code><br />
 KW_BREAK          : <code>break</code><br />
 KW_CONST          : <code>const</code><br />
@@ -290,7 +290,8 @@ fn invalid_lifetime_parameter&lt;'static&gt;(s: &amp;'static str) -&gt; &amp;'st
 </li>
 <li>
 <p>In the 2015 edition, <a href="types/trait-object.html"><code>dyn</code></a> is a keyword when used in a type position
-followed by a path that does not start with <code>::</code>.</p>
+followed by a path that does not start with <code>::</code> or <code>&lt;</code>, a lifetime, a question mark, a <code>for</code>
+keyword or an opening parenthesis.</p>
 <p>Beginning in the 2018 edition, <code>dyn</code> has been promoted to a strict keyword.</p>
 </li>
 </ul>
@@ -302,6 +303,9 @@ KW_STATICLIFETIME : <code>'static</code></p>
 <p><strong><sup>Lexer 2015</sup></strong><br />
 KW_DYN            : <code>dyn</code></p>
 </blockquote>
+<ul>
+<li><code>safe</code> is used for functions and statics, which has meaning in <a href="items/external-blocks.html">external blocks</a>.</li>
+</ul>
 
                     </main>
 

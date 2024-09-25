@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/core/src/task/wake.rs`."><title>wake.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-16837abbf58dc08a.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.82.0" data-rustdoc-version="1.82.0-dev" data-channel="nightly" data-search-js="search-9c9789d2efa3c8d1.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.82.0.js"></script><script defer src="../../../static.files/main-34fdfa47078c50a4.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `core/src/task/wake.rs`."><title>wake.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-d33be337707cc2ad.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="core" data-themes="" data-resource-suffix="1.83.0" data-rustdoc-version="1.83.0-dev" data-channel="nightly" data-search-js="search-e6d908e204358b5c.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files1.83.0.js"></script><script defer src="../../../static.files/main-54bc299d2a5e4e43.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">core/task/</div>wake.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -869,14 +870,92 @@
 <a href="#869" id="869">869</a>
 <a href="#870" id="870">870</a>
 <a href="#871" id="871">871</a>
-</pre></div><pre class="rust"><code><span class="attr">#![stable(feature = <span class="string">"futures_api"</span>, since = <span class="string">"1.36.0"</span>)]
+<a href="#872" id="872">872</a>
+<a href="#873" id="873">873</a>
+<a href="#874" id="874">874</a>
+<a href="#875" id="875">875</a>
+<a href="#876" id="876">876</a>
+<a href="#877" id="877">877</a>
+<a href="#878" id="878">878</a>
+<a href="#879" id="879">879</a>
+<a href="#880" id="880">880</a>
+<a href="#881" id="881">881</a>
+<a href="#882" id="882">882</a>
+<a href="#883" id="883">883</a>
+<a href="#884" id="884">884</a>
+<a href="#885" id="885">885</a>
+<a href="#886" id="886">886</a>
+<a href="#887" id="887">887</a>
+<a href="#888" id="888">888</a>
+<a href="#889" id="889">889</a>
+<a href="#890" id="890">890</a>
+<a href="#891" id="891">891</a>
+<a href="#892" id="892">892</a>
+<a href="#893" id="893">893</a>
+<a href="#894" id="894">894</a>
+<a href="#895" id="895">895</a>
+<a href="#896" id="896">896</a>
+<a href="#897" id="897">897</a>
+<a href="#898" id="898">898</a>
+<a href="#899" id="899">899</a>
+<a href="#900" id="900">900</a>
+<a href="#901" id="901">901</a>
+<a href="#902" id="902">902</a>
+<a href="#903" id="903">903</a>
+<a href="#904" id="904">904</a>
+<a href="#905" id="905">905</a>
+<a href="#906" id="906">906</a>
+<a href="#907" id="907">907</a>
+<a href="#908" id="908">908</a>
+<a href="#909" id="909">909</a>
+<a href="#910" id="910">910</a>
+<a href="#911" id="911">911</a>
+<a href="#912" id="912">912</a>
+<a href="#913" id="913">913</a>
+<a href="#914" id="914">914</a>
+<a href="#915" id="915">915</a>
+<a href="#916" id="916">916</a>
+<a href="#917" id="917">917</a>
+<a href="#918" id="918">918</a>
+<a href="#919" id="919">919</a>
+<a href="#920" id="920">920</a>
+<a href="#921" id="921">921</a>
+<a href="#922" id="922">922</a>
+<a href="#923" id="923">923</a>
+<a href="#924" id="924">924</a>
+<a href="#925" id="925">925</a>
+<a href="#926" id="926">926</a>
+<a href="#927" id="927">927</a>
+<a href="#928" id="928">928</a>
+<a href="#929" id="929">929</a>
+<a href="#930" id="930">930</a>
+<a href="#931" id="931">931</a>
+<a href="#932" id="932">932</a>
+<a href="#933" id="933">933</a>
+<a href="#934" id="934">934</a>
+<a href="#935" id="935">935</a>
+<a href="#936" id="936">936</a>
+<a href="#937" id="937">937</a>
+<a href="#938" id="938">938</a>
+<a href="#939" id="939">939</a>
+<a href="#940" id="940">940</a>
+<a href="#941" id="941">941</a>
+<a href="#942" id="942">942</a>
+<a href="#943" id="943">943</a>
+<a href="#944" id="944">944</a>
+<a href="#945" id="945">945</a>
+<a href="#946" id="946">946</a>
+<a href="#947" id="947">947</a>
+<a href="#948" id="948">948</a>
+<a href="#949" id="949">949</a>
+<a href="#950" id="950">950</a>
+<a href="#951" id="951">951</a></pre></div><pre class="rust"><code><span class="attr">#![stable(feature = <span class="string">"futures_api"</span>, since = <span class="string">"1.36.0"</span>)]
 
 </span><span class="kw">use </span><span class="kw">crate</span>::any::Any;
-<span class="kw">use </span><span class="kw">crate</span>::fmt;
 <span class="kw">use </span><span class="kw">crate</span>::marker::PhantomData;
-<span class="kw">use </span><span class="kw">crate</span>::mem::{transmute, ManuallyDrop};
+<span class="kw">use </span><span class="kw">crate</span>::mem::{ManuallyDrop, transmute};
 <span class="kw">use </span><span class="kw">crate</span>::panic::AssertUnwindSafe;
-<span class="kw">use </span><span class="kw">crate</span>::ptr;
+<span class="kw">use crate</span>::{fmt, ptr};
 
 <span class="doccomment">/// A `RawWaker` allows the implementor of a task executor to create a [`Waker`]
 /// or a [`LocalWaker`] which provides customized wakeup behavior.
@@ -930,22 +1009,6 @@
     #[must_use]
     </span><span class="kw">pub const fn </span>new(data: <span class="kw-2">*const </span>(), vtable: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>RawWakerVTable) -&gt; RawWaker {
         RawWaker { data, vtable }
-    }
-
-    <span class="doccomment">/// Get the `data` pointer used to create this `RawWaker`.
-    </span><span class="attr">#[inline]
-    #[must_use]
-    #[unstable(feature = <span class="string">"waker_getters"</span>, issue = <span class="string">"96992"</span>)]
-    </span><span class="kw">pub fn </span>data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>() {
-        <span class="self">self</span>.data
-    }
-
-    <span class="doccomment">/// Get the `vtable` pointer used to create this `RawWaker`.
-    </span><span class="attr">#[inline]
-    #[must_use]
-    #[unstable(feature = <span class="string">"waker_getters"</span>, issue = <span class="string">"96992"</span>)]
-    </span><span class="kw">pub fn </span>vtable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>RawWakerVTable {
-        <span class="self">self</span>.vtable
     }
 
     <span class="attr">#[unstable(feature = <span class="string">"noop_waker"</span>, issue = <span class="string">"98286"</span>)]
@@ -1021,7 +1084,7 @@
     /// pointer.
     </span>wake_by_ref: <span class="kw">unsafe fn</span>(<span class="kw-2">*const </span>()),
 
-    <span class="doccomment">/// This function gets called when a [`Waker`] gets dropped.
+    <span class="doccomment">/// This function will be called when a [`Waker`] gets dropped.
     ///
     /// The implementation of this function must make sure to release any
     /// resources that are associated with this instance of a [`RawWaker`] and
@@ -1074,7 +1137,8 @@
     ///
     /// # `drop`
     ///
-    /// This function gets called when a [`Waker`]/[`LocalWaker`] gets dropped.
+    /// This function will be called when a [`Waker`]/[`LocalWaker`] gets
+    /// dropped.
     ///
     /// The implementation of this function must make sure to release any
     /// resources that are associated with this instance of a [`RawWaker`] and
@@ -1119,9 +1183,9 @@
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Context&lt;<span class="lifetime">'a</span>&gt; {
-    <span class="doccomment">/// Create a new `Context` from a [`&amp;Waker`](Waker).
+    <span class="doccomment">/// Creates a new `Context` from a [`&amp;Waker`](Waker).
     </span><span class="attr">#[stable(feature = <span class="string">"futures_api"</span>, since = <span class="string">"1.36.0"</span>)]
-    #[rustc_const_unstable(feature = <span class="string">"const_waker"</span>, issue = <span class="string">"102012"</span>)]
+    #[rustc_const_stable(feature = <span class="string">"const_waker"</span>, since = <span class="string">"1.82.0"</span>)]
     #[must_use]
     #[inline]
     </span><span class="kw">pub const fn </span>from_waker(waker: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Waker) -&gt; <span class="self">Self </span>{
@@ -1132,7 +1196,7 @@
     </span><span class="attr">#[inline]
     #[must_use]
     #[stable(feature = <span class="string">"futures_api"</span>, since = <span class="string">"1.36.0"</span>)]
-    #[rustc_const_unstable(feature = <span class="string">"const_waker"</span>, issue = <span class="string">"102012"</span>)]
+    #[rustc_const_stable(feature = <span class="string">"const_waker"</span>, since = <span class="string">"1.82.0"</span>)]
     </span><span class="kw">pub const fn </span>waker(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Waker {
         <span class="kw-2">&amp;</span><span class="self">self</span>.waker
     }
@@ -1140,7 +1204,7 @@
     <span class="doccomment">/// Returns a reference to the [`LocalWaker`] for the current task.
     </span><span class="attr">#[inline]
     #[unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]
-    #[rustc_const_unstable(feature = <span class="string">"const_waker"</span>, issue = <span class="string">"102012"</span>)]
+    #[rustc_const_unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]
     </span><span class="kw">pub const fn </span>local_waker(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>LocalWaker {
         <span class="kw-2">&amp;</span><span class="self">self</span>.local_waker
     }
@@ -1148,7 +1212,7 @@
     <span class="doccomment">/// Returns a reference to the extension data for the current task.
     </span><span class="attr">#[inline]
     #[unstable(feature = <span class="string">"context_ext"</span>, issue = <span class="string">"123392"</span>)]
-    #[rustc_const_unstable(feature = <span class="string">"const_waker"</span>, issue = <span class="string">"102012"</span>)]
+    #[rustc_const_unstable(feature = <span class="string">"context_ext"</span>, issue = <span class="string">"123392"</span>)]
     </span><span class="kw">pub const fn </span>ext(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="kw">dyn </span>Any {
         <span class="comment">// FIXME: this field makes Context extra-weird about unwind safety
         // can we justify AssertUnwindSafe if we stabilize this? do we care?
@@ -1205,10 +1269,10 @@
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; ContextBuilder&lt;<span class="lifetime">'a</span>&gt; {
-    <span class="doccomment">/// Create a ContextBuilder from a Waker.
+    <span class="doccomment">/// Creates a ContextBuilder from a Waker.
     </span><span class="attr">#[inline]
-    #[rustc_const_unstable(feature = <span class="string">"const_waker"</span>, issue = <span class="string">"102012"</span>)]
     #[unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]
+    #[rustc_const_stable(feature = <span class="string">"const_waker"</span>, since = <span class="string">"1.82.0"</span>)]
     </span><span class="kw">pub const fn </span>from_waker(waker: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Waker) -&gt; <span class="self">Self </span>{
         <span class="comment">// SAFETY: LocalWaker is just Waker without thread safety
         </span><span class="kw">let </span>local_waker = <span class="kw">unsafe </span>{ transmute(waker) };
@@ -1221,10 +1285,10 @@
         }
     }
 
-    <span class="doccomment">/// Create a ContextBuilder from an existing Context.
+    <span class="doccomment">/// Creates a ContextBuilder from an existing Context.
     </span><span class="attr">#[inline]
-    #[rustc_const_unstable(feature = <span class="string">"const_waker"</span>, issue = <span class="string">"102012"</span>)]
     #[unstable(feature = <span class="string">"context_ext"</span>, issue = <span class="string">"123392"</span>)]
+    #[rustc_const_unstable(feature = <span class="string">"context_ext"</span>, issue = <span class="string">"123392"</span>)]
     </span><span class="kw">pub const fn </span>from(cx: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>ext = <span class="kw">match </span><span class="kw-2">&amp;mut </span>cx.ext.<span class="number">0 </span>{
             ExtData::Some(ext) =&gt; ExtData::Some(<span class="kw-2">*</span>ext),
@@ -1239,26 +1303,26 @@
         }
     }
 
-    <span class="doccomment">/// This method is used to set the value for the waker on `Context`.
+    <span class="doccomment">/// Sets the value for the waker on `Context`.
     </span><span class="attr">#[inline]
     #[unstable(feature = <span class="string">"context_ext"</span>, issue = <span class="string">"123392"</span>)]
-    #[rustc_const_unstable(feature = <span class="string">"const_waker"</span>, issue = <span class="string">"102012"</span>)]
+    #[rustc_const_unstable(feature = <span class="string">"context_ext"</span>, issue = <span class="string">"123392"</span>)]
     </span><span class="kw">pub const fn </span>waker(<span class="self">self</span>, waker: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Waker) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ waker, ..<span class="self">self </span>}
     }
 
-    <span class="doccomment">/// This method is used to set the value for the local waker on `Context`.
+    <span class="doccomment">/// Sets the value for the local waker on `Context`.
     </span><span class="attr">#[inline]
     #[unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]
-    #[rustc_const_unstable(feature = <span class="string">"const_waker"</span>, issue = <span class="string">"102012"</span>)]
+    #[rustc_const_unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]
     </span><span class="kw">pub const fn </span>local_waker(<span class="self">self</span>, local_waker: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>LocalWaker) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ local_waker, ..<span class="self">self </span>}
     }
 
-    <span class="doccomment">/// This method is used to set the value for the extension data on `Context`.
+    <span class="doccomment">/// Sets the value for the extension data on `Context`.
     </span><span class="attr">#[inline]
     #[unstable(feature = <span class="string">"context_ext"</span>, issue = <span class="string">"123392"</span>)]
-    #[rustc_const_unstable(feature = <span class="string">"const_waker"</span>, issue = <span class="string">"102012"</span>)]
+    #[rustc_const_unstable(feature = <span class="string">"context_ext"</span>, issue = <span class="string">"123392"</span>)]
     </span><span class="kw">pub const fn </span>ext(<span class="self">self</span>, data: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span><span class="kw">dyn </span>Any) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ ext: ExtData::Some(data), ..<span class="self">self </span>}
     }
@@ -1266,7 +1330,7 @@
     <span class="doccomment">/// Builds the `Context`.
     </span><span class="attr">#[inline]
     #[unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]
-    #[rustc_const_unstable(feature = <span class="string">"const_waker"</span>, issue = <span class="string">"102012"</span>)]
+    #[rustc_const_stable(feature = <span class="string">"const_waker"</span>, since = <span class="string">"1.82.0"</span>)]
     </span><span class="kw">pub const fn </span>build(<span class="self">self</span>) -&gt; Context&lt;<span class="lifetime">'a</span>&gt; {
         <span class="kw">let </span>ContextBuilder { waker, local_waker, ext, _marker, _marker2 } = <span class="self">self</span>;
         Context { waker, local_waker, ext: AssertUnwindSafe(ext), _marker, _marker2 }
@@ -1299,8 +1363,9 @@
 /// [`Future::poll()`]: core::future::Future::poll
 /// [`Poll::Pending`]: core::task::Poll::Pending
 /// [`Wake`]: ../../alloc/task/trait.Wake.html
-</span><span class="attr">#[cfg_attr(not(doc), repr(transparent))] </span><span class="comment">// work around https://github.com/rust-lang/rust/issues/66401
-</span><span class="attr">#[stable(feature = <span class="string">"futures_api"</span>, since = <span class="string">"1.36.0"</span>)]
+</span><span class="attr">#[repr(transparent)]
+#[stable(feature = <span class="string">"futures_api"</span>, since = <span class="string">"1.36.0"</span>)]
+#[cfg_attr(not(test), rustc_diagnostic_item = <span class="string">"Waker"</span>)]
 </span><span class="kw">pub struct </span>Waker {
     waker: RawWaker,
 }
@@ -1313,7 +1378,7 @@
 </span><span class="kw">unsafe impl </span>Sync <span class="kw">for </span>Waker {}
 
 <span class="kw">impl </span>Waker {
-    <span class="doccomment">/// Wake up the task associated with this `Waker`.
+    <span class="doccomment">/// Wakes up the task associated with this `Waker`.
     ///
     /// As long as the executor keeps running and the task is not finished, it is
     /// guaranteed that each invocation of [`wake()`](Self::wake) (or
@@ -1345,7 +1410,7 @@
         </span><span class="kw">unsafe </span>{ (this.waker.vtable.wake)(this.waker.data) };
     }
 
-    <span class="doccomment">/// Wake up the task associated with this `Waker` without consuming the `Waker`.
+    <span class="doccomment">/// Wakes up the task associated with this `Waker` without consuming the `Waker`.
     ///
     /// This is similar to [`wake()`](Self::wake), but may be slightly less efficient in
     /// the case where an owned `Waker` is available. This method should be preferred to
@@ -1373,9 +1438,42 @@
     #[must_use]
     #[stable(feature = <span class="string">"futures_api"</span>, since = <span class="string">"1.36.0"</span>)]
     </span><span class="kw">pub fn </span>will_wake(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>Waker) -&gt; bool {
-        <span class="kw">let </span>RawWaker { data: a_data, vtable: a_vtable } = <span class="self">self</span>.waker;
+        <span class="comment">// We optimize this by comparing vtable addresses instead of vtable contents.
+        // This is permitted since the function is documented as best-effort.
+        </span><span class="kw">let </span>RawWaker { data: a_data, vtable: a_vtable } = <span class="self">self</span>.waker;
         <span class="kw">let </span>RawWaker { data: b_data, vtable: b_vtable } = other.waker;
         a_data == b_data &amp;&amp; ptr::eq(a_vtable, b_vtable)
+    }
+
+    <span class="doccomment">/// Creates a new `Waker` from the provided `data` pointer and `vtable`.
+    ///
+    /// The `data` pointer can be used to store arbitrary data as required
+    /// by the executor. This could be e.g. a type-erased pointer to an `Arc`
+    /// that is associated with the task.
+    /// The value of this pointer will get passed to all functions that are part
+    /// of the `vtable` as the first parameter.
+    ///
+    /// It is important to consider that the `data` pointer must point to a
+    /// thread safe type such as an `Arc`.
+    ///
+    /// The `vtable` customizes the behavior of a `Waker`. For each operation
+    /// on the `Waker`, the associated function in the `vtable` will be called.
+    ///
+    /// # Safety
+    ///
+    /// The behavior of the returned `Waker` is undefined if the contract defined
+    /// in [`RawWakerVTable`]'s documentation is not upheld.
+    ///
+    /// (Authors wishing to avoid unsafe code may implement the [`Wake`] trait instead, at the
+    /// cost of a required heap allocation.)
+    ///
+    /// [`Wake`]: ../../alloc/task/trait.Wake.html
+    </span><span class="attr">#[inline]
+    #[must_use]
+    #[stable(feature = <span class="string">"waker_getters"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    #[rustc_const_stable(feature = <span class="string">"waker_getters"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    </span><span class="kw">pub const unsafe fn </span>new(data: <span class="kw-2">*const </span>(), vtable: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>RawWakerVTable) -&gt; <span class="self">Self </span>{
+        Waker { waker: RawWaker { data, vtable } }
     }
 
     <span class="doccomment">/// Creates a new `Waker` from [`RawWaker`].
@@ -1392,16 +1490,24 @@
     </span><span class="attr">#[inline]
     #[must_use]
     #[stable(feature = <span class="string">"futures_api"</span>, since = <span class="string">"1.36.0"</span>)]
-    #[rustc_const_unstable(feature = <span class="string">"const_waker"</span>, issue = <span class="string">"102012"</span>)]
+    #[rustc_const_stable(feature = <span class="string">"const_waker"</span>, since = <span class="string">"1.82.0"</span>)]
     </span><span class="kw">pub const unsafe fn </span>from_raw(waker: RawWaker) -&gt; Waker {
         Waker { waker }
     }
 
     <span class="doccomment">/// Returns a reference to a `Waker` that does nothing when used.
     ///
-    /// This is mostly useful for writing tests that need a [`Context`] to poll
+    </span><span class="comment">// Note!  Much of the documentation for this method is duplicated
+    // in the docs for `LocalWaker::noop`.
+    // If you edit it, consider editing the other copy too.
+    //
+    </span><span class="doccomment">/// This is mostly useful for writing tests that need a [`Context`] to poll
     /// some futures, but are not expecting those futures to wake the waker or
     /// do not need to do anything specific if it happens.
+    ///
+    /// More generally, using `Waker::noop()` to poll a future
+    /// means discarding the notification of when the future should be polled again.
+    /// So it should only be used when such a notification will not be needed to make progress.
     ///
     /// If an owned `Waker` is needed, `clone()` this one.
     ///
@@ -1426,12 +1532,20 @@
         WAKER
     }
 
-    <span class="doccomment">/// Get a reference to the underlying [`RawWaker`].
+    <span class="doccomment">/// Gets the `data` pointer used to create this `Waker`.
     </span><span class="attr">#[inline]
     #[must_use]
-    #[unstable(feature = <span class="string">"waker_getters"</span>, issue = <span class="string">"96992"</span>)]
-    </span><span class="kw">pub fn </span>as_raw(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>RawWaker {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.waker
+    #[stable(feature = <span class="string">"waker_getters"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    </span><span class="kw">pub fn </span>data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>() {
+        <span class="self">self</span>.waker.data
+    }
+
+    <span class="doccomment">/// Gets the `vtable` pointer used to create this `Waker`.
+    </span><span class="attr">#[inline]
+    #[must_use]
+    #[stable(feature = <span class="string">"waker_getters"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+    </span><span class="kw">pub fn </span>vtable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>RawWakerVTable {
+        <span class="self">self</span>.waker.vtable
     }
 }
 
@@ -1563,7 +1677,7 @@
 /// [`Poll::Pending`]: core::task::Poll::Pending
 /// [`local_waker`]: core::task::Context::local_waker
 </span><span class="attr">#[unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]
-#[cfg_attr(not(doc), repr(transparent))] </span><span class="comment">// work around https://github.com/rust-lang/rust/issues/66401
+#[repr(transparent)]
 </span><span class="kw">pub struct </span>LocalWaker {
     waker: RawWaker,
 }
@@ -1572,7 +1686,7 @@
 </span><span class="kw">impl </span>Unpin <span class="kw">for </span>LocalWaker {}
 
 <span class="kw">impl </span>LocalWaker {
-    <span class="doccomment">/// Wake up the task associated with this `LocalWaker`.
+    <span class="doccomment">/// Wakes up the task associated with this `LocalWaker`.
     ///
     /// As long as the executor keeps running and the task is not finished, it is
     /// guaranteed that each invocation of [`wake()`](Self::wake) (or
@@ -1604,7 +1718,7 @@
         </span><span class="kw">unsafe </span>{ (this.waker.vtable.wake)(this.waker.data) };
     }
 
-    <span class="doccomment">/// Wake up the task associated with this `LocalWaker` without consuming the `LocalWaker`.
+    <span class="doccomment">/// Wakes up the task associated with this `LocalWaker` without consuming the `LocalWaker`.
     ///
     /// This is similar to [`wake()`](Self::wake), but may be slightly less efficient in
     /// the case where an owned `Waker` is available. This method should be preferred to
@@ -1632,7 +1746,35 @@
     #[must_use]
     #[unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]
     </span><span class="kw">pub fn </span>will_wake(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>LocalWaker) -&gt; bool {
-        <span class="self">self</span>.waker == other.waker
+        <span class="comment">// We optimize this by comparing vtable addresses instead of vtable contents.
+        // This is permitted since the function is documented as best-effort.
+        </span><span class="kw">let </span>RawWaker { data: a_data, vtable: a_vtable } = <span class="self">self</span>.waker;
+        <span class="kw">let </span>RawWaker { data: b_data, vtable: b_vtable } = other.waker;
+        a_data == b_data &amp;&amp; ptr::eq(a_vtable, b_vtable)
+    }
+
+    <span class="doccomment">/// Creates a new `LocalWaker` from the provided `data` pointer and `vtable`.
+    ///
+    /// The `data` pointer can be used to store arbitrary data as required
+    /// by the executor. This could be e.g. a type-erased pointer to an `Arc`
+    /// that is associated with the task.
+    /// The value of this pointer will get passed to all functions that are part
+    /// of the `vtable` as the first parameter.
+    ///
+    /// The `vtable` customizes the behavior of a `LocalWaker`. For each
+    /// operation on the `LocalWaker`, the associated function in the `vtable`
+    /// will be called.
+    ///
+    /// # Safety
+    ///
+    /// The behavior of the returned `Waker` is undefined if the contract defined
+    /// in [`RawWakerVTable`]'s documentation is not upheld.
+    ///
+    </span><span class="attr">#[inline]
+    #[must_use]
+    #[unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]
+    </span><span class="kw">pub const unsafe fn </span>new(data: <span class="kw-2">*const </span>(), vtable: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>RawWakerVTable) -&gt; <span class="self">Self </span>{
+        LocalWaker { waker: RawWaker { data, vtable } }
     }
 
     <span class="doccomment">/// Creates a new `LocalWaker` from [`RawWaker`].
@@ -1643,16 +1785,26 @@
     </span><span class="attr">#[inline]
     #[must_use]
     #[unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]
-    #[rustc_const_unstable(feature = <span class="string">"const_waker"</span>, issue = <span class="string">"102012"</span>)]
+    #[rustc_const_unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]
     </span><span class="kw">pub const unsafe fn </span>from_raw(waker: RawWaker) -&gt; LocalWaker {
         <span class="self">Self </span>{ waker }
     }
 
-    <span class="doccomment">/// Creates a new `LocalWaker` that does nothing when `wake` is called.
+    <span class="doccomment">/// Returns a reference to a `LocalWaker` that does nothing when used.
     ///
-    /// This is mostly useful for writing tests that need a [`Context`] to poll
+    </span><span class="comment">// Note!  Much of the documentation for this method is duplicated
+    // in the docs for `Waker::noop`.
+    // If you edit it, consider editing the other copy too.
+    //
+    </span><span class="doccomment">/// This is mostly useful for writing tests that need a [`Context`] to poll
     /// some futures, but are not expecting those futures to wake the waker or
     /// do not need to do anything specific if it happens.
+    ///
+    /// More generally, using `LocalWaker::noop()` to poll a future
+    /// means discarding the notification of when the future should be polled again,
+    /// So it should only be used when such a notification will not be needed to make progress.
+    ///
+    /// If an owned `LocalWaker` is needed, `clone()` this one.
     ///
     /// # Examples
     ///
@@ -1678,12 +1830,20 @@
         WAKER
     }
 
-    <span class="doccomment">/// Get a reference to the underlying [`RawWaker`].
+    <span class="doccomment">/// Gets the `data` pointer used to create this `LocalWaker`.
     </span><span class="attr">#[inline]
     #[must_use]
-    #[unstable(feature = <span class="string">"waker_getters"</span>, issue = <span class="string">"96992"</span>)]
-    </span><span class="kw">pub fn </span>as_raw(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>RawWaker {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.waker
+    #[unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]
+    </span><span class="kw">pub fn </span>data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>() {
+        <span class="self">self</span>.waker.data
+    }
+
+    <span class="doccomment">/// Gets the `vtable` pointer used to create this `LocalWaker`.
+    </span><span class="attr">#[inline]
+    #[must_use]
+    #[unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]
+    </span><span class="kw">pub fn </span>vtable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>RawWakerVTable {
+        <span class="self">self</span>.waker.vtable
     }
 }
 <span class="attr">#[unstable(feature = <span class="string">"local_waker"</span>, issue = <span class="string">"118959"</span>)]

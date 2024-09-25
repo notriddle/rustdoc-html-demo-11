@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `library/std/src/fs.rs`."><title>fs.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-16837abbf58dc08a.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.82.0" data-rustdoc-version="1.82.0-dev" data-channel="nightly" data-search-js="search-9c9789d2efa3c8d1.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.82.0.js"></script><script defer src="../../static.files/main-34fdfa47078c50a4.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `std/src/fs.rs`."><title>fs.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-d33be337707cc2ad.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="std" data-themes="" data-resource-suffix="1.83.0" data-rustdoc-version="1.83.0-dev" data-channel="nightly" data-search-js="search-e6d908e204358b5c.js" data-settings-js="settings-805db61a62df4bd2.js" ><script src="../../static.files/storage-1d39b6787ed640ff.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files1.83.0.js"></script><script defer src="../../static.files/main-54bc299d2a5e4e43.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-0111fcff984fae8f.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">std/</div>fs.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -2754,7 +2755,14 @@
 <a href="#2754" id="2754">2754</a>
 <a href="#2755" id="2755">2755</a>
 <a href="#2756" id="2756">2756</a>
-</pre></div><pre class="rust"><code><span class="doccomment">//! Filesystem manipulation operations.
+<a href="#2757" id="2757">2757</a>
+<a href="#2758" id="2758">2758</a>
+<a href="#2759" id="2759">2759</a>
+<a href="#2760" id="2760">2760</a>
+<a href="#2761" id="2761">2761</a>
+<a href="#2762" id="2762">2762</a>
+<a href="#2763" id="2763">2763</a>
+<a href="#2764" id="2764">2764</a></pre></div><pre class="rust"><code><span class="doccomment">//! Filesystem manipulation operations.
 //!
 //! This module contains basic methods to manipulate the contents of the local
 //! filesystem. All methods in this module represent cross-platform filesystem
@@ -2806,7 +2814,7 @@
 /// }
 /// ```
 ///
-/// Read the contents of a file into a [`String`] (you can also use [`read`]):
+/// Reads the contents of a file into a [`String`] (you can also use [`read`]):
 ///
 /// ```no_run
 /// use std::fs::File;
@@ -2985,7 +2993,7 @@
     recursive: bool,
 }
 
-<span class="doccomment">/// Read the entire contents of a file into a bytes vector.
+<span class="doccomment">/// Reads the entire contents of a file into a bytes vector.
 ///
 /// This is a convenience function for using [`File::open`] and [`read_to_end`]
 /// with fewer imports and without an intermediate variable.
@@ -3024,7 +3032,7 @@
     inner(path.as_ref())
 }
 
-<span class="doccomment">/// Read the entire contents of a file into a string.
+<span class="doccomment">/// Reads the entire contents of a file into a string.
 ///
 /// This is a convenience function for using [`File::open`] and [`read_to_string`]
 /// with fewer imports and without an intermediate variable.
@@ -3067,7 +3075,7 @@
     inner(path.as_ref())
 }
 
-<span class="doccomment">/// Write a slice as the entire contents of a file.
+<span class="doccomment">/// Writes a slice as the entire contents of a file.
 ///
 /// This function will create a file if it does not exist,
 /// and will entirely replace its contents if it does.
@@ -3222,6 +3230,7 @@
     /// ```
     </span><span class="attr">#[must_use]
     #[stable(feature = <span class="string">"with_options"</span>, since = <span class="string">"1.58.0"</span>)]
+    #[cfg_attr(not(test), rustc_diagnostic_item = <span class="string">"file_options"</span>)]
     </span><span class="kw">pub fn </span>options() -&gt; OpenOptions {
         OpenOptions::new()
     }
@@ -3523,7 +3532,7 @@
 
 <span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
 </span><span class="kw">impl </span>Read <span class="kw">for </span><span class="kw-2">&amp;</span>File {
-    <span class="doccomment">/// Read some bytes from the file.
+    <span class="doccomment">/// Reads some bytes from the file.
     ///
     /// See [`Read::read`] docs for more info.
     ///
@@ -3591,7 +3600,7 @@
 }
 <span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
 </span><span class="kw">impl </span>Write <span class="kw">for </span><span class="kw-2">&amp;</span>File {
-    <span class="doccomment">/// Write some bytes from the file.
+    <span class="doccomment">/// Writes some bytes to the file.
     ///
     /// See [`Write::write`] docs for more info.
     ///
@@ -3765,7 +3774,8 @@
     /// let mut options = OpenOptions::new();
     /// let file = options.read(true).open("foo.txt");
     /// ```
-    </span><span class="attr">#[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
+    </span><span class="attr">#[cfg_attr(not(test), rustc_diagnostic_item = <span class="string">"open_options_new"</span>)]
+    #[stable(feature = <span class="string">"rust1"</span>, since = <span class="string">"1.0.0"</span>)]
     #[must_use]
     </span><span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
         OpenOptions(fs_imp::OpenOptions::new())
@@ -4282,7 +4292,7 @@
 }
 
 <span class="kw">impl </span>FileTimes {
-    <span class="doccomment">/// Create a new `FileTimes` with no times set.
+    <span class="doccomment">/// Creates a new `FileTimes` with no times set.
     ///
     /// Using the resulting `FileTimes` in [`File::set_times`] will not modify any timestamps.
     </span><span class="attr">#[stable(feature = <span class="string">"file_set_times"</span>, since = <span class="string">"1.75.0"</span>)]
@@ -4745,6 +4755,11 @@
 /// * The file doesn't exist.
 /// * The user lacks permissions to remove the file.
 ///
+/// This function will only ever return an error of kind `NotFound` if the given
+/// path does not exist. Note that the inverse is not true,
+/// ie. if a path does not exist, its removal may fail for a number of reasons,
+/// such as insufficient permissions.
+///
 /// # Examples
 ///
 /// ```no_run
@@ -4761,7 +4776,7 @@
     fs_imp::unlink(path.as_ref())
 }
 
-<span class="doccomment">/// Given a path, query the file system to get information about a file,
+<span class="doccomment">/// Given a path, queries the file system to get information about a file,
 /// directory, etc.
 ///
 /// This function will traverse symbolic links to query information about the
@@ -4800,7 +4815,7 @@
     fs_imp::stat(path.as_ref()).map(Metadata)
 }
 
-<span class="doccomment">/// Query the metadata about a file without following symlinks.
+<span class="doccomment">/// Queries the metadata about a file without following symlinks.
 ///
 /// # Platform-specific behavior
 ///
@@ -4835,7 +4850,7 @@
     fs_imp::lstat(path.as_ref()).map(Metadata)
 }
 
-<span class="doccomment">/// Rename a file or directory to a new name, replacing the original file if
+<span class="doccomment">/// Renames a file or directory to a new name, replacing the original file if
 /// `to` already exists.
 ///
 /// This will not work if the new name is on a different mount point.
@@ -5156,13 +5171,8 @@
 ///
 /// # Errors
 ///
-/// This function will return an error in the following situations, but is not
-/// limited to just these cases:
-///
-/// * If any directory in the path specified by `path`
-/// does not already exist and it could not be created otherwise. The specific
-/// error conditions for when a directory is being created (after it is
-/// determined to not exist) are outlined by [`fs::create_dir`].
+/// The function will return an error if any directory specified in path does not exist and
+/// could not be created. There may be other error conditions; see [`fs::create_dir`] for specifics.
 ///
 /// Notable exception is made for situations where any of the directories
 /// specified in the `path` could not be created as it was being created concurrently.
@@ -5207,6 +5217,11 @@
 /// * The user lacks permissions to remove the directory at the provided `path`.
 /// * The directory isn't empty.
 ///
+/// This function will only ever return an error of kind `NotFound` if the given
+/// path does not exist. Note that the inverse is not true,
+/// ie. if a path does not exist, its removal may fail for a number of reasons,
+/// such as insufficient permissions.
+///
 /// # Examples
 ///
 /// ```no_run
@@ -5232,16 +5247,15 @@
 /// # Platform-specific behavior
 ///
 /// This function currently corresponds to `openat`, `fdopendir`, `unlinkat` and `lstat` functions
-/// on Unix (except for macOS before version 10.10 and REDOX) and the `CreateFileW`,
-/// `GetFileInformationByHandleEx`, `SetFileInformationByHandle`, and `NtCreateFile` functions on
-/// Windows. Note that, this [may change in the future][changes].
+/// on Unix (except for REDOX) and the `CreateFileW`, `GetFileInformationByHandleEx`,
+/// `SetFileInformationByHandle`, and `NtCreateFile` functions on Windows. Note that, this
+/// [may change in the future][changes].
 ///
 /// [changes]: io#platform-specific-behavior
 ///
-/// On macOS before version 10.10 and REDOX, as well as when running in Miri for any target, this
-/// function is not protected against time-of-check to time-of-use (TOCTOU) race conditions, and
-/// should not be used in security-sensitive code on those platforms. All other platforms are
-/// protected.
+/// On REDOX, as well as when running in Miri for any target, this function is not protected against
+/// time-of-check to time-of-use (TOCTOU) race conditions, and should not be used in
+/// security-sensitive code on those platforms. All other platforms are protected.
 ///
 /// # Errors
 ///
@@ -5251,6 +5265,8 @@
 /// As a result, the directory you are deleting must exist, meaning that this function is not idempotent.
 ///
 /// Consider ignoring the error if validating the removal is not required for your use case.
+///
+/// [`io::ErrorKind::NotFound`] is only returned if no removal occurs.
 ///
 /// [`fs::remove_file`]: remove_file
 /// [`fs::remove_dir`]: remove_dir
@@ -5505,7 +5521,7 @@
 /// ```
 ///
 /// [`Path::exists`]: crate::path::Path::exists
-</span><span class="attr">#[stable(feature = <span class="string">"fs_try_exists"</span>, since = <span class="string">"CURRENT_RUSTC_VERSION"</span>)]
+</span><span class="attr">#[stable(feature = <span class="string">"fs_try_exists"</span>, since = <span class="string">"1.81.0"</span>)]
 #[inline]
 </span><span class="kw">pub fn </span>exists&lt;P: AsRef&lt;Path&gt;&gt;(path: P) -&gt; io::Result&lt;bool&gt; {
     fs_imp::exists(path.as_ref())
